@@ -1,0 +1,107 @@
+{% extends 'home/seller_dashboard.html' %}
+
+{% block title %}Transaction History{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'seller_dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Transaction</li>
+        </ol>
+    </nav>
+
+    <!-- Custom CSS for Transaction Table -->
+    <style>
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .transaction-table thead {
+            background-color: #165baa;
+            color: white;
+            text-align: left;
+        }
+        .transaction-table th, .transaction-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .transaction-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        .transaction-table .status {
+            font-weight: bold;
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+        .status-completed {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: white;
+        }
+        .status-failed {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .transaction-table th, .transaction-table td {
+                padding: 8px 10px; /* Reduce padding for smaller screens */
+                font-size: 0.8rem; /* Slightly smaller font size */
+            }
+            .transaction-table {
+                display: block; /* Allow table to behave like a block */
+                overflow-x: auto; /* Enable horizontal scrolling */
+                white-space: nowrap; /* Prevent text from wrapping */
+            }
+        }
+    </style>
+
+    <!-- Transaction Table -->
+    <div class="container mt-4">
+        <div class="table-responsive">
+            <table class="table transaction-table">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Payment Method</th>
+                        <th>Amount (R)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.id }}</td>
+                            <td>{{ transaction.order_id }}</td>
+                            <td>{{ transaction.date }}</td>
+                            <td>{{ transaction.payment_method }}</td>
+                            <td>R{{ transaction.amount }}</td>
+                            <td>
+                                <span class="status {% if transaction.status == 'Completed' %}status-completed{% elif transaction.status == 'Pending' %}status-pending{% elif transaction.status == 'Failed' %}status-failed{% endif %}">
+                                    {{ transaction.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No transactions available</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

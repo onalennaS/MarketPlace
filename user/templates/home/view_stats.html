@@ -1,0 +1,190 @@
+{% extends 'home/seller_dashboard.html' %}
+
+{% block title %}View Stats{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        border-radius: 10px; /* Slightly round the corners */
+    }
+
+    .card-header {
+        background-color: #f8f9fa; /* Light background for headers */
+        font-weight: bold; /* Bold headers */
+    }
+
+    .card-body {
+        padding: 20px; /* Add more padding inside the card body */
+    }
+
+    .card-container {
+        background-color: rgba(22, 91, 186, 0.1); /* Light blue background with transparency */
+        border: 1px solid rgba(22, 91, 186, 0.3); /* Slightly darker blue border */
+        border-radius: 10px; /* Round the corners of the main card */
+    }
+
+    .card-title {
+        color: #165baa; /* Set the title color to a darker blue */
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'seller_dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Seller Statistics</li>
+        </ol>
+    </nav>
+
+    <!-- Main Card for Statistics -->
+    <div class="card shadow-sm card-container mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Seller Statistics</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="card-title">Sales Chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="salesChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="card-title">Profit Chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="profitChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="card-title">Customer Growth</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="customerGrowthChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="card-title">Return Rate</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="returnRateChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sales Chart
+        var ctxSales = document.getElementById('salesChart').getContext('2d');
+        var salesChart = new Chart(ctxSales, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Profit Chart
+        var ctxProfit = document.getElementById('profitChart').getContext('2d');
+        var profitChart = new Chart(ctxProfit, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Profit',
+                    data: [3, 5, 2, 8, 7, 10],
+                    fill: false,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Customer Growth Chart
+        var ctxCustomerGrowth = document.getElementById('customerGrowthChart').getContext('2d');
+        var customerGrowthChart = new Chart(ctxCustomerGrowth, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'New Customers',
+                    data: [5, 15, 20, 25, 30, 35],
+                    fill: false,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Return Rate Chart
+        var ctxReturnRate = document.getElementById('returnRateChart').getContext('2d');
+        var returnRateChart = new Chart(ctxReturnRate, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Return Rate (%)',
+                    data: [5, 3, 4, 2, 1, 2],
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</div>
+{% endblock content %}

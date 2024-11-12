@@ -1,0 +1,148 @@
+{% extends 'home/seller_dashboard.html' %}
+
+{% block title %}Add Products{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'seller_dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Products</li>
+        </ol>
+    </nav>
+
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <!-- Container to hold multiple product entries -->
+        <div id="product-list">
+            <div class="card mb-4">
+                <div class="card-header" style="background-color: #165baa; color: white;">
+                    <i class="fa fa-plus card-icon"></i> Add New Product
+                </div>
+                <div class="card-body">
+                    <!-- Initial Product Entry -->
+                    <div class="product-entry mb-4">
+                        <div class="mb-3">
+                            <label class="form-label">Product Name:</label>
+                            <input type="text" name="product_name[]" class="form-control" required>
+                            <div class="invalid-feedback">
+                                Please provide a product name.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description:</label>
+                            <textarea name="description[]" rows="4" class="form-control" required></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Category:</label>
+                            <select name="category[]" class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="Textbooks">Textbooks</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Food">Food</option>
+                                <!-- Add more categories as needed -->
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a category.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Price (ZAR):</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R</span>
+                                <input type="number" name="price[]" class="form-control" step="0.01" min="0" required>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid price.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">On Sale:</label>
+                            <select name="on_sale[]" class="form-select" required>
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select if the product is on sale.
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="newSalePriceDiv" style="display: none;">
+                            <label class="form-label">New Sale Price (ZAR):</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R</span>
+                                <input type="number" name="new_sale_price[]" class="form-control" step="0.01" min="0">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Stock Quantity:</label>
+                            <input type="number" name="stock[]" class="form-control" min="0" required>
+                            <div class="invalid-feedback">
+                                Please provide the stock quantity.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Listing Status:</label>
+                            <select name="listing_status[]" class="form-select" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select the listing status.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Is Premium Listing:</label>
+                            <select name="is_premium[]" class="form-select" required>
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select if this is a premium listing.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Product Image:</label>
+                            <input type="file" name="image[]" class="form-control" accept="image/*" onchange="previewImage(this)">
+                            <img src="#" alt="Image Preview" style="display: none; max-width: 100px; margin-top: 10px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="background-color: #165baa; border: none;">Submit All Products</button>
+    </form>
+</div>
+
+<script>
+    // On Sale Logic
+    document.querySelectorAll('select[name="on_sale[]"]').forEach(select => {
+        select.addEventListener('change', function() {
+            const newSalePriceDiv = this.closest('.product-entry').querySelector('#newSalePriceDiv');
+            if (this.value === 'true') {
+                newSalePriceDiv.style.display = 'block';
+                newSalePriceDiv.querySelector('input').required = true;
+            } else {
+                newSalePriceDiv.style.display = 'none';
+                newSalePriceDiv.querySelector('input').required = false;
+            }
+        });
+    });
+</script>
+
+{% endblock content %}
