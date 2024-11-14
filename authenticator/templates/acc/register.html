@@ -1,0 +1,49 @@
+<!-- authentication/templates/authentication/signup.html -->
+{% extends 'authentication/base.html' %}
+
+{% load static %}  <!-- Load the static template tag -->
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        
+        <div class="logo-box">
+            <img src="{% static 'images/image.png' %}" alt="Logo" class="logo">
+        </div>
+        <h2>Create an Account</h2>
+        <p class="description">Join us to access exclusive features and offers.</p>
+         {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+           <div class="form-floating mb-3">
+              <input type="text" class="form-control border-top-0 border-end-0 border-start-0" id="floatingInput" placeholder=""  name='username' value="{{data.username}}" required>
+              <label for="floatingInput">Usernme</label>
+            </div>
+           <div class="form-floating mb-3">
+              <input type="email" class="form-control border-top-0 border-end-0 border-start-0" id="floatingInput" placeholder="name@example.com" value="{{data.email}}"  name='email' required>
+              <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3 ">
+              <input type="password" class="form-control border-top-0 border-end-0 border-start-0" id="floatingPassword" placeholder="Password" name='password' required>
+              <label for="floatingPassword">Password</label>
+            </div>
+             <div class="form-floating mb-3 ">
+              <input type="password" class="form-control border-top-0 border-end-0 border-start-0" id="floatingcPassword" placeholder="confirm Password" name="confirm_password" required>
+              <label for="floatingPassword">cornfirm Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+
+        <p class="signin-prompt">Already have an account? 
+            <a href="{% url 'signin' %}">Sign In</a>
+        </p>
+    </div>
+{% endblock %}

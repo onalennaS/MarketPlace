@@ -82,7 +82,7 @@
                   <div class="card-body " id="fullname-disp">
                     <h5 class="card-title"><b>Full Name</b></h5>
                     <div class="d-flex  justify-content-between ">
-                        <p class="card-text">Jeff Nengovhela</p>
+                        <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
                         <button type="button" class="btn btn-outline-dark rounded-0 m-0 " onclick="edit_button('fullname')">Edit</button>
                     </div>
                   </div>
@@ -118,7 +118,7 @@
                     </div>
                   </div>
                   <div class="card-body" id="email-form" style="display:none;">
-                        <h5 class="card-title"><b>Username</b></h5>
+                        <h5 class="card-title"><b>Email</b></h5>
                         <form method="POST" class="auth-form">
                         {% csrf_token %}
                             <div class="d-flex  justify-content-between ">
