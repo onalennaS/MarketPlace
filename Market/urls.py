@@ -20,6 +20,7 @@ from authenticator import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('user.urls')),
+    path('seller/',include('seller.urls')),
     path('auth/', include('authenticator.urls')),
     path('account/', include('user.urls')),
     path('accounts/', include('allauth.urls')),

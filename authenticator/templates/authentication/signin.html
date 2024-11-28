@@ -19,10 +19,11 @@
         </div>
         <h2>Welcome Back</h2>
         <p class="description">Sign in to continue to Marketplace</p>
+        <!-- LOG IN WITH GOOGLE LINK -->
         {% load socialaccount %}
         
         <a href="{% provider_login_url 'google' next='/' %}">Login with Google</a>
-
+<!-- LOG IN WITH GOOGLE END LINK -->
         <hr>
         <form method="POST" class="auth-form">
             {% csrf_token %}

@@ -34,6 +34,7 @@ SITE_ID=2
 INSTALLED_APPS = [
     'authenticator',
     'user',
+    'seller',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -151,3 +152,12 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sixskies25@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'your_app_password'  # Replace with the App Password you generated
