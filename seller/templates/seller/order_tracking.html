@@ -1,0 +1,111 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Order Tracking{% endblock %}
+
+{% block content %}
+   <!-- Breadcrumb navigation -->
+   <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+           <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
+           <li class="breadcrumb-item active" aria-current="page">Order Tracking</li>
+       </ol>
+   </nav>
+
+   <!-- Custom CSS for Tracking Table -->
+   <style>
+       .tracking-table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-top: 20px;
+           font-size: 0.9rem;
+           background-color: #fff;
+           border-radius: 8px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       }
+       .tracking-table thead {
+           background-color: #165baa;
+           color: white;
+           text-align: left;
+       }
+       .tracking-table th, .tracking-table td {
+           padding: 12px 15px;
+           border-bottom: 1px solid #ddd;
+       }
+       .tracking-table tbody tr:hover {
+           background-color: #f9f9f9;
+       }
+       .tracking-table .status {
+           font-weight: bold;
+           padding: 6px 8px;
+           border-radius: 4px;
+       }
+       .status-in-transit {
+           background-color: #ffca28;
+           color: white;
+       }
+       .status-delivered {
+           background-color: #28a745;
+           color: white;
+       }
+       .status-pending {
+           background-color: #ffc107;
+           color: white;
+       }
+       .status-cancelled {
+           background-color: #dc3545;
+           color: white;
+       }
+
+       /* Mobile responsiveness */
+       @media (max-width: 768px) {
+           .tracking-table th, .tracking-table td {
+               padding: 8px 10px; /* Reduce padding for smaller screens */
+               font-size: 0.8rem; /* Slightly smaller font size */
+           }
+           .tracking-table {
+               display: block; /* Allow table to behave like a block */
+               overflow-x: auto; /* Enable horizontal scrolling */
+               white-space: nowrap; /* Prevent text from wrapping */
+           }
+       }
+   </style>
+
+   <!-- Order Tracking Table -->
+   <div class="container mt-4">
+       <div class="table-responsive">
+           <table class="table tracking-table">
+               <thead>
+                   <tr>
+                       <th>Order ID</th>
+                       <th>Customer Name</th>
+                       <th>Tracking Number</th>
+                       <th>Shipping Status</th>
+                       <th>Estimated Delivery</th>
+                       <th>Current Status</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for order in orders %}
+                       <tr>
+                           <td>{{ order.id }}</td>
+                           <td>{{ order.customer_name }}</td>
+                           <td>{{ order.tracking_number }}</td>
+                           <td>{{ order.shipping_status }}</td>
+                           <td>{{ order.estimated_delivery }}</td>
+                           <td>
+                               <span class="status {% if order.shipping_status == 'In Transit' %}status-in-transit{% elif order.shipping_status == 'Delivered' %}status-delivered{% elif order.shipping_status == 'Pending' %}status-pending{% elif order.shipping_status == 'Cancelled' %}status-cancelled{% endif %}">
+                                   {{ order.shipping_status }}
+                               </span>
+                           </td>
+                       </tr>
+                   {% empty %}
+                       <tr>
+                           <td colspan="6" class="text-center text-muted">No tracking information available.</td>
+                       </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+       </div>
+   </div>
+{% endblock content %}

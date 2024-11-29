@@ -1,0 +1,64 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Buyer Reviews{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'buyer_dashboard' %}" style="color: #165baa;">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: #165baa;">Buyer Reviews</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold" style="color: #165baa;">
+            <i class="fas fa-star me-2"></i> Buyer Reviews
+        </h1>
+    </div>
+
+    <!-- Review List -->
+    <div class="row">
+        {% if reviews %}
+            {% for review in reviews %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #165baa;">Review for {{ review.product.name }}</h5>
+                        <div class="d-flex align-items-center mb-3">
+                            <!-- Display star rating -->
+                            {% for i in range %}
+                                {% if i <= review.rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                    <i class="fas fa-star text-muted"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="card-text">{{ review.comment }}</p>
+                        <p><strong>Reviewed on:</strong> {{ review.created_at|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{% url 'product_details' review.product.id %}" class="btn btn-primary btn-sm" style="background-color: #165baa; border-color: #165baa;">
+                            <i class="fas fa-eye"></i> View Product
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- No Reviews Found Section -->
+            <div class="col-12 text-center py-5">
+                <img src="https://via.placeholder.com/300x200?text=No+Reviews+Yet" alt="No Reviews" class="img-fluid mb-4">
+                <h4 class="text-muted">You haven't written any reviews yet</h4>
+                <p class="text-muted">Once you've purchased products, you can leave reviews to help others. Start shopping now!</p>
+                <a href="{% url 'browse_products' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Browse Products
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,223 @@
+{% extends 'seller/base.html' %}
+
+{% block title %}Business Info{% endblock %}
+
+{% block content %}
+<style>
+    .card-header {
+        background-color: #165baa; /* Consistent header color */
+        color: white;
+    }
+    
+    .btn-custom {
+        background-color: #165baa; /* Button background color */
+        color: white; /* Button text color */
+        border: none; /* Remove border */
+    }
+    
+    .btn-custom:hover {
+        background-color: #0f4f8a; /* Darker shade for hover effect */
+    }
+
+    .card-icon {
+        margin-right: 8px; /* Space between icon and text */
+    }
+</style>
+
+<div class="container mt-5">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Business Info</li>
+        </ol>
+    </nav>
+
+    <form class="mt-4">
+        <!-- Seller Business Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa fa-building card-icon"></i> Seller Business Info
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="businessName" class="form-label">Business Name</label>
+                        <input type="text" class="form-control" id="businessName" placeholder="Enter business name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="businessType" class="form-label">Business Type</label>
+                        <select class="form-select" id="businessType">
+                            <option selected>Select business type</option>
+                            <option value="sole">Sole Proprietorship</option>
+                            <option value="corp">Corporation</option>
+                            <option value="llc">LLC</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="regNumber" class="form-label">Business Registration Number</label>
+                        <input type="text" class="form-control" id="regNumber" placeholder="Enter registration number">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="establishmentDate" class="form-label">Date Of Establishment</label>
+                        <input type="date" class="form-control" id="establishmentDate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="contactEmail" class="form-label">Contact Email</label>
+                        <input type="email" class="form-control" id="contactEmail" placeholder="Enter contact email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contactPhone" class="form-label">Contact Phone</label>
+                        <input type="text" class="form-control" id="contactPhone" placeholder="Enter contact phone">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="businessDescription" class="form-label">Business Description</label>
+                    <textarea class="form-control" id="businessDescription" rows="3" placeholder="Enter business description"></textarea>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Business Address -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa fa-map-marker-alt card-icon"></i> Business Address
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="addressLine1" class="form-label">Address Line 1</label>
+                        <input type="text" class="form-control" id="addressLine1" placeholder="Enter address line 1">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="addressLine2" class="form-label">Address Line 2</label>
+                        <input type="text" class="form-control" id="addressLine2" placeholder="Enter address line 2">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter city">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="state" placeholder="Enter state">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="postalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="postalCode" placeholder="Enter postal code">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" placeholder="Enter country">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Business Bank Account -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa fa-university card-icon"></i> Business Bank Account
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="bankName" class="form-label">Bank Name</label>
+                        <input type="text" class="form-control" id="bankName" placeholder="Enter bank name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="accountNumber" class="form-label">Account Number</label>
+                        <input type="password" class="form-control" id="accountNumber" placeholder="Enter account number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="accountType" class="form-label">Account Type</label>
+                        <select class="form-select" id="accountType">
+                            <option selected>Select account type</option>
+                            <option value="checking">Checking</option>
+                            <option value="savings">Savings</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="branchCode" class="form-label">Branch Code</label>
+                        <input type="text" class="form-control" id="branchCode" placeholder="Enter branch code">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="currency" class="form-label">Currency</label>
+                        <input type="text" class="form-control" id="currency" placeholder="Enter currency">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business License Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa fa-clipboard card-icon"></i> Business License Information
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="licenseType" class="form-label">License Type</label>
+                        <input type="text" class="form-control" id="licenseType" placeholder="Enter license type">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="licenseNumber" class="form-label">License Number</label>
+                        <input type="text" class="form-control" id="licenseNumber" placeholder="Enter license number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="issueDate" class="form-label">Issue Date</label>
+                        <input type="date" class="form-control" id="issueDate">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control" id="expiryDate">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Document Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa fa-file-alt card-icon"></i> Business Document
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="documentType" class="form-label">Document Type</label>
+                        <input type="text" class="form-control" id="documentType" placeholder="Enter document type">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="documentUpload" class="form-label">Upload Document</label>
+                        <input type="file" class="form-control" id="documentUpload">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-custom">Save Business Info</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

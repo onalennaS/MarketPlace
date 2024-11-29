@@ -1,0 +1,63 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Favorites{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'buyer_dashboard' %}" style="color: #165baa;">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: #165baa;">Favorites</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold" style="color: #165baa;">
+            <i class="fas fa-heart me-2"></i> Favorites
+        </h1>
+    </div>
+
+    <!-- Favorites List -->
+    <div class="row">
+        {% if favorites %}
+            {% for product in favorites %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #165baa;">{{ product.name }}</h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> ${{ product.price }}<br>
+                            <strong>Department:</strong> {{ product.department.name }}
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{% url 'product_details' product.id %}" class="btn btn-sm btn-primary" style="background-color: #165baa; border-color: #165baa;">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <form method="post" action="{% url 'remove_favorite' product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- No Favorites Found -->
+            <div class="col-12 text-center py-5">
+                <img src="https://via.placeholder.com/300x200?text=No+Favorites+Found" alt="No Favorites" class="img-fluid mb-4">
+                <h4 class="text-muted">No Favorites Added</h4>
+                <p class="text-muted">You haven’t added any products to your favorites. Start exploring and add your favorite products!</p>
+                <a href="{% url 'browse_products' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Browse Products
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

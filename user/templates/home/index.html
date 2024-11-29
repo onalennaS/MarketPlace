@@ -150,7 +150,7 @@
     <nav id="navbar" class="navbar navbar-expand-lg bg-body-primary">
         <div class="container-fluid">
             <div class="logo" id="logo">
-                <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo" height="110px" width="350px">
+                <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo" height="60px" width="200px">
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -161,7 +161,7 @@
                         <a class="nav-link active" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'seller_dashboard' %}">Seller</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'buyer_dashboard' %}">Buyer</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">About Us</a>

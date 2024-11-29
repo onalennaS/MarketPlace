@@ -111,3 +111,105 @@ input[type="email"]:focus {
 .signin-prompt a:hover {
     text-decoration: underline; /* Underline on hover */
 }
+/* General container styling */
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Logo styling */
+.logo-box {
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Messages styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+}
+
+.message.success {
+    background-color: #4caf50;
+}
+
+.message.error {
+    background-color: #f44336;
+}
+
+.message.warning {
+    background-color: #ff9800;
+}
+
+.message.info {
+    background-color: #2196f3;
+}
+
+/* Form input styling */
+.auth-form .form-floating {
+    margin-bottom: 15px;
+}
+
+.auth-form input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Button styling */
+.auth-form .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.auth-form .btn:hover {
+    background-color: #0056b3;
+}
+
+/* Links */
+.auth-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+/* Divider styling */
+hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
