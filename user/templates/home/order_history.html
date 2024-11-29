@@ -1,0 +1,74 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'buyer_dashboard' %}" style="color: #165baa;">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: #165baa;">Order History</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold" style="color: #165baa;">
+            <i class="fas fa-history me-2"></i> Order History
+        </h1>
+    </div>
+
+    <!-- Order Table -->
+    {% if orders %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead style="background-color: #165baa; color: white;">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date|date:"M d, Y H:i" }}</td>
+                    <td>
+                        {% if order.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif order.status == 'Completed' %}
+                        <span class="badge bg-success">Completed</span>
+                        {% elif order.status == 'Cancelled' %}
+                        <span class="badge bg-danger">Cancelled</span>
+                        {% endif %}
+                    </td>
+                    <td>${{ order.total }}</td>
+                    <td>
+                        <a href="{% url 'order_details' order.id %}" class="btn btn-sm btn-primary" style="background-color: #165baa; border-color: #165baa;">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <!-- No Orders Found -->
+    <div class="text-center py-5">
+        <img src="https://via.placeholder.com/300x200?text=No+Orders+Found" alt="No Orders" class="img-fluid mb-4">
+        <h4 class="text-muted">No Orders Found</h4>
+        <p class="text-muted">You haven't placed any orders yet. Browse products and start shopping today!</p>
+        <a href="{% url 'browse_products' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
+            <i class="fas fa-shopping-cart"></i> Browse Products
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

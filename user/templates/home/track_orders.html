@@ -1,0 +1,72 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Track Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'buyer_dashboard' %}" style="color: #165baa;">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: #165baa;">Track Orders</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold" style="color: #165baa;">
+            <i class="fas fa-truck me-2"></i> Track Orders
+        </h1>
+    </div>
+
+    <!-- Order List -->
+    <div class="row">
+        {% if orders %}
+            {% for order in orders %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #165baa;">Order #{{ order.id }}</h5>
+                        <p class="card-text">
+                            <strong>Order Date:</strong> {{ order.date|date:"M d, Y" }}<br>
+                            <strong>Status:</strong> 
+                            {% if order.status == 'Shipped' %}
+                                <span class="badge bg-info">Shipped</span>
+                            {% elif order.status == 'In Transit' %}
+                                <span class="badge bg-warning">In Transit</span>
+                            {% elif order.status == 'Delivered' %}
+                                <span class="badge bg-success">Delivered</span>
+                            {% elif order.status == 'Cancelled' %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Total:</strong> ${{ order.total }}</p>
+                        {% if order.tracking_number %}
+                            <p><strong>Tracking Number:</strong> {{ order.tracking_number }}</p>
+                            <p><strong>Tracking Link:</strong> <a href="{{ order.tracking_url }}" target="_blank" class="btn btn-link">Track Your Shipment</a></p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{% url 'order_details' order.id %}" class="btn btn-primary btn-sm" style="background-color: #165baa; border-color: #165baa;">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- No Orders Found Section -->
+            <div class="col-12 text-center py-5">
+                <img src="https://via.placeholder.com/300x200?text=No+Orders+Placed" alt="No Orders" class="img-fluid mb-4">
+                <h4 class="text-muted">You have not placed any orders yet</h4>
+                <p class="text-muted">Start shopping and place your first order to track it here!</p>
+                <a href="{% url 'browse_products' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Browse Products
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

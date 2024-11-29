@@ -4,15 +4,15 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),  # Home page URL
-    path('user_profile/', views.user_profile, name='user_profile'),
-    
-    path('seller_dashboard/', views.seller_dashboard, name='seller_dashboard'),
-    path('business_info/', views.business_info, name='business_info'),
-    path('view_stats/', views.view_stats, name='view_stats'),
-    path('add_products/', views.add_products, name='add_products'),
-    path('edit_products/', views.edit_products, name='edit_products'),
-    path('orders/', views.orders, name='orders'),
-    path('order_tracking/', views.order_tracking, name='order_tracking'),
-    path('transaction/', views.transaction, name='transaction'),
-    path('pay_for_premium/', views.pay_for_premium, name='pay_for_premium'),
+    path('buyer_dashboard/', views.buyer_dashboard, name='buyer_dashboard'),
+    path('profile/', views.profile, name='profile'),
+
+    path('browse_products/', views.browse_products, name='browse_products'),
+    path('order_history/', views.order_history, name='order_history'),
+    path('favorites/', views.favorites, name='favorites'),
+    path('track_orders/', views.track_orders, name='track_orders'),
+    path('buyer_reviews/', views.buyer_reviews, name='buyer_reviews'),
+    path('account_settings/', views.account_settings, name='account_settings'),
+    path('buyer_support/', views.buyer_support, name='buyer_support'),
+   
 ]
