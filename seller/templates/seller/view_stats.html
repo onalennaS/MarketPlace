@@ -29,13 +29,17 @@
 </style>
 
 <div class="container mt-4">
-    <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Seller Statistics</li>
-        </ol>
+   <!-- Breadcrumb navigation -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">View Stats</li>
+    </ol>
     </nav>
 
     <!-- Main Card for Statistics -->

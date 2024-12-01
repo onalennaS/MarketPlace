@@ -5,63 +5,67 @@
 {% block content %}
 <!-- Breadcrumb navigation -->
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Pay For Premium</li>
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Upgrade to Premium</li>
     </ol>
 </nav>
 
-<!-- Custom CSS for Premium Plan Card -->
+<!-- Premium Plan Section -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0" style="border-radius: 15px;">
+                <div class="card-body text-center p-5">
+                    <h2 class="mb-4" style="color: black;">Upgrade to Premium</h2>
+                    <p class="text-muted mb-4">
+                        Unlock exclusive features designed to help you grow your business. Take advantage of premium benefits today!
+                    </p>
+
+                    <div class="features-list mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-star text-warning me-3" style="font-size: 1.5rem;"></i>
+                            <p class="mb-0"><strong>Boost Visibility:</strong> Premium listings on the homepage and search results.</p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-bullhorn text-primary me-3" style="font-size: 1.5rem;"></i>
+                            <p class="mb-0"><strong>Custom Ads:</strong> Promote your business with student-focused ads.</p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-shipping-fast text-success me-3" style="font-size: 1.5rem;"></i>
+                            <p class="mb-0"><strong>High-Volume Deliveries:</strong> Manage over 50 products per day seamlessly.</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-headset text-info me-3" style="font-size: 1.5rem;"></i>
+                            <p class="mb-0"><strong>Priority Support:</strong> Get dedicated assistance whenever you need it.</p>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn btn-lg btn-primary px-5 py-2" style="background-color: #165baa; border-radius: 25px; font-size: 1.2rem; border: none;">Upgrade Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Styling -->
 <style>
-    .premium-card {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-    .premium-card h3 {
-        color: #165baa;
-        margin-bottom: 20px;
-    }
-    .premium-card ul {
-        list-style-type: none;
-        padding: 0;
-        font-size: 1rem;
+    .features-list p {
+        font-size: 1.1rem;
         color: #555;
     }
-    .premium-card ul li {
-        margin: 10px 0;
-    }
-    .premium-card .btn-upgrade {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 20px;
-        font-size: 1rem;
-        margin-top: 20px;
-        border: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
-    .premium-card .btn-upgrade:hover {
-        background-color: #218838;
+    .btn-primary:hover {
+        background-color: #0b4b91;
+        transform: scale(1.05);
+        transition: all 0.3s ease-in-out;
     }
 </style>
 
-<!-- Premium Plan Information -->
-<div class="premium-card">
-    <h3>Upgrade to Premium</h3>
-    <p>Enhance your visibility with our Premium Plans!</p>
-    <ul>
-        <li><strong>Premium Listings</strong> on Homepage and Search Results</li>
-        <li><strong>Ads for Student-Focused Businesses</strong> to boost engagement</li>
-        <li><strong>For Deliveries more than 50 products per day</strong></li>
-        <li><strong>Additional deliveries available upon request</strong></li>
-    </ul>
-    <a href="#" class="btn-upgrade">Upgrade Now</a>
-</div>
+<!-- FontAwesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 {% endblock content %}

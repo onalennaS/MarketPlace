@@ -14,14 +14,12 @@ def profile(request):
 def buyer_dashboard(request):
     return render(request, 'home/profile.html')
 
-def browse_products(request):
-    return render(request, 'home/browse_products.html')
 
 def order_history(request):
     return render(request, 'home/order_history.html')
 
-def favorites(request):
-    return render(request, 'home/favorites.html')
+def wish_lists(request):
+    return render(request, 'home/wish_lists.html')
 
 def track_orders(request):
     return render(request, 'home/track_orders.html')

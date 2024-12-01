@@ -3,14 +3,86 @@
 {% block title %}Add Products{% endblock %}
 
 {% block content %}
+<style>
+    /* Card Styling */
+    .card {
+    border: 1px solid #ddd; /* Light border for professionalism */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: white; /* White background */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+    .card-header {
+    
+        font-weight: bold; /* Bold header text */
+        padding: 10px;
+    }
+
+    /* Title h6 for card headers */
+    .card-header h6 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .form-label {
+        font-weight: 400; /* Make labels stand out */
+        color: #555; /* Dark gray for better contrast */
+    }
+
+    .btn-custom {
+        background-color: #165baa; /* Button background color */
+        color: white; /* Button text color */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Add padding for a more clickable feel */
+        border-radius: 5px; /* Rounded button edges */
+        
+    }
+
+    .btn-custom:hover {
+        background-color: #0f4f8a; /* Darker shade for hover effect */
+        cursor: pointer;
+    }
+
+    /* Icon styling for the headers */
+    .card-icon {
+        margin-right: 8px; /* Space between icon and text */
+        font-size: 1.2rem; /* Icon size for better visibility */
+    }
+
+    /* Spacing adjustments for form elements */
+    .row .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Input focus effect */
+    .form-control:focus {
+        border-color: #165baa; /* Border color change on focus */
+        box-shadow: 0 0 5px rgba(22, 91, 170, 0.5); /* Subtle shadow */
+    }
+</style>
 <div class="container mt-4">
     <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Products</li>
-        </ol>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Add Products</li>
+    </ol>
     </nav>
 
     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -19,7 +91,7 @@
         <!-- Container to hold multiple product entries -->
         <div id="product-list">
             <div class="card mb-4">
-                <div class="card-header" style="background-color: #165baa; color: white;">
+                <div class="card-header">
                     <i class="fa fa-plus card-icon"></i> Add New Product
                 </div>
                 <div class="card-body">

@@ -3,123 +3,87 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-    <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Orders</li>
-        </ol>
-    </nav>
+<!-- Breadcrumb navigation -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Orders</li>
+    </ol>
+</nav>
 
-    <!-- Custom CSS for Table Styling -->
-    <style>
-        .order-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .order-table thead {
-            background-color: #165baa;
-            color: white;
-            text-align: left;
-        }
-        .order-table th, .order-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .order-table tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-        .order-table th {
-            font-weight: bold;
-        }
-        .order-table .btn {
-            font-size: 0.85rem;
-            padding: 6px 12px;
-            margin-right: 5px;
-            border-radius: 4px;
-        }
-        .order-table .btn-info {
-            background-color: #17a2b8;
-            color: white;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .order-table .btn-success {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .order-table .btn-info:hover {
-            background-color: #138496;
-        }
-        .order-table .btn-success:hover {
-            background-color: #218838;
-        }
-        .no-orders {
-            text-align: center;
-            font-style: italic;
-            color: #888;
-            padding: 15px;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .order-table th, .order-table td {
-                padding: 8px 10px; /* Reduce padding for smaller screens */
-                font-size: 0.8rem; /* Slightly smaller font size */
-            }
-            .order-table {
-                display: block; /* Allow table to behave like a block */
-                overflow-x: auto; /* Enable horizontal scrolling */
-                white-space: nowrap; /* Prevent text from wrapping */
-            }
-        }
-    </style>
-
-    <!-- Orders table -->
-    <div class="container mt-4">
-        <div class="table-responsive">
-            <table class="table order-table">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer Name</th>
-                        <th>Order Date</th>
-                        <th>Status</th>
-                        <th>Total Amount</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                        <tr>
-                            <td>{{ order.id }}</td>
-                            <td>{{ order.customer_name }}</td>
-                            <td>{{ order.order_date }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>R{{ order.total_amount }}</td> <!-- Updated currency symbol to R -->
-                            <td>
-                                <a href="{% url 'order_detail' order.id %}" class="btn btn-info btn-sm">View</a>
-                                {% if order.status != 'Completed' %}
-                                    <a href="{% url 'mark_as_completed' order.id %}" class="btn btn-success btn-sm">Mark as Completed</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6" class="no-orders">No orders available</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!-- Filters -->
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Filter by Status</label>
+            <select id="statusFilter" class="form-select" onchange="filterOrders()">
+                <option value="all" selected>All</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="dateFilter" class="form-label">Filter by Date</label>
+            <input type="date" id="dateFilter" class="form-control" onchange="filterOrders()" />
         </div>
     </div>
+</div>
+
+<!-- Orders section -->
+<div class="container mt-3" id="ordersContainer">
+    <div class="row">
+        {% for order in orders %}
+        <div class="col-md-6 col-lg-4 mb-4 order-card" data-status="{{ order.status }}" data-date="{{ order.date }}">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Order #{{ order.id }}</h5>
+                    <p class="card-text">
+                        <strong>Customer:</strong> {{ order.customer_name }}<br>
+                        <strong>Date:</strong> {{ order.date|date:"F j, Y" }}<br>
+                        <strong>Status:</strong> 
+                        <span class="{% if order.status == 'Pending' %}badge bg-warning text-dark{% elif order.status == 'Completed' %}badge bg-success{% else %}badge bg-danger{% endif %}">{{ order.status }}</span>
+                    </p>
+                    <p class="card-text text-muted">Total: ${{ order.total_amount }}</p>
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">View Details</a>
+                    {% if order.status == 'Pending' %}
+                    <a href="{% url 'mark_complete' order.id %}" class="btn btn-sm btn-success">Mark as Complete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center mt-5">
+            <i class="fas fa-box-open text-secondary" style="font-size: 5rem;"></i>
+            <p class="text-muted mt-3">No orders have been placed yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function filterOrders() {
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const dateFilter = document.getElementById('dateFilter').value;
+        const orderCards = document.querySelectorAll('.order-card');
+
+        orderCards.forEach(card => {
+            const status = card.dataset.status.toLowerCase();
+            const date = card.dataset.date;
+            const matchesStatus = statusFilter === 'all' || status === statusFilter;
+            const matchesDate = !dateFilter || date === dateFilter;
+
+            if (matchesStatus && matchesDate) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
 {% endblock content %}
