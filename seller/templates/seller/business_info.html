@@ -4,41 +4,93 @@
 
 {% block content %}
 <style>
+    /* Card Styling */
+    .card {
+    border: 1px solid #ddd; /* Light border for professionalism */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: white; /* White background */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
     .card-header {
-        background-color: #165baa; /* Consistent header color */
-        color: white;
-    }
     
+        font-weight: bold; /* Bold header text */
+        padding: 10px;
+    }
+
+    /* Title h6 for card headers */
+    .card-header h6 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .form-label {
+        font-weight: 400; /* Make labels stand out */
+        color: #555; /* Dark gray for better contrast */
+    }
+
     .btn-custom {
         background-color: #165baa; /* Button background color */
         color: white; /* Button text color */
         border: none; /* Remove border */
-    }
-    
-    .btn-custom:hover {
-        background-color: #0f4f8a; /* Darker shade for hover effect */
+        padding: 10px 20px; /* Add padding for a more clickable feel */
+        border-radius: 5px; /* Rounded button edges */
+        font-weight: bold; /* Make button text bold */
     }
 
+    .btn-custom:hover {
+        background-color: #0f4f8a; /* Darker shade for hover effect */
+        cursor: pointer;
+    }
+
+    /* Icon styling for the headers */
     .card-icon {
         margin-right: 8px; /* Space between icon and text */
+        font-size: 1.2rem; /* Icon size for better visibility */
+    }
+
+    /* Spacing adjustments for form elements */
+    .row .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Input focus effect */
+    .form-control:focus {
+        border-color: #165baa; /* Border color change on focus */
+        box-shadow: 0 0 5px rgba(22, 91, 170, 0.5); /* Subtle shadow */
     }
 </style>
 
 <div class="container mt-5">
     <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Business Info</li>
-        </ol>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Business Info</li>
+    </ol>
     </nav>
 
     <form class="mt-4">
         <!-- Seller Business Info -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fa fa-building card-icon"></i> Seller Business Info
+                <i class="fa fa-building card-icon"></i><h6>Seller Business Info</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -80,14 +132,13 @@
                     <label for="businessDescription" class="form-label">Business Description</label>
                     <textarea class="form-control" id="businessDescription" rows="3" placeholder="Enter business description"></textarea>
                 </div>
-                
             </div>
         </div>
 
         <!-- Business Address -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fa fa-map-marker-alt card-icon"></i> Business Address
+                <i class="fa fa-map-marker-alt card-icon"></i><h6>Business Address</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -120,14 +171,13 @@
                         <input type="text" class="form-control" id="country" placeholder="Enter country">
                     </div>
                 </div>
-                
             </div>
         </div>
 
         <!-- Business Bank Account -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fa fa-university card-icon"></i> Business Bank Account
+                <i class="fa fa-university card-icon"></i><h6>Business Bank Account</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -159,9 +209,6 @@
                         <label for="currency" class="form-label">Currency</label>
                         <input type="text" class="form-control" id="currency" placeholder="Enter currency">
                     </div>
-                    <div class="col-md-6 mb-3">
-                        
-                    </div>
                 </div>
             </div>
         </div>
@@ -169,7 +216,7 @@
         <!-- Business License Information -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fa fa-clipboard card-icon"></i> Business License Information
+                <i class="fa fa-clipboard card-icon"></i><h6>Business License Information</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -198,7 +245,7 @@
         <!-- Business Document Information -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fa fa-file-alt card-icon"></i> Business Document
+                <i class="fa fa-file-alt card-icon"></i><h6>Business Document</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -213,6 +260,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Submit Button -->
         <div class="text-center">
             <button type="submit" class="btn btn-custom">Save Business Info</button>

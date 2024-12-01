@@ -4,11 +4,37 @@
 
 {% block content %}
 <style>
-    .card-header {
-        background-color: #165baa;
-        color: white;
-    }
     
+    /* Inherit the font family from the sidebar */
+    .card {
+        background-color: transparent; /* Removes the background color */
+        border: 1px solid #ddd; /* Adds a subtle border for structure */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a soft shadow */
+        transition: border-color 0.3s ease, transform 0.3s ease;
+        font-family: Arial, sans-serif; /* Ensure the card text matches sidebar text */
+    }
+
+    /* Apply hover effect */
+    .card:hover {
+        transform: scale(1.02);
+        border-color: #0f4f8a; /* Subtle highlight on hover */
+    }
+
+    .card-header {
+        color: #333; /* Ensures good contrast */
+        font-weight: normal; /* Heading is not bold */
+    }
+
+    .card-title {
+        display: flex;
+        align-items: center;
+        font-weight: normal; /* Ensures card titles are not bold */
+    }
+
+    .card-title i {
+        margin-right: 8px;
+    }
+
     .btn-custom {
         background-color: #165baa;
         color: white;
@@ -18,165 +44,155 @@
     .btn-custom:hover {
         background-color: #0f4f8a;
     }
-    
-    .card-icon {
-        margin-right: 5px;
-    }
 
     .form-check-label {
         margin-left: 10px;
     }
-    .card{
-        transition: border-color 0.3s ease;
-        transition: transform 0.3s ease;
-    }
-    .card:hover{
-         transform: scale(1.02);
-         border: 2px solid skyblue;
-         box-shadow: 0 8px 12px rgba(0, 0, 255, 0.4);
-    }
 </style>
 
+
 <div class="container mt-5">
-    <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-        </ol>
+   <!-- Breadcrumb navigation -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">User Profile</li>
+    </ol>
+</nav>
+
     </nav>
-            <div>
-                <div class="card w-100 mb-3 bg-light rounded-0 ">
-                  
-                    <div class="card-body" id="username-disp" style="display:block;">
-                        <h5 class="card-title"><b>Username</b></h5>
-                        <div class="d-flex  justify-content-between ">
-                            <p class="card-text pt-0 pb-0">{{user.username}}</p>
-                            <button type="button" class="btn btn-outline-dark rounded-0 m-0 " onclick="edit_button('username')">Edit</button>
-                        </div>
-                    </div> 
 
-                    <div class="card-body" id="username-form" style="display:none;">
-                        <h5 class="card-title"><b>Username</b></h5>
-                        <form method="POST" class="auth-form">
-                        {% csrf_token %}
-                            <div class="d-flex  justify-content-between ">
-                                   <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.username}}" >
-                                      <label for="floatingInput">Username</label>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                        <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('username')" >Cancel</button>    
-                                    </div>
+    <div>
+        <div class="card w-100 mb-3 bg-light rounded-0">
+            <div class="card-body" id="username-disp" style="display:block;">
+                <h6 class="card-title"><i class="fa fa-user"></i> Username</h6>
+                <div class="d-flex justify-content-between">
+                    <p class="card-text pt-0 pb-0">{{user.username}}</p>
+                    <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('username')">Edit</button>
+                </div>
+            </div> 
+
+            <div class="card-body" id="username-form" style="display:none;">
+                <h5 class="card-title"><i class="fa fa-user"></i> Username</h5>
+                <form method="POST" class="auth-form">
+                {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                           <div class="form-floating mb-3 w-75">
+                              <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.username}}">
+                              <label for="floatingInput">Username</label>
                             </div>
-                        </form>   
+                            <div>
+                                <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
+                                <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('username')" >Cancel</button>    
+                            </div>
                     </div>
+                </form>   
+            </div>
+        </div>
+    </div>
 
+    <div>
+        <div class="card w-100 mb-3 bg-light rounded-0">
+            <div class="card-body" id="fullname-disp">
+                <h6 class="card-title"><i class="fa fa-id-card"></i> Full Name</h6>
+                <div class="d-flex justify-content-between">
+                    <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
+                    <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('fullname')">Edit</button>
                 </div>
             </div>
-
-             <div>
-                <div class="card w-100 mb-3 bg-light rounded-0" >
-                  <div class="card-body " id="fullname-disp">
-                    <h5 class="card-title"><b>Full Name</b></h5>
-                    <div class="d-flex  justify-content-between ">
-                        <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
-                        <button type="button" class="btn btn-outline-dark rounded-0 m-0 " onclick="edit_button('fullname')">Edit</button>
-                    </div>
-                  </div>
-                 <div class="card-body" id="fullname-form" style="display:none;">
-                        <h5 class="card-title"><b>Full Name</b></h5>
-                        <form method="POST" class="auth-form">
-                        {% csrf_token %}
-                            <div class="">
-                                   <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Jeff" >
-                                      <label for="floatingInput">First Name</label>
-                                    </div>
-                                     <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Nengovhela" >
-                                      <label for="floatingInput">Last Name</label>
-                                    </div>
-                                    <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                        <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('fullname')" >Cancel</button>    
-                                    </div>
+            <div class="card-body" id="fullname-form" style="display:none;">
+                <h6 class="card-title"><i class="fa fa-id-card"></i> Full Name</h6>
+                <form method="POST" class="auth-form">
+                {% csrf_token %}
+                    <div>
+                           <div class="form-floating mb-3 w-75">
+                              <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Jeff">
+                              <label for="floatingInput">First Name</label>
                             </div>
-                        </form>   
+                             <div class="form-floating mb-3 w-75">
+                              <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Nengovhela">
+                              <label for="floatingInput">Last Name</label>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
+                                <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('fullname')" >Cancel</button>    
+                            </div>
                     </div>
+                </form>   
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="card w-100 mb-3 bg-light rounded-0">
+            <div class="card-body" id="email-disp" style="display:block;">
+                <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                <div class="d-flex justify-content-between">
+                    <p class="card-text">{{user.email}} <i class="fa fa-times-circle text-danger p-3 pt-0 pb-0"> </i></p>
+                  <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('email')">Edit</button>
                 </div>
             </div>
-             <div>
-                <div class="card w-100 mb-3 bg-light rounded-0">
-                  <div class="card-body" id="email-disp" style="display:block;">
-                    <h5 class="card-title"><b>Email</b></h5>
-                    <div class="d-flex  justify-content-between ">
-                        <p class="card-text">{{user.email}} <i class="fa fa-times-circle text-danger  p-3 pt-0 pb-0"> </i></p>
-                      <button type="button" class="btn btn-outline-dark rounded-0 m-0 " onclick="edit_button('email')">Edit</button>
-                    </div>
-                  </div>
-                  <div class="card-body" id="email-form" style="display:none;">
-                        <h5 class="card-title"><b>Email</b></h5>
-                        <form method="POST" class="auth-form">
-                        {% csrf_token %}
-                            <div class="d-flex  justify-content-between ">
-                                   <div class="form-floating mb-3 w-75">
-                                      <input type="email" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.email}}" >
-                                      <label for="floatingInput">Email</label>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                        <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('email')" >Cancel</button>    
-                                    </div>
+            <div class="card-body" id="email-form" style="display:none;">
+                <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                <form method="POST" class="auth-form">
+                {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                           <div class="form-floating mb-3 w-75">
+                              <input type="email" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.email}}">
+                              <label for="floatingInput">Email</label>
                             </div>
-                        </form>   
+                            <div>
+                                <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
+                                <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('email')" >Cancel</button>    
+                            </div>
                     </div>
+                </form>   
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="card w-100 mb-3 bg-light rounded-0">
+            <div class="card-body" id="phone-disp" style="display:block;">
+                <h6 class="card-title"><i class="fa fa-phone"></i> Phone</h6>
+                <div class="d-flex justify-content-between">
+                    <p class="card-text">(+27) 64 548 9327 <i class="fa fa-check-circle text-success p-3 pt-0 pb-0"> </i></p>
+                     <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('phone')">Edit</button>
                 </div>
             </div>
-             <div>
-                <div class="card w-100 mb-3 bg-light rounded-0">
-                  <div class="card-body" id="phone-disp" style="display:block;">
-                    <h5 class="card-title">Phone</h5>
-                    <div class="d-flex  justify-content-between ">
-                        <p class="card-text">(+27) 64 548 9327 <i class="fa fa-check-circle text-success  p-3 pt-0 pb-0"> </i></p>
-                         <button type="button" class="btn btn-outline-dark rounded-0 m-0 " onclick="edit_button('phone')">Edit</button>
-                    </div>
-                  </div>
-                   <div class="card-body" id="phone-form" style="display:none;">
-                        <h5 class="card-title"><b>Phone</b></h5>
-                        <form method="POST" class="auth-form">
-                        {% csrf_token %}
-                            <div class="d-flex  justify-content-between ">
-                                   <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="(+27) 64 548 9327" >
-                                      <label for="floatingInput">phone</label>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                        <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('phone')" >Cancel</button>    
-                                    </div>
+            <div class="card-body" id="phone-form" style="display:none;">
+                <h6 class="card-title"><i class="fa fa-phone"></i> Phone</h6>
+                <form method="POST" class="auth-form">
+                {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                           <div class="form-floating mb-3 w-75">
+                              <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="(+27) 64 548 9327">
+                              <label for="floatingInput">Phone</label>
                             </div>
-                        </form>   
+                            <div>
+                                <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
+                                <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('phone')" >Cancel</button>    
+                            </div>
                     </div>
-                </div>
+                </form>   
             </div>
-
-
-
+        </div>
+    </div>
 
 </div>
 
 <script type="text/javascript">
-    
     function edit_button(name){
         var displays = document.getElementById(name+'-disp');
         var forms = document.getElementById(name+'-form');
 
         displays.style.display = 'none';
         forms.style.display = 'block';
-
     }
     function cancel_button(name){
         var displays = document.getElementById(name+'-disp');
@@ -185,7 +201,5 @@
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
-
 </script>
 {% endblock content %}
-

@@ -1,0 +1,68 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Wish List{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'buyer_dashboard' %}" class="text-white text-decoration-none">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Wish List</li>
+        </ol>
+    </nav>
+
+    <!-- Wish List Section -->
+    <div class="row">
+        {% if favorites %}
+            <div class="col-12 text-center py-5">
+                <h4 class="text-muted">Your Wishlist</h4>
+                <i class="fas fa-heart" style="color: red; font-size: 2rem;"></i>
+                <p class="text-muted">You have {{ favorites|length }} items in your wish list!</p>
+            </div>
+            {% for product in favorites %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-light rounded">
+                    <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #165baa;">
+                            <i class="fas fa-gift" style="color: #e74c3c;"></i> {{ product.name }}
+                        </h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> ${{ product.price }}<br>
+                            <strong>Department:</strong> {{ product.department.name }}
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{% url 'product_details' product.id %}" class="btn btn-sm btn-info rounded-pill" style="background-color: #165baa; border-color: #165baa;">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </a>
+                        <form method="post" action="{% url 'remove_favorite' product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger rounded-pill">
+                                <i class="fas fa-trash-alt"></i> Remove from Wish List
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- No Wish List Items Found -->
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-heart" style="color: gray; font-size: 2rem;"></i>
+                <h4 class="text-muted">Your Wish List is Empty!</h4>
+                <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Continue Shopping
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

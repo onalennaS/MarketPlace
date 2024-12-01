@@ -4,66 +4,65 @@
 
 {% block content %}
 <div class="container mt-4">
-    <!-- Breadcrumb Navigation -->
+    <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'buyer_dashboard' %}" style="color: #165baa;">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: #165baa;">Track Orders</li>
+        <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'buyer_dashboard' %}" class="text-white text-decoration-none">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Track Orders</li>
         </ol>
     </nav>
 
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 fw-bold" style="color: #165baa;">
-            <i class="fas fa-truck me-2"></i> Track Orders
-        </h1>
-    </div>
-
-    <!-- Order List -->
+    <!-- Track Orders Section -->
     <div class="row">
         {% if orders %}
-            {% for order in orders %}
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title" style="color: #165baa;">Order #{{ order.id }}</h5>
-                        <p class="card-text">
-                            <strong>Order Date:</strong> {{ order.date|date:"M d, Y" }}<br>
-                            <strong>Status:</strong> 
-                            {% if order.status == 'Shipped' %}
-                                <span class="badge bg-info">Shipped</span>
-                            {% elif order.status == 'In Transit' %}
-                                <span class="badge bg-warning">In Transit</span>
-                            {% elif order.status == 'Delivered' %}
-                                <span class="badge bg-success">Delivered</span>
-                            {% elif order.status == 'Cancelled' %}
-                                <span class="badge bg-danger">Cancelled</span>
-                            {% else %}
-                                <span class="badge bg-secondary">Pending</span>
-                            {% endif %}
-                        </p>
-                        <p><strong>Total:</strong> ${{ order.total }}</p>
-                        {% if order.tracking_number %}
-                            <p><strong>Tracking Number:</strong> {{ order.tracking_number }}</p>
-                            <p><strong>Tracking Link:</strong> <a href="{{ order.tracking_url }}" target="_blank" class="btn btn-link">Track Your Shipment</a></p>
-                        {% endif %}
-                    </div>
-                    <div class="card-footer text-end">
-                        <a href="{% url 'order_details' order.id %}" class="btn btn-primary btn-sm" style="background-color: #165baa; border-color: #165baa;">
-                            <i class="fas fa-info-circle"></i> View Details
-                        </a>
-                    </div>
-                </div>
+            <div class="col-12">
+                <h3 class="text-center">Your Orders</h3>
+                <table class="table table-bordered mt-4">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Product</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Track</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.product.name }}</td>
+                            <td>{{ order.order_date }}</td>
+                            <td>
+                                {% if order.status == 'Shipped' %}
+                                    <span class="badge bg-success">Shipped</span>
+                                {% elif order.status == 'Processing' %}
+                                    <span class="badge bg-warning">Processing</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'order_detail' order.id %}" class="btn btn-info btn-sm rounded-pill">
+                                    <i class="fas fa-truck"></i> Track Order
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% endfor %}
         {% else %}
-            <!-- No Orders Found Section -->
             <div class="col-12 text-center py-5">
-                <img src="https://via.placeholder.com/300x200?text=No+Orders+Placed" alt="No Orders" class="img-fluid mb-4">
-                <h4 class="text-muted">You have not placed any orders yet</h4>
-                <p class="text-muted">Start shopping and place your first order to track it here!</p>
-                <a href="{% url 'browse_products' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
-                    <i class="fas fa-shopping-cart"></i> Browse Products
+                <h4 class="text-muted">No Orders Found!</h4>
+                <p class="text-muted">You haven't placed any orders yet.</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Continue Shopping
                 </a>
             </div>
         {% endif %}
