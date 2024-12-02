@@ -186,9 +186,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Contact</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link active" href="{% url 'signin' %}">Sign in</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
