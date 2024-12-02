@@ -71,18 +71,19 @@
         box-shadow: 0 0 5px rgba(22, 91, 170, 0.5); /* Subtle shadow */
     }
 </style>
-<div class="container mt-4">
+<div class="container mt-5">
     <!-- Breadcrumb navigation -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
-        <li class="breadcrumb-item">
-            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Add Products</li>
-    </ol>
+ <nav aria-label="breadcrumb">
+     <ol class="breadcrumb" style="background-color: #165baa; border-radius: 0; padding: 8px 15px;">
+         <li class="breadcrumb-item">
+             <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+         </li>
+         <li class="breadcrumb-item">
+             <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+         </li>
+         <li class="breadcrumb-item active" aria-current="page" style="color: white;">Add Products</li>
+     </ol>
+ </nav>
     </nav>
 
     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
