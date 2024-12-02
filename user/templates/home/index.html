@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         body {
-
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -19,22 +18,22 @@
 
         /* Navbar Styles */
         #navbar {
-            border: 1px solid #dee2e6; /* Add border */
-            border-radius: 0.25rem; /* Slightly rounded corners */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .navbar-nav .nav-link {
-        position: relative;
-        color: black; /* Initial text color */
-        transition: color 0.3s, background-color 0.3s;
-    }
 
-    .navbar-nav .nav-link:hover {
-        color: white; /* Text color on hover */
-        background-color: #165baa; /* Background color on hover */
-        
-       
-    }
+        .navbar-nav .nav-link {
+            position: relative;
+            color: black;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white;
+            background-color: #165baa;
+        }
+
         .footer {
             background-color: #343a40;
             color: white;
@@ -43,34 +42,39 @@
         }
 
         .hero {
-            height: auto; /* Allow height to be dynamic */
+            height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-align: center;
-            padding: 2rem 1rem; /* Reduced padding for less space */
+            padding: 2rem 1rem;
         }
 
         .hero h1 {
-            font-size: 2rem; /* Adjust font size */
+            font-size: 2rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
 
         .hero p {
-            font-size: 1.25rem; /* Adjust font size */
+            font-size: 1.25rem;
         }
 
-        .category-list {
+        /* Shop by Department Section */
+        .department-section {
+            margin: 40px 0;
+        }
+
+        .department-list {
             margin: 20px 0;
             list-style: none;
             padding: 0;
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping of items */
-            justify-content: center; /* Center align items */
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .category-item {
+        .department-item {
             display: flex;
             align-items: center;
             background-color: #e9ecef;
@@ -78,69 +82,82 @@
             padding: 10px 15px;
             margin: 5px;
             font-weight: 500;
-            width: calc(30% - 10px); /* Responsive width */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+            width: calc(30% - 10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
-        .category-item i {
-            margin-right: 8px; /* Space between icon and text */
-            color: #002147; /* Dark blue color for icons */
+        .department-item i {
+            margin-right: 8px;
+            color: #002147;
         }
 
-        .process {
-            margin: 40px 0;
+        .dropdown-menu {
+            max-height: 300px;
+            overflow-y: auto;
         }
 
+        .dropdown-item {
+            font-size: 1rem;
+        }
+
+        /* Card Styles */
         .card {
-            background-color: white; /* Set card background */
-            border: 1px solid #dee2e6; /* Card border */
-            border-radius: 0.25rem; /* Rounded corners */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            transition: transform 0.3s; /* Smooth transform */
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
 
         .card:hover {
-            transform: translateY(-5px); /* Lift effect on hover */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .card-body {
             text-align: center;
-            padding: 2rem; /* More padding for better spacing */
+            padding: 2rem;
         }
 
         .card h3 {
-            color: #165baa; /* Change header color */
-            font-size: 1.5rem; /* Adjust font size */
-            margin-bottom: 15px; /* Spacing below heading */
+            color: #165baa;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
 
         .card p {
             margin-bottom: 20px;
-            font-size: 1.1rem; /* Slightly larger text */
-        }
-
-        .card ul {
-            list-style: none; /* Remove default list styling */
-            padding: 0; /* Remove padding */
-        }
-
-        .card ul li {
-            margin: 10px 0; /* Spacing between list items */
-            font-size: 1rem; /* Consistent font size */
-            color: black; /* Set text color to black */
-            display: flex; /* Use flex to align icon and text */
-            align-items: center; /* Center align items vertically */
-        }
-
-        .card ul li i {
-            color: black; /* Set icon color to black */
-            margin-right: 8px; /* Space between icon and text */
+            font-size: 1.1rem;
         }
 
         .card img {
             max-height: 150px;
             object-fit: cover;
+        }
+
+        /* Updated styling for the search bar and buttons */
+        form .form-control,
+        form .btn-primary,
+        #departmentDropdown {
+            height: 40px; /* Match heights */
+            font-size: 0.9rem; /* Uniform font size */
+        }
+
+        /* Adjust spacing and alignment */
+        .row.align-items-center > .col-auto {
+            margin: 0; /* Remove gaps */
+            padding: 0;
+        }
+
+        .row.align-items-center > .col {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        /* Ensure elements are aligned without spacing below the navbar */
+        .container.my-4 {
+            margin-top: 0;
         }
     </style>
 </head>
@@ -150,7 +167,7 @@
     <nav id="navbar" class="navbar navbar-expand-lg bg-body-primary">
         <div class="container-fluid">
             <div class="logo" id="logo">
-                <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo" height="60px" width="200px">
+                <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo" height="75 px" width="200px">
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -161,7 +178,7 @@
                         <a class="nav-link active" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'buyer_dashboard' %}">Buyer</a>
+                        <a class="nav-link active" href="{% url 'buyer_dashboard' %}">Buyer</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">About Us</a>
@@ -177,78 +194,56 @@
         </div>
     </nav>
 
-    <header class="hero text-center py-2" style="background-color: #165baa;">
-        <div class="container" style="max-width: 900px;"> 
-            <h1 class="display-5 mb-2">Join Our Seller Marketplace</h1>
-            <p class="lead mb-4">Boost your business by selling with us. Simple, effective, and rewarding!</p>
-            <a class="btn btn-light btn-lg" href="#process">Get Started</a>
-        </div>
-    </header>
-
-    <!-- Categories Section -->
-    <section class="text-center">
-        <div class="container">
-            <h4 class="mb-4">What Can You Sell?</h4>
-            <ul class="category-list">
-                <li class="category-item"><i class="fas fa-utensils"></i>Food</li>
-                <li class="category-item"><i class="fas fa-gem"></i>Jewellery</li>
-                <li class="category-item"><i class="fas fa-tshirt"></i>Clothing</li>
-                <li class="category-item"><i class="fas fa-laptop"></i>Electronics</li>
-                <li class="category-item"><i class="fas fa-home"></i>Home Goods</li>
-                <li class="category-item"><i class="fas fa-gamepad"></i>Toys</li>
-            </ul>
-        </div>
-    </section>
-    
-    <section id="process" class="py-5"> 
-        <div class="container">
-            <div class="row justify-content-start"> 
-                <div class="col-md-4"> <!-- Column width remains reduced -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>How to Sell Your Products</h4> <!-- Moved heading inside the card -->
-                            <div class="process-step">
-                                <h5>Step 1</h5>
-                                <p>Sign Up and Register as a Seller</p>
-                            </div>
-                            <div class="process-step">
-                                <h5>Step 2</h5>
-                                <p>Submit Products for Approval</p>
-                            </div>
-                            <div class="process-step">
-                                <h5>Step 3</h5>
-                                <p>Start Selling and Enjoy Your Sales!</p>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Main Section -->
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Shop by Department -->
+            <div class="col-auto">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="departmentDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Shop by Department
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="departmentDropdown">
+                        <li><a class="dropdown-item" href="#">Virtual Shopping Assistants</a></li>
+                        <li><a class="dropdown-item" href="#">Appliances</a></li>
+                        <li><a class="dropdown-item" href="#">Automotive & DIY</a></li>
+                    </ul>
                 </div>
+            </div>
 
-                <!-- Premium Plans Card -->
-                <div class="col-md-4"> <!-- Adjust column width as necessary -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 style="color: black;">Upgrade to Premium</h3>
-                            <p>Enhance your visibility with our Premium Plans!</p>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-star"></i> Premium Listings on Homepage and Search Results</li>
-                                <li><i class="fas fa-bullhorn"></i> Ads for Student-Focused Businesses</li>
-                                <li><i class="fas fa-box"></i> Deliver up to 50 products per day</li>
-                                <li><i class="fas fa-dollar-sign"></i> Additional deliveries available upon request</li>
-                            </ul>
-                        </div>
-                    </div>
+            <!-- Search Bar -->
+            <div class="col">
+                <form class="d-flex" method="get" action="#">
+                    <input class="form-control me-2" type="search" placeholder="Search for products..." name="query">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- CTA Card -->
+            <div class="col-auto">
+                <div class="sell-card bg-light text-center p-3 shadow rounded">
+                    <i class="fas fa-store fa-2x mb-2" style="color: #165baa;"></i>
+                    <h6>Become a Seller!</h6>
+                    <p class="text-muted small">Join our sellers Marketplace. List and sell your products today.</p>
+                    <a href="{% url 'base' %}" class="btn btn-primary btn-sm" style="background-color: #165baa; border-radius: 30px;">
+                        Sell Now
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
-    
+    </div>
 
+    <!-- Footer -->
     <footer class="footer text-center bg-dark text-white py-4">
         <div class="container">
             <p>&copy; 2024 Marketplace. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
