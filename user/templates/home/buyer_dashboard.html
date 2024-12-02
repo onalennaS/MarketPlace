@@ -13,6 +13,9 @@
             background-color: #ffffff;
             border-bottom: 1px solid #dee2e6;
             z-index: 1030;
+            position: sticky;
+            top: 0; /* Ensures the navbar stays at the top */
+            width: 100%;
         }
         .nav-link {
             color: #333;
@@ -35,7 +38,8 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            transition: left 0.3s ease;
+            overflow-y: auto; /* Enable scrolling for the sidebar */
+            max-height: 100vh; /* Ensures the sidebar doesn't extend beyond the viewport */
         }
         .sidebar .nav-link {
             color: #333;
@@ -107,6 +111,10 @@
         /* Content Section */
         .content {
             padding: 20px;
+            margin-left: 0; /* Reset left margin */
+            overflow-y: auto; /* Enable scrolling for content */
+            background-color: #f9f9f9; /* Light background color */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
         }
 
         /* Navbar Toggler for Mobile */
@@ -120,15 +128,33 @@
                 display: none;
             }
         }
-        /* Content Section */
-.content {
-    padding: 20px;
-    border: 2px solid #ddd; /* Light gray border */
-    background-color: #f9f9f9; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-}
 
+        /* Welcome Text Animation */
+        .welcome-text {
+            color: black;
+            font-size: 18px;
+            display: inline-block;
+            white-space: nowrap;
+            animation: shiftText 3s infinite alternate;
+        }
 
+        .welcome-text i {
+            margin-right: 8px;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
+        @keyframes shiftText {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(20px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -164,7 +190,7 @@
 
 <!-- Sidebar Toggle Button (Beneath Navbar) -->
 <button id="sidebarToggle" class="btn">
-    <i class="fas fa-bars"></i> <!-- Font Awesome icon for the toggle -->
+    <i class="fas fa-bars"></i>
 </button>
 
 <div class="container-fluid">
@@ -176,7 +202,7 @@
             </div>
             <div class="profile-upload">
                 <img id="profileImage" src="{% static 'images/default_profile.png' %}" alt="Profile Image">
-                <p>Welcome, {{ user.username }}!</p>
+                <p class="welcome-text">Welcome, {{ user.username }}!</p>
             </div>
             <ul class="nav flex-column px-3">
                 <li class="nav-item">
