@@ -1,32 +1,69 @@
 from django.shortcuts import render, redirect
+from functools import wraps
+
+def login_required_custom(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return view_func(request, *args, **kwargs)
+        return redirect('signin')  # Redirect to login page if not authenticated
+    return _wrapped_view
+
+def has_password(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.password.startswith("pbkdf2"):
+            return view_func(request, *args, **kwargs)
+        return redirect('create_password')
+    return _wrapped_view
+
+from allauth.socialaccount.models import SocialAccount
+
+def is_google_linked(user):
+    try:
+        social_account = SocialAccount.objects.get(user=user)
+        return True
+    except SocialAccount.DoesNotExist:
+        return False
 
 # Create your views here.
 # Create your views here.
+
 def landing_page(request):
     return render(request, 'home/landing_page.html')
+
 
 def home(request):
     return render(request, 'home/index.html')
 
+@login_required_custom
+@has_password
 def profile(request):
-    return render(request, 'home/profile.html')
 
+    return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
+
+@login_required_custom
+@has_password
 def buyer_dashboard(request):
-    return render(request, 'home/profile.html')
+    return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
 
-
+@login_required_custom
 def order_history(request):
     return render(request, 'home/order_history.html')
 
+@login_required_custom
 def wish_lists(request):
     return render(request, 'home/wish_lists.html')
 
+@login_required_custom
 def track_orders(request):
     return render(request, 'home/track_orders.html')
 
+@login_required_custom
 def buyer_reviews(request):
     return render(request, 'home/buyer_reviews.html')
 
+@login_required_custom
 def account_settings(request):
     return render(request, 'home/account_settings.html')
 

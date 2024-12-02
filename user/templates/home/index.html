@@ -196,6 +196,13 @@
 
     <!-- Main Section -->
     <div class="container">
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <div class="row align-items-center">
             <!-- Shop by Department -->
             <div class="col-auto">

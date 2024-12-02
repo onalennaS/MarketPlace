@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-#fk13o@n+i%t_!9u5xjhp43(_1xi^nde5ijc(7&zw*wx+@sybh
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# settings.py
+SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
 
 SITE_ID=2
 
