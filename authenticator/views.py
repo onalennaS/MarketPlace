@@ -1,6 +1,9 @@
 # authentication/views.py
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.backends import ModelBackend  
+
+
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -74,6 +77,7 @@ def signin(request):
         user = User.objects.filter(username=data['username']).first()
         if user:
             if check_password(data['password'],user.password):
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
                 messages.success(request,f'logged in successfully as {user.username}')
                 return redirect('user_profile')        
