@@ -1,0 +1,147 @@
+{% extends 'home/index.html'%}
+
+{% block stylers %}
+<style type="text/css">
+    .card-container {
+        max-width: 400px; 
+        background: linear-gradient(135deg, #1e90ff, #6db3f2);
+        background-size: 200% 200%; /* Expand the background gradient */
+        transition: background-position 3s ease-in-out; /* Animate background position */
+    }
+
+    .contents {background: white;
+        max-width: 80%;
+        min-width: 80%;
+        border-radius: 50%;
+        border-top-left-radius: 0px; 
+        border-bottom-left-radius: 0px;
+        transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Apply ease-in-out */
+    }
+
+    .contents a {
+        text-decoration: none;
+        color: dodgerblue;
+        transition: color 0.5s ease-in-out;
+        margin-bottom: 10px; /* Apply ease-in-out for link color */
+    }
+
+    .card-container:hover {
+        background-position: 100% 0; /* Change the background position on hover to move the gradient */
+    background: white;}
+
+    .card-container:hover .contents {
+        background: linear-gradient(135deg, #1e90ff, #6db3f2);
+        color: white; /* Change the text color */
+    }
+
+    .card-container:hover .contents a {
+       color: white;
+         /* Change the link color */
+    }
+    .contents a:hover{
+    	color: white;
+    	font-size: 20px;
+
+    }
+</style>
+
+
+
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-12 col-md-6 card-container p-0 m-4 shadow-lg d-flex justify-content-between jj" style="max-width: 400px; background: linear-gradient(135deg, #1e90ff, #6db3f2);" >
+        
+        <div class="contents  p-3" >
+            <h5>Profile Details</h5>
+            <br>
+            
+            <a href="{% url 'profile' %}" class=" small mb-2" > Personal Details</a>
+            <br>
+            
+            <a href="{% url 'address' %}" class=" small pb-2" >Address Book</a>
+            <br>
+            
+            <a href="{% url 'account_settings' %}" class=" small " style="text-decoration: none;">Security Settings</a>
+        </div>
+        <i class="fa fa-user fa-3x text-white p-4"></i>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6 card-container p-0 m-4 shadow-lg d-flex justify-content-between jj" style="max-width: 400px; background: linear-gradient(135deg, #1e90ff, #6db3f2);" >
+        
+        <div class="contents  p-3" >
+            <h5>Orders</h5>
+            <br>
+            
+            <a href="{% url 'order_history' %}" class=" small mb-2" > Order history</a>
+            <br>
+            
+            <a href="{% url 'track_orders' %}" class=" small pb-2" >Track orders</a>
+            <br>
+            <a href="" class=" small pb-2" >My wish list</a>
+            <br>
+            
+             <a href="{% url 'buyer_reviews'%}" class=" small pb-2" >Product Reviews</a>
+            <br>
+        </div>
+        <i class="fa fa-shopping-cart fa-3x text-white px-2 pt-4"></i>
+
+    </div>
+
+    <div class=" col-sm-12 col-md-6 card-container p-0 m-4 shadow-lg d-flex justify-content-between jj" style="max-width: 400px; background: linear-gradient(135deg, #1e90ff, #6db3f2);" >
+        
+        <div class="contents  p-3" >
+            <h5>Payment</h5>
+            <br>
+            
+            <a href="" class=" small mb-2" > Credit & refunds</a>
+            <br>
+            
+            <a href="" class=" small pb-2" >Gift card</a>
+            <br>
+            
+        </div>
+        <i class="fa fa-credit-card fa-3x text-white  px-2 pt-4"></i>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6 card-container p-0 m-4 shadow-lg d-flex justify-content-between jj" style="max-width: 400px; background: linear-gradient(135deg, #1e90ff, #6db3f2);" >
+        
+        <div class="contents  p-3" >
+            <h5>More</h5>
+            <br>
+            
+            <a href="" class=" small mb-2" >Subscription Plan</a>
+            <br>
+            
+            <a href="" class=" small pb-2" >Payment history</a>
+            <br>
+            
+        </div>
+        <i class="fa fa-star fa-3x text-white  px-2 pt-4"></i>
+
+    </div>
+
+</div>
+  
+    <!-- <div class="card-container p-0 m-5 shadow-lg d-flex justify-content-between jj" style="max-width: 400px; background: linear-gradient(135deg, #1e90ff, #6db3f2);" >
+        
+        <div class="contents  p-3" >
+            <h5>Profile Details</h5>
+            <br>
+            
+            <a href="{% url 'profile' %}" class=" small mb-2" > Personal Details</a>
+            <br>
+            
+            <a href="{% url 'address' %}" class=" small pb-2" >Address Book</a>
+            <br>
+            
+            <a href="{% url 'account_settings' %}" class=" small " style="text-decoration: none;">Security Settings</a>
+        </div>
+        <i class="fa fa-user fa-3x text-white p-4"></i>
+
+    </div>
+
+    s -->
+{% endblock %}

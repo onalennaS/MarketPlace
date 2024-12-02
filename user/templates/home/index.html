@@ -159,6 +159,11 @@
         .container.my-4 {
             margin-top: 0;
         }
+
+        {% block stylers %}
+
+        {% endblock %}
+
     </style>
 </head>
 <body>
@@ -178,7 +183,7 @@
                         <a class="nav-link active" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'buyer_dashboard' %}">Buyer</a>
+                        <a class="nav-link active" href="{% url 'dash' %}">myAccount</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">About Us</a>
@@ -210,6 +215,7 @@
             </ul>
         {% endif %}
         <div class="row align-items-center">
+            {% block content %}
             <!-- Shop by Department -->
             <div class="col-auto">
                 <div class="dropdown">
@@ -247,7 +253,7 @@
             </div>
         </div>
     </div>
-
+{% endblock %}
     <!-- Footer -->
     <footer class="footer text-center bg-dark text-white py-4">
         <div class="container">

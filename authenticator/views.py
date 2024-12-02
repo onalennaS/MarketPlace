@@ -77,7 +77,7 @@ def signin(request):
         user = User.objects.filter(email=data['username']).first()
         if not user:
             user = User.objects.filter(username=data['username']).first()
-            
+
         if user:
             if check_password(data['password'],user.password):
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -93,7 +93,7 @@ def signin(request):
 
     return render(request, 'authentication/signin.html')
 
-@login_required_custom
+
 def home(request):
     if request.user.is_authenticated:
         return HttpResponse(f'Logged in successfully {request.user}')

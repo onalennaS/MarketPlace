@@ -35,6 +35,11 @@ def landing_page(request):
 
 def home(request):
     return render(request, 'home/index.html')
+    
+@login_required_custom
+@has_password
+def dash(request):
+    return render(request, 'home/dash.html')
 
 @login_required_custom
 @has_password
@@ -46,6 +51,12 @@ def profile(request):
 @has_password
 def buyer_dashboard(request):
     return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
+
+@login_required_custom
+@has_password
+def address(request):
+
+    return render(request, 'home/address.html')
 
 @login_required_custom
 def order_history(request):

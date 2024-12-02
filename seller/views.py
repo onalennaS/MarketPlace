@@ -19,6 +19,7 @@ def has_password(view_func):
 
 # Create your views here.
 # Create your views here.
+@has_password
 def base(request):
     return render(request, 'seller/seller_profile.html')
 

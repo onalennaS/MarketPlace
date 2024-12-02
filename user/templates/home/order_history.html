@@ -2,6 +2,10 @@
 
 {% block title %}Order History{% endblock %}
 
+{% block styles %}
+
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <!-- Breadcrumb navigation -->
@@ -12,7 +16,7 @@
                 <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'buyer_dashboard' %}" style="color: white; text-decoration: none;">Dashboard</a>
+                <a href="{% url 'dash' %}" style="color: white; text-decoration: none;">Dashboard</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page" style="color: white;">Order History</li>
         </ol>
