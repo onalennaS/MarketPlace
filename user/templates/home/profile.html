@@ -67,13 +67,14 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
 
-        <li class="breadcrumb-item">
+       <!--  <li class="breadcrumb-item">
             <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-        </li>
+        </li> -->
+
         <li class="breadcrumb-item">
-            <a href="{% url 'dash' %}" style="color: white; text-decoration: none;">Dashboard</a>
+            <a href="{% url 'dash' %}" style="color: white; text-decoration: none;"> My Account </a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page" style="color: white;">User Profile</li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: white;">Personal details</li>
     </ol>
 </nav>
 
@@ -85,7 +86,7 @@
                <div class="d-flex justify-content-between w-100">
                     <div class=" p-3" style="background-color:white; width: 80%;">
 
-                    <h6 class="card-title"><i class="fa fa-user"></i> Username</h6>
+                    <h5 class="card-title"><i class="fa fa-user"></i><b> Username</b></h5>
                         <p class="card-text pt-0 pb-0 ">{{user.username}}</p>
                        
                     </div>
@@ -97,7 +98,7 @@
             </div> 
 
             <div class="card-body" id="username-form" style="display:none;">
-                <h5 class="card-title"><i class="fa fa-user"></i> Username</h5>
+                <h5 class="card-title"><i class="fa fa-user"></i> <b>Username</b></h5>
                 <form method="POST" class="auth-form">
                 {% csrf_token %}
                     <div class="d-flex justify-content-between">
@@ -120,7 +121,7 @@
             <div class="card-body p-0" id="fullname-disp" style="display:block;background: linear-gradient(135deg,  #1a2848, #2c76b7);">
                 <div class=" d-flex justify-content-between">
                     <div class="p-3" style="background-color:white; width: 80%;">
-                        <h6 class="card-title"><i class="fa fa-id-card"></i> Full Name</h6>
+                        <h5 class="card-title"><i class="fa fa-id-card"></i><b>Full Name</b> </h5>
                         <div class="d-flex justify-content-between">
                             <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
                         </div> 
@@ -132,7 +133,7 @@
                 </div>
             </div>
             <div class="card-body" id="fullname-form" style="display:none;">
-                <h6 class="card-title"><i class="fa fa-id-card"></i> Full Name</h6>
+                <h5 class="card-title"><i class="fa fa-id-card"></i> <b>Full Name</b></h5>
                 <form method="POST" class="auth-form">
                 {% csrf_token %}
                     <div>
@@ -159,7 +160,7 @@
             <div class="card-body p-0" id="email-disp" style="display:block; background: linear-gradient(135deg,  #1a2848, #2c76b7);" >
                 <div class="d-flex justify-content-between">
                      <div class="p-3 " style="background-color:white;width: 80%;">
-                        <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                        <h5 class="card-title"><i class="fa fa-envelope"></i><b> Email</b></h5>
                         <div class="d-flex justify-content-between">
                             <p class="card-text">{{user.email}} 
                                 {% if linked%}
@@ -178,7 +179,7 @@
               
             </div>
             <div class="card-body" id="email-form" style="display:none;">
-                <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                <h5 class="card-title"><i class="fa fa-envelope"></i><b> Email</b></h5>
                 <form method="POST" class="auth-form">
                 {% csrf_token %}
                     <div class="d-flex justify-content-between">
@@ -201,7 +202,7 @@
             <div class="card-body p-0" id="phone-disp" style="display:block; background: linear-gradient(135deg,  #1a2848, #2c76b7);">
                 <div class="d-flex justify-content-between ">
                     <div class="p-3" style="background-color: white;width: 80%;">
-                    <h6 class="card-title"><i class="fa fa-phone"></i> Phone</h6>
+                    <h5 class="card-title"><i class="fa fa-phone"></i> <b>Phone</b></h5>
                     <div class="d-flex justify-content-between">
                         <p class="card-text">(+27) 64 548 9327 <i class="fa fa-check-circle text-success p-3 pt-0 pb-0"> </i></p>
                          
@@ -218,7 +219,7 @@
             
             </div>
             <div class="card-body" id="phone-form" style="display:none;">
-                <h6 class="card-title"><i class="fa fa-phone"></i> Phone</h6>
+                <h5 class="card-title"><i class="fa fa-phone"></i> <b>Phone</b></h5>
                 <form method="POST" class="auth-form">
                 {% csrf_token %}
                     <div class="d-flex justify-content-between">

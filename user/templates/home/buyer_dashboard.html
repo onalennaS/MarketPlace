@@ -116,6 +116,7 @@
             overflow-y: auto; /* Enable scrolling for content */
             background-color: #f9f9f9; /* Light background color */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+            z-index: ;
         }
 
         /* Navbar Toggler for Mobile */
@@ -167,6 +168,9 @@
              border: 0; /* Remove default border */
             border-top: 2px solid white;
         }
+        {% block styles %}
+
+{% endblock %}
     </style>
 </head>
 <body>
@@ -219,12 +223,12 @@
             <ul class="nav flex-column px-3 mt-3">
                 <div class="flex-container ">
                     
-                    <h5 class="fw-bold">Personal Details</h5>
+                    <h5 class="fw-bold">Profile </h5>
                     <hr >
                 </div>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Profile
+                        <i class="fas fa-user me-2"></i> Personal details
                     </a>
                 </li>
                 <li class="nav-item">
@@ -233,7 +237,7 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
                         <i class="fas fa-user-cog me-2"></i> Address Book
                     </a>
                 </li>

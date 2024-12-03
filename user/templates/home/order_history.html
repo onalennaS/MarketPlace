@@ -5,6 +5,7 @@
 {% block styles %}
 
 {% endblock %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-4">
@@ -23,21 +24,21 @@
     </nav>
 
     <!-- Filter Options for Order History -->
-    <div class="mb-4">
-        <h5>Filter Orders</h5>
-        <form method="GET" action="{% url 'order_history' %}">
-            <div class="d-flex">
-                <select name="filter" class="form-select" style="width: auto;">
-                    <option value="all" {% if filter == 'all' %}selected{% endif %}>All Orders</option>
-                    <option value="3_months" {% if filter == '3_months' %}selected{% endif %}>Last 3 Months</option>
-                    <option value="6_months" {% if filter == '6_months' %}selected{% endif %}>Last 6 Months</option>
-                    <option value="1_year" {% if filter == '1_year' %}selected{% endif %}>Last 1 Year</option>
-                </select>
-                <button type="submit" class="btn btn-primary ms-2" style="background-color: #165baa; border-color: #165baa;">
-                    <i class="fas fa-filter"></i> Apply Filter
-                </button>
-            </div>
-        </form>
+    <div class="mb-4 d-flex justify-content-end">
+        <div>
+            
+        <span>Orders placed in</span>
+        <div class="btn-group">
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Last 3 months
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#">Last 3 months</a></li>
+            <li><a class="dropdown-item" href="#">Last 6 months</a></li>
+            <li><a class="dropdown-item" href="#">Last 1 year</a></li>
+          </ul>
+        </div>
+        </div>
     </div>
 
     <!-- Order Table -->
@@ -82,7 +83,35 @@
     </div>
     {% else %}
     <!-- No Orders Found -->
-    <div class="text-center py-5">
+
+    <div class="  w-100 " id="order" style="display:block;" >
+        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
+            <div class="" >
+                <h6 class="fw-bold">Deliverd Tue ,21 November 2024</h6>
+                <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
+            </div>
+            <div class="">
+                
+                <a class="btn btn-outline-dark rounded-0" href="{% url 'order_details'%}"> View Details</a>
+            </div>
+            
+        </div>
+       
+       <div class=" d-flex justify-content-start p-4 border shadow shadow" style="background-color:white;">
+           <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
+                <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+
+             <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
+                <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+            </div> 
+       </div>  
+    </div>
+
+<!-- %$*************view details order *********************** -->
+    
+
+    <div class="text-center py-5 border shadow " style="background-color: white; display: none;">
         <h4 class="text-muted">No Orders Found</h4>
         <p class="text-muted">You haven't placed any orders yet. Browse products and start shopping today!</p>
         <a href="{% url 'home' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
@@ -91,4 +120,11 @@
     </div>
     {% endif %}
 </div>
+
+
+
+
+
+
+
 {% endblock content %}

@@ -2,6 +2,55 @@
 
 {% block title %}Track Orders{% endblock %}
 
+{% block styles %}
+<style type="text/css">
+   .lists {
+  text-align: justify;
+  position: relative;
+  overflow-x: hidden;
+
+  
+}
+.lists:before, .active:after {
+  content: '';
+  width: 100%;
+  border: 2px solid green;
+  position: absolute;
+  bottom: 3.3em;
+  margin-top: -2px;
+  z-index: -1;
+  
+  
+}
+.active:after {
+  border-color: lightblue;
+}
+.lists:after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+.lists-item {
+  width: 2em;
+  height: 2em;
+  text-align: center;
+  line-height: 2em;
+  border-radius: 50%;
+  background: green;
+  margin: 0 1em;
+  display: inline-block;
+  color: white;
+
+
+}
+.active ~ .lists-item {
+  background: lightblue;
+}
+.current{
+    background: orange;
+}
+</style>
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
     <!-- Breadcrumb navigation -->
@@ -20,45 +69,76 @@
 
     <!-- Track Orders Section -->
     <div class="row">
-        {% if orders %}
-            <div class="col-12">
-                <h3 class="text-center">Your Orders</h3>
-                <table class="table table-bordered mt-4">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Product</th>
-                            <th>Order Date</th>
-                            <th>Status</th>
-                            <th>Track</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for order in orders %}
-                        <tr>
-                            <td>{{ order.id }}</td>
-                            <td>{{ order.product.name }}</td>
-                            <td>{{ order.order_date }}</td>
-                            <td>
-                                {% if order.status == 'Shipped' %}
-                                    <span class="badge bg-success">Shipped</span>
-                                {% elif order.status == 'Processing' %}
-                                    <span class="badge bg-warning">Processing</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Cancelled</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'order_detail' order.id %}" class="btn btn-info btn-sm rounded-pill">
-                                    <i class="fas fa-truck"></i> Track Order
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        
+            
+    <div class="  w-100 " id="order" style="display:block;" >
+        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
+             <div class=" " >
+                    <span class="px-3 "><b>Order #123456</b></span>
+                    <span class="border border" style="width: 2px; height: 100%; background-color: black; margin-top: -20px;"></span>
+
+                    <span class="px-3">Ordered 16 May 2024 </span>
+
+                     <span class="border border" style="width: 2px; height: 100%; background-color: black; margin-top: -20px;"></span>
+
+                    <span class="px-3"> Paid 16 May 2024 </span>
+                </div>
+
+            <div class="">
+                
+                <a class="btn btn-outline-dark rounded-0" href="{% url 'order_details'%}"> View Details</a>
             </div>
-        {% else %}
+            
+        </div>
+       
+      
+    </div>
+
+ <div class=" " style="overflow: hidden; ">
+                
+                <div class="position-relative d-flex justify-content-between border shadow-md pt-5 " style="overflow:hidden; z-index: 10;background-color: white;">
+
+                <div class="p-3 position-absolute top-0">
+                    <h4>Steps</h4>
+                    <div class="px-2">
+                        <i class="fa fa-spinner text-primary"></i> <span>Processing Order</span><br>
+                        <i class="fa fa-gift text-primary"></i> <span>Packaging Order</span><br>
+                        <i class="fa fa-truck text-primary"></i> <span>Order In Transit</span><br>
+                        <i class="fa fa-check-circle text-primary"></i> <span>Delivered</span><br>
+                    </div>
+                </div>
+                <p>.</p>
+                 <ul class="lists">
+                    <p>Current Step : <b>In Transit</b> </p>
+                  <li class="lists-item" style=" z-index:1 ;"><i class="fa fa-spinner"></i></li>
+                  
+                  <li class="lists-item"><i class="fa fa-gift"></i> </li>
+
+                  <li class="lists-item active current"><i class="fa fa-truck"></i></li>
+                  <li class="lists-item "><i class="fa fa-check-circle"></i></li>
+                 
+                  
+                  
+                </ul> 
+                
+            </div>
+            </div>
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="col-12 text-center py-5">
                 <h4 class="text-muted">No Orders Found!</h4>
                 <p class="text-muted">You haven't placed any orders yet.</p>
@@ -66,7 +146,9 @@
                     <i class="fas fa-shopping-cart"></i> Continue Shopping
                 </a>
             </div>
-        {% endif %}
+        
     </div>
 </div>
-{% endblock content %}
+
+
+{% endblock  %}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('dashboard/buyer_dashboard/', views.buyer_dashboard, name='buyer_dashboard'),
     path('dashboard/profile/', views.profile, name='profile'),
     path('dashboard/order_history/', views.order_history, name='order_history'),
+    path('dashboard/order_history/view-order-details/', views.view_order_details, name='order_details'),
     path('dashboard/wish_lists/', views.wish_lists, name='wish_lists'),
     path('dashboard/track_orders/', views.track_orders, name='track_orders'),
     path('dashboard/buyer_reviews/', views.buyer_reviews, name='buyer_reviews'),
@@ -14,6 +15,8 @@ urlpatterns = [
     path('dashboard/buyer_support/', views.buyer_support, name='buyer_support'),
     path('dashboard/address', views.address, name='address'),
     path('dashboard/', views.dash, name='dash'),
+
+    
    
    
 ]

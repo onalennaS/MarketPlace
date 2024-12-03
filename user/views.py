@@ -63,6 +63,10 @@ def order_history(request):
     return render(request, 'home/order_history.html')
 
 @login_required_custom
+def view_order_details(request):
+    return render(request, 'home/view_order_details.html')
+
+@login_required_custom
 def wish_lists(request):
     return render(request, 'home/wish_lists.html')
 
