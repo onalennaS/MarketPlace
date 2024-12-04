@@ -1,0 +1,211 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Referrals & Earnings{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}" class="text-white text-decoration-none">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Referrals & Earnings</li>
+        </ol>
+    </nav>
+
+    <!-- Wish List Section -->
+    <div class="row">
+        
+            <div class="col-12 text-center py-2 d-flex justify-content-between">
+                
+                <h4 class="text-muted">My list</h4>
+               
+                <p class="text-muted">You have 2 items in your wish list!</p>
+            </div>
+            
+           <div class="row d-flex justify-content-between" >
+           	 <div class="col-5">
+           		<div class="d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-dollar-sign fa-3x text-primary"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Earnings</span><br>
+           				<h2 class="fw-bold">R 300</h2>
+           			</div>
+           		</div>
+
+           		<div class="d-flex justify-content-between border shadow p-3  mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-coins fa-3x text-info"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">This month Earnings</span><br>
+           				<h2 class="fw-bold">R 64</h2>
+           			</div>
+           		</div>
+           	 </div>
+           	<div class="col-7  border shadow p-3 pb-0 cards " style="background-color:white;" >
+           		<h5 class="text-muted">Earnings Breakdown</h5>
+           		<table class="table pb-0">
+				  <thead>
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col">Referral Name</th>
+				      <th scope="col">Referral Code</th>
+				      <th scope="col">Earnings</th>
+				      <th scope="col">Date</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">1</th>
+				      <td>John Doe</td>
+				      <td>ABCD1234</td>
+				      <td>R 10</td>
+				      <td>04/11/2024</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">2</th>
+				      <td>Jane Marry</td>
+				      <td>XVZF312</td>
+				      <td>R 100</td>
+				      <td>01/12/2024</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">3</th>
+				      <td>Sam Smith</td>
+				      <td>XVZF312</td>
+				      <td>R 70</td>
+				      <td>28/12/2024</td>
+				    </tr>
+				  </tbody>
+				</table>
+           	</div>
+           		
+          
+           </div> 
+           <div class="p-2">
+           	
+           
+           	<div class="justify-content-center border shadow p-3 w-100 m-1 cards" style="background-color:white;" >
+
+           		<h5 class="fw-bold text-center">Your Referral Link</h5><br>
+           		<p class="text-muted small fw-bold text text-center">Share this link or code with others to earn:</p><br>
+           		<div class="d-flex justify-content-center">
+           			<div class="input-group mb-3 w-75 mx-3">
+					  <span class="input-group-text" id="basic-addon1"><i class="fa fa-link"></i></span>
+					  <input type="text" class="form-control" placeholder="link" aria-label="link" aria-describedby="basic-addon1" value="https://siskies.co.za/referral?code=ABCD1234">
+					  <button class="btn btn-success mx-2">Copy</button>
+					<button class="btn btn-info">Generate New Code</button>
+					</div>
+					
+           		</div>
+           	</div>
+           </div>
+           <div class="row align-items-center justify-content-center">
+           
+           	</div>
+
+           	<div class="row d-flex justify-content-between mt-2">
+           	   
+           	 <div class="col-7">
+           	 	<div class="border shadow p-3  m-1 cards" style="background-color:white;" >
+           	 		<h4  class="text-muted">Activity</h4>
+           	 		<div>
+           	 			<ul class="list-group list-group-flush">
+					    <li class="list-group-item">
+					    	<div class="d-flex justify-content-start">
+						    	<i class="fa fa-user-circle fa-3x text-dark"></i>
+						    	<div class="mx-3 w-100">
+						    		<h6 class="fw-bold w-100 d-flex justify-content-between">John Doe <i class="fa-regular fa-bell mt-1 fa-1x"></i></h6>
+						    		<span>signed up using your referral code.</span>
+						    	</div>
+						    </div>
+					    </li>
+					    <li class="list-group-item">
+					    	<div class="d-flex justify-content-start">
+						    	<i class="fa fa-user-circle fa-3x text-dark"></i>
+						    	<div class="mx-3 w-100 ">
+						    		<h6 class="fw-bold w-100 d-flex justify-content-between">Jane Foster <i class="fa-regular fa-bell mt-1 fa-1x"></i></h6>
+						    		<span>completed a purchase using your link.</span>
+						    	</div>
+						    </div>
+					    </li>
+					      <li class="list-group-item">
+					    	<div class="d-flex justify-content-start">
+						    	<i class="fa fa-user-circle fa-3x text-dark"></i>
+						    	<div class="mx-3 w-100">
+						    		<h6 class="fw-bold w-100 d-flex justify-content-between">John Doe <i class="fa-regular fa-bell mt-1 fa-1x"></i></h6>
+						    		<span>signed up using your referral code.</span>
+						    	</div>
+						    </div>
+					    </li>
+					    <li class="list-group-item">
+					    	<div class="d-flex justify-content-start">
+						    	<i class="fa fa-user-circle fa-3x text-dark"></i>
+						    	<div class="mx-3 w-100">
+						    		<h6 class="fw-bold w-100 d-flex justify-content-between">Jane Foster <i class="fa-regular fa-bell mt-1 fa-1x"></i></h6>
+						    		<span>completed a purchase using your link.</span>
+						    	</div>
+						    </div>
+					    </li>
+					   
+					  </ul>
+           	 		</div>
+           	 	</div>
+           	 </div>
+           	<div class="col-5  ">
+           			<div class=" d-flex justify-content-between border shadow p-3   cards " style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-hand-pointer fa-3x text-danger"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Clicks</span><br>
+           				<h2 class="fw-bold"> 21</h2>
+           			</div>
+           		</div>
+           		<div class=" d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-user-plus fa-3x text-success"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Sign-up</span><br>
+           				<h2 class="fw-bold">8</h2>
+           			</div>
+           		</div>
+           		<div class="d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-shopping-cart fa-3x text-warning"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Purchase</span><br>
+           				<h2 class="fw-bold"> 3</h2>
+           			</div>
+           		</div>
+           	</div>
+           </div>
+           
+            <!-- No Wish List Items Found -->
+            <div class="col-12 text-center py-5 " style="display:none;">
+                <i class="fas fa-heart" style="color: gray; font-size: 2rem;"></i>
+                <h4 class="text-muted">Your Wish List is Empty!</h4>
+                <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Continue Shopping
+                </a>
+            </div>
+       
+    </div>
+</div>
+{% endblock content %}

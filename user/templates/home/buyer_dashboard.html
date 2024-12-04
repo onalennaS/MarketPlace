@@ -12,6 +12,14 @@
         body{
             overflow-x: hidden;
         }
+        .cards{
+            border: 2px solid red ;
+            transition: all 0.5s ease;
+        }
+        .cards:hover {
+        transform: scale(1.02);
+        border: 2px solid blue; /* Subtle highlight on hover */
+    }
         #navbar {
             background-color: #ffffff;
             border-bottom: 1px solid #dee2e6;
@@ -285,7 +293,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
                         <i class="fas fa-headset me-2"></i> Refferals & earnings
                     </a>
                 </li>

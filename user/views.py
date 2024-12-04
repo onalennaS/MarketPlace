@@ -84,3 +84,8 @@ def account_settings(request):
 
 def buyer_support(request):
     return render(request, 'home/buyer_support.html')
+
+
+@login_required_custom
+def referrals_earnings(request):
+    return render(request, 'home/referrals_earnings.html')
