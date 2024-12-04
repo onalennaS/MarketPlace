@@ -51,11 +51,100 @@
 }
 </style>
 {% endblock %}
+
+{% block nav %}
+            <ul class="nav flex-column px-3 mt-3">
+                <div class="flex-container ">
+                    
+                    <h5 class="fw-bold">Profile </h5>
+                    <hr >
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+                        <i class="fas fa-user me-2"></i> Personal details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+                        <i class="fas fa-cog me-2"></i> Account Settings
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+                        <i class="fas fa-user-cog me-2"></i> Address Book
+                    </a>
+                </li>
+                  <div class="flex-container ">
+
+                <h5 class="fw-bold">Orders</h5>
+                 <hr >
+             </div>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
+                        <i class="fas fa-history me-2"></i> Order History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+                        <i class="fas fa-heart me-2"></i> Wish Lists
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center active" href="{% url 'track_orders' %}">
+                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+                        <i class="fas fa-star me-2"></i> Reviews
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">Payment</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+                        <i class="fas fa-headset me-2"></i> Credit & Refunds
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+                        <i class="fas fa-headset me-2"></i> Gift Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+                        <i class="fas fa-headset me-2"></i> Refferals & earnings
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">More</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Subscription plan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Payment history
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Support
+                    </a>
+                </li>
+            </ul>
+            {% endblock %}
 {% block content %}
-<div class="container mt-4">
+<div class="container ">
     <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
+    <nav aria-label="breadcrumb ">
+        <ol class="breadcrumb " style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px; width:100%">
 
             <li class="breadcrumb-item">
                 <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
@@ -68,10 +157,10 @@
     </nav>
 
     <!-- Track Orders Section -->
-    <div class="row">
+    <div class="row ">
         
             
-    <div class="  w-100 " id="order" style="display:block;" >
+    <div class="col-12  w-100  pad " id="order" style="display:block;" >
         <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
              <div class=" " >
                     <span class="px-3 "><b>Order #123456</b></span>
@@ -86,7 +175,7 @@
 
             <div class="">
                 
-                <a class="btn btn-outline-dark rounded-0" href="{% url 'order_details'%}"> View Details</a>
+                <a class="btn btn-dark rounded-0" href="{% url 'order_details'%}"> View Details</a>
             </div>
             
         </div>
@@ -94,11 +183,11 @@
       
     </div>
 
- <div class=" " style="overflow: hidden; ">
+        <div class="  pad" style="overflow: hidden; ">
                 
-                <div class="position-relative d-flex justify-content-between border shadow-md pt-5 " style="overflow:hidden; z-index: 10;background-color: white;">
+                <div class="row position-relative d-flex justify-content-between border shadow-md pt-5  " id="pad" style="overflow:hidden; z-index: 10;background-color: white;">
 
-                <div class="p-3 position-absolute top-0">
+                <div class="col-12 col-md-5 p-3 position-absolute top-0">
                     <h4>Steps</h4>
                     <div class="px-2">
                         <i class="fa fa-spinner text-primary"></i> <span>Processing Order</span><br>
@@ -107,8 +196,8 @@
                         <i class="fa fa-check-circle text-primary"></i> <span>Delivered</span><br>
                     </div>
                 </div>
-                <p>.</p>
-                 <ul class="lists">
+                <p class="col-12 col-md-1 mt-5 pt-5">.</p>
+                 <ul class="lists col-12 col-md-6 ">
                     <p>Current Step : <b>In Transit</b> </p>
                   <li class="lists-item" style=" z-index:1 ;"><i class="fa fa-spinner"></i></li>
                   

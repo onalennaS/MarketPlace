@@ -2,6 +2,94 @@
 
 {% block title %}Gift Card{% endblock %}
 
+{% block nav %}
+            <ul class="nav flex-column px-3 mt-3">
+                <div class="flex-container ">
+                    
+                    <h5 class="fw-bold">Profile </h5>
+                    <hr >
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+                        <i class="fas fa-user me-2"></i> Personal details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+                        <i class="fas fa-cog me-2"></i> Account Settings
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+                        <i class="fas fa-user-cog me-2"></i> Address Book
+                    </a>
+                </li>
+                  <div class="flex-container ">
+
+                <h5 class="fw-bold">Orders</h5>
+                 <hr >
+             </div>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
+                        <i class="fas fa-history me-2"></i> Order History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+                        <i class="fas fa-heart me-2"></i> Wish Lists
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
+                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+                        <i class="fas fa-star me-2"></i> Reviews
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">Payment</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+                        <i class="fas fa-headset me-2"></i> Credit & Refunds
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center active" href="{% url 'gift_card' %}">
+                        <i class="fas fa-headset me-2"></i> Gift Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+                        <i class="fas fa-headset me-2"></i> Refferals & earnings
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">More</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Subscription plan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Payment history
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Support
+                    </a>
+                </li>
+            </ul>
+            {% endblock %}
 {% block content %}
 <style>
     

@@ -11,7 +11,10 @@
         /* Navbar Styling */
         body{
             overflow-x: hidden;
+            
+            
         }
+       
         .cards{
             border: 2px solid red ;
             transition: all 0.5s ease;
@@ -58,12 +61,12 @@
             transition: all 0.3s ease;
         }
         .sidebar .nav-link.active {
-            color: #fff;
-            background-color: #007bff;
+            color: #1f406a;
+            background-color: white;
         }
         .sidebar .nav-link:hover {
-            background-color: #165baa;
-            color: black;
+            background-color: white;
+            color: #1f406a;
             font-size: 18px;
         }
 
@@ -88,7 +91,9 @@
             color: red; /* Red cross */
             cursor: pointer;
         }
-
+         #offcanvasRight1, #offcanvasRight {
+                width: 50%;
+            }
         /* Responsive Sidebar */
         @media (max-width: 768px) {
             .sidebar {
@@ -103,6 +108,9 @@
             }
             .close-btn {
                 display: block;
+            }
+            #offcanvasRight1, #offcanvasRight{
+                width: 100%;
             }
         }
 
@@ -122,12 +130,12 @@
 
         /* Content Section */
         .content {
-            padding: 20px;
+            padding:0 ;
             margin-left: 0; /* Reset left margin */
             overflow-y: auto; /* Enable scrolling for content */
             background-color: #f9f9f9; /* Light background color */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-            z-index: ;
+            
         }
 
         /* Navbar Toggler for Mobile */
@@ -135,11 +143,36 @@
             border: none;
         }
 
+        
         /* Hide the Sidebar Toggle Button on larger screens */
         @media (min-width: 768px) {
             #sidebarToggle {
                 display: none;
             }
+            .content {
+                padding:0 ;
+
+                }
+         .inner{
+            padding: 40px;
+        }
+        .pad{
+            padding-left :15px;
+            padding-right: 15px;
+        }
+        #pad{
+            margin:1px;
+        }
+
+        }
+        @media (max-width: 768px){
+               .inner{
+            padding: 0px;
+            margin-top:50px;
+        }
+        .pad{
+            padding:0px;
+        }
         }
 
         /* Welcome Text Animation */
@@ -231,6 +264,7 @@
                 <img id="profileImage" src="{% static 'images/default_profile.png' %}" alt="Profile Image">
                 <p class="welcome-text">Welcome, {{ user.username }}!</p>
             </div>
+            {% block nav %}
             <ul class="nav flex-column px-3 mt-3">
                 <div class="flex-container ">
                     
@@ -317,12 +351,16 @@
                     </a>
                 </li>
             </ul>
+            {% endblock %}
         </div>
 
         <!-- Main Content -->
-        <div class="col-md-9 content">
+        <div class="col-md-9 content ">
+            <div class="inner">
+                
             {% block content %}
             {% endblock content %}
+            </div>
         </div>
     </div>
 </div>

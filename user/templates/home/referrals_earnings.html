@@ -2,8 +2,98 @@
 
 {% block title %}Referrals & Earnings{% endblock %}
 {% load static %}
+
+{% block nav %}
+            <ul class="nav flex-column px-3 mt-3">
+                <div class="flex-container ">
+                    
+                    <h5 class="fw-bold">Profile </h5>
+                    <hr >
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+                        <i class="fas fa-user me-2"></i> Personal details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+                        <i class="fas fa-cog me-2"></i> Account Settings
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+                        <i class="fas fa-user-cog me-2"></i> Address Book
+                    </a>
+                </li>
+                  <div class="flex-container ">
+
+                <h5 class="fw-bold">Orders</h5>
+                 <hr >
+             </div>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
+                        <i class="fas fa-history me-2"></i> Order History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+                        <i class="fas fa-heart me-2"></i> Wish Lists
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
+                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+                        <i class="fas fa-star me-2"></i> Reviews
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">Payment</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+                        <i class="fas fa-headset me-2"></i> Credit & Refunds
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+                        <i class="fas fa-headset me-2"></i> Gift Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center active" href="{% url 'referrals_earnings' %}">
+                        <i class="fas fa-headset me-2"></i> Refferals & earnings
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">More</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Subscription plan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Payment history
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Support
+                    </a>
+                </li>
+            </ul>
+            {% endblock %}
+
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 p-0">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
@@ -19,18 +109,18 @@
     </nav>
 
     <!-- Wish List Section -->
-    <div class="row">
+    <div class="row p-0">
         
             <div class="col-12 text-center py-2 d-flex justify-content-between">
                 
-                <h4 class="text-muted">My list</h4>
+                <h4 class="text-muted"></h4>
                
-                <p class="text-muted">You have 2 items in your wish list!</p>
+                <p class="text-muted">Credit will autometically apply on your next purchase</p>
             </div>
             
-           <div class="row d-flex justify-content-between" >
-           	 <div class="col-5">
-           		<div class="d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
+           <div class="row d-flex  justify-content-between " >
+           	 <div class="col-12 col-md-5  mt-3 ">
+           		<div class="d-flex justify-content-between  border shadow p-3   cards" style="background-color:white;" >
            			
            			<div class="align-items-center">
            				<i class="fa fa-dollar-sign fa-3x text-primary"></i>
@@ -52,7 +142,7 @@
            			</div>
            		</div>
            	 </div>
-           	<div class="col-7  border shadow p-3 pb-0 cards " style="background-color:white;" >
+           	<div class="col-12 col-md-7 border shadow p-3 pb-0 cards mt-3" style="background-color:white; overflow-x: scroll;" >
            		<h5 class="text-muted">Earnings Breakdown</h5>
            		<table class="table pb-0">
 				  <thead>
@@ -95,10 +185,10 @@
            <div class="p-2">
            	
            
-           	<div class="justify-content-center border shadow p-3 w-100 m-1 cards" style="background-color:white;" >
+           	<div class="justify-content-center border shadow p-3 cards" style="background-color:white;" >
 
            		<h5 class="fw-bold text-center">Your Referral Link</h5><br>
-           		<p class="text-muted small fw-bold text text-center">Share this link or code with others to earn:</p><br>
+           		<p class="text-muted small fw-bold text-center">Share this link or code with others to earn:</p><br>
            		<div class="d-flex justify-content-center">
            			<div class="input-group mb-3 w-75 mx-3">
 					  <span class="input-group-text" id="basic-addon1"><i class="fa fa-link"></i></span>
@@ -116,8 +206,41 @@
 
            	<div class="row d-flex justify-content-between mt-2">
            	   
-           	 <div class="col-7">
-           	 	<div class="border shadow p-3  m-1 cards" style="background-color:white;" >
+           	<div class="col-12 col-md-5  mb-4">
+           			<div class=" d-flex justify-content-between border shadow p-3   cards " style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-hand-pointer fa-3x text-danger"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Clicks</span><br>
+           				<h2 class="fw-bold"> 21</h2>
+           			</div>
+           		</div>
+           		<div class=" d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-user-plus fa-3x text-success"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Sign-up</span><br>
+           				<h2 class="fw-bold">8</h2>
+           			</div>
+           		</div>
+           		<div class="d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-shopping-cart fa-3x text-warning"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Purchase</span><br>
+           				<h2 class="fw-bold"> 3</h2>
+           			</div>
+           		</div>
+           	</div>
+
+           	<div class="col-12 col-md-7">
+           	 	<div class="border shadow p-3 mb-3 cards" style="background-color:white;" >
            	 		<h4  class="text-muted">Activity</h4>
            	 		<div>
            	 			<ul class="list-group list-group-flush">
@@ -162,38 +285,6 @@
            	 		</div>
            	 	</div>
            	 </div>
-           	<div class="col-5  ">
-           			<div class=" d-flex justify-content-between border shadow p-3   cards " style="background-color:white;" >
-           			
-           			<div class="align-items-center">
-           				<i class="fa fa-hand-pointer fa-3x text-danger"></i>
-           			</div>
-           			<div>
-           				<span class="text-muted fw-bold small">Total Clicks</span><br>
-           				<h2 class="fw-bold"> 21</h2>
-           			</div>
-           		</div>
-           		<div class=" d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
-           			
-           			<div class="align-items-center">
-           				<i class="fa fa-user-plus fa-3x text-success"></i>
-           			</div>
-           			<div>
-           				<span class="text-muted fw-bold small">Total Sign-up</span><br>
-           				<h2 class="fw-bold">8</h2>
-           			</div>
-           		</div>
-           		<div class="d-flex justify-content-between border shadow p-3 mt-3 cards" style="background-color:white;" >
-           			
-           			<div class="align-items-center">
-           				<i class="fa fa-shopping-cart fa-3x text-warning"></i>
-           			</div>
-           			<div>
-           				<span class="text-muted fw-bold small">Total Purchase</span><br>
-           				<h2 class="fw-bold"> 3</h2>
-           			</div>
-           		</div>
-           	</div>
            </div>
            
             <!-- No Wish List Items Found -->

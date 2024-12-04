@@ -2,6 +2,94 @@
 
 {% block title %}Credit & Refund{% endblock %}
 {% load static %}
+{% block nav %}
+            <ul class="nav flex-column px-3 mt-3">
+                <div class="flex-container ">
+                    
+                    <h5 class="fw-bold">Profile </h5>
+                    <hr >
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+                        <i class="fas fa-user me-2"></i> Personal details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+                        <i class="fas fa-cog me-2"></i> Account Settings
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+                        <i class="fas fa-user-cog me-2"></i> Address Book
+                    </a>
+                </li>
+                  <div class="flex-container ">
+
+                <h5 class="fw-bold">Orders</h5>
+                 <hr >
+             </div>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
+                        <i class="fas fa-history me-2"></i> Order History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+                        <i class="fas fa-heart me-2"></i> Wish Lists
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
+                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+                        <i class="fas fa-star me-2"></i> Reviews
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">Payment</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center active" href="{% url 'credit' %}">
+                        <i class="fas fa-headset me-2"></i> Credit & Refunds
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+                        <i class="fas fa-headset me-2"></i> Gift Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+                        <i class="fas fa-headset me-2"></i> Refferals & earnings
+                    </a>
+                </li>
+                  <div class="flex-container ">
+                <h5 class="fw-bold">More</h5>
+                 <hr >
+             </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Subscription plan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Payment history
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Support
+                    </a>
+                </li>
+            </ul>
+            {% endblock %}
 {% block content %}
 <div class="container mt-5">
     <!-- Breadcrumb navigation -->
@@ -24,8 +112,9 @@
             
             
            <div class="row d-flex justify-content-between" >
-           	 <div class="col-5">
-           		<div class="d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
+           	 <div class="col-12 d-flex flex-wrap  mt-4 p-0">
+           	 	
+           		<div class=" col-12 col-md-6 d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
            			
            			<div class="align-items-center">
            				<i class="fa fa-dollar-sign fa-3x text-primary"></i>
@@ -36,7 +125,7 @@
            			</div>
            		</div>
 
-           		<div class="d-flex justify-content-between border shadow p-3  mt-3 cards" style="background-color:white;" >
+           		<div class=" col-12 col-md-6 d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
            			
            			<div class="align-items-center">
            				<i class="fa fa-coins fa-3x text-info"></i>
@@ -46,15 +135,16 @@
            				<h2 class="fw-bold text-danger">- R 23</h2>
            			</div>
            		</div>
+           	
            	 </div>
-           	<div class="col-7  border shadow p-3 pb-0 cards " style="background-color:white;" >
+           	<div class="col-12  mt-4 border shadow p-3 pb-0 cards " style="background-color:white;" >
            		<h5 class="text-muted d-flex justify-content-between">Credit history <a class="btn btn-success pt-0 pb-0 rounded-0 " href="{% url 'gift_card' %}">Redeem Gift</a> </h5>
            		<table class="table pb-0">
 				  <thead>
 				    <tr>
 				      <th scope="col">#</th>
 				      <th scope="col">Type</th>
-				      <th scope="col">Code</th>
+				   
 				      <th scope="col">Amount</th>
 				      <th scope="col">Date</th>
 				    </tr>
@@ -63,21 +153,21 @@
 				    <tr>
 				      <th scope="row">1</th>
 				      <td>Voucher</td>
-				      <td>ABCD1234</td>
+				     
 				      <td>R 10</td>
 				      <td>04/11/2024</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">2</th>
 				      <td>Refund</td>
-				      <td>XVZF312</td>
+				      
 				      <td>R 100</td>
 				      <td>01/12/2024</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">3</th>
 				      <td>Voucher</td>
-				      <td>XVZF312</td>
+				      
 				      <td>R 70</td>
 				      <td>28/12/2024</td>
 				    </tr>
