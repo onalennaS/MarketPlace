@@ -12,6 +12,8 @@ urlpatterns = [
     path('dashboard/track_orders/', views.track_orders, name='track_orders'),
     path('dashboard/buyer_reviews/', views.buyer_reviews, name='buyer_reviews'),
     path('dashboard/referrals_earnings', views.referrals_earnings, name='referrals_earnings'),
+    path('dashboard/gift_card', views.gift_card, name='gift_card'),
+    path('dashboard/credit', views.credit, name='credit'),
     
     path('dashboard/account_settings/', views.account_settings, name='account_settings'),
     path('dashboard/buyer_support/', views.buyer_support, name='buyer_support'),

@@ -89,3 +89,11 @@ def buyer_support(request):
 @login_required_custom
 def referrals_earnings(request):
     return render(request, 'home/referrals_earnings.html')
+
+@login_required_custom
+def gift_card(request):
+    return render(request, 'home/gift_card.html')
+
+@login_required_custom
+def credit(request):
+    return render(request, 'home/credit.html')

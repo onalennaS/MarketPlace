@@ -1,0 +1,104 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Credit & Refund{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}" class="text-white text-decoration-none">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Credit & Refund</li>
+        </ol>
+    </nav>
+
+    <!-- Wish List Section -->
+    <div class="row">
+        
+            
+            
+           <div class="row d-flex justify-content-between" >
+           	 <div class="col-5">
+           		<div class="d-flex justify-content-between border shadow p-3   cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-dollar-sign fa-3x text-primary"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Available Credit</span><br>
+           				<h2 class="fw-bold">R 0</h2>
+           			</div>
+           		</div>
+
+           		<div class="d-flex justify-content-between border shadow p-3  mt-3 cards" style="background-color:white;" >
+           			
+           			<div class="align-items-center">
+           				<i class="fa fa-coins fa-3x text-info"></i>
+           			</div>
+           			<div>
+           				<span class="text-muted fw-bold small">Total Credit Used</span><br>
+           				<h2 class="fw-bold text-danger">- R 23</h2>
+           			</div>
+           		</div>
+           	 </div>
+           	<div class="col-7  border shadow p-3 pb-0 cards " style="background-color:white;" >
+           		<h5 class="text-muted d-flex justify-content-between">Credit history <a class="btn btn-success pt-0 pb-0 rounded-0 " href="{% url 'gift_card' %}">Redeem Gift</a> </h5>
+           		<table class="table pb-0">
+				  <thead>
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col">Type</th>
+				      <th scope="col">Code</th>
+				      <th scope="col">Amount</th>
+				      <th scope="col">Date</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">1</th>
+				      <td>Voucher</td>
+				      <td>ABCD1234</td>
+				      <td>R 10</td>
+				      <td>04/11/2024</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">2</th>
+				      <td>Refund</td>
+				      <td>XVZF312</td>
+				      <td>R 100</td>
+				      <td>01/12/2024</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">3</th>
+				      <td>Voucher</td>
+				      <td>XVZF312</td>
+				      <td>R 70</td>
+				      <td>28/12/2024</td>
+				    </tr>
+				  </tbody>
+				</table>
+           	</div>
+         	
+           </div> 
+          
+      
+           
+            <!-- No Wish List Items Found -->
+            <div class="col-12 text-center py-5 " style="display:none;">
+                <i class="fas fa-heart" style="color: gray; font-size: 2rem;"></i>
+                <h4 class="text-muted">Your Wish List is Empty!</h4>
+                <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
+                    <i class="fas fa-shopping-cart"></i> Continue Shopping
+                </a>
+            </div>
+       
+    </div>
+</div>
+{% endblock content %}
