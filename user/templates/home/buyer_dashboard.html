@@ -115,8 +115,8 @@
         .profile-upload img {
             border: 5px solid gray;
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 85px;
             object-fit: cover;
         }
 
@@ -127,8 +127,7 @@
             overflow-y: auto; /* Enable scrolling for content */
             background-color: #f9f9f9; /* Light background color */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-            z-index: ;
-        }
+         }
 
         /* Navbar Toggler for Mobile */
         .navbar-toggler {
@@ -179,6 +178,7 @@
              border: 0; /* Remove default border */
             border-top: 2px solid white;
         }
+        
         {% block styles %}
 
 {% endblock %}
@@ -232,10 +232,11 @@
                 <p class="welcome-text">Welcome, {{ user.username }}!</p>
             </div>
             <ul class="nav flex-column px-3 mt-3">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
+                <!-- Profile Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">Profile</h5>
+
+                    <hr>
                 </div>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
@@ -244,20 +245,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
+                        <i class="fas fa-cogs me-2"></i> Account Settings
                     </a>
                 </li>
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
+                        <i class="fas fa-address-book me-2"></i> Address Book
                     </a>
                 </li>
-                  <div class="flex-container ">
-
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
-
+            
+                <!-- Orders Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">Orders</h5>
+                    <hr>
+                </div>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
                         <i class="fas fa-history me-2"></i> Order History
@@ -278,45 +279,50 @@
                         <i class="fas fa-star me-2"></i> Reviews
                     </a>
                 </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">Payment</h5>
-                 <hr >
-             </div>
+            
+                <!-- Payment Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">Payment</h5>
+                    <hr>
+                </div>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-headset me-2"></i> Credit & Refunds
+                        <i class="fas fa-credit-card me-2"></i> Credit & Refunds
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-headset me-2"></i> Gift Card
+                        <i class="fas fa-gift me-2"></i> Gift Card
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-headset me-2"></i> Refferals & earnings
+                        <i class="fas fa-users me-2"></i> Referrals & Earnings
                     </a>
                 </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">More</h5>
-                 <hr >
-             </div>
+            
+                <!-- More Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">More</h5>
+                    <hr>
+                </div>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Payment history
+                        <i class="fas fa-headset me-2"></i> Subscription Plan
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Support
+                        <i class="fas fa-history me-2"></i> Payment History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-life-ring me-2"></i> Support
                     </a>
                 </li>
             </ul>
+            
         </div>
 
         <!-- Main Content -->
