@@ -101,3 +101,7 @@ def credit(request):
 @login_required_custom
 def cart(request):
     return render(request, 'home/cart.html')
+
+@login_required_custom
+def checkout(request):
+    return render(request, 'home/checkout.html')
