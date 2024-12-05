@@ -114,6 +114,24 @@
             #offcanvasRight1, #offcanvasRight{
                 width: 100%;
             }
+            .checkout{
+                position: fixed;
+                bottom: 0%;
+                width: 100%;
+                  box-shadow: 8px 4px 8px black;
+
+            }
+            .check{
+                display: none;
+            }
+            .checkout h6{
+                display: none;
+            }
+            .price{
+                display: flex;
+                justify-content: space-between;
+            }
+
         }
 
         /* Profile Section */
@@ -300,115 +318,10 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-3 sidebar" id="sidebar">
-            <div class="close-btn">
-                <i class="fas fa-times"></i> <!-- Close Icon -->
-            </div>
-            <div class="profile-upload">
-                <img id="profileImage" src="{% static 'images/default_profile.png' %}" alt="Profile Image">
-                <p class="welcome-text">Welcome, {{ user.username }}!</p>
-            </div>
-            {% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
-                <!-- Profile Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Profile</h5>
-
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cogs me-2"></i> Account Settings
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-address-book me-2"></i> Address Book
-                    </a>
-                </li>
-            
-                <!-- Orders Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Orders</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
-                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-            
-                <!-- Payment Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Payment</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-credit-card me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-gift me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-users me-2"></i> Referrals & Earnings
-                    </a>
-                </li>
-            
-                <!-- More Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">More</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription Plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-history me-2"></i> Payment History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-life-ring me-2"></i> Support
-                    </a>
-                </li>
-            </ul>
-
-            {% endblock %}
-
-            
-
-        </div>
+       
 
         <!-- Main Content -->
-        <div class="col-md-9 content ">
+        <div class="col-md-12 content ">
 
             <div class="inner">
 

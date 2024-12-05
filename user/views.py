@@ -97,3 +97,7 @@ def gift_card(request):
 @login_required_custom
 def credit(request):
     return render(request, 'home/credit.html')
+
+@login_required_custom
+def cart(request):
+    return render(request, 'home/cart.html')
