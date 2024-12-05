@@ -90,7 +90,7 @@ input[type="email"]:focus {
 
 /* Styles for error messages */
 .error-message {
-    color: #e74c3c; /* Color for error messages */
+    color: green; /* Color for error messages */
     font-size: 0.85rem; /* Slightly smaller font size */
     margin-top: 0.5rem; /* Space above error messages */
 }

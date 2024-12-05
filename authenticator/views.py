@@ -83,7 +83,7 @@ def signin(request):
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
                 messages.success(request,f'logged in successfully as {user.username}')
-                return redirect('user_profile')        
+                return redirect('profile')        
             else:
                 messages.error(request,'Password is incorrect')
                 return render(request, 'authentication/signin.html', {'data':data})

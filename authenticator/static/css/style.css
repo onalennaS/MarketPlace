@@ -138,29 +138,15 @@ ul {
     padding: 0;
 }
 
-.message {
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: bold;
-    text-align: left;
-}
 
-.message.success {
-    background-color: #4caf50;
-}
-
-.message.error {
-    background-color: #f44336;
-}
-
-.message.warning {
-    background-color: #ff9800;
-}
-
-.message.info {
-    background-color: #2196f3;
+/* Sliding animation */
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
 
 /* Form input styling */
