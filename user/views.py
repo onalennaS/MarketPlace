@@ -30,10 +30,12 @@ def is_google_linked(user):
 # Create your views here.
 
 def landing_page(request):
+    return redirect('shop_base')
     return render(request, 'home/landing_page.html')
 
 
 def home(request):
+    return redirect('shop_base')
     return render(request, 'home/index.html')
     
 @login_required_custom
