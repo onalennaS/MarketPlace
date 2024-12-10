@@ -46,7 +46,6 @@ def dash(request):
 @login_required_custom
 @has_password
 def profile(request):
-
     return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
 
 @login_required_custom

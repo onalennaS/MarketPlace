@@ -21,7 +21,7 @@
 			</div>
 			<div class="  mt-2 position-relative" style="height:250px;">
 				<h5 class="fw-bold text-muted" style="position:absolute; top:5%;left:3%">Featured Categories</h5>
-				 <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%;">
+				 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="height: 100%;">
 					  <div class="carousel-indicators">
 					    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 					    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -131,15 +131,21 @@
 	<div class=" d-flex justify-content-start pb-3" style=" overflow-x: scroll;">
 
 		<div class="border shadow rounded mx-2" style="width: 200px;">
+			
 			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
 				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
 
 				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
 				</a>
+				<a class="text-dark prods" href="{% url 'view_product' %}">
 				<img src="{% static 'products/image/image.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
+			</a>
 			</div>
+		
 			<div class="px-2 mt-2">
+				<a class="  prods" href="{% url 'view_product' %}">
 				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
+				</a>
 				<div class="d-flex justify-content-start">
 				<h6 class="fw-bold">R 1,400</h6><br>
 				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
@@ -150,6 +156,8 @@
 			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
 			</div>
 		</div>
+
+
 		<div class="border shadow rounded mx-2" style="width: 200px;">
 			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
 				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
