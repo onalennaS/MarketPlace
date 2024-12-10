@@ -26,7 +26,7 @@
         #navbar {
             background-color: #ffffff;
             border-bottom: 1px solid #dee2e6;
-            z-index: 1030;
+            z-index: 1330;
             position: sticky;
             top: 0; /* Ensures the navbar stays at the top */
             width: 100%;
@@ -51,6 +51,10 @@
             }
             .off-nav{
                 display: none;
+            }
+
+            .on-nav{
+                display: block;
             }
             .inner{
             padding: 40px;
@@ -83,6 +87,9 @@
                 .forms{
                     display: none;
                 }
+                 .on-nav{
+                display: none;
+            }
         }
 
         .hovers:hover{
@@ -143,14 +150,7 @@
         </button>
 
         <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo"  width="130px"height="auto">
-        <form method="POST w-100"  class="forms">
-                {% csrf_token %}
-                   
-                <div class="input-group flex-nowrap">
-                  <span class="input-group-text" id="addon-wrapping"><i class="fa fa-search"></i></span>
-                  <input type="text" class="form-control" placeholder="type here to search ..." style="width:450px;" aria-label="Username" aria-describedby="addon-wrapping">
-                </div>
-        </form>
+       
         
         <!-- <div class="collapse navbar-collapse px-4" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
@@ -184,16 +184,49 @@
         </div> -->
         <div class="d-flex justify-content-end">
 
-            <a data-bs-toggle="offcanvas" data-bs-target="#search" aria-controls="staticBackdrop">                
+            <a data-bs-toggle="offcanvas" data-bs-target="#search" aria-controls="staticBackdrop" class="off-nav">                
                 <i class="fas fa-search   text-dark "></i>
-             </a>
+            </a>
+           
+
+             <a class="nav-link dropdown-toggle on-nav pe-4" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                    <span><i class="text-muted">{{user.username}}</i> <span class="text-muted p-2">|</span> Logout <span class="text-muted p-2">|</span> Orders <span class="text-muted p-2">|</span> My Account</span>
+                    <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="22">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" style="position: absolute; z-index: 1300;">
+                 <li  style=" z-index: 1300;"><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+                <li style=" z-index: 1300;" ><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+
+             <a class="on-nav" href="{% url 'wish_lists' %}">                
+                <i class="fas fa-heart  text-danger "></i>
+            </a>
             <a class="px-3" href="{% url 'cart' %}">                
                 <i class="fas fa-cart-plus  text-success "></i>
             </a>
             
         </div>
     </div>
+    
 </nav>
+<div class="on-nav">
+    
+<div class="col-12  container-fluid bg-primary p-2 d-flex justify-content-between " style="position: fixed; z-index: 1200; display: none;">
+        <button class="btn btn-dark mx-3"> shop By Department</button>
+         <form method="POST w-100"  class="forms">
+                {% csrf_token %}
+                   
+                <div class="input-group flex-nowrap">
+                  
+                  <input type="text" class="form-control" placeholder="type here to search ..." style="width:600px;" aria-label="Username" aria-describedby="addon-wrapping">
+                  <span class="input-group-text bg-dark" id="addon-wrapping"><i class="fa fa-search text-white"></i></span>
+                </div>
+        </form>
+        <button class="btn btn-info mx-5"> Sell on SixSkies</button>
+
+</div>
+</div>
 
 <div class="offcanvas offcanvas-start bg-light w-100" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
   <div class="offcanvas-header bg-white border">
