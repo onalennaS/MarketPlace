@@ -1,0 +1,92 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Subscription Plan{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background: linear-gradient(135deg, #2a4b8c, #3c81cc); border-radius: 0; padding: 8px 15px;">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}" style="color: white; text-decoration: none;">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Subscription Plan</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="text-center my-4">
+        <h2 class="fw-bold" style="color: #165baa;">Choose Your Subscription Plan</h2>
+        <p class="text-muted">Select a plan that best suits your needs and enjoy exclusive benefits!</p>
+    </div>
+
+    <!-- Subscription Plans -->
+    <div class="row">
+        <!-- Basic Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center bg-primary text-white">
+                    <h5 class="fw-bold">Basic Plan</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h2 class="fw-bold">R10/month</h2>
+                    <p class="text-muted">Perfect for individuals with basic needs.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Access to standard features</li>
+                        <li><i class="fas fa-check text-success"></i> Email support</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-primary">Subscribe Now</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standard Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center bg-success text-white">
+                    <h5 class="fw-bold">Standard Plan</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h2 class="fw-bold">R25/month</h2>
+                    <p class="text-muted">Great for regular users who want more features.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Access to premium features</li>
+                        <li><i class="fas fa-check text-success"></i> Priority email support</li>
+                        <li><i class="fas fa-check text-success"></i> Monthly insights</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-success">Subscribe Now</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center bg-warning text-dark">
+                    <h5 class="fw-bold">Premium Plan</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h2 class="fw-bold">R50/month</h2>
+                    <p class="text-muted">Best for businesses or power users.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> All features included</li>
+                        <li><i class="fas fa-check text-success"></i> 24/7 priority support</li>
+                        <li><i class="fas fa-check text-success"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check text-success"></i> Dedicated account manager</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-warning">Subscribe Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
