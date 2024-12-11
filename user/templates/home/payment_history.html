@@ -1,0 +1,78 @@
+{% extends 'home/buyer_dashboard.html' %}
+
+{% block title %}Payment History{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background: linear-gradient(135deg, #2a4b8c, #3c81cc); border-radius: 0; padding: 8px 15px;">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}" style="color: white; text-decoration: none;">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Payment History</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Payment History</h2>
+    </div>
+
+    <!-- Payment History Table -->
+    {% if payments %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Payment ID</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ payment.id }}</td>
+                            <td>{{ payment.amount|floatformat:2 }}</td>
+                            <td>{{ payment.date|date:"M d, Y" }}</td>
+                            <td>{{ payment.method }}</td>
+                            <td>
+                                {% if payment.status == 'Completed' %}
+                                    <span class="badge bg-success">Completed</span>
+                                {% elif payment.status == 'Pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'payment_details' payment.id %}" class="btn btn-sm btn-primary" style="background-color: #165baa; border-color: #165baa;">
+                                    <i class="fas fa-eye"></i> View Details
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <!-- No Payment Records Found -->
+        <div class="text-center py-5">
+            <h4 class="text-muted">No Payment History Found</h4>
+            <p class="text-muted">You haven't made any payments yet. Start shopping to make your first purchase!</p>
+            <a href="{% url 'home' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
+                <i class="fas fa-shopping-cart"></i> Browse Products
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}
