@@ -1,4 +1,4 @@
-{% extends 'home/base1.html' %}
+{% extends 'products/shop_base.html' %}
 
 {% block title %}Cart{% endblock %}
 {% load static %}
@@ -6,16 +6,16 @@
 {% block content %}
 <div class="container m-0 p-0">
     <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="background: linear-gradient(135deg,  #1a2848, #2c76b7); border-radius: 0; padding: 8px 15px;">
+    <nav aria-label="breadcrumb mt-0">
+        <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
 
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a>
+                <a href="{% url 'home' %}" class="text-dark text-decoration-none">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" class="text-white text-decoration-none">Dashboard</a>
+                <a href="{% url 'dash' %}" class="text-dark text-decoration-none">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Cart</li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Cart</li>
         </ol>
     </nav>
 
