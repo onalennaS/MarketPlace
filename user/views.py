@@ -106,3 +106,11 @@ def cart(request):
 @login_required_custom
 def checkout(request):
     return render(request, 'home/checkout.html')
+
+@login_required_custom
+def payment_history(request):
+    return render(request, 'home/payment_history.html')
+
+@login_required_custom
+def subscription_plan(request):
+    return render(request, 'home/subscription_plan.html')
