@@ -33,7 +33,7 @@
 
         /* Sidebar Styling */
         .sidebar {
-            background-color: #343a40;
+            background: linear-gradient(135deg, #1e3a78, #4c9fda);
             height: 100vh;
             padding: 20px 0;
             border-right: 1px solid #dee2e6;
@@ -50,11 +50,11 @@
         }
         .sidebar .nav-link.active {
             color: #fff;
-            background-color: #007bff;
+            background-color: white;
         }
         .sidebar .nav-link:hover {
-            background-color: #165baa;
-            color: white;
+            background-color: white;
+            color: black;
         }
 
         /* Sidebar Toggle Button Beneath Navbar */
@@ -157,6 +157,34 @@
                 transform: translateX(0);
             }
         }
+
+        .sidebar-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff; /* Blue color for text */
+    border-left: 4px solid grey; /* Highlight with a border */
+    padding-left: 10px; /* Space between border and text */
+    margin-bottom: 0.5rem; /* Space below the heading */
+}
+
+.nav-link {
+    font-size: 1rem;
+    color: #333; /* Neutral text color */
+    padding: 0.4rem 0;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff; /* Hover effect for links */
+    background-color: #f0f8ff; /* Light background for hover */
+    border-radius: 4px; /* Rounded corners on hover */
+}
+
+.separator {
+    border-top: 1px solid #ddd;
+    margin: 1rem 0;
+}
+
     
     </style>
 </head>
@@ -212,39 +240,41 @@
                 
             </div>
             <ul class="nav flex-column px-3">
+                <!-- Profile Section -->
                 <li class="nav-item">
+                    <div class="sidebar-heading text-white mb-2">Profile</div>
                     <a class="nav-link" href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Seller Profile</a>
+                    <a class="nav-link" href="{% url 'business_info' %}"><i class="fas fa-building"></i> Business Information</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'business_info' %}">
-                        <i class="fas fa-building"></i> Business Information
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'view_stats' %}"><i class="fas fa-chart-line"></i> View Stats</a>
-                </li>
+                
                 <div class="separator"></div>
+                
+                <!-- Products Section -->
                 <li class="nav-item">
+                    <div class="sidebar-heading text-white mb-2">Products</div>
                     <a class="nav-link" href="{% url 'add_products' %}"><i class="fas fa-plus"></i> Add Products</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'edit_products' %}"><i class="fas fa-edit"></i> Edit Products</a>
                 </li>
+                
                 <div class="separator"></div>
+                
+                <!-- Orders Section -->
                 <li class="nav-item">
+                    <div class="sidebar-heading text-white mb-2">Orders</div>
                     <a class="nav-link" href="{% url 'orders' %}"><i class="fas fa-box"></i> Orders</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'order_tracking' %}"><i class="fas fa-truck"></i> Order Tracking</a>
                 </li>
+                
                 <div class="separator"></div>
+                
+                <!-- Financials Section -->
                 <li class="nav-item">
+                    <div class="sidebar-heading text-white mb-2">Financials</div>
                     <a class="nav-link" href="{% url 'transaction' %}"><i class="fas fa-credit-card"></i> Transaction</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'pay_for_premium' %}"><i class="fas fa-star"></i> Pay for Premium</a>
                 </li>
             </ul>
+            
         </div>
 
         <!-- Main Content -->
