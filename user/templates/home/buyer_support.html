@@ -1,4 +1,4 @@
-{% extends 'home/buyer_dashboard.html' %}
+{% extends 'products/shop_base.html' %}
 
 {% block title %}Buyer Support{% endblock %}
 
@@ -8,12 +8,12 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+                <a href="{% url 'home' %}" style="color: black; text-decoration: none;">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" style="color: white; text-decoration: none;">Dashboard</a>
+                <a href="{% url 'dash' %}" style="color: black; text-decoration: none;">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Support</li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Support</li>
         </ol>
     </nav>
 <div class="container py-4">
