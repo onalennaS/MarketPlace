@@ -58,7 +58,7 @@
             }
             .inner{
             padding: 40px;
-            padding-top:0px;
+            padding-top:20px;
         }
         .pad{
             padding-left :15px;
@@ -91,7 +91,23 @@
                  .on-nav{
                 display: none;
             }
+            .tagx{
+                display: none;
               }
+            .tag{
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+                margin:0px;
+                padding: 10px;
+                background-color: white;
+                z-index:1100;
+                 box-shadow: 8px 4px 8px black;
+              }
+            }
+
+
+
             #offcanvasRight1, #offcanvasRight{
                 width: 100%;
             }
@@ -309,13 +325,14 @@
     </div>
     
 </nav>
+{% block secend_nav %}
 <div class="on-nav">
     
-<div class="col-12  container-fluid bg-primary p-2 d-flex justify-content-between " style="position: fixed; z-index: 1200; display: none;">
-    <div class="position-relative"> 
-        <p class="mx-5">
+    <div class=" bg-primary p-2 d-flex justify-content-between w-100" style="position: fixed; z-index: 1200; display: none;">
+
+        <p class=" m-0" >
           
-          <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          <button class="btn btn-dark " type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
            Shop by Categoty 
           </button>
         </p>
@@ -330,28 +347,28 @@
             </ul>
           </div>
         </div>
-    </div>
 
 
 
 
 
-         <form method="POST w-100"  class="forms">
+         <form method="POST "  class="forms">
                 {% csrf_token %}
                    
-                <div class="input-group flex-nowrap">
+                <div class="input-group flex-nowrap w-100">
                   
-                  <input type="text" class="form-control" placeholder="type here to search ..." style="width:600px;" aria-label="Username" aria-describedby="addon-wrapping">
+                  <input type="text" class="form-control w-100" placeholder="type here to search ..."  aria-label="Username" aria-describedby="addon-wrapping">
                   <span class="input-group-text bg-dark" id="addon-wrapping"><i class="fa fa-search text-white"></i></span>
                 </div>
         </form>
-        <div>
+        <div class="">
             
-             <button class="btn btn-dark mx-5"> Sell on SixSkies</button>
+             <button class="btn btn-dark "> Sell on SixSkies</button>
         </div>
 
+ </div>
 </div>
-</div>
+{% endblock %}
 
 <div class="offcanvas offcanvas-start bg-light w-100" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="z-index: 1300;">
   <div class="offcanvas-header bg-white border">
