@@ -18,7 +18,7 @@ def has_password(view_func):
     return _wrapped_view
 
 from allauth.socialaccount.models import SocialAccount
-
+ 
 def is_google_linked(user):
     try:
         social_account = SocialAccount.objects.get(user=user)
@@ -26,6 +26,12 @@ def is_google_linked(user):
     except SocialAccount.DoesNotExist:
         return False
 
+def is_verified(user):
+    try:
+        social_account = SocialAccount.objects.get(user=user)
+        return True
+    except SocialAccount.DoesNotExist:
+        return False
 # Create your views here.
 # Create your views here.
 

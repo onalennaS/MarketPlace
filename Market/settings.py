@@ -31,6 +31,9 @@ SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
 
 SITE_ID=2
 
+# CUSTOM USer Model 
+AUTH_USER_MODEL = "authenticator.CustomUser"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -163,4 +166,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sixskies25@gmail.com'  # Replace with your Gmail address
-EMAIL_HOST_PASSWORD = 'your_app_password'  # Replace with the App Password you generated
+EMAIL_HOST_PASSWORD = 'atyj aawq azyk napt'  # Replace with the App Password you generated
+
+

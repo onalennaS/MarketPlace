@@ -2,8 +2,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.backends import ModelBackend  
-
-
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -11,15 +9,8 @@ from .validator import validate_password
 from django.contrib.auth.hashers import make_password, check_password
 from functools import wraps
 from django.shortcuts import redirect
-
-def login_required_custom(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return view_func(request, *args, **kwargs)
-        return redirect('login')  # Redirect to login page if not authenticated
-    return _wrapped_view
-
+from .utils import send_email_reset_link, login_required_custom,generate_reset_token, verify_reset_token
+from django.conf import settings
 
 
 def register(request):
@@ -35,7 +26,7 @@ def register(request):
 
         for key, value in data.items():
             if not value:
-                messages.error(request, f'{key} if a required field')
+                messages.error(request, f'{key} is a required field')
                 return render(request, 'authentication/signup.html', {'data':data})
 
         email_exists = User.objects.filter(username=data['email'])
@@ -53,11 +44,11 @@ def register(request):
             messages.error(request,f'{is_password_valid}')
             return render(request, 'authentication/signup.html', {'data':data})
 
-        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']))
+        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
         user.save()
         
         messages.success(request,f'Account created successfully proceed')
-        return redirect('signin')
+        return redirect('activate_account')
 
     return render(request, 'authentication/signup.html')
 
@@ -94,13 +85,6 @@ def signin(request):
     return render(request, 'authentication/signin.html')
 
 
-def home(request):
-    if request.user.is_authenticated:
-        return HttpResponse(f'Logged in successfully {request.user}')
-    else:
-        messages.error(request,'you are not logged in ')
-        return redirect('login')
-
 def create_password(request):
 
     if not request.user.is_authenticated:
@@ -126,24 +110,6 @@ def logout_view(request):
     logout(request)
     return redirect('signin')  
 
-from itsdangerous import URLSafeTimedSerializer
-from django.conf import settings
-
-def generate_reset_token(email):
-    serializer = URLSafeTimedSerializer(settings.SECRET_KEY)
-    return serializer.dumps(email, salt='password-reset-salt')
-
-def verify_reset_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(settings.SECRET_KEY)
-    try:
-        email = serializer.loads(token, salt='password-reset-salt', max_age=expiration)
-        return email
-    except Exception:
-        return None
-
-def password_reset_done(request):
-    return render(request, 'authentication/password_reset_done.html')
-
 
 def request_password_reset(request):
     if request.method == 'POST':
@@ -152,7 +118,8 @@ def request_password_reset(request):
         
         reset_token = generate_reset_token(email)
         reset_link = f"{settings.SITE_URL}/auth/reset-password/{reset_token}/"
-        print(reset_link)
+        send_email_reset_link(email, reset_link)
+        
                 # send_mail(
                 #     'Password Reset Request',
                 #     f"Click the link to reset your password: {reset_link}",
@@ -166,7 +133,6 @@ def request_password_reset(request):
 
 def reset_password(request, token):
     email = verify_reset_token(token)
-    print(email)
     if not email:
         return render(request, 'authentication/reset_password_invalid.html')
     user = User.objects.filter(email=email).first()
@@ -183,8 +149,16 @@ def reset_password(request, token):
             messages.error(request,f'{is_password_valid}')
             return render(request, 'authentication/reset_password.html', {'email': email})
         user.password = make_password(data['password'])
+        user.is_verified = True
+        user.is_active = True
         user.save()
+
         return render(request, 'authentication/password_reset_success.html')
     
     return render(request, 'authentication/reset_password.html', {'email': email})
 
+def password_reset_done(request):
+    return render(request, 'authentication/password_reset_done.html')
+
+def activate_account(request):
+    return render(request, 'authentication/activate_account.html')
