@@ -11,7 +11,8 @@ from functools import wraps
 from django.shortcuts import redirect
 from .utils import send_email_reset_link, login_required_custom,generate_reset_token, verify_reset_token
 from django.conf import settings
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 def register(request):
     if request.user.is_authenticated:

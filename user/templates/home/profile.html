@@ -202,7 +202,13 @@
                 <div class="card-body" id="email-disp" style="display:block;">
                     <h5 class="card-title"><i class="fa fa-envelope"></i> Email</h5>
                     <div class="d-flex justify-content-between">
-                        <p class="card-text">{{user.email}} <i class="fa fa-times-circle text-danger p-3 pt-0 pb-0"> </i></p>
+                        <p class="card-text">{{user.email}} 
+                            {% if is_google_linked %}
+                            <i class="fa fa-times-circle text-danger p-3 pt-0 pb-0"> </i>
+                            {% else %}
+                            <i class="fa fa-circle-check text-success p-3 pt-0 pb-0"> </i>
+                            {% endif %}
+                        </p>
                       <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('email')">Edit</button>
                     </div>
                 </div>

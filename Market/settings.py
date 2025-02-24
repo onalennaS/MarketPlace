@@ -32,7 +32,7 @@ SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
 SITE_ID=2
 
 # CUSTOM USer Model 
-AUTH_USER_MODEL = "authenticator.CustomUser"
+
 
 # Application definition
 
