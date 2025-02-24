@@ -1,0 +1,67 @@
+{% extends 'products/shop_base2.html' %}
+
+{% block title %}View Product{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Browse Categories</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="{% static 'products/image/food1.png' %}" alt="Electronics">
+                <div class="category-overlay">
+                    <div class="category-title">Electronics</div>
+                    <div class="category-description">Discover the latest gadgets, smartphones, and accessories.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="{% static 'products/image/food.png' %}" alt="Fashion">
+                <div class="category-overlay">
+                    <div class="category-title">Fashion</div>
+                    <div class="category-description">Trendy outfits, shoes, and accessories for every style.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="{% static 'products/image/food1.png' %}" alt="Groceries">
+                <div class="category-overlay">
+                    <div class="category-title">Groceries</div>
+                    <div class="category-description">Fresh food, drinks, and daily essentials at great prices.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="https://source.unsplash.com/400x300/?furniture" alt="Furniture">
+                <div class="category-overlay">
+                    <div class="category-title">Furniture</div>
+                    <div class="category-description">Stylish and comfortable furniture for every space.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="https://source.unsplash.com/400x300/?automobile" alt="Automobile">
+                <div class="category-overlay">
+                    <div class="category-title">Automobile</div>
+                    <div class="category-description">Find new and used cars, auto parts, and accessories.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card">
+                <img src="https://source.unsplash.com/400x300/?sports" alt="Sports">
+                <div class="category-overlay">
+                    <div class="category-title">Sports</div>
+                    <div class="category-description">Explore top-quality sports gear, clothing, and equipment.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

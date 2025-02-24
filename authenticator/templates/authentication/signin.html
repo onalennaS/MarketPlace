@@ -45,7 +45,10 @@
         <!-- LOG IN WITH GOOGLE LINK -->
         {% load socialaccount %}
         
-        <a href="{% provider_login_url 'google' next='/account/dashboard/' %}">Login with Google</a>
+        <a href="{% provider_login_url 'google' next='/' %}" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+    Login with Google
+</a>
 <!-- LOG IN WITH GOOGLE END LINK -->
         <hr>
         <form method="POST" class="auth-form">

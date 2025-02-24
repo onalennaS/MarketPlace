@@ -33,6 +33,35 @@ def verify_reset_token(token, expiration=3600):
     except Exception:
         return None
 
+
+def send_email_verification_link(recipient_email, verify_link):
+    try:
+        user = User.objects.values('username').get(email=recipient_email)
+    except User.DoesNotExist:
+        logger.error(f"No user found with email: {recipient_email}")
+        return False  # Return failure if user doesn't exist
+
+    email_content = render_to_string("authentication/email_activate_account_template.html", {'user': user, 'verify_link': verify_link})
+    text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
+
+    email = EmailMultiAlternatives(
+        subject="Verify Your Email",
+        body=text_content,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[recipient_email],
+    )
+    email.attach_alternative(email_content, "text/html")  # Attach HTML version
+    email.send()
+
+    logger.info(f"Password reset email sent to {recipient_email}")
+    return True  # Indicate success
+
+def send_verify_email(email):
+    reset_token = generate_reset_token(email)
+    reset_link = f"{settings.SITE_URL}/auth/verify_email/{reset_token}/"
+    send_email_verification_link(email, reset_link)
+
+
 def send_email_reset_link(recipient_email, reset_link):
     try:
         user = User.objects.values('first_name').get(email=recipient_email)
