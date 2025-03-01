@@ -1,0 +1,275 @@
+{% extends 'seller/base.html' %}
+{% block links %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+{% endblock %}
+{% block styles %}
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+
+{% endblock %}
+
+{% load static %}
+
+{% block nav %}
+        <div class="nav-items">
+            <a href="#" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+
+{% block content %}
+    <div class="container my-4">
+        <h1 class="mb-4 text-center">Product Management</h1>
+
+        <!-- Quick Statistics Section -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card p-3">
+                    <h5>Most Bought Product</h5>
+                    <img src="{% static 'products/image/food1.png' %}" width="60px" height="60px" alt="Most Bought" class="img-thumbnail mx-auto d-block">
+                    <p>Wireless Headphones</p>
+                    <p>Total Sales: 500</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card p-3">
+                    <h5>Least Bought Product</h5>
+                    <img src="{% static 'products/image/food.png' %}" width="60px" height="60px" alt="Least Bought" class="img-thumbnail mx-auto d-block">
+                    <p>USB Flash Drive</p>
+                    <p>Total Sales: 20</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Product Button -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'add_products' %}" class="btn btn-success"><i class="fas fa-plus"></i> Add New Product</a>
+        </div>
+        <button class="floating-btn d-md-none" onclick="alert('Add New Product')">+</button>
+
+        <!-- Product DataTable -->
+        <div class="card p-3">
+            <table id="productTable" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="https://via.placeholder.com/50" alt="Product" class="product-img"></td>
+                        <td>Wireless Headphones</td>
+                        <td>Electronics</td>
+                        <td>$59.99</td>
+                        <td>50</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td>
+                            <a href="{% url 'edit_products' %}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="https://via.placeholder.com/50" alt="Product" class="product-img"></td>
+                        <td>USB Flash Drive</td>
+                        <td>Accessories</td>
+                        <td>$9.99</td>
+                        <td>200</td>
+                        <td><span class="badge bg-secondary">Inactive</span></td>
+                        <td>
+                            <a href="{% url 'edit_products' %}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Activity Section -->
+        <div class="card p-3 mt-4">
+            <h4 class="mb-3">Recent Activity</h4>
+            <div class="table-responsive">
+                <table class="table table-striped" style="background-color:inherit; color: inherit;">
+                    <thead>
+                        <tr>
+                            <th style="background-color:inherit; color: inherit;">Activity</th>
+                            <th style="background-color:inherit; color: inherit;">Product</th>
+                            <th style="background-color:inherit; color: inherit;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color:inherit; color: inherit;">Updated</td>
+                            <td style="background-color:inherit; color: inherit;">Wireless Headphones</td>
+                            <td style="background-color:inherit; color: inherit;">2 hours ago</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:inherit; color: inherit;">Added</td>
+                            <td style="background-color:inherit; color: inherit;">USB Flash Drive</td>
+                            <td style="background-color:inherit; color: inherit;">5 hours ago</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:inherit; color: inherit;">Deleted</td>
+                            <td style="background-color:inherit; color: inherit;">Old Model Headphones</td>
+                            <td style="background-color:inherit; color: inherit;">1 day ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Manage Variants Section -->
+        <div class="card p-3 mt-4">
+            <h4 class="mb-3">Manage Variants</h4>
+            <ul class="nav nav-tabs" id="variantTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="extras-tab" data-bs-toggle="tab" href="#extras" role="tab">Extras</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="colors-tab" data-bs-toggle="tab" href="#colors" role="tab">Colors</a>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-3">
+                <!-- Extras Section -->
+                <div class="tab-pane fade show active" id="extras" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="extraName" class="form-label">Extra Name</label>
+                            <input type="text" class="form-control" id="extraName" placeholder="Enter extra name" style="background-color:inherit; color: inherit;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="extraPrice" class="form-label">Extra Price</label>
+                            <input type="number" class="form-control" id="extraPrice" placeholder="Enter extra price" style="background-color:inherit; color: inherit;">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3">Add Extra</button>
+                </div>
+
+                <!-- Colors Section -->
+                <div class="tab-pane fade" id="colors" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="colorName" class="form-label">Color Name</label>
+                            <input type="text" class="form-control" id="colorName" placeholder="Enter color name" style="background-color:inherit; color: inherit;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="colorImage" class="form-label">Upload Color Image</label>
+                            <input type="file" class="form-control" id="colorImage" accept="image/*" style="background-color:inherit; color: inherit;">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Color Preview</label>
+                        <div class="color-preview" id="colorPreview"></div>
+                    </div>
+                    <button class="btn btn-primary mt-3">Add Color</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#productTable').DataTable({
+                responsive: true
+            });
+        });
+
+        document.getElementById("colorImage").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => document.getElementById("colorPreview").style.backgroundImage = `url(${e.target.result})`;
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+{% endblock %}

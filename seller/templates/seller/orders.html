@@ -1,91 +1,362 @@
-{% extends 'seller/seller_base.html' %}
-{% block title %}Orders{% endblock %}
+{% extends 'seller/base.html' %}
+{% block links %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block styles %}
+        /* Sticky Header & Tabs */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        .nav-tabs .nav-item {
+            flex: 1;
+        }
+
+        /* Order Card Styling */
+        .order-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .status-label {
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            
+            border-radius: 5px;
+            padding: 3px 0;
+            font-size: 0.9rem;
+        }
+        .status-new { background: #17a2b8; } /* Blue */
+        .status-preparing { background: #ffc107; } /* Yellow */
+        .status-scheduled { background: #007bff; } /* Dark Blue */
+        .status-completed { background: #28a745; } /* Green */
+        .status-canceled { background: #dc3545; } /* Red */
+
+        /* Items List Styling */
+        .items-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .items-list li {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+            transition: background 0.2s ease-in-out;
+        }
+        .items-list li:last-child {
+            border-bottom: none;
+        }
+        .items-list li:hover {
+            background: #f8f9fa;
+        }
+        .item-extras {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 10px;
+
+        }
+        .modal-body {
+            padding: 20px;
+            background-color:inherit;
+        }
+        .modal-body h6 {
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .modal-body ul {
+            padding-left: 20px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .form-control, .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+        }
+
+{% endblock %}
+{% block nav %}
+        <div class="nav-items">
+            <a href="#" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <!-- Breadcrumb navigation -->
- <nav aria-label="breadcrumb">
-    <ol class="breadcrumb" style="background: linear-gradient(135deg, #2a4b8c, #3c81cc); border-radius: 0; padding: 8px 15px;">
-
-         <li class="breadcrumb-item">
-             <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-         </li>
-         <li class="breadcrumb-item">
-             <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
-         </li>
-         <li class="breadcrumb-item active" aria-current="page" style="color: white;">Orders</li>
-     </ol>
- </nav>
-</nav>
-
-<!-- Filters -->
-<div class="container mt-4">
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label for="statusFilter" class="form-label">Filter by Status</label>
-            <select id="statusFilter" class="form-select" onchange="filterOrders()">
-                <option value="all" selected>All</option>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-                <option value="Canceled">Canceled</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label for="dateFilter" class="form-label">Filter by Date</label>
-            <input type="date" id="dateFilter" class="form-control" onchange="filterOrders()" />
-        </div>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center header-container mb-3 flex-wrap mt-4">
+        <h1 class="h4"><i class="bi bi-cart-check"></i> Order Management</h1>
+        <input type="text" id="searchOrder" placeholder="Search Order #" class="form-control w-25" style="background-color:inherit; color: inherit;">
+        <button id="toggleOrders" class="btn btn-info"><i class="bi bi-pause-circle"></i> Stop Orders</button>
     </div>
-</div>
 
-<!-- Orders section -->
-<div class="container mt-3" id="ordersContainer">
-    <div class="row">
-        {% for order in orders %}
-        <div class="col-md-6 col-lg-4 mb-4 order-card" data-status="{{ order.status }}" data-date="{{ order.date }}">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Order #{{ order.id }}</h5>
-                    <p class="card-text">
-                        <strong>Customer:</strong> {{ order.customer_name }}<br>
-                        <strong>Date:</strong> {{ order.date|date:"F j, Y" }}<br>
-                        <strong>Status:</strong> 
-                        <span class="{% if order.status == 'Pending' %}badge bg-warning text-dark{% elif order.status == 'Completed' %}badge bg-success{% else %}badge bg-danger{% endif %}">{{ order.status }}</span>
-                    </p>
-                    <p class="card-text text-muted">Total: ${{ order.total_amount }}</p>
-                    <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">View Details</a>
-                    {% if order.status == 'Pending' %}
-                    <a href="{% url 'mark_complete' order.id %}" class="btn btn-sm btn-success">Mark as Complete</a>
-                    {% endif %}
+    <!-- Sticky Navigation Tabs -->
+    <ul class="nav nav-tabs sticky-header mb-4" style="background-color: inherit;">
+        <li class="nav-item"><button class="nav-link active" data-stage="new">New (<span id="count-new">0</span>)</button></li>
+        <li class="nav-item"><button class="nav-link" data-stage="preparing">Preparing (<span id="count-preparing">0</span>)</button></li>
+        <li class="nav-item"><button class="nav-link" data-stage="scheduled">Scheduled (<span id="count-scheduled">0</span>)</button></li>
+        <li class="nav-item"><button class="nav-link" data-stage="completed">Completed (<span id="count-completed">0</span>)</button></li>
+        <li class="nav-item"><button class="nav-link" data-stage="canceled">Canceled (<span id="count-canceled">0</span>)</button></li>
+    </ul>
+
+    <!-- Orders Container -->
+    <div id="ordersContainer" class="row row-cols-1 row-cols-md-2 g-3"></div>
+
+    <!-- Loading Spinner -->
+    <div class="spinner-border text-primary loading-spinner" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="modalOrderTitle" class="modal-title"><i class="bi bi-receipt"></i> Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong><i class="bi bi-clock"></i> Timestamp:</strong> <span id="modalTimestamp"></span></p>
+                    <p><strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong> <span id="modalMessage"></span></p>
+                    <h6><i class="bi bi-list-check"></i> Order Items</h6>
+                    <ul class="items-list" id="modalOrderItems"></ul>
+                    <p class="fw-bold mt-3"><i class="bi bi-currency-dollar"></i> Total: <span id="modalTotal"></span></p>
+                    <h6><i class="bi bi-gift"></i> Payment</h6>
+                    <p><strong>Status:</strong> <span id="modalPaymentStatus"></span></p>
+                    <h6><i class="bi bi-truck"></i> Delivery</h6>
+                    <p><strong>Address:</strong> <span id="modalDeliveryAddress"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelOrder" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel Order</button>
+                    <button id="moveOrder" class="btn btn-primary"><i class="bi bi-arrow-right-circle"></i> Move to Next</button>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="text-center mt-5">
-            <i class="fas fa-box-open text-secondary" style="font-size: 5rem;"></i>
-            <p class="text-muted mt-3">No orders have been placed yet.</p>
-        </div>
-        {% endfor %}
     </div>
-</div>
+{% endblock %}
 
-<script>
-    function filterOrders() {
-        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
-        const dateFilter = document.getElementById('dateFilter').value;
-        const orderCards = document.querySelectorAll('.order-card');
-
-        orderCards.forEach(card => {
-            const status = card.dataset.status.toLowerCase();
-            const date = card.dataset.date;
-            const matchesStatus = statusFilter === 'all' || status === statusFilter;
-            const matchesDate = !dateFilter || date === dateFilter;
-
-            if (matchesStatus && matchesDate) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+{% block scripts %}
+    <script>
+        let orders = [
+    { 
+        id: 12345, 
+        items: [
+            { product: "Nike Sneakers", quantity: 1, extras: "Gift Wrap" },
+            { product: "Adidas Shoes", quantity: 2, extras: "Extra Laces" }
+        ],
+        message: "Please deliver fast", 
+        timestamp: "10:30 AM", 
+        status: "new", 
+        total: 500, 
+        paymentStatus: "paid", 
+        deliveryAddress: "123 Main St" 
+    },
+    { 
+        id: 12346, 
+        items: [
+            { product: "Puma Shoes", quantity: 1, extras: ["palony", "french"]},
+            { product: "Reebok Shoes", quantity: 1, extras: "Gift Box" }
+        ],
+        message: "Leave at the door", 
+        timestamp: "11:15 AM", 
+        status: "preparing", 
+        total: 750, 
+        paymentStatus: "pending", 
+        deliveryAddress: "456 Oak St" 
     }
-</script>
-{% endblock content %}
+];
+
+let activeStage = "new"; 
+let ordersEnabled = true;
+let selectedOrderId = null;
+
+// Render orders based on active stage
+function renderOrders(filteredOrders = null) {
+    const container = document.getElementById("ordersContainer");
+    container.innerHTML = "";
+
+    let statusCounts = { new: 0, preparing: 0, scheduled: 0, completed: 0, canceled: 0 };
+
+    const ordersToRender = filteredOrders || orders;
+
+    ordersToRender.forEach(order => {
+        statusCounts[order.status]++;
+        if (order.status === activeStage) {
+            let card = `
+                <div class="col">
+                    <div class="card p-3 order-card" onclick="openOrderModal(${order.id})">
+                        <h6><i class="bi bi-receipt"></i> Order #${order.id}</h6>
+                        <span class="status-label status-${order.status}">${order.status.toUpperCase()}</span>
+                        <p class="text-muted small"><i class="bi bi-clock"></i> ${order.timestamp}</p>
+                        <p><strong><i class="bi bi-chat-left-text"></i> Note:</strong> ${order.message}</p>
+                        <h6><i class="bi bi-list-check"></i> Items:</h6>
+                        <ul class="items-list">
+                            ${order.items.map(item => `
+                                <li>
+                                    ${item.product} (x${item.quantity})
+                                    ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += card;
+        }
+    });
+
+    // Update status counts
+    for (let stage in statusCounts) {
+        document.getElementById(`count-${stage}`).innerText = statusCounts[stage];
+    }
+}
+
+// Open order modal
+function openOrderModal(orderId) {
+    selectedOrderId = orderId;
+    let order = orders.find(o => o.id === orderId);
+    document.getElementById("modalOrderTitle").innerText = `Order #${order.id}`;
+    document.getElementById("modalTimestamp").innerText = order.timestamp;
+    document.getElementById("modalMessage").innerText = order.message || "No note provided.";
+    document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
+        <li>
+            ${item.product} (x${item.quantity})
+            ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+        </li>
+    `).join('');
+    document.getElementById("modalTotal").innerText = `R${order.total}`;
+    document.getElementById("modalPaymentStatus").innerText = order.paymentStatus;
+    document.getElementById("modalDeliveryAddress").innerText = order.deliveryAddress;
+    new bootstrap.Modal(document.getElementById("orderModal")).show();
+}
+
+// Move order to the next stage
+function moveOrderToNextStage(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    const stages = ["new", "preparing", "scheduled", "completed"];
+    const currentIndex = stages.indexOf(order.status);
+    if (currentIndex < stages.length - 1) {
+        order.status = stages[currentIndex + 1];
+        renderOrders();
+    }
+}
+
+// Cancel an order
+function cancelOrder(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    order.status = "canceled";
+    renderOrders();
+}
+
+// Event listeners
+document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", () => {
+        document.querySelector(".nav-link.active").classList.remove("active");
+        link.classList.add("active");
+        activeStage = link.getAttribute("data-stage");
+        renderOrders();
+    });
+});
+
+document.getElementById("toggleOrders").addEventListener("click", () => {
+    ordersEnabled = !ordersEnabled;
+    document.getElementById("toggleOrders").innerHTML = ordersEnabled ? "<i class='bi bi-pause-circle'></i> Stop Orders" : "<i class='bi bi-play-circle'></i> Enable Orders";
+    // You can add additional logic here to handle the enabling/disabling of orders
+});
+
+document.getElementById("searchOrder").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredOrders = orders.filter(order => order.id.toString().includes(searchTerm));
+    renderOrders(filteredOrders);
+});
+
+document.getElementById("moveOrder").addEventListener("click", () => {
+    moveOrderToNextStage(selectedOrderId);
+    bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
+});
+
+document.getElementById("cancelOrder").addEventListener("click", () => {
+    if (confirm("Are you sure you want to cancel this order?")) {
+        cancelOrder(selectedOrderId);
+        bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
+    }
+});
+
+// Initial render
+renderOrders();
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

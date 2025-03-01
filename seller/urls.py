@@ -20,6 +20,8 @@ urlpatterns = [
     path('order_tracking/', views.order_tracking, name='order_tracking'),
     path('transaction/', views.transaction, name='transaction'),
     path('pay_for_premium/', views.pay_for_premium, name='pay_for_premium'),
-
+    path('manage_product/', views.manage_product, name='manage_product'),
+    path('reviews/', views.reviews, name='reviews'),
+    
 
 ]

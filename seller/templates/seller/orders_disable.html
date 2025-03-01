@@ -1,0 +1,91 @@
+{% extends 'seller/seller_base.html' %}
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Breadcrumb navigation -->
+ <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background: linear-gradient(135deg, #2a4b8c, #3c81cc); border-radius: 0; padding: 8px 15px;">
+
+         <li class="breadcrumb-item">
+             <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
+         </li>
+         <li class="breadcrumb-item">
+             <a href="{% url 'base' %}" style="color: white; text-decoration: none;">Dashboard</a>
+         </li>
+         <li class="breadcrumb-item active" aria-current="page" style="color: white;">Orders</li>
+     </ol>
+ </nav>
+</nav>
+
+<!-- Filters -->
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Filter by Status</label>
+            <select id="statusFilter" class="form-select" onchange="filterOrders()">
+                <option value="all" selected>All</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="dateFilter" class="form-label">Filter by Date</label>
+            <input type="date" id="dateFilter" class="form-control" onchange="filterOrders()" />
+        </div>
+    </div>
+</div>
+
+<!-- Orders section -->
+<div class="container mt-3" id="ordersContainer">
+    <div class="row">
+        {% for order in orders %}
+        <div class="col-md-6 col-lg-4 mb-4 order-card" data-status="{{ order.status }}" data-date="{{ order.date }}">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Order #{{ order.id }}</h5>
+                    <p class="card-text">
+                        <strong>Customer:</strong> {{ order.customer_name }}<br>
+                        <strong>Date:</strong> {{ order.date|date:"F j, Y" }}<br>
+                        <strong>Status:</strong> 
+                        <span class="{% if order.status == 'Pending' %}badge bg-warning text-dark{% elif order.status == 'Completed' %}badge bg-success{% else %}badge bg-danger{% endif %}">{{ order.status }}</span>
+                    </p>
+                    <p class="card-text text-muted">Total: ${{ order.total_amount }}</p>
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">View Details</a>
+                    {% if order.status == 'Pending' %}
+                    <a href="{% url 'mark_complete' order.id %}" class="btn btn-sm btn-success">Mark as Complete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center mt-5">
+            <i class="fas fa-box-open text-secondary" style="font-size: 5rem;"></i>
+            <p class="text-muted mt-3">No orders have been placed yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function filterOrders() {
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const dateFilter = document.getElementById('dateFilter').value;
+        const orderCards = document.querySelectorAll('.order-card');
+
+        orderCards.forEach(card => {
+            const status = card.dataset.status.toLowerCase();
+            const date = card.dataset.date;
+            const matchesStatus = statusFilter === 'all' || status === statusFilter;
+            const matchesDate = !dateFilter || date === dateFilter;
+
+            if (matchesStatus && matchesDate) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock content %}

@@ -1,180 +1,202 @@
 {% extends 'seller/base.html' %}
 
-{% block title %}Business Info{% endblock %}
 
+{% block styles %}
+ .add-business-container {
+            max-width: 700px;
+            background: none;
+            padding: 30px;
+            border-radius: 10px;
+            
+            
+        }
+        .logo-preview {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #007bff;
+            display: none;
+        }
+{% endblock %}
+
+{% block nav %}
+        <div class="nav-items">
+            <a href="#" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+{% load static %}
 {% block content %}
-<style>
-    .card {
-        background-color: transparent;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s ease, transform 0.3s ease;
-        font-family: Arial, sans-serif;
-    }
+<div class="row justify-content-center">
+    <div class="add-business-container">
+        <h2 class="text-center">View/Edit Business details</h2>
+        <p class="text-center text-muted">Provide accurate details your business on SixSkies.</p>
 
-    .card:hover {
-        transform: scale(1.02);
-        border-color: #0f4f8a;
-    }
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <!-- Business Logo -->
+            <div class="mb-3 text-center">
+                <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
+                <input type="file" class="form-control" id="businessLogo" accept="image/*" required style="background-color:inherit; color: inherit;">
+                <div class="mt-3">
+                    <img id="logoPreview" class="logo-preview" alt="Business Logo Preview">
+                </div>
+            </div>
 
-    .card-header {
-        color: #333;
-        font-weight: normal;
-    }
+            <!-- Business Name -->
+            <div class="mb-3">
+                <label for="businessName" class="form-label fw-bold">Business Name</label>
+                <input type="text" class="form-control" id="businessName" placeholder="Enter your business name" required style="background-color:inherit; color: inherit;">
+            </div>
 
-    .card-title {
-        display: flex;
-        align-items: center;
-        font-weight: normal;
-    }
+            <!-- Business Type -->
+            <div class="mb-3">
+                <label for="businessType" class="form-label fw-bold">Business Type</label>
+                <select class="form-control" id="businessType" required style="background-color:inherit; color: inherit;">
+                    <option value="">Select Type</option>
+                    <option value="sole_proprietorship">Sole Proprietorship</option>
+                    <option value="partnership">Partnership</option>
+                    <option value="corporation">Corporation</option>
+                    <option value="limited_liability">Limited Liability Company (LLC)</option>
+                </select>
+            </div>
 
-    .card-title i {
-        margin-right: 8px;
-    }
 
-    .btn-custom {
-        background-color: #165baa;
-        color: white;
-        border: none;
-    }
+            <!-- Business Description -->
+            <div class="mb-3">
+                <label for="businessDescription" class="form-label fw-bold">Business Description</label>
+                <textarea class="form-control" id="businessDescription" rows="4" placeholder="Describe your business" required style="background-color:inherit; color: inherit;"></textarea>
+            </div>
 
-    .btn-custom:hover {
-        background-color: #0f4f8a;
-    }
+            <!-- Business Registration Number -->
+            <div class="mb-3">
+                <label for="registrationNumber" class="form-label fw-bold">Business Registration Number</label>
+                <input type="text" class="form-control" id="registrationNumber" placeholder="Enter registration number (if available)" style="background-color:inherit; color: inherit;">
+            </div>
 
-    .form-check-label {
-        margin-left: 10px;
-    }
+            <!-- Business Category -->
+            <div class="mb-3">
+                <label for="businessCategory" class="form-label fw-bold">Business Category</label>
+                <select class="form-control" id="businessCategory" required style="background-color:inherit; color: inherit;">
+                    <option value="">Select Category</option>
+                    <option value="retail">Retail</option>
+                    <option value="services">Services</option>
+                    <option value="food">Food & Beverage</option>
+                    <option value="technology">Technology</option>
+                    <option value="health">Health & Wellness</option>
+                    <option value="education">Education</option>
+                </select>
+            </div>
 
-    .triangle {
-        width: 0;
-        height: 0;
-        border-right: 120px solid transparent;
-        border-bottom: 120px solid white;
-        transform: scaleY(-1);
-        margin-left: -25px;
-    }
-</style>
+            <!-- Contact Information -->
+            <h4 class="mt-4">Contact Information</h4>
 
-<div class="container mt-5">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="background: linear-gradient(135deg, #2a4b8c, #3c81cc); border-radius: 0; padding: 8px 15px;">
-            <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: white;">Business Info</li>
-        </ol>
-    </nav>
+            <div class="mb-3">
+                <label for="businessPhone" class="form-label fw-bold">Phone Number</label>
+                <input type="tel" class="form-control" id="businessPhone" placeholder="Enter phone number" required style="background-color:inherit; color: inherit;">
+            </div>
 
-    <div>
-        <div class="card w-100 mb-3 bg-light rounded-0 p-0">
-            <div class="card-body p-0" id="business-info-disp" style="display:block; background: linear-gradient(135deg,  #1a2848, #2c76b7);">
-                <div class="d-flex justify-content-between ">
-                    <div class="p-3" style="background-color: white;width: 80%;">
-                        <h5 class="card-title"><i class="fa fa-building"></i><b>Add Business Info</b></h5>
-                        <p class="card-text">Provide your business details below <i class="fa fa-info-circle text-primary p-3 pt-0 pb-0"></i></p>
+            <div class="mb-3">
+                <label for="businessEmail" class="form-label fw-bold">Business Email</label>
+                <input type="email" class="form-control" id="businessEmail" placeholder="Enter business email" required style="background-color:inherit; color: inherit;">
+            </div>
+
+            <div class="mb-3">
+                <label for="businessWebsite" class="form-label fw-bold">Website (Optional)</label>
+                <input type="url" class="form-control" id="businessWebsite" placeholder="Enter business website URL" style="background-color:inherit; color: inherit;">
+            </div>
+
+            <div class="mb-3">
+                <label for="businessAddress" class="form-label fw-bold">Business Address</label>
+                <textarea class="form-control" id="businessAddress" rows="2" placeholder="Enter business location" required style="background-color:inherit; color: inherit;"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="operatingHours" class="form-label fw-bold">Operating Hours</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="time" class="form-control" id="openingHour" name="openingHour" required style="background-color:inherit; color: inherit;">
+                        <small class="text-muted">Opening Hour</small>
                     </div>
-                    <div class="triangle"></div>
-                    <div class="p-3">
-                        <button type="button" class="btn btn-outline-light rounded-0 m-0" onclick="edit_button('business-info')">Add</button>
+                    <div class="col-md-6">
+                        <input type="time" class="form-control" id="closingHour" name="closingHour" required style="background-color:inherit; color: inherit;">
+                        <small class="text-muted">Closing Hour</small>
                     </div>
                 </div>
             </div>
-            <div class="card-body" id="business-info-form" style="display:none;background-color: white;">
-                <h5 class="card-title"><i class="fa fa-building"></i><b>Add Business Info</b></h5>
-                <form method="POST" class="auth-form" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="d-flex justify-content-between mt-4 ">
-                        <div class="w-100">
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="businessName" placeholder="" name='business-name' value="">
-                                <label for="businessName">Business Name</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom -2 rounded-0" id="businessType" placeholder="" name='business-type' value="">
-                                <label for="businessType">Business Type</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="regNumber" placeholder="" name='reg-number' value="">
-                                <label for="regNumber">Business Registration Number</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="date" class="form-control border border-dark border-bottom-2 rounded-0" id="establishmentDate" placeholder="" name='establishment-date' value="">
-                                <label for="establishmentDate">Date Of Establishment</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="email" class="form-control border border-dark border-bottom-2 rounded-0" id="contactEmail" placeholder="" name='contact-email' value="">
-                                <label for="contactEmail">Contact Email</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="contactPhone" placeholder="" name='contact-phone' value="">
-                                <label for="contactPhone">Contact Phone</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="physicalAddress" placeholder="" name='physical-address' value="">
-                                <label for="physicalAddress">Physical Address</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="postalAddress" placeholder="" name='postal-address' value="">
-                                <label for="postalAddress">Postal Address</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="url" class="form-control border border-dark border-bottom-2 rounded-0" id="businessWebsite" placeholder="" name='business-website' value="">
-                                <label for="businessWebsite">Business Website</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <textarea class="form-control border border-dark border-bottom-2 rounded-0" id="socialMediaHandles" rows="3" placeholder="" name='social-media-handles'></textarea>
-                                <label for="socialMediaHandles">Social Media Handles</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <select class="form-control border border-dark border-bottom-2 rounded-0" id="industryCategory" name="industry-category">
-                                    <option value="">Select Industry</option>
-                                    <option value="Retail">Retail</option>
-                                    <option value="IT">IT</option>
-                                    <option value="Manufacturing">Manufacturing</option>
-                                </select>
-                                <label for="industryCategory">Industry Category</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="text" class="form-control border border-dark border-bottom-2 rounded-0" id="taxRegistration" placeholder="" name='tax-registration' value="">
-                                <label for="taxRegistration">Tax Registration Number</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <textarea class="form-control border border-dark border-bottom-2 rounded-0" id="operatingHours" rows="2" placeholder="" name='operating-hours'></textarea>
-                                <label for="operatingHours">Operating Hours</label>
-                            </div>
-                            <div class="form-floating mb-3 w-75">
-                                <input type="file" class="form-control border border-dark border-bottom-2 rounded-0" id="businessLogo" name="business-logo">
-                                <label for="businessLogo">Business Logo</label>
-                            </div>
-                        </div>
-                        <div class="position-relative">
-                            <div class="position-absolute bottom-0 end-0 d-flex justify-content-between">
-                                <button type="submit" class="btn btn-primary px-3 rounded-0 shadow">Save </button>
-                                <button type="button" class="btn btn-outline-dark rounded-0 px-3 mx-3" onclick="cancel_button('business-info')">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+
+
+            <!-- Owner Details -->
+           <!--  <h4 class="mt-4">Owner Details</h4>
+
+            <div class="mb-3">
+                <label for="ownerName" class="form-label fw-bold">Full Name</label>
+                <input type="text" class="form-control" id="ownerName" placeholder="Enter full name" required>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label for="ownerPhone" class="form-label fw-bold">Owner's Phone Number</label>
+                <input type="tel" class="form-control" id="ownerPhone" placeholder="Enter phone number" required>
+            </div> -->
+
+            <!-- Terms and Conditions -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="termsAgreement" required style="background-color:inherit; color: inherit;">
+                <label for="termsAgreement" class="form-check-label">I agree to the <a href="#">Terms & Conditions</a>.</label>
+            </div>
+
+            <!-- Submit Button -->
+            <a href="{% url 'business_status' %}" type="button" class="btn btn-primary w-100">Submit Registration</a>
+
+        </form>
     </div>
 </div>
-
-<script type="text/javascript">
-    function edit_button(name){
-        var displays = document.getElementById(name+'-disp');
-        var forms = document.getElementById(name+'-form');
-
-        displays.style.display = 'none';
-        forms.style.display = 'block';
-    }
-    function cancel_button(name){
-        var displays = document.getElementById(name+'-disp');
-        var forms = document.getElementById(name+'-form');
-
-        forms.style.display = 'none';
-        displays.style.display = 'block';
-    }
+<script>
+    document.getElementById('businessLogo').addEventListener('change', function(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let preview = document.getElementById('logoPreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
-{% endblock content %}
+
+{% endblock %}

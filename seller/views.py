@@ -45,6 +45,10 @@ def user_profile(request):
 def business_info(request):
     
     return render(request, 'seller/business_info.html')
+@login_required_custom
+def dashboard(request):
+    
+    return render(request, 'seller/dashboard.html')
 
 @login_required_custom
 def view_stats(request):
@@ -57,9 +61,14 @@ def add_products(request):
     return render(request, 'seller/add_products.html')
 
 @login_required_custom
+def manage_product(request):
+   
+    return render(request, 'seller/manage_product.html')
+
+@login_required_custom
 def edit_products(request):
    
-    return render(request, 'seller/edit_products.html')
+    return render(request, 'seller/edit_product.html')
 
 @login_required_custom
 def orders(request):
@@ -74,11 +83,14 @@ def order_tracking(request):
 @login_required_custom
 def transaction(request):
    
-    return render(request, 'seller/transaction.html')
+    return render(request, 'seller/sales.html')
 
 @login_required_custom
 def pay_for_premium(request):
     
     return render(request, 'seller/pay_for_premium.html')
 
-
+@login_required_custom
+def reviews(request):
+    
+    return render(request, 'seller/reviews.html')

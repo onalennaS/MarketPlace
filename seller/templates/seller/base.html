@@ -1,325 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Dashboard</title>
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-      <link rel="stylesheet" href="{% static 'css/message.css' %}">
-      <script src="https://cdn.tailwindcss.com"></script>
+    <title>Market Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    {% block links %}
+    {% endblock %}
     <style>
-        
-        /* Navbar Styling */
-        #navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #dee2e6;
-            z-index: 1030;
-            position: sticky;
-            top: 0; /* Ensures the navbar stays at the top */
-            width: 100%;
-        }
-        .nav-link {
-            color: #333;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        .nav-link.active, .nav-link:hover {
-            background-color: #165baa;
-            color: #fff;
+        /* Custom Styles */
+        :root {
+        --sidebar-width: 280px;
+        --sidebar-collapsed-width: 80px;
+        --primary-color: #0d6efd;
+        --background-color: #f8f9fa;
+        --sidebar-bg: #ffffff;
+        --text-color: #495057;
+        --hover-bg: #f1f3f5;
+        --active-bg: #e9f5ff;
+        --shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+        --table-bg: #ffffff;
+        --table-border: #dee2e6;
+        --btn-bg: #28a745;
+        --btn-text: #ffffff;
+        --input-bg: #ffffff;
+        --input-text: #000000;
+        --input-border: #ced4da;
+    }
+
+    .dark-mode {
+        --background-color: #121212;
+        --sidebar-bg: #1e1e1e;
+        --text-color: #ffffff;
+        --hover-bg: #333333;
+        --active-bg: #2d2d2d;
+        --shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
+        --card-bg: #1e1e1e;
+        --table-bg: #2d2d2d;
+        --table-border: #444444;
+        --btn-bg: #28a745;
+        --btn-text: #ffffff;
+         --input-bg: #2d2d2d;
+        --input-text: #ffffff;
+        --input-border: #444444;
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--table-border);
+    }
+
+    .table {
+        background-color: var(--table-bg);
+        color: var(--text-color);
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+
+
+    .floating-btn {
+        background-color: var(--btn-bg);
+        color: var(--btn-text);
+    }
+
+    .badge {
+        background-color: var(--btn-bg);
+        color: var(--btn-text);
+    }
+
+    .color-preview {
+        border: 1px solid var(--table-border);
+    }
+
+    .product-img {
+        border: 1px solid var(--table-border);
+    }
+
+    
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Sidebar Styling */
         .sidebar {
-            background: linear-gradient(135deg, #1e3a78, #4c9fda);
+            width: var(--sidebar-width);
             height: 100vh;
-            padding: 20px 0;
-            border-right: 1px solid #dee2e6;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            overflow-y: auto; /* Enable scrolling for the sidebar */
-            max-height: 100vh; /* Ensures the sidebar doesn't extend beyond the viewport */
-        }
-        .sidebar .nav-link {
-            color:#fff;
-            font-size: 16px;
+            position: fixed;
+            background: var(--sidebar-bg);
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
-        }
-        .sidebar .nav-link.active {
-            color: #fff;
-            background-color: white;
-        }
-        .sidebar .nav-link:hover {
-            background-color: white;
-            color: black;
+            z-index: 9000;
+            overflow: hidden;
         }
 
-        /* Sidebar Toggle Button Beneath Navbar */
-        #sidebarToggle {
-            background-color: transparent;
-            border: none;
-            color: gray;
-            position: absolute;
-            left: 0px;
-            font-size: 30px;
-            cursor: pointer;
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
         }
 
-        /* Close Button in Sidebar */
-        .close-btn {
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+            white-space: nowrap;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h4 {
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-header h4 {
+            opacity: 0;
+        }
+
+        .nav-items {
+            padding: 15px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .nav-link.active {
+            background-color: var(--active-bg);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-link i {
+            margin-right: 0;
+        }
+
+        .sidebar.collapsed .nav-link span {
             display: none;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            color: red; /* Red cross */
-            cursor: pointer;
         }
 
-        /* Responsive Sidebar */
-        @media (max-width: 768px) {
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-footer {
+            opacity: 0;
+        }
+
+        .sidebar-footer img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .content {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.collapsed {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 700px) {
             .sidebar {
-                position: fixed;
-                left: -100%;
-                top: 0;
-                width: 250px;
-                z-index: 1050;
+                width: var(--sidebar-width);
+                left: -280px;
             }
+
             .sidebar.active {
                 left: 0;
             }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .content.collapsed {
+                margin-left: 0;
+            }
+
             .close-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .sidebar.active + .overlay {
                 display: block;
             }
         }
 
-        /* Profile Section */
-        .profile-upload {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .profile-upload img {
-            border: 5px solid gray;
-            border-radius: 50%;
-            width: 90px;
-            height: 85px;
-            object-fit: cover;
+        .close-btn {
+            display: none;
         }
 
-        /* Content Section */
-        .content {
-            padding: 20px;
-            margin-left: 0; /* Reset left margin */
-            overflow-y: auto; /* Enable scrolling for content */
-            background-color: #f9f9f9; /* Light background color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+        .top-bar {
+            background: var(--sidebar-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Navbar Toggler for Mobile */
-        .navbar-toggler {
-            border: none;
+        .top-bar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        /* Hide the Sidebar Toggle Button on larger screens */
-        @media (min-width: 768px) {
-            #sidebarToggle {
-                display: none;
-            }
+        .top-bar .icons .badge {
+            font-size: 0.7rem;
         }
 
-        /* Welcome Text Animation */
-        .welcome-text {
-            color: black;
-            font-size: 18px;
-            display: inline-block;
-            white-space: nowrap;
-            animation: shiftText 3s infinite alternate;
+        .no-scroll {
+            overflow: hidden;
         }
 
-        .welcome-text i {
-            margin-right: 8px;
-            font-size: 20px;
-            vertical-align: middle;
+        /* Notifications Dropdown */
+        .dropdown-notifications {
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
         }
 
-        @keyframes shiftText {
-            0% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(20px);
-            }
-            100% {
-                transform: translateX(0);
-            }
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s;
         }
 
-        .sidebar-heading {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #007bff; /* Blue color for text */
-    border-left: 4px solid grey; /* Highlight with a border */
-    padding-left: 10px; /* Space between border and text */
-    margin-bottom: 0.5rem; /* Space below the heading */
-}
+        .notification-item:hover {
+            background-color: var(--hover-bg);
+        }
 
-.nav-link {
-    font-size: 1rem;
-    color: #333; /* Neutral text color */
-    padding: 0.4rem 0;
-    transition: color 0.3s ease, background-color 0.3s ease;
-}
+        .notification-item:last-child {
+            border-bottom: none;
+        }
 
-.nav-link:hover {
-    color: #007bff; /* Hover effect for links */
-    background-color: #f0f8ff; /* Light background for hover */
-    border-radius: 4px; /* Rounded corners on hover */
-}
+        .notification-item .timestamp {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        {% block styles %}
 
-.separator {
-    border-top: 1px solid #ddd;
-    margin: 1rem 0;
-}
-
-    
+        {% endblock %}
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container-fluid">
-        <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo" height="60px" width="200px">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'buyer_dashboard' %}">
-                        <i class="fas fa-shopping-cart me-2"></i> Buy On Our Marketplace
+    <!-- Sidebar -->
+    <nav class="sidebar" role="navigation" aria-label="Main Navigation">
+        <div class="sidebar-header" aria-label="Sidebar Header">
+            <h4 class="d-none d-lg-block" aria-label="MarketPro">MarketPro</h4>
+            <h4 class="d-block d-lg-none" aria-label="MP">MP</h4>
+            <span class="close-btn" onclick="toggleSidebar()" aria-label="Close Sidebar">&times;</span>
+        </div>
+
+        {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'manage_product' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Business information</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+        <div class="sidebar-footer">
+            <img src="https://via.placeholder.com/40" alt="User Avatar" loading="lazy">
+            <div class="mt-2">
+                <a href="#" class="text-danger text-decoration-none">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay for Small Screens -->
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="top-bar">
+            <div>
+                <button class="btn btn-outline-secondary" onclick="toggleSidebar()">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="ms-3">Hi, User</span>
+            </div>
+            <div class="icons">
+                <!-- Notifications Dropdown -->
+                <div class="dropdown">
+                    <a href="#" class="text-dark position-relative" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">2</span>
                     </a>
-                </li>
-                
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-                        <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="40">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    <ul class="dropdown-menu dropdown-notifications" aria-labelledby="notificationsDropdown">
+                        <li class="notification-item">
+                            <div>New order received</div>
+                            <div class="timestamp">2 hours ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>Product out of stock</div>
+                            <div class="timestamp">5 hours ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>New customer registered</div>
+                            <div class="timestamp">1 day ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>System update completed</div>
+                            <div class="timestamp">2 days ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>Payment received</div>
+                            <div class="timestamp">3 days ago</div>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Sidebar Toggle Button (Beneath Navbar) -->
-<button id="sidebarToggle" class="btn">
-    <i class="fas fa-bars"></i> <!-- Font Awesome icon for the toggle -->
-</button>
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar" id="sidebar">
-            <div class="close-btn">
-                <i class="fas fa-times"></i> <!-- Close Icon -->
-            </div>
-            <div class="profile-upload">
-                <img id="profileImage" src="{% static 'images/default_profile.png' %}" alt="Profile Image">
-                <p class="welcome-text" style="color: white;">
-                    Welcome, {{ user.username }}!
-                </p>
-                
-            </div>
-            <ul class="nav flex-column px-3">
-                <!-- Profile Section -->
-                <li class="nav-item">
-                    <div class="sidebar-heading text-white mb-2">Profile</div>
-                    <a class="nav-link" href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Seller Profile</a>
-                    <a class="nav-link" href="{% url 'business_info' %}"><i class="fas fa-building"></i> Business Information</a>
-                </li>
-                
-                <div class="separator"></div>
-                
-                <!-- Products Section -->
-                <li class="nav-item">
-                    <div class="sidebar-heading text-white mb-2">Products</div>
-                    <a class="nav-link" href="{% url 'add_products' %}"><i class="fas fa-plus"></i> Add Products</a>
-                    <a class="nav-link" href="{% url 'edit_products' %}"><i class="fas fa-edit"></i> Edit Products</a>
-                </li>
-                
-                <div class="separator"></div>
-                
-                <!-- Orders Section -->
-                <li class="nav-item">
-                    <div class="sidebar-heading text-white mb-2">Orders</div>
-                    <a class="nav-link" href="{% url 'orders' %}"><i class="fas fa-box"></i> Orders</a>
-                    <a class="nav-link" href="{% url 'order_tracking' %}"><i class="fas fa-truck"></i> Order Tracking</a>
-                </li>
-                
-                <div class="separator"></div>
-                
-                <!-- Financials Section -->
-                <li class="nav-item">
-                    <div class="sidebar-heading text-white mb-2">Financials</div>
-                    <a class="nav-link" href="{% url 'transaction' %}"><i class="fas fa-credit-card"></i> Transaction</a>
-                    <a class="nav-link" href="{% url 'pay_for_premium' %}"><i class="fas fa-star"></i> Pay for Premium</a>
-                </li>
-            </ul>
-            
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-md-9 content">
-             {% if messages %}
-        <div class="message-container ">
-            {% for message in messages %}
-                
-            {% if 'error' in message.tags %}
-                   <div class="alert alert-danger alert-dismissible fade show slider " role="alert">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
-            {% else %}
-               <div class="alert alert-{{message.tags}} alert-dismissible fade show slider" role="alert">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-            {% endif %}
-               
-            {% endfor %}
-            
-        </div>
-        {% endif %}
 
+                <a href="#" class="text-dark position-relative">
+                    <i class="bi bi-cart"></i>
+                    <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">5</span>
+                </a>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                    <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                </div>
+            </div>
+        </div>
+        <div class="container">
             {% block content %}
-            {% endblock content %}
+            {% endblock %}
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const closeBtn = document.querySelector('.close-btn');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            const body = document.body;
 
-    toggleBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
-    closeBtn.addEventListener('click', () => sidebar.classList.remove('active'));
-</script>
+            if (window.innerWidth <= 700) {
+                sidebar.classList.toggle('active');
+                body.classList.toggle('no-scroll');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            }
+        }
 
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Load Sidebar and Dark Mode State
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                content.classList.add('collapsed');
+            }
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && window.innerWidth <= 700) {
+                toggleSidebar();
+            }
+        });
+
+        // Initialize Bootstrap Tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

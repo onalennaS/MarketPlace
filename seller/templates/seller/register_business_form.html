@@ -8,12 +8,13 @@
 {% load static %}
 {% block content %}
 
+<div class="d-flex justify-content-center">
+   
 <div class="add-business-container mt-5">
     <h2 class="text-center">Register Your Business</h2>
     <p class="text-center text-muted">Provide accurate details to register your business on SixSkies.</p>
 
     <form action="#" method="POST" enctype="multipart/form-data">
-
         <!-- Business Logo -->
         <div class="mb-3 text-center">
             <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
@@ -40,6 +41,7 @@
                 <option value="limited_liability">Limited Liability Company (LLC)</option>
             </select>
         </div>
+
 
         <!-- Business Description -->
         <div class="mb-3">
@@ -129,7 +131,7 @@
 
     </form>
 </div>
-
+ </div>
 <script>
     document.getElementById('businessLogo').addEventListener('change', function(event) {
         let file = event.target.files[0];

@@ -1,0 +1,337 @@
+{% extends 'seller/base.html' %}
+ {% block links %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+ {% block styles %}
+        .card-stat {
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .card-stat:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            height: 300px;
+        }
+}
+
+{% endblock %}
+ {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- Stats Overview -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card text-white bg-primary shadow card-stat">
+                <div class="card-body">
+                    <h5 class="card-title">Total Earnings</h5>
+                    <h2>R50,000</h2>
+                    <small class="opacity-75">+12% from last month</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-white bg-success shadow card-stat">
+                <div class="card-body">
+                    <h5 class="card-title">Available Funds</h5>
+                    <h2>R7,200</h2>
+                    <small class="opacity-75">Ready for withdrawal</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-white bg-warning shadow card-stat">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Transactions</h5>
+                    <h2>3</h2>
+                    <small class="opacity-75">Awaiting clearance</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-white bg-info shadow card-stat">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders</h5>
+                    <h2>142</h2>
+                    <small class="opacity-75">30% repeat customers</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
+            <h5 class="mb-2">Transaction History</h5>
+            <div class="d-flex gap-2">
+                <select id="timeFilter" class="form-select" style="background-color:inherit; color: inherit;">
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="all">All Time</option>
+                </select>
+                <input type="text" id="dateRangePicker" class="form-control" placeholder="Select Date Range" style="background-color:inherit; color: inherit;">
+                
+               
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="transactionsTable" class="table table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#00123</td>
+                        <td>John Doe</td>
+                        <td>Phone Case</td>
+                        <td>R150</td>
+                        <td>PayFast</td>
+                        <td><span class="badge bg-success">Completed</span></td>
+                        <td>2025-02-28</td>
+                    </tr>
+                    <tr>
+                        <td>#00124</td>
+                        <td>Jane Smith</td>
+                        <td>Wireless Earbuds</td>
+                        <td>R500</td>
+                        <td>EFT</td>
+                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                        <td>2025-02-25</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-header">Revenue Analytics</div>
+                <div class="card-body chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-header">Payment Methods</div>
+                <div class="card-body chart-container">
+                    <canvas id="paymentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Section -->
+    <div class="card shadow">
+        <div class="card-body text-center py-4">
+            <h3 class="mb-3">Withdraw Available Funds</h3>
+            <div class="display-4 mb-3">R7,200</div>
+            <button class="btn btn-lg btn-success px-5">
+                <i class="bi bi-wallet2"></i> Withdraw Now
+            </button>
+            <p class="text-muted mt-3 mb-0">Next payout date: 5 March 2025</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // Sample Data for Transactions
+    const transactions = [
+        { id: '#00123', customer: 'John Doe', product: 'Phone Case', amount: 150, paymentMethod: 'PayFast', status: 'Completed', date: '2025-02-28' },
+        { id: '#00124', customer: 'Jane Smith', product: 'Wireless Earbuds', amount: 500, paymentMethod: 'EFT', status: 'Pending', date: '2025-02-25' },
+        // Add more transactions here
+    ];
+
+    // Initialize DataTable
+    const table = $('#transactionsTable').DataTable({
+        data: transactions,
+        columns: [
+            { data: 'id' },
+            { data: 'customer' },
+            { data: 'product' },
+            { data: 'amount', render: (data) => `R${data}` },
+            { data: 'paymentMethod' },
+            { data: 'status', render: (data) => `<span class="badge ${data === 'Completed' ? 'bg-success' : 'bg-warning text-dark'}">${data}</span>` },
+            { data: 'date' }
+        ],
+        ordering: true,
+        responsive: true
+    });
+
+    // Initialize Flatpickr for Date Range Picker
+    flatpickr("#dateRangePicker", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr) {
+            if (selectedDates.length === 2) {
+                const startDate = selectedDates[0].toISOString().split('T')[0];
+                const endDate = selectedDates[1].toISOString().split('T')[0];
+                filterTransactionsByDateRange(startDate, endDate);
+            }
+        }
+    });
+
+    // Initialize Flatpickr for Single Date Picker
+    flatpickr("#singleDatePicker", {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr) {
+            if (selectedDates.length === 1) {
+                const selectedDate = selectedDates[0].toISOString().split('T')[0];
+                filterTransactionsByDate(selectedDate);
+            }
+        }
+    });
+
+    // Filter Transactions by Date Range
+    function filterTransactionsByDateRange(startDate, endDate) {
+        const filteredData = transactions.filter(transaction => {
+            const transactionDate = transaction.date;
+            return transactionDate >= startDate && transactionDate <= endDate;
+        });
+        table.clear().rows.add(filteredData).draw();
+    }
+
+    // Filter Transactions by Single Date
+    function filterTransactionsByDate(date) {
+        const filteredData = transactions.filter(transaction => transaction.date === date);
+        table.clear().rows.add(filteredData).draw();
+    }
+
+    // Time Period Filter Logic
+    document.getElementById('timeFilter').addEventListener('change', function() {
+        const period = this.value;
+        let filteredData = [];
+
+        const today = new Date().toISOString().split('T')[0];
+        const startOfWeek = new Date();
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+        const startOfMonth = new Date();
+        startOfMonth.setDate(1);
+
+        switch (period) {
+            case 'today':
+                filteredData = transactions.filter(transaction => transaction.date === today);
+                break;
+            case 'week':
+                filteredData = transactions.filter(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    return transactionDate >= startOfWeek;
+                });
+                break;
+            case 'month':
+                filteredData = transactions.filter(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    return transactionDate >= startOfMonth;
+                });
+                break;
+            case 'all':
+                filteredData = transactions;
+                break;
+        }
+        table.clear().rows.add(filteredData).draw();
+    });
+
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revenueCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Monthly Revenue (R)',
+                data: [12000, 19000, 15000, 25000, 22000, 30000],
+                borderColor: '#0d6efd',
+                backgroundColor: 'rgba(13, 110, 253, 0.05)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Payment Methods Chart
+    const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+    new Chart(paymentCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Credit Card', 'PayFast', 'EFT', 'Cash'],
+            datasets: [{
+                data: [45, 30, 20, 5],
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#6c757d']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+{% endblock %}
