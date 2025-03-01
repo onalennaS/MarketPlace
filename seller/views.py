@@ -19,6 +19,19 @@ def has_password(view_func):
 
 # Create your views here.
 # Create your views here.
+
+@login_required_custom
+def register_business(request):
+    return render(request, 'seller/register_business.html')
+
+@login_required_custom
+def register_business_form(request):
+    return render(request, 'seller/register_business_form.html')
+
+@login_required_custom
+def business_status(request):
+    return render(request, 'seller/businness_status.html')
+
 @has_password
 def base(request):
     return render(request, 'seller/seller_profile.html')
@@ -26,7 +39,6 @@ def base(request):
 @login_required_custom
 @has_password
 def user_profile(request):
-
     return render(request, 'seller/seller_profile.html')
 
 @login_required_custom

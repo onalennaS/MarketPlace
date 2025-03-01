@@ -21,7 +21,7 @@ from django.shortcuts import render
 # Create your views here.
 
 def shop_base(request):
-	return render(request,'products/category.html')
+	return render(request,'products/shop.html')
 
 
 def view_product(request):

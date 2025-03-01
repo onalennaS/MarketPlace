@@ -32,11 +32,11 @@ def register(request):
 
         email_exists = User.objects.filter(username=data['email'])
         if email_exists:
-            messages.error(request,f'email {data['email']} is already taken')
+            messages.error(request,f"email {data['email']} is already taken")
             return render(request, 'authentication/signup.html', {'data':data})
         username_exists = User.objects.filter(username=data['username'])
         if username_exists:
-            messages.error(request,f'username {data['username']} is already taken')
+            messages.error(request,f"username {data['username']} is already taken")
             return render(request, 'authentication/signup.html', {'data':data})
 
         is_password_valid = validate_password(data['password'], data['confirm_password'])

@@ -11,6 +11,8 @@
 
       <link rel="stylesheet" href="{% static 'css/message.css' %}">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
     <style>
         /* Navbar Styling */
         body{
@@ -258,8 +260,8 @@
 <body>
 
 <!-- Navbar -->
-<nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container-fluid">
+<nav id="navbar" class="navbar navbar-expand-lg  navbar-dark bg-white shadow-sm">
+    <div class="container-fluid bg-secondary">
          <button class="btn border-0 off-nav" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
            <span class="navbar-toggler-icon"></span>
         </button>
@@ -326,7 +328,7 @@
             </div>
              <a class="nav-link dropdown-toggle on-nav pe-4" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
                   <span> My Account</span>
-                    <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="22" />
+                    <!-- <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="22" /> -->
             </a>
                 
             <ul class="dropdown-menu dropdown-menu-end border rounded-0 shadow-md" style="position: absolute; z-index: 1300; right:100px ;top:55px">
@@ -376,60 +378,17 @@
             </ul>
 
              <a class="on-nav" href="{% url 'wish_lists' %}">                
-                <i class="fas fa-heart  text-danger "></i>
+                <i class="fas fa-bell  text-danger "></i>
             </a>
             <a class="px-3" href="{% url 'cart' %}">                
-                <i class="fas fa-cart-plus  text-success "></i>
+                <i class="fas fa-cog  text-success "></i>
             </a>
             
         </div>
     </div>
     
 </nav>
-{% block secend_nav %}
-<div class="on-nav">
-    
-    <div class=" bg-primary p-2 d-flex justify-content-between w-100" style="position: fixed; z-index: 1100; display: none;">
 
-        <p class=" m-0" >
-          
-          <button class="btn btn-dark " type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-           Shop by Categoty 
-          </button>
-        </p>
-        <div class="collapse rounded-0 border border-dark shadow-md bg-dark" id="collapseExample" style="position: absolute; left:70px; top:38px; width:230px">
-          <div class="card card-body rounded-0 bg-dark">
-           <ul class="list-group list-group-flush rounded-0 bg-dark">
-              <li class="list-group-item lit  ">New in Shop <i class="fa fa-arrow-right"></i></li>
-              <li class="list-group-item lit ">Computers <i class="fa fa-arrow-right"></i></li>
-              <li class="list-group-item lit  ">FastFood <i class="fa fa-arrow-right"></i></li>
-              <li class="list-group-item lit  ">Phones <i class="fa fa-arrow-right"></i></li>
-              <li class="list-group-item lit  ">Home Appliances <i class="fa fa-arrow-right"></i></li>
-            </ul>
-          </div>
-        </div>
-
-
-
-
-
-         <form method="POST "  class="forms">
-                {% csrf_token %}
-                   
-                <div class="input-group flex-nowrap w-100">
-                  
-                  <input type="text" class="form-control w-100" placeholder="type here to search ..."  aria-label="Username" aria-describedby="addon-wrapping">
-                  <span class="input-group-text bg-dark" id="addon-wrapping"><i class="fa fa-search text-white"></i></span>
-                </div>
-        </form>
-        <div class="">
-            
-            <a href="{% url 'register_business' %}" class="btn btn-dark "> Sell on SixSkies</a>
-        </div>
-
- </div>
-</div>
-{% endblock %}
 
 <div class="offcanvas offcanvas-start bg-light w-100" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="z-index: 1300;">
   <div class="offcanvas-header bg-white border">
@@ -696,56 +655,26 @@
     
 
          <div class="col-md-3 sidebar" id="sidebar">
-            <div class="close-btn">
-                <i class="fas fa-times"></i> <!-- Close Icon -->
-            </div>
-            <div class="profile-upload">
-                <img id="profileImage" src="{% static 'images/default_profile.png' %}" alt="Profile Image">
-                <p class="welcome-text">Welcome, {{ user.username }}!</p>
-            </div>
             {% block nav %}
             <ul class="nav flex-column px-3 mt-3">
-                <!-- Profile Section -->
+
+                <!-- Products Section -->
                 <div class="flex-container">
-                    <h5 class="fw-bold text-white">Profile</h5>
+                    <h5 class="fw-bold text-white">Store Front</h5>
                     <hr>
                 </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cogs me-2"></i> Account Settings
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-address-book me-2"></i> Address Book
-                    </a>
-                </li>
+                 <a class="nav-link" href="{% url 'add_products' %}"><i class="fas fa-plus"></i> Dashboard </a>
+
+                 <a class="nav-link" href="{% url 'add_products' %}"><i class="fas fa-plus"></i> Add Products</a>
+                    <a class="nav-link" href="{% url 'edit_products' %}"><i class="fas fa-edit"></i> view Products</a>
             
                 <!-- Orders Section -->
                 <div class="flex-container">
                     <h5 class="fw-bold text-white">Orders</h5>
                     <hr>
                 </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
-                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
-                    </a>
-                </li>
+               <a class="nav-link" href="{% url 'orders' %}"><i class="fas fa-box"></i> Orders</a>
+                    <a class="nav-link" href="{% url 'order_tracking' %}"><i class="fas fa-truck"></i> Order Tracking</a>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
                         <i class="fas fa-star me-2"></i> Reviews
@@ -773,6 +702,19 @@
                     </a>
                 </li>
 
+                <!-- Profile Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">Profile</h5>
+                    <hr>
+                </div>
+                 <a class="nav-link" href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Seller Profile</a>
+                    <a class="nav-link" href="{% url 'business_info' %}"><i class="fas fa-building"></i> Business Information</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+                        <i class="fas fa-address-book me-2"></i> Address Book
+                    </a>
+                </li>
                 <!-- More Section -->
                 <div class="flex-container">
                     <h5 class="fw-bold text-white">More</h5>
