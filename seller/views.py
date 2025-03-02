@@ -21,16 +21,82 @@ def has_password(view_func):
 # Create your views here.
 
 @login_required_custom
+def dashboard(request):
+    return render(request, 'seller/new/dashboard.html')
+
+@login_required_custom
 def register_business(request):
-    return render(request, 'seller/register_business.html')
+    return render(request, 'seller/new/register_business.html')
 
 @login_required_custom
 def register_business_form(request):
-    return render(request, 'seller/register_business_form.html')
+    return render(request, 'seller/new/register_business_form.html')
 
 @login_required_custom
 def business_status(request):
-    return render(request, 'seller/businness_status.html')
+    return render(request, 'seller/new/businness_status.html')
+
+
+@login_required_custom
+def business_info(request):
+    return render(request, 'seller/new/business_info.html')
+
+
+@login_required_custom
+def add_products(request):
+    return render(request, 'seller/new/add_products.html')
+
+@login_required_custom
+def manage_product(request):
+    return render(request, 'seller/new/manage_product.html')
+
+@login_required_custom
+def edit_products(request):
+    return render(request, 'seller/new/edit_product.html')
+
+@login_required_custom
+def orders(request):
+    return render(request, 'seller/new/orders.html')
+
+@login_required_custom
+def transaction(request):
+    return render(request, 'seller/new/sales.html')
+
+@login_required_custom
+def customer(request):
+    return render(request, 'seller/new/customer.html')
+
+@login_required_custom
+def settings(request):
+    return render(request, 'seller/new/settings.html')
+
+@login_required_custom
+def invoice(request):
+    return render(request, 'seller/new/invoice.html')
+
+@login_required_custom
+def report(request):
+    return render(request, 'seller/new/report.html')
+
+
+
+    #=============================
+@login_required_custom
+def order_tracking(request):
+    return render(request, 'seller/order_tracking.html')
+
+
+@login_required_custom
+def pay_for_premium(request):
+    return render(request, 'seller/pay_for_premium.html')
+
+@login_required_custom
+def reviews(request):
+    return render(request, 'seller/reviews.html')
+
+@login_required_custom
+def view_stats(request):
+    return render(request, 'seller/view_stats.html')
 
 @has_password
 def base(request):
@@ -40,57 +106,3 @@ def base(request):
 @has_password
 def user_profile(request):
     return render(request, 'seller/seller_profile.html')
-
-@login_required_custom
-def business_info(request):
-    
-    return render(request, 'seller/business_info.html')
-@login_required_custom
-def dashboard(request):
-    
-    return render(request, 'seller/dashboard.html')
-
-@login_required_custom
-def view_stats(request):
-   
-    return render(request, 'seller/view_stats.html')
-
-@login_required_custom
-def add_products(request):
-   
-    return render(request, 'seller/add_products.html')
-
-@login_required_custom
-def manage_product(request):
-   
-    return render(request, 'seller/manage_product.html')
-
-@login_required_custom
-def edit_products(request):
-   
-    return render(request, 'seller/edit_product.html')
-
-@login_required_custom
-def orders(request):
-    
-    return render(request, 'seller/orders.html')
-
-@login_required_custom
-def order_tracking(request):
-    
-    return render(request, 'seller/order_tracking.html')
-
-@login_required_custom
-def transaction(request):
-   
-    return render(request, 'seller/sales.html')
-
-@login_required_custom
-def pay_for_premium(request):
-    
-    return render(request, 'seller/pay_for_premium.html')
-
-@login_required_custom
-def reviews(request):
-    
-    return render(request, 'seller/reviews.html')

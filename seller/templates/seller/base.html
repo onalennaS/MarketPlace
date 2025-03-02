@@ -306,14 +306,14 @@
     <!-- Sidebar -->
     <nav class="sidebar" role="navigation" aria-label="Main Navigation">
         <div class="sidebar-header" aria-label="Sidebar Header">
-            <h4 class="d-none d-lg-block" aria-label="MarketPro">MarketPro</h4>
-            <h4 class="d-block d-lg-none" aria-label="MP">MP</h4>
+            <h4 class="d-none d-lg-block" aria-label="MarketPro">Sixskies</h4>
+            <h4 class="d-block d-lg-none" aria-label="MP">SS</h4>
             <span class="close-btn" onclick="toggleSidebar()" aria-label="Close Sidebar">&times;</span>
         </div>
 
         {% block nav %}
         <div class="nav-items">
-            <a href="{% url 'manage_product' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <a href="{% url 'seller_dashboard' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
                 <i class="bi bi-house"></i>
                 <span>Dashboard</span>
             </a>

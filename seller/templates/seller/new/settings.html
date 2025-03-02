@@ -1,0 +1,138 @@
+{% extends 'seller/base.html' %}
+
+{% block links %}
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+ {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+           <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="{% url 'settings' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Settings</h2>
+        
+        <ul class="nav nav-tabs" id="settingsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">Account</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">Security</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">Notifications</button>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3" id="settingsTabContent">
+            <div class="tab-pane fade show active" id="account" role="tabpanel">
+                <h5>Account Settings</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" value="User123">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone number</label>
+                        <input type="text" class="form-control" value="User123">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" value="user@example.com">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="preferences" role="tabpanel">
+                <h5>Preferences</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Theme</label>
+                        <select class="form-select">
+                            <option>Light</option>
+                            <option>Dark</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Preferences</button>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <h5>Security Settings</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Change Password</label>
+                        <input type="password" class="form-control" placeholder="New Password">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Update Password</button>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" id="notifications" role="tabpanel">
+                <h5>Notification Preferences</h5>
+                <form>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                        <label class="form-check-label" for="emailNotif">Receive Email Notifications</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="smsNotif">
+                        <label class="form-check-label" for="smsNotif">Receive SMS Notifications</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="whatsappNotif">
+                        <label class="form-check-label" for="whatsappNotif">Receive WhatsApp Notifications</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="telegramNotif">
+                        <label class="form-check-label" for="telegramNotif">Receive Telegram Notifications</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Save Notification Preferences</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -21,7 +21,7 @@
 {% endblock %}
  {% block nav %}
         <div class="nav-items">
-            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
                 <i class="bi bi-house"></i>
                 <span>Dashboard</span>
             </a>
@@ -40,19 +40,19 @@
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
 
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+            <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
                 <i class="bi bi-people"></i>
                 <span>Customers</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
                 <i class="bi bi-bar-chart"></i>
                 <span>Reports</span>
             </a>
-            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
                <i class="bi bi-building"></i>
                 <span>Business information</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <a href="{% url 'settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>

@@ -6,7 +6,9 @@ urlpatterns = [
     path('', views.base, name='base'),
     
    path('user_profile/', views.user_profile, name='user_profile'),
-    
+   path('dashboard/', views.dashboard, name='seller_dashboard'),
+   
+
     
     path('register_business/', views.register_business, name='register_business'),
     path('register_business_form/', views.register_business_form, name='register_business_form'),
@@ -22,6 +24,10 @@ urlpatterns = [
     path('pay_for_premium/', views.pay_for_premium, name='pay_for_premium'),
     path('manage_product/', views.manage_product, name='manage_product'),
     path('reviews/', views.reviews, name='reviews'),
+    path('settings/', views.settings, name='settings'),
+    path('customer/', views.customer, name='customer'),
+    path('invoice/', views.invoice, name='invoice'),
+    path('report/', views.report, name='report'),
     
 
 ]

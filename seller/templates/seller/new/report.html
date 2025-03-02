@@ -1,0 +1,280 @@
+{% extends 'seller/base.html' %}
+{% block links %}
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Datepicker CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+ {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+
+            <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="{% url 'report' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="{% url 'settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="mb-4">Invoice Management</h1>
+
+    <!-- Date Range Selection -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <label for="dateRangePicker" class="form-label">Select Date Range:</label>
+        <div class="input-daterange input-group" id="dateRangePicker">
+          <input type="text" class="form-control" id="startDate" placeholder="Start Date" />
+          <span class="input-group-text">to</span>
+          <input type="text" class="form-control" id="endDate" placeholder="End Date" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="downloadPeriod" class="form-label">Download Transactions PDF:</label>
+        <select class="form-select" id="downloadPeriod">
+          <option value="1">Last 1 Month</option>
+          <option value="2">Last 2 Months</option>
+          <option value="3">Last 3 Months</option>
+          <option value="6">Last 6 Months</option>
+          <option value="12">Last 12 Months</option>
+        </select>
+        <button class="btn btn-primary mt-2" id="downloadPdf">Download PDF</button>
+      </div>
+    </div>
+
+    <!-- Invoice List Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title">Invoice List</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="invoiceTable">
+          <thead>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Transaction Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Data -->
+            <tr>
+              <td>INV001</td>
+              <td>2023-10-01</td>
+              <td>$100.00</td>
+              <td><span class="badge bg-success">Paid</span></td>
+              <td>
+                <a href="{% url 'invoice' %}" class="btn btn-sm btn-primary viewInvoice">View</a>
+                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
+              </td>
+            </tr>
+            <tr>
+              <td>INV002</td>
+              <td>2023-10-05</td>
+              <td>$150.00</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>
+                <button class="btn btn-sm btn-primary viewInvoice">View</button>
+                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
+              </td>
+            </tr>
+            <tr>
+              <td>INV003</td>
+              <td>2023-10-10</td>
+              <td>$200.00</td>
+              <td><span class="badge bg-danger">Failed</span></td>
+              <td>
+                <button class="btn btn-sm btn-primary viewInvoice">View</button>
+                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Premium Plan Transactions Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title">Premium Plan Transactions</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="subscriptionFilter" class="form-label">Filter by Subscription Tier:</label>
+          <select class="form-select" id="subscriptionFilter">
+            <option value="all">All</option>
+            <option value="basic">Basic</option>
+            <option value="pro">Pro</option>
+            <option value="enterprise">Enterprise</option>
+          </select>
+        </div>
+        <table class="table table-striped" id="premiumTable">
+          <thead>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Transaction Date</th>
+              <th>Amount</th>
+              <th>Subscription Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Data -->
+            <tr>
+              <td>INV004</td>
+              <td>2023-10-02</td>
+              <td>$50.00</td>
+              <td>Basic</td>
+            </tr>
+            <tr>
+              <td>INV005</td>
+              <td>2023-10-07</td>
+              <td>$100.00</td>
+              <td>Pro</td>
+            </tr>
+            <tr>
+              <td>INV006</td>
+              <td>2023-10-12</td>
+              <td>$200.00</td>
+              <td>Enterprise</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <!-- Datepicker JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <!-- PDFMake for generating PDFs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <!-- Custom JS -->
+  <script>
+    $(document).ready(function() {
+      // Initialize datepicker
+      $('.input-daterange').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true
+      });
+
+      // Filter invoices by date range
+      $('#dateRangePicker').on('change', function() {
+        const startDate = new Date($('#startDate').val());
+        const endDate = new Date($('#endDate').val());
+
+        $('#invoiceTable tbody tr').each(function() {
+          const rowDate = new Date($(this).find('td:nth-child(2)').text());
+          if (rowDate >= startDate && rowDate <= endDate) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      });
+
+      // Filter premium transactions by subscription tier
+      $('#subscriptionFilter').on('change', function() {
+        const selectedTier = $(this).val();
+        $('#premiumTable tbody tr').each(function() {
+          const rowTier = $(this).find('td:nth-child(4)').text().toLowerCase();
+          if (selectedTier === 'all' || rowTier === selectedTier) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      });
+
+      // View or Download Individual Invoice
+      $('.viewInvoice').on('click', function() {
+        const invoiceId = $(this).closest('tr').find('td:nth-child(1)').text();
+        alert(`Viewing Invoice: ${invoiceId}`);
+        // Replace with actual logic to view invoice
+      });
+
+      $('.downloadInvoice').on('click', function() {
+        const invoiceId = $(this).closest('tr').find('td:nth-child(1)').text();
+        alert(`Downloading Invoice: ${invoiceId}`);
+        // Replace with actual logic to download invoice
+      });
+
+      // Download PDF of Transactions
+      $('#downloadPdf').on('click', function() {
+        const period = $('#downloadPeriod').val();
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setMonth(endDate.getMonth() - period);
+
+        const filteredData = [];
+        $('#invoiceTable tbody tr').each(function() {
+          const rowDate = new Date($(this).find('td:nth-child(2)').text());
+          if (rowDate >= startDate && rowDate <= endDate) {
+            const rowData = {
+              id: $(this).find('td:nth-child(1)').text(),
+              date: $(this).find('td:nth-child(2)').text(),
+              amount: $(this).find('td:nth-child(3)').text(),
+              status: $(this).find('td:nth-child(4)').text()
+            };
+            filteredData.push(rowData);
+          }
+        });
+
+        // Generate PDF
+        const docDefinition = {
+          content: [
+            { text: `Transactions for Last ${period} Month(s)`, style: 'header' },
+            {
+              table: {
+                headerRows: 1,
+                widths: ['*', '*', '*', '*'],
+                body: [
+                  ['Invoice ID', 'Date', 'Amount', 'Status'],
+                  ...filteredData.map(row => [row.id, row.date, row.amount, row.status])
+                ]
+              }
+            }
+          ],
+          styles: {
+            header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] }
+          }
+        };
+        pdfMake.createPdf(docDefinition).download(`transactions_${period}_months.pdf`);
+      });
+    });
+  </script>
+{% endblock %}
