@@ -24,6 +24,7 @@ urlpatterns = [
     path('auth/', include('authenticator.urls')),
     path('account/', include('user.urls')),
     path('accounts/', include('allauth.urls')),
-    path('shop/',include('shop.urls'))
+    path('shop/',include('shop.urls')),
+     path('moderator/',include('moderator.urls'))
 
 ]

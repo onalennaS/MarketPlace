@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* Custom Styles */
+        :root {
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --primary-color: #0d6efd;
+            --background-color: #f8f9fa;
+            --sidebar-bg: #1b263b;
+            --text-color: #ffffff;
+            --color:#ffffff;
+            --hover-bg: #f1f3f5;
+
+            --active-bg: #e9f5ff;
+            --shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --background-color: #121212;
+            --sidebar-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --hover-bg: #ffffff;
+            --active-bg: #2d2d2d;
+            --shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            background: var(--sidebar-bg);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+            white-space: nowrap;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h4 {
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-header h4 {
+            opacity: 0;
+        }
+
+        .nav-items {
+            padding: 15px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover-bg);
+            color: var(--primary-color);
+
+        }
+
+        .nav-link.active {
+            background-color: var(--active-bg);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+            margin-right: 10px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .sidebar.collapsed .nav-link i {
+            margin-right: 0;
+        }
+
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-footer {
+            opacity: 0;
+        }
+
+        .sidebar-footer img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .content {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.collapsed {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: var(--sidebar-width);
+                left: -280px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .content.collapsed {
+                margin-left: 0;
+            }
+
+            .close-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .sidebar.active + .overlay {
+                display: block;
+            }
+        }
+
+        .close-btn {
+            display: none;
+        }
+
+        .top-bar {
+            background: var(--sidebar-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .top-bar .icons .badge {
+            font-size: 0.7rem;
+        }
+
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        /* Notifications Dropdown */
+        .dropdown-notifications {
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item .timestamp {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        {% block styles %}
+
+        {% endblock %}
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" role="navigation" aria-label="Main Navigation">
+        <div class="sidebar-header" aria-label="Sidebar Header">
+            <h4 class="d-none d-lg-block" aria-label="MarketPro">MarketPro</h4>
+            <h4 class="d-block d-lg-none" aria-label="MP">MP</h4>
+            <span class="close-btn" onclick="toggleSidebar()" aria-label="Close Sidebar">&times;</span>
+        </div>
+
+        {% block nav %}
+        <div class="nav-items">
+            <a href="#" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+        <div class="sidebar-footer">
+            <img src="https://via.placeholder.com/40" alt="User Avatar" loading="lazy">
+            <div class="mt-2">
+                <a href="#" class="text-danger text-decoration-none">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay for Small Screens -->
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="top-bar">
+            <div>
+                <button class="btn btn-outline-secondary" onclick="toggleSidebar()">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="ms-3">Moderator, Jeff Nengovhela</span>
+            </div>
+            <div class="icons">
+                <!-- Notifications Dropdown -->
+                <div class="dropdown">
+                    <a href="#" class="text-dark position-relative" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell" style="color:white"></i>
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">2</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-notifications" aria-labelledby="notificationsDropdown">
+                        <li class="notification-item">
+                            <div>New order received</div>
+                            <div class="timestamp">2 hours ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>Product out of stock</div>
+                            <div class="timestamp">5 hours ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>New customer registered</div>
+                            <div class="timestamp">1 day ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>System update completed</div>
+                            <div class="timestamp">2 days ago</div>
+                        </li>
+                        <li class="notification-item">
+                            <div>Payment received</div>
+                            <div class="timestamp">3 days ago</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="#" class="text-dark position-relative">
+                    <i class="bi bi-cart" style="color:white;"></i>
+                    <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">5</span>
+                </a>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                    <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            const body = document.body;
+
+            if (window.innerWidth <= 700) {
+                sidebar.classList.toggle('active');
+                body.classList.toggle('no-scroll');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            }
+        }
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Load Sidebar and Dark Mode State
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                content.classList.add('collapsed');
+            }
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && window.innerWidth <= 700) {
+                toggleSidebar();
+            }
+        });
+
+        // Initialize Bootstrap Tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+</body>
+</html>
