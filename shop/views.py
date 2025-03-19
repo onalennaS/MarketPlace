@@ -27,14 +27,17 @@ def has_password(view_func):
 
 def shop_base(request):
     products = Product.objects.filter(status="active").all()
-    items = get_cart_items(request.user)
+    items= 0
+    if request.user.is_authenticated:
+        items = get_cart_items(request.user)
     return render(request,'products/shop.html',{'products':products,'cart_items_count':items})
 
 
 def view_product(request, product_id):
     product = Product.objects.filter(id=int(product_id)).first()
-    items = get_cart_items(request.user)
-
+    items= 0
+    if request.user.is_authenticated:
+        items = get_cart_items(request.user)
     if product:
         return render(request,'products/view_product.html',{'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user)})
     return render(request,'products/view_product.html')
