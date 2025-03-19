@@ -1,0 +1,197 @@
+{% extends 'seller/base.html' %}
+{% load static %}
+{% block links %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+    {% endblock %}
+{% block styles %}
+        .product-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        .variant-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+{% endblock %}
+   {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'seller_dashboard' product.business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' product.business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+           <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
+               <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="{% url 'settings' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+{% endblock %}
+{% block content %}
+    <div class="container my-4">
+        <!-- Back Button -->
+        <a href="product-management.html" class="btn btn-secondary mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Product Management
+        </a>
+
+        <!-- Product Details Section -->
+        <div class="card p-3">
+            <h2 class="mb-3">{{product.name}}</h2>
+            <div class="row">
+                <!-- Product Image Carousel -->
+                <div class="col-md-6">
+                    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://via.placeholder.com/400" class="d-block w-100 product-img" alt="Product Image 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/400" class="d-block w-100 product-img" alt="Product Image 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/400" class="d-block w-100 product-img" alt="Product Image 3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Product Information -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h5>Product Information</h5>
+                        <p><strong>Category:</strong> {{product.category}}</p>
+                        <p><strong>Price:</strong> ${{product.price}}</p>
+                        <p><strong>Stock:</strong> {{product.quantity}}</p>
+                        <p><strong>Status:</strong>  {% if product.status == "avtive" %} <span class="badge bg-success">{{product.status}} </span>{% elif product.status == "pending" %}<span class="badge bg-warning">{{product.status}} </span> {% elif product.status == "rejected" %}<span class="badge bg-danger">{{product.status}} </span><br><strong>Reason:</strong>{{moderation.reason}}{% endif %}</p>
+                        <p><strong>Description:</strong></p>
+                        <div id="ProductDescription"></div>
+                        <input type="hidden" name="" value="{{product.description}}" id="tester" hidden>
+                        <script>
+                            var tag = document.getElementById("ProductDescription").innerHTML = document.getElementById("tester").value; 
+                        </script>
+                    </div>
+                    <div class="mb-3">
+                        <h5>Customer Rating</h5>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <small class="text-muted">4.0 (120 reviews)</small>
+                    </div>
+                    <!-- <div class="mb-3">
+                        <button class="btn btn-success w-100"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                    </div> -->
+                    <!-- <div class="mb-3">
+                        <h5>Extras</h5>
+                        <ul class="list-group w-100" id="itemList">
+                            {% for extra in product.business.extras.all %}
+                                <li class="list-group-item d-flex justify-content-between border-left-0 border-right-0 border-top-0 align-items-center" onclick="toggleSelection(this)">
+                                    <div>
+                                        <h6 class="mb-1">{{extra.name}}</h6>
+                                    </div>
+                                        <small class="text-muted">R{{extra.price}}</small>
+                                   
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="variant-card">
+                            <p><strong>Color:</strong> Black</p>
+                            <div class="color-preview" style="background-image: url('https://via.placeholder.com/50');"></div>
+                        </div>
+                        <div class="variant-card">
+                            <p><strong>Color:</strong> White</p>
+                            <div class="color-preview" style="background-image: url('https://via.placeholder.com/50');"></div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Section -->
+        <div class="card p-3 mt-4">
+            <h4 class="mb-3">Recent Activity</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Details</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in product.product_activity.all %}
+                        <tr>
+                            <td>{{activity.activity}}</td>
+                            <td>{{activity.product}}</td>
+                            <td>{{activity.timestamp}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Actions Section -->
+        <div class="mt-4">
+            <a href="{% url 'edit_products' product.business.id product.id %}" class="btn btn-primary me-2"><i class="fas fa-edit"></i> Edit Product</a>
+            <a onclick="deleteProduct({{product.id}})" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Product</a>
+            <button class="btn btn-secondary" onclick="window.print()"><i class="fas fa-print"></i> Print Details</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS & jQuery -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+<script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
+{% endblock %}

@@ -17,11 +17,11 @@
 
 {% block nav %}
     <div class="nav-items">
-        <a href="{% url 'seller_dashboard' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
             <i class="bi bi-house"></i>
             <span>Dashboard</span>
         </a>
-        <a href="{% url 'manage_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+        <a href="{% url 'manage_product' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
             <i class="bi bi-box"></i>
             <span>Products</span>
         </a>

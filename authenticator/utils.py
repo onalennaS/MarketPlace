@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -84,3 +85,22 @@ def send_email_reset_link(recipient_email, reset_link):
     logger.info(f"Password reset email sent to {recipient_email}")
     return True  # Indicate success
 
+
+def verify_role(user):
+    if user.groups.filter(name="admin").exists():
+        return 'admin_dashboard'
+
+    if user.groups.filter(name="moderator").exists():
+        return 'moderator'
+
+
+    if user.groups.filter(name="business").exists():
+        return 'business'
+
+
+    if user.groups.filter(name="courier").exists():
+        return 'moderator'
+
+
+    if user.groups.filter(name="customer").exists():
+        return 'shop_base'

@@ -1,24 +1,7 @@
 from django.shortcuts import render, redirect
-from functools import wraps
-
-def login_required_custom(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return view_func(request, *args, **kwargs)
-        return redirect('signin')  # Redirect to login page if not authenticated
-    return _wrapped_view
-
-def has_password(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.password.startswith("pbkdf2"):
-            return view_func(request, *args, **kwargs)
-        return redirect('create_password')
-    return _wrapped_view
-
+from .utils import login_required_custom, has_password
 from allauth.socialaccount.models import SocialAccount
- 
+from .wrap_models.cart_models import Cart , Wishlist
 def is_google_linked(user):
     try:
         social_account = SocialAccount.objects.get(user=user)
@@ -43,7 +26,17 @@ def landing_page(request):
 def home(request):
     return redirect('shop_base')
     return render(request, 'home/index.html')
-    
+
+
+def get_cart_items(user):
+    return Cart.objects.filter(user=user).all().count()
+
+def get_cart_total(cart_items):
+    total = 0
+    for item in cart_items:
+        total += item.product.price
+    return total
+
 @login_required_custom
 @has_password
 def dash(request):
@@ -53,6 +46,20 @@ def dash(request):
 @has_password
 def profile(request):
     return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
+
+@login_required_custom
+def cart(request):
+    items = get_cart_items(request.user)
+    cart_items = Cart.objects.filter(user=request.user).all()
+    price_total = get_cart_total(cart_items)
+    return render(request, 'home/cart.html',{'cart_total':price_total,'cart_items':cart_items,'cart_items_count':items})
+
+@login_required_custom
+def wish_lists(request):
+    items = get_cart_items(request.user)
+    wishlist_items = Wishlist.objects.filter(user=request.user).all()
+    price_total = get_cart_total(wishlist_items)
+    return render(request, 'home/wish_lists.html',{'wishlist_total':price_total,'wishlist_items':wishlist_items,'wishlist_items_count':items,"cart_items_count":get_cart_items(request.user)})
 
 @login_required_custom
 @has_password
@@ -73,9 +80,7 @@ def order_history(request):
 def view_order_details(request):
     return render(request, 'home/view_order_details.html')
 
-@login_required_custom
-def wish_lists(request):
-    return render(request, 'home/wish_lists.html')
+
 
 @login_required_custom
 def track_orders(request):
@@ -105,9 +110,7 @@ def gift_card(request):
 def credit(request):
     return render(request, 'home/credit.html')
 
-@login_required_custom
-def cart(request):
-    return render(request, 'home/cart.html')
+
 
 @login_required_custom
 def checkout(request):

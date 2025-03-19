@@ -5,6 +5,16 @@
 {% block secend_nav %}
 {% endblock %}
 
+{% block styles %}
+ .list-group-item {
+            transition: background 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .list-group-item.active {
+            background-color: #007bff !important;
+            color: white !important;
+        }
+{% endblock %}
 {% block content %}
 
 <div class="row d-flex justify-content-between flex-wrap ">
@@ -42,17 +52,17 @@
 			</div>
 			<div class="col-12 col-md-6 p-3 shadows" style="background-color: white;">
 
-				<h5 class="fw-bold">Aztron - Space 40 Surfskate Board Cruiser</h5>
-				<span class="fw-bold text-muted small">Aztron</span>
+				<h5 class="fw-bold">{{product.name}}</h5>
+				<span class="fw-bold text-muted small">{{product.business}}</span>
 
 				<p class="mt-2" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
 
 				<hr style="border:1px dashed; black; width: 100%;">
 				
-					<p class="d-flex justify-content-start align-items center fw-bold px-2">In Stock <a class="btn btn-light  p-0 mx-3 fw-bold border" >BWP</a></p>
+					<p class="d-flex justify-content-start align-items center px-2 fw-bold small">{{product.small_description}}</p>
 					
-				<hr style="border:1px dashed; black; width: 100%;">
-				<p class="fw-bold small text-muted">Choose Color <i class="fa-solid fa-palette"></i></p>
+			<!-- 	<hr style="border:1px dashed; black; width: 100%;">
+				<p class="fw-bold small text-muted">Choose Extras <i class="fa-solid fa-palette"></i></p>
 				<div class="d-flex justify-content-start">
 					<div class="mx-2 p-1 border border-danger rounded align-items-center position-relative hovers shadow" style="width:100px; height: 100px;" >
 						 <img src="{% static 'products/image/image.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: contain;">
@@ -67,6 +77,20 @@
 						<img src="{% static 'products/image/image2.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: contain;">
 						  <span class="fw-bold" style="position:absolute; bottom:3%; left: 40%; z-index:1000;"> Blue</span>
 					</div>
+				</div> -->
+				<p class="fw-bold small text-muted">Choose Add-Ons <i class="fa-solid fa-palette"></i></p>
+				
+				<div class="d-flex w-100 justify-content-start">
+					 <ul class="list-group list-group-flush w-100" id="itemList">
+				 					{% for addon in product.business.addons.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
+                        <div>
+                            <h6 class="mb-1">{{addon.name}}</h6>
+                        </div>
+                        <input type="checkbox"  value="{{addon.id}}" data-name="{{addon.name}}" class="extra form-check-input ">
+                    </li>
+                    {% endfor %}
+                </ul>
 				</div>
 			</div>
 			
@@ -77,7 +101,7 @@
 	<div class="col-12 col-md-3 p-3 mb-3 shadows border " style="background-color:white;"> 
 		<div class="w-100  ">
 			<div class="d-flex justify-content-start pt-2">
-				<h4 class="fw-bold">R 1,400</h4>
+				<h4 class="fw-bold">R {{product.price}}</h4>
 				<del class="mt-2"><span class="fw-bold text-muted small mx-2">R 1650</span></del>
 			</div>
 			<div>
@@ -91,16 +115,16 @@
 				<hr style="border:1px dashed; black; width: 100%;">
 				<p class="w-100 text-center p-2" style="border:1px dashed lightgray;">Free delivery with <a class="fw-bold text-decoration-none">subscription</a></p>
 				<div class="tag">
-					<h6 class="fw-bold">R 1,400</h6>
+					<h6 class="fw-bold">R {{product.price}}</h6>
 					<div class="tagx">
-						<button class="btn btn-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart
+						<button class="btn btn-success w-100 mb-3 border rounded-0" onclick="addCart({{product.id}})" ><i class="fa fa-shopping-cart"> </i> Add to Cart
 						</button>
-						<button class="btn btn-outline-danger w-100 rounded-0 border"><i class="fa fa-plus "> </i> <i class="fa-regular fa-heart "> </i> Add to wishlist</button>
+						<button class="btn btn-outline-danger w-100 rounded-0 border"><i class="fa fa-plus "> </i> <i class="fa-regular fa-heart " onclick="addWishlist({{product.id}})"> </i> Add to wishlist</button>
 					</div>
 					<div class="row tags pe-3">
-						<button class="col-8 rounded-5 btn btn-success mb-3 border"><i class="fa fa-plus"> </i> <i class="fa fa-shopping-cart"> </i> Add to Cart
+						<button class="col-8 rounded-5 btn btn-success mb-3 border" onclick="addCart({{product.id}})"><i class="fa fa-plus"> </i> <i class="fa fa-shopping-cart"> </i> Add to Cart
 						</button>
-						<button class="col-3 rounded-5 btn btn-outline-danger mb-3 border"><i class="fa fa-plus"> </i> <i class="fa-regular fa-heart"> </i> 
+						<button class="col-3 rounded-5 btn btn-outline-danger mb-3 border" onclick="addWishlist({{product.id}})"><i class="fa fa-plus"> </i> <i class="fa-regular fa-heart"> </i> 
 						</button>
 					</div>
 				</div>
@@ -228,25 +252,16 @@
 <div class="row mt-3 mx-0">
 	<div class="col-12 col-md-9 p-3 mb-4 border shadow" style="background-color: white;"> 
 	<h5 class="fw-bold text-muted">Description</h5>
-	<div class=" " style=" overflow-x: scroll;">
-		Surge Manic Icon Skateboard - Black. <br><br>
-
-Features:<br>
-- Retro style plastic cruiser<br>
-- Vibrant colour deck with grip tape disc<br>
-- Awesome graphics underneath<br><br>
-
-Specifications:<br>
-- Deck Material: Polypropylene (PP)<br>
-- Deck Size: 570mm x 150mm<br>
-- Bearings: ABEC 7<br>
-- Wheels: 60mm x 45mm, 85A<br>
-- Warranty: 6 Months<br><br>
-
-What's in the box<br>
-1 x Complete Skateboard<br>
-	
+	<div class=" " id="" style=" overflow-x: scroll;">
+		<h4>{{product.name}}.</h4><hr style="border:1px solid black;">
+		<div id="ProductDescription">
+			
+		</div>
 	</div>
+	<input type="hidden" name="" value="{{product.description}}" id="tester" hidden>
+<script>
+		var tag = document.getElementById("ProductDescription").innerHTML = document.getElementById("tester").value; 
+</script>
   </div>
 </div>
 
@@ -260,24 +275,24 @@ What's in the box<br>
   <thead>
     <tr>
       <th class="table-secondary" scope="row">Categories</th>
-      <td scope="row ">Sport / Action Sports / Skateboarding / Boards</td>
+      <td scope="row ">{{product.category}}</td>
      
     </tr>
   </thead>
   <tbody>
     <tr>
       <th class="table-secondary" scope="row">Brand</th>
-      <td>Surge</td>
+      <td>{{product.business}}</td>
       
     </tr>
     <tr>
       <th class="table-secondary" scope="row">What's in the box</th>
-      <td>1 x Complete Skateboard</td>
+      <td>1 x {{product.name}}</td>
      
     </tr>
     <tr>
       <th class="table-secondary" scope="row">Colour Name</th>
-       <td>Yellow</td>
+       <td>None</td>
     </tr>
   </tbody>
 </table>
@@ -302,7 +317,7 @@ What's in the box<br>
 			<div class="px-2 mt-2">
 				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
 				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
+				<h6 class="fw-bold">R {{product.price}}</h6><br>
 				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
 			</div>
 				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
@@ -322,7 +337,7 @@ What's in the box<br>
 			<div class="px-2 mt-2">
 				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
 				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
+				<h6 class="fw-bold">R {{product.price}}</h6><br>
 				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
 			</div>
 				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
@@ -640,4 +655,21 @@ What's in the box<br>
 
 	</div>
 </div>
+<script src="{% static 'user/js/cart.js' %}"></script>
+<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+<script>
+        function toggleSelection(item) {
+            let checkbox = item.querySelector("input[type='checkbox']");
+            checkbox.checked = !checkbox.checked;
+            item.classList.toggle("active", checkbox.checked);
+        }
+
+        function getSelectedItems() {
+            let selectedItems = [];
+            document.querySelectorAll(".list-group-item input:checked").forEach(checkbox => {
+                selectedItems.push(checkbox.parentElement.querySelector("h6").innerText);
+            });
+            alert("Selected Items: " + selectedItems.join(", "));
+        }
+    </script>
 {% endblock %}

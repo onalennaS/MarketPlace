@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+    {% block links %}
+    {% endblock %}
     <style>
         /* Custom Styles */
         :root {
-            --sidebar-width: 280px;
-            --sidebar-collapsed-width: 80px;
-            --primary-color: #0d6efd;
-            --background-color: #f8f9fa;
-            --sidebar-bg: #1b263b;
-            --text-color: #ffffff;
-            --color:#ffffff;
-            --hover-bg: #f1f3f5;
+        --sidebar-width: 280px;
+        --sidebar-collapsed-width: 80px;
+        --primary-color: #0d6efd;
+        --background-color: #f8f9fa;
+        --sidebar-bg: #1b263b;
+        --text-color: #495057;
+        --hover-bg: #f1f3f5;
+        --active-bg: #e9f5ff;
+        --shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+        --table-bg: #ffffff;
+        --table-border: #dee2e6;
+        --btn-bg: #28a745;
+        --btn-text: #ffffff;
+        --input-bg: #ffffff;
+        --input-text: #000000;
+        --input-border: #ced4da;
+    }
 
-            --active-bg: #e9f5ff;
-            --shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .dark-mode {
+        --background-color: #121212;
+        --sidebar-bg: #1e1e1e;
+        --text-color: #ffffff;
+        --hover-bg: #333333;
+        --active-bg: #2d2d2d;
+        --shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
+        --card-bg: #1e1e1e;
+        --table-bg: #2d2d2d;
+        --table-border: #444444;
+        --btn-bg: #28a745;
+        --btn-text: #ffffff;
+         --input-bg: #2d2d2d;
+        --input-text: #ffffff;
+        --input-border: #444444;
+    }
 
-        .dark-mode {
-            --background-color: #121212;
-            --sidebar-bg: #1e1e1e;
-            --text-color: #ffffff;
-            --hover-bg: #ffffff;
-            --active-bg: #2d2d2d;
-            --shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
-        }
 
         body {
             background-color: var(--background-color);
@@ -245,6 +264,7 @@
         {% endblock %}
     </style>
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -265,20 +285,20 @@
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <a href="{% url user_management %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-cart"></i>
-                <span>Orders</span>
+                <span>User management</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+            <a href="{% url business_managment %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
                 <i class="bi bi-people"></i>
-                <span>Customers</span>
+                <span>Busines Management</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url moderator_notifications %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
                 <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
+                <span>Notificatios</span>
             </a>
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <a href="{% url moderator_settings %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>
@@ -288,7 +308,7 @@
         <div class="sidebar-footer">
             <img src="https://via.placeholder.com/40" alt="User Avatar" loading="lazy">
             <div class="mt-2">
-                <a href="#" class="text-danger text-decoration-none">Logout</a>
+                <a href="{% url 'logout' %}" class="text-danger text-decoration-none">Logout</a>
             </div>
         </div>
     </nav>
@@ -346,7 +366,32 @@
                 </div>
             </div>
         </div>
+            
         <div class="container">
+            <div class="message-container" id="message-container">
+                {% if messages %}
+                            {% for message in messages %}
+                                
+                            {% if 'error' in message.tags %}
+                                   <div class="alert alert-danger alert-dismissible fade show slider rounded" role="alert">
+                                 {{message}} {{message.tags}}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                            {% else %}
+                               <div class="alert alert-{{message.tags}} alert-dismissible fade show slider" role="alert" style="box-shadow: 0 4px 8px rgba(144, 238, 144, 0.6);">
+                                 {{message}} {{message.tags}}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                            {% endif %}
+                               
+                            {% endfor %}
+                            
+                {% endif %}
+        </div>
             {% block content %}
             {% endblock %}
         </div>
@@ -406,5 +451,8 @@
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     </script>
+    <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+    
+
 </body>
 </html>

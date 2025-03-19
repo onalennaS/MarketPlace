@@ -116,85 +116,57 @@
                 
                 <h4 class="text-muted">My list</h4>
                
-                <p class="text-muted">You have 2 items in your wish list!</p>
+                <p class="text-muted">You have {{wishlist_items_count}} items in your wish list!</p>
             </div>
-        <div class="pad">
-           <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
-           
-          
-
-            <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
-                   <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                        <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                    </div>
-                    <div class="p-3">
-                        <h6 >Teen Wolf Combo Keyboard and mouse RGB </h6>
-                        <span class="text-primary small">T-Wolf</span><br>
-                        <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
-                        <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
-                        
-                    </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-3">
-                    <div class="d-flex justify-content-end">
-                        <h5 class="fw-bold ">R 300</h5>
-                    </div>
-                     <div class="d-flex justify-content-end">
-                        <del><h6 class="text-muted small fw-bold">R 530</h6></del>
-                    </div>
-
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-dark rounded-0 mx-2"><i class="fa fa-trash"></i> </button>
-                        <button class="btn btn-success rounded-0 "><i class="fa fa-plus"></i> <i class="fa fa-shopping-cart"></i> Add to Cart</button>  
-
-                    </div>
-                    
-                </div>
-           </div> 
-       </div>
+        {% if wishlist_items %}
+            {% for wishlist_item in wishlist_items %}
             <div class="pad">
-            <div class="row p-4 border shadow shadow d-flex justify-content-between" style="background-color:white;">
-            <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
-                   <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                        <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                    </div>
-                    <div class="p-3">
-                        <h6 >Volkano Wireless easrpods </h6>
-                        <span class="text-primary small">Volkano</span><br>
-                        <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
-                        <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
+               <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
+               
+              
+
+                <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
+                        <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
+                            <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="p-3">
+                            <h6 >{{wishlist_item.product.name}} </h6>
+                            <span class="text-primary small">{{wishlist_item.product.business}}</span><br>
+                            <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
+                            <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
+                            
+                        </div>
+                </div>
+
+                    <div class="col-12 col-md-6 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <h5 class="fw-bold ">R {{wishlist_item.product.price}}</h5>
+                        </div>
+                         <div class="d-flex justify-content-end">
+                            <del><h6 class="text-muted small fw-bold">R 530</h6></del>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-dark rounded-0 mx-2" onclick="deleteWishlist({{wishlist_item.id}})"><i class="fa fa-trash"></i> </button>
+                            <button class="btn btn-success rounded-0 " onclick="addCart({{wishlist_item.product.id}})"><i class="fa fa-plus"></i> <i class="fa fa-shopping-cart"></i> Add to Cart</button>  
+
+                        </div>
                         
                     </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-3">
-                    <div class="d-flex justify-content-end">
-                        <h5 class="fw-bold ">R 300</h5>
-                    </div>
-                     <div class="d-flex justify-content-end">
-                        <del><h6 class="text-muted small fw-bold">R 450</h6></del>
-                    </div>
-
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-dark rounded-0 mx-2"><i class="fa fa-trash"></i> </button>
-                        <button class="btn btn-success rounded-0 "><i class="fa fa-plus"></i> <i class="fa fa-shopping-cart"></i> Add to Cart</button>  
-
-                    </div>
-                    
-                </div>
-           </div> 
-           
+               </div> 
+           </div>
+            {% endfor %} 
+        {% else %}
             <!-- No Wish List Items Found -->
-            <div class="col-12 text-center py-5 " style="display:none;">
-                <i class="fas fa-heart" style="color: gray; font-size: 2rem;"></i>
-                <h4 class="text-muted">Your Wish List is Empty!</h4>
+           <div class="col-12 text-center py-5 " >
+                <i class="fa fa-heart" style="color: gray; font-size: 2rem;"></i>
+                <h4 class="text-muted">Your Wishlist  is Empty!</h4>
                 <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
                 <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
                     <i class="fas fa-shopping-cart"></i> Continue Shopping
                 </a>
-            </div>
-       
-    </div>
+            </div> 
+        {% endif %}      
 </div>
-{% endblock content %}
+<script src="{% static 'user/js/cart.js' %}"></script>
+{% endblock %}

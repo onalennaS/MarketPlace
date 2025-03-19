@@ -1,4 +1,5 @@
 {% extends 'seller/base.html' %}
+{% load static %}
 {% block links %}
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,11 +52,11 @@
 
 {% block nav %}
         <div class="nav-items">
-            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
                 <i class="bi bi-house"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{% url 'manage_product' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <a href="{% url 'manage_product' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
@@ -115,7 +116,7 @@
 
         <!-- Add New Product Button -->
         <div class="d-flex justify-content-end mb-3">
-            <a href="{% url 'add_products' %}" class="btn btn-success"><i class="fas fa-plus"></i> Add New Product</a>
+            <a href="{% url 'add_products' business.id %}" class="btn btn-success"><i class="fas fa-plus"></i> Add New Product</a>
         </div>
         <button class="floating-btn d-md-none" onclick="alert('Add New Product')">+</button>
 
@@ -134,33 +135,110 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for product in products %}
                     <tr>
                         <td><img src="https://via.placeholder.com/50" alt="Product" class="product-img"></td>
-                        <td>Wireless Headphones</td>
-                        <td>Electronics</td>
-                        <td>$59.99</td>
-                        <td>50</td>
-                        <td><span class="badge bg-success">Active</span></td>
+                        <td><a href="{% url 'view_product_admin' product.id %}" >{{product.name}}</a></td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.quantity}}</td>
+                        {% if product.status == 'pending' %}
+                        <td><span class="badge bg-warning">{{product.status}}</span></td>
+
+                        {% elif product.status == 'active' %}
+                        <td><span class="badge bg-success">{{product.status}}</span></td>
+                        {% elif product.status == 'inactive' %}
+                        <td><span class="badge bg-secondary">{{product.status}}</span></td>
+
+                        {% elif product.status == 'rejected' %}
+                        <td><span class="badge bg-danger">{{product.status}}</span></td>
+
+                        {% endif %}
                         <td>
-                            <a href="{% url 'edit_products' %}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                            <a href="{% url 'edit_products' business.id product.id %}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger btn-sm" onclick="deleteProduct({{product.id}})"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
-                    <tr>
-                        <td><img src="https://via.placeholder.com/50" alt="Product" class="product-img"></td>
-                        <td>USB Flash Drive</td>
-                        <td>Accessories</td>
-                        <td>$9.99</td>
-                        <td>200</td>
-                        <td><span class="badge bg-secondary">Inactive</span></td>
-                        <td>
-                            <a href="{% url 'edit_products' %}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
+                    {% endfor %}
+              
                 </tbody>
             </table>
         </div>
+
+
+        <!-- Manage Variants Section -->
+        <div class="card p-3 mt-4">
+            <h4 class="mb-3">Manage Variants</h4>
+            <ul class="nav nav-tabs" id="variantTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="addons-tab" data-bs-toggle="tab" href="#addons" role="tab">Add-Ons</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " id="extras-tab" data-bs-toggle="tab" href="#extras" role="tab">Extras</a>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-3">
+                <!-- Extras Section -->
+                <div class="tab-pane fade show " id="extras" role="tabpanel">
+                    <div class="row">
+                        {% if extras %}
+                        <ul>
+                            {% for extra in extras %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                 <span><strong>{{extra.name}}</strong> - R{{extra.price}}</span>
+                                <button class="btn btn-danger btn-sm p-0" onclick="deleteExtra({{extra.id}})"> Delete</button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="extraName" class="form-label">Extra Name</label>
+                            <input type="text" class="form-control" id="extraName" placeholder="Enter extra name" style="background-color:inherit; color: inherit;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="extraPrice" class="form-label">Extra Price</label>
+                            <input type="number" class="form-control" id="extraPrice" placeholder="Enter extra price" style="background-color:inherit; color: inherit;">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3" onclick="addExtra({{business.id}})">Add Extras</button>
+                </div>
+
+              
+            </div>
+            <div class="tab-content mt-3">
+                <!-- Add-On Section -->
+                <div class="tab-pane fade show active" id="addons" role="tabpanel">
+                    <div class="row">
+                        {% if addons %}
+                        <ul>
+                            {% for addon in addons %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                 <span><strong>{{addon.name}}</strong> </span>
+                                <button class="btn btn-danger btn-sm p-0" onclick="deleteAddon({{addon.id}})"> Delete</button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="extraName" class="form-label">Add-On Name</label>
+                            <input type="text" class="form-control" id="AddonName" placeholder="Enter extra name" style="background-color:inherit; color: inherit;">
+                        </div>
+                        
+                    </div>
+                    <button class="btn btn-primary mt-3" onclick="addAddOn({{business.id}})">Add Add-On</button>
+                </div>
+
+              
+            </div>
+        </div>
+
 
         <!-- Recent Activity Section -->
         <div class="card p-3 mt-4">
@@ -175,74 +253,19 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for activity in activities %}
                         <tr>
-                            <td style="background-color:inherit; color: inherit;">Updated</td>
-                            <td style="background-color:inherit; color: inherit;">Wireless Headphones</td>
-                            <td style="background-color:inherit; color: inherit;">2 hours ago</td>
+                            <td style="background-color:inherit; color: inherit;">{{activity.activity}}</td>
+                            <td style="background-color:inherit; color: inherit;">{{activity.product}}</td>
+                            <td style="background-color:inherit; color: inherit;">{{activity.timestamp}}</td>
                         </tr>
-                        <tr>
-                            <td style="background-color:inherit; color: inherit;">Added</td>
-                            <td style="background-color:inherit; color: inherit;">USB Flash Drive</td>
-                            <td style="background-color:inherit; color: inherit;">5 hours ago</td>
-                        </tr>
-                        <tr>
-                            <td style="background-color:inherit; color: inherit;">Deleted</td>
-                            <td style="background-color:inherit; color: inherit;">Old Model Headphones</td>
-                            <td style="background-color:inherit; color: inherit;">1 day ago</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Manage Variants Section -->
-        <div class="card p-3 mt-4">
-            <h4 class="mb-3">Manage Variants</h4>
-            <ul class="nav nav-tabs" id="variantTabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="extras-tab" data-bs-toggle="tab" href="#extras" role="tab">Extras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="colors-tab" data-bs-toggle="tab" href="#colors" role="tab">Colors</a>
-                </li>
-            </ul>
-
-            <div class="tab-content mt-3">
-                <!-- Extras Section -->
-                <div class="tab-pane fade show active" id="extras" role="tabpanel">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="extraName" class="form-label">Extra Name</label>
-                            <input type="text" class="form-control" id="extraName" placeholder="Enter extra name" style="background-color:inherit; color: inherit;">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="extraPrice" class="form-label">Extra Price</label>
-                            <input type="number" class="form-control" id="extraPrice" placeholder="Enter extra price" style="background-color:inherit; color: inherit;">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary mt-3">Add Extra</button>
-                </div>
-
-                <!-- Colors Section -->
-                <div class="tab-pane fade" id="colors" role="tabpanel">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="colorName" class="form-label">Color Name</label>
-                            <input type="text" class="form-control" id="colorName" placeholder="Enter color name" style="background-color:inherit; color: inherit;">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="colorImage" class="form-label">Upload Color Image</label>
-                            <input type="file" class="form-control" id="colorImage" accept="image/*" style="background-color:inherit; color: inherit;">
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label class="form-label">Color Preview</label>
-                        <div class="color-preview" id="colorPreview"></div>
-                    </div>
-                    <button class="btn btn-primary mt-3">Add Color</button>
-                </div>
-            </div>
-        </div>
+        
     </div>
 {% endblock %}
 
@@ -273,4 +296,6 @@
             }
         });
     </script>
+    <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+<script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
 {% endblock %}

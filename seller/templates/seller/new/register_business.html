@@ -9,33 +9,32 @@
 {% block content %}
     <div class="container">
         <h1 class="text-center mb-4">My Registered Businesses</h1>
-        
         <div class="row g-4">
+        {% if businesses %}
+        {% for business in businesses %}
             <!-- Example Business Card -->
-            <a href="{% url 'seller_dashboard' %}" class="col-sm-6 col-md-4 col-lg-3">
+            <a href="{% if business.status == 'approved' %} {% url 'seller_dashboard' business.id %} {% elif business.status == 'pending' %} {% url 'business_status' business.id %} {% elif business.status == 'rejected' %} {% url 'business_status' business.id %}{% endif %}" class="col-sm-6 col-md-4 col-lg-3">
                 <div class="register-card shadow-lg border-0">
                     <img src="{% static 'products/image/food.png' %}" class="card-img-top" alt="Business Image">
                     <div class="register-card-overlay">
-                        <h5 class="register-card-title">Business Name</h5>
-                        <p class="register-card-text">Category: Retail</p>
+                        <h5 class="register-card-title">{{business.name}}</h5>
+                        <p class="register-card-text">Category: {{business.category}}</p>
+
                     </div>
                 </div>
             </a>
-            
+        {% endfor %}
+        {% else %}
             <!-- Add New Business Card -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <a href="{% url 'register_business_form' %}" class="register-card register-add-card text-center p-4 h-100 d-flex align-items-center justify-content-center" onclick="registerBusiness()">
+                <a href="{% url 'register_business_form' %}" class="register-card register-add-card text-center p-4 h-100 d-flex align-items-center justify-content-center" >
                     <h5 class="text-muted">+ Register New Business</h5>
                 </a>
             </div>
+            {% endif %}
         </div>
     </div>
-    <script>
-  function registerBusiness() {
-           window.href=""
-            // You can replace this with actual navigation to a registration form
-        }
-    </script>
+   
 {% endblock %}
 
 

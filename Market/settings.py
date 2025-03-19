@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user',
     'seller',
     'shop',
+    'administrator',
     'moderator',
     'django.contrib.admin',
     'django.contrib.auth',

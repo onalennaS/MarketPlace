@@ -31,122 +31,124 @@
                 
                 <h4 class="text-muted">My Cart</h4>
                
-                <p class="text-muted">You have 2 items in your Cart!</p>
+                <p class="text-muted">You have {{cart_items_count}} items in your Cart!</p>
             </div>
-      <div class="row d-flex justify-content-between flex-wrap mb-5 mx-0">
-        <div class=" col-12 col-md-8 " style="margin-bottom: 100px;">
-        <div class="pad">
-           <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
-           
-          
-
-            <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
-                   <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                        <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                    </div>
-                    <div class="p-3">
-                        <h6 >Teen Wolf Combo Keyboard and mouse RGB </h6>
-                        <span class="text-primary small">T-Wolf</span><br>
-                        <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
-                        <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
-                        
-                    </div>
-                </div>
-
-                 <div class="col-12 col-md-6 mt-3  price">
-                <div>
-                        
-                    <div class="d-flex justify-content-end">
-                        <h5 class="fw-bold ">R 300</h5>
-                    </div>
-                     <div class="d-flex justify-content-end">
-                        <del><h6 class="text-muted small fw-bold">R 450</h6></del>
-                    </div>
-                </div>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-dark rounded-0 mx-2"><i class="fa fa-trash"></i> </button>
-                        <button class="btn btn-danger rounded-0 "><i class="fa fa-plus"></i> <i class="fa fa-heart"></i></button>  
-
-                    </div>
-                    
-                </div>
-           </div> 
-       </div>
+<div class="row d-flex justify-content-between flex-wrap mb-5 mx-0">
+    <div class=" col-12 col-lg-8 " style="margin-bottom: 10px;">
+      {% if cart_items %}
+        {% for cart_item in cart_items %}
             <div class="pad">
-            <div class="row p-4 border shadow shadow d-flex justify-content-between" style="background-color:white;">
-            <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
-                   <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                        <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+               <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
+                    <div class="col-12 col-md-9 d-flex justify-content-start mb-2">
+                           <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
+                            <a href="{% url 'view_product' cart_item.product.id %}">
+                                <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                            </a>
+                            </div>
+                            <div class="p-3 pt-0">
+                                <h6 >{{cart_item.product.name}} </h6>
+                                <span class="text-primary small">{{cart_item.product.business.name}} </span><br>
+                                <i class="fa fa-star text-warning small"></i><span class="text-muted small fw-bold small" > 4.6</span><br>
+                            
+                                <span class="text-dark small">Extras : {% for item in cart_item.CartAddon.all %}{{item.addon.name}}, {% endfor %}</span>
+                               
+                                <span class="text-dark fw-bold d-flex align-items-center small" >qty: <input type="number" min="1"value="{{cart_item.quantity}}" name="qty" id="qty" class="form-control w-25 p-1 mx-2"></span>
+                                
+                            </div>
                     </div>
-                    <div class="p-3">
-                        <h6 >Volkano Wireless easrpods </h6>
-                        <span class="text-primary small">Volkano</span><br>
-                        <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
-                        <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
-                        
-                    </div>
-                </div>
 
-                <div class="col-12 col-md-6 mt-3  price">
-                <div>
-                        
-                    <div class="d-flex justify-content-end">
-                        <h5 class="fw-bold ">R 300</h5>
+                    <div class="col-12 col-md-3 mt-3  price">
+                        <div>    
+                            <div class="d-flex justify-content-end">
+                                <h5 class="fw-bold ">R {{cart_item.product.price}}</h5>
+                            </div>
+                             <div class="d-flex justify-content-end">
+                                <del><h6 class="text-muted small fw-bold">R 450</h6></del>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div>
+                                    <button class="btn btn-dark rounded-5 p-2 mx-2 " onclick="deleteCart({{cart_item.id}})"><i class="fa fa-trash"></i> </button>
+                                    <button class="btn btn-danger rounded-5 p-2 " onclick="addWishlist({{cart_item.product.id}})"><i class="fa fa-plus"></i> <i class="fa fa-heart"></i></button>
+                                    <div>  
+                                </div>
+                            </div>
+                        </div> 
                     </div>
-                     <div class="d-flex justify-content-end">
-                        <del><h6 class="text-muted small fw-bold">R 450</h6></del>
-                    </div>
+                    {% endfor %}
+                  {% else %}
+                        <!-- No Wish List Items Found -->
+                       <div class="col-12 text-center py-5 " >
+                            <i class="fa fa-shopping-cart" style="color: gray; font-size: 2rem;"></i>
+                            <h4 class="text-muted">Your Cart  is Empty!</h4>
+                            <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
+                            <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
+                                <i class="fas fa-shopping-cart"></i> Continue Shopping
+                            </a>
+                        </div> 
+                    {% endif %}       
                 </div>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-dark rounded-0 mx-2"><i class="fa fa-trash"></i> </button>
-                        <button class="btn btn-danger rounded-0 "><i class="fa fa-plus"></i> <i class="fa fa-heart"></i></button>  
-
-                    </div>
-                    
-                </div>
-           </div> 
-           
-            <!-- No Wish List Items Found -->
-            <div class="col-12 text-center py-5 " style="display:none;">
-                <i class="fas fa-heart" style="color: gray; font-size: 2rem;"></i>
-                <h4 class="text-muted">Your Wish List is Empty!</h4>
-                <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
-                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
-                    <i class="fas fa-shopping-cart"></i> Continue Shopping
-                </a>
             </div>
-       
-    </div>
-</div>
-<div class="col-12 col-md-4">
-    <div class="check mb-4">
-    <div class="pad">
-         <div class="row p-4 border  shadow " style="background-color:white;">
-            <p class="text-muted small"> <i class="fa fa-lock pe-1"></i> Secure Checkout</p>
-            <p class="text-muted"> <i class="fa fa-credit-card pe-1"> </i> Multiple Payment Method</p>
-            <p class="text-muted"> <i class="fa fa-truck pe-1"></i> Fast, Relaible Delivery</p>
         </div>
-        
-    </div>
-</div>
-
-    <div class=" checkout">
-    <div class="pad">
-         <div class="row p-4 border  shadow " style="background-color:white;">
-            <h6 class="text-muted "> Cart Summary</h6>
-            <div class="d-flex justify-content-between flex-wrap">
-                <p class="fw-bold">Total: <span class="text-muted">(2 items)</span></p>
-                <h4 class="fw-bold text-success">R 600</h4>
+    <div class="col-12 col-lg-4">
+        <div class="check mb-4">
+            <div class="pad">
+                 <div class="row p-4 border  shadow " style="background-color:white;">
+                    <p class="text-muted small"> <i class="fa fa-lock pe-1"></i> Secure Checkout</p>
+                    <p class="text-muted"> <i class="fa fa-credit-card pe-1"> </i> Multiple Payment Method</p>
+                    <p class="text-muted"> <i class="fa fa-truck pe-1"></i> Fast, Relaible Delivery</p>
+                </div>
+                
             </div>
-            <a href="{% url 'checkout' %}" class="btn btn-success w-100 rounded-0"> Proced to Checkout</a>
         </div>
-        
+
+        <div class=" checkout">
+            <div class="pad">
+                 <div class="row p-4 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted "> Cart Summary</h6>
+                    <div class="d-flex justify-content-between flex-wrap">
+                        <p class="fw-bold">Total: <span class="text-muted">({{cart_items_count}} items)</span></p>
+                        <h4 class="fw-bold text-success">R {{cart_total}}</h4>
+                    </div>
+                    <a href="{% url 'checkout' %}" class="btn btn-success w-100 rounded-0"> Proced to Checkout</a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+                </div>
+                
+            </div>
+        </div>
+
     </div>
-</div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group list-group-flush w-100" id="itemList">
+            {% for extra in cart_items.0.product.business.extras.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
+                        <div>
+                            <h6 class="mb-1">{{extra.name}}</h6>
+                            <span> - R{{extra.price}}</span>
+                        </div>
+                        <input type="checkbox"  value="{{extra.id}}" data-name="{{extra.name}}" class="extra form-check-input ">
+                    </li>
+            {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-
 </div>
 </div>
+<script src="{% static 'user/js/cart.js' %}"></script>
 {% endblock content %}

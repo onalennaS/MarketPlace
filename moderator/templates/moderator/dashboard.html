@@ -1,1 +1,246 @@
-{% extends 'moderator/base.html' %}
+{% extends 'moderator/base.html'%}
+{% block links %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   {% endblock %}
+{% block styles %}
+
+        .alert-card {
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .alert-card:hover {
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        .alert-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        .alert-text {
+            flex-grow: 1;
+        }
+        .alert-actions button {
+            margin-left: 5px;
+        }
+        .chart-container {
+            background: inherit;
+            color:inherit;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card{
+        	background-color:inherit;
+        	color:inherit;
+        }
+ {% endblock %}
+
+  {% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'moderator' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'moderator_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'user_management' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>User management</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="{% url 'business_managment' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Busines Management</span>
+            </a>
+            <a href="{% url 'moderator_notifications' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Notificatios</span>
+            </a>
+            <a href="{% url 'moderator_settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        {% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="mb-4 text-center">User & Business Management</h2>
+        
+ <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">120</span></p>
+                        <p class="text-muted">Pending Review: <span class="fw-bold">30</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Businesses</h5>
+                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">80</span></p>
+                        <p class="text-muted">Pending Review: <span class="fw-bold">20</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Comments</h5>
+                        <p class="text-muted mb-1">Total: <span class="fw-bold">300</span></p>
+                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">250</span></p>
+                        <p class="text-muted">Pending: <span class="fw-bold">50</span></p>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+        <!-- Filter Section -->
+        <div class="d-flex justify-content-between mb-3">
+            <h5>Notifications</h5>
+            <select id="filterAlerts" class="form-select w-auto">
+                <option value="all">All Alerts</option>
+                <option value="user">User Alerts</option>
+                <option value="business">Business Alerts</option>
+                <option value="content">Content Alerts</option>
+            </select>
+        </div>
+
+        <!-- Notification Section -->
+        <div id="notificationSection">
+            <div class="alert-card  d-flex align-items-center" data-category="user">
+                <span class="alert-icon text-primary">🚀</span>
+                <div class="alert-text">
+                    <strong>New User Registered:</strong> <span>jane_doe</span> (2024-03-02)
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-sm btn-primary">View</button>
+                    <button class="btn btn-sm btn-secondary">Approve</button>
+                </div>
+            </div>
+
+            <div class="alert-card  d-flex align-items-center" data-category="content">
+                <span class="alert-icon text-danger">📢</span>
+                <div class="alert-text">
+                    <strong>Content Alert:</strong> User <span>john_doe</span> posted a suspicious comment.
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-sm btn-warning">Review</button>
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </div>
+            </div>
+
+            <div class="alert-card  d-flex align-items-center" data-category="business">
+                <span class="alert-icon text-success">🏢</span>
+                <div class="alert-text">
+                    <strong>New Business Registered:</strong> <span>TechZone</span> (2024-03-01)
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-sm btn-primary">View</button>
+                    <button class="btn btn-sm btn-secondary">Approve</button>
+                </div>
+            </div>
+
+            <div class="alert-card  d-flex align-items-center" data-category="business">
+                <span class="alert-icon text-danger">⚠️</span>
+                <div class="alert-text">
+                    <strong>Business Alert:</strong> <span>FoodExpress</span> has received multiple complaints.
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-sm btn-warning">Investigate</button>
+                    <button class="btn btn-sm btn-danger">Suspend</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Growth vs. Business Growth Chart -->
+        <div class="chart-container">
+            <h5 class="text-center">User Growth vs Business Growth</h5>
+            <canvas id="userBusinessChart"></canvas>
+        </div>
+
+        <!-- Sales Trend Chart -->
+        <div class="chart-container">
+            <h5 class="text-center">Sales Trend</h5>
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Bootstrap & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filtering Functionality
+        document.getElementById('filterAlerts').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            document.querySelectorAll('.alert-card').forEach(alert => {
+                alert.style.display = (selectedCategory === 'all' || alert.dataset.category === selectedCategory) ? 'flex' : 'none';
+            });
+        });
+
+        // User Growth vs. Business Growth Chart
+        const ctxUserBusiness = document.getElementById('userBusinessChart').getContext('2d');
+        new Chart(ctxUserBusiness, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'New Users',
+                        data: [50, 70, 100, 130, 160, 190],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'New Businesses',
+                        data: [30, 40, 50, 70, 90, 110],
+                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Sales Trend Chart
+        const ctxSales = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctxSales, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales ($)',
+                    data: [1000, 2000, 3500, 5000, 7000, 9000],
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+{% endblock %}

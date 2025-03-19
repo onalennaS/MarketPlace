@@ -9,9 +9,10 @@
 {% load static %}
 {% block content %}
 
+{% if business.status == "pending" %}
 <div class="card shadow p-4">
-        <div class="card-body">
-            <h2 class="text-warning">Pending Approval</h2>
+        <div class="card-body"> 
+            <h2 class="text-warning">Pending Approval {{business.status}}</h2>
             <p class="text-muted">
                 Your business is currently under review. This process may take some time.  
                 You will receive a notification once it has been approved.
@@ -23,5 +24,19 @@
             <a href="/" class="btn btn-primary mt-3">Go Back</a>
         </div>
     </div>
+{% elif business.status == "rejected" %}
+    <div class="card shadow p-4">
+        <div class="card-body">
+            <h2 class="text-warning">Business Request not Approved</h2>
+            <p class="text-muted">
+                {{moderation.reason}}
+            </p>
+            <i class="fa fa-times text-danger"></i>
+            <br>
+            <a href="{% url 'appeal_registration_view' business.id %}" class="btn btn-primary mt-3">request appeal </a>
+        </div>
+    </div>
+
+{% endif %}
 
 {% endblock %}

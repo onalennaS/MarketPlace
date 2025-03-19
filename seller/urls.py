@@ -1,33 +1,65 @@
 from django.urls import path
-from . import views
+from .views.render_views import(user_profile ,
+                                    base,
+                                    dashboard,
+                                    business,
+                                    register_business_form,
+                                    business_status,
+                                    business_info,
+                                    view_stats,
+                                    add_products,
+                                    edit_products,
+                                    orders,
+                                    order_tracking,
+                                    transaction,
+                                    pay_for_premium,
+                                    manage_product,
+                                    reviews,
+                                    settings,
+                                    customer,
+                                    invoice,
+                                    report,
+                                    appeal_registration_view,
+                                    view_product
+                                    ) 
 
+from .views.business_views import register_business,appeal_registration
+from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras,delete_extras, add_addons, delete_addon
 
 urlpatterns = [
-    path('', views.base, name='base'),
+    path('', base, name='base'),
+    path('user_profile/', user_profile, name='user_profile'),
+    path('dashboard/<int:business_id>', dashboard, name='seller_dashboard'),
+    path('business/', business, name='business'),
+    path('register_business_form/', register_business_form, name='register_business_form'),
+    path('business_status/<int:business_id>', business_status, name='business_status'),
+    path('appeal_registration_view/<int:business_id>', appeal_registration_view, name='appeal_registration_view'),
+    path('business_info/', business_info, name='business_info'),
+    path('view_stats/', view_stats, name='view_stats'),
     
-   path('user_profile/', views.user_profile, name='user_profile'),
-   path('dashboard/', views.dashboard, name='seller_dashboard'),
-   
-
+    path('edit_products/<int:business_id>/<int:product_id>', edit_products, name='edit_products'),
+    path('view_product/<int:product_id>', view_product, name='view_product_admin'),
     
-    path('register_business/', views.register_business, name='register_business'),
-    path('register_business_form/', views.register_business_form, name='register_business_form'),
-    path('business_status/', views.business_status, name='business_status'),
+    path('orders/', orders, name='orders'),
+    path('order_tracking/', order_tracking, name='order_tracking'),
+    path('transaction/', transaction, name='transaction'),
+    path('pay_for_premium/', pay_for_premium, name='pay_for_premium'),
+    path('manage_product/<int:business_id>', manage_product, name='manage_product'),
+    path('reviews/', reviews, name='reviews'),
+    path('settings/', settings, name='settings'),
+    path('customer/', customer, name='customer'),
+    path('invoice/', invoice, name='invoice'),
+    path('report/', report, name='report'),
+    path('add_products/<int:business_id>', add_products, name='add_products'),
     
-    path('business_info/', views.business_info, name='business_info'),
-    path('view_stats/', views.view_stats, name='view_stats'),
-    path('add_products/', views.add_products, name='add_products'),
-    path('edit_products/', views.edit_products, name='edit_products'),
-    path('orders/', views.orders, name='orders'),
-    path('order_tracking/', views.order_tracking, name='order_tracking'),
-    path('transaction/', views.transaction, name='transaction'),
-    path('pay_for_premium/', views.pay_for_premium, name='pay_for_premium'),
-    path('manage_product/', views.manage_product, name='manage_product'),
-    path('reviews/', views.reviews, name='reviews'),
-    path('settings/', views.settings, name='settings'),
-    path('customer/', views.customer, name='customer'),
-    path('invoice/', views.invoice, name='invoice'),
-    path('report/', views.report, name='report'),
-    
+    path('api/add_extra/', add_extras, name='api_add_extras'),
+    path('api/delete_extra/', delete_extras, name='api_delete_extras'),
+    path('api/delete_product/', delete_product, name='api_delete_product'),
+     path('api/edit_product/', ep, name='api_edit_product'),
+    path('api/add_product/', api_add_product, name='api_add_product'),
+    path('api/appeal_registration/', appeal_registration, name='appeal_registration'),
+    path('api/register_business/', register_business, name='register_business'),
+    path('api/add_addons/', add_addons, name='add_addons'),
+    path('api/delete_addon/', delete_addon, name='delete_addon'),
 
 ]

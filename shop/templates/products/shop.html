@@ -129,116 +129,38 @@
 		</div>
 	
 	<div class=" d-flex justify-content-start pb-3" style=" overflow-x: scroll;">
-
+		{% for product in products %}
 		<div class="border shadow rounded mx-2" style="width: 200px;">
 			
 			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
 				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
 
-				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
+				<a onclick="addWishlist({{product.id}})" class="like"><i class="fa-regular fa-heart fa-1x text-danger" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
 				</a>
-				<a class="text-dark prods" href="{% url 'view_product' %}">
+				<a class="text-dark prods" href="{% url 'view_product' product.id %}">
 				<img src="{% static 'products/image/image.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
 			</a>
 			</div>
 		
 			<div class="px-2 mt-2">
-				<a class="  prods" href="{% url 'view_product' %}">
-				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
+				<a class="  prods" href="{% url 'view_product' product.id %}">
+				<h6>{{product.name}}</h6>
 				</a>
 				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
-				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
+				<h6 class="fw-bold">R {{product.price}}</h6><br>
+				<!-- <del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del> -->
 			</div>
 				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
 			</div>
 			<div class="p-2">
-			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
+			<button class="btn btn-outline-success w-100 mb-3 border rounded-0" onclick="addCart({{product.id}})"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
+
 			</div>
 		</div>
+		{% endfor %}
 
 
-		<div class="border shadow rounded mx-2" style="width: 200px;">
-			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
-				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
-
-				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
-				</a>
-				<img src="{% static 'products/image/image.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
-			</div>
-			<div class="px-2 mt-2">
-				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
-				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
-				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
-			</div>
-				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
-			</div>
-			<div class="p-2">
-			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
-			</div>
-		</div>
-		<div class="border shadow rounded mx-2" style="width: 200px;">
-			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
-				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
-
-				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
-				</a>
-				<img src="{% static 'products/image/image2.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
-			</div>
-			<div class="px-2 mt-2">
-				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
-				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
-				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
-			</div>
-				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
-			</div>
-			<div class="p-2">
-			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
-			</div>
-		</div>
-		<div class="border shadow rounded mx-2" style="width: 200px;">
-			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
-				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
-
-				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
-				</a>
-				<img src="{% static 'products/image/image2.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
-			</div>
-			<div class="px-2 mt-2">
-				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
-				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
-				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
-			</div>
-				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
-			</div>
-			
-			<div class="p-2">
-			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
-			</div>
-		</div>
-		<div class="border shadow rounded mx-2" style="width: 200px;">
-			<div class="position-relative p-1" style="width: 200px; height: 200px; overflow-x: hidden;">
-				<button class="btn btn-primary fw-bold" style="font-size: 11px; position: absolute; top: 5%;left: 5%; z-index: 100;"> 20% <br>OFF</button>
-
-				<a href="#" class="like"><i class="fa-regular fa-heart fa-1x" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
-				</a>
-				<img src="{% static 'products/image/image.png' %}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
-			</div>
-			<div class="px-2 mt-2">
-				<h6>Surge Manic Icon Skateboard - Black Cruiser</h6>
-				<div class="d-flex justify-content-start">
-				<h6 class="fw-bold">R 1,400</h6><br>
-				<del class=""><span class="fw-bold text-muted small mx-2">R 1650</span></del>
-			</div>
-				<p class="mt-2 text-muted" style="font-size:14px;"><i class="fa fa-star text-warning"></i><b> 4.6</b> <a class="text-decoration-none px-2" href="#"> 12 Reviews</a></p>
-			</div>
-			<div class="p-2">
-			<button class="btn btn-outline-success w-100 mb-3 border rounded-0"><i class="fa fa-shopping-cart"> </i> Add to Cart</button>
-			</div>
-		</div>
+	
 
 
 	 </div>
@@ -391,5 +313,6 @@
 	</div>
 
 </div>
-
+<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+<script src="{% static 'user/js/cart.js' %}"></script>
 {% endblock%}

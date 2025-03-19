@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .wrap_views import cart_views
 
 
 urlpatterns = [
@@ -23,7 +24,11 @@ urlpatterns = [
     path('dashboard/subscription_plan', views.subscription_plan, name='subscription_plan'),
     path('dashboard/', views.dash, name='dash'),
 
-    
+    path('api/user/add_cart/', cart_views.add_cart, name='add_cart'),
+    path('api/user/delete_cart/', cart_views.delete_cart, name='delete_cart'),
+
+    path('api/user/add_wishlist/', cart_views.add_wishlist, name='add_wishlist'),
+
    
    
 ]

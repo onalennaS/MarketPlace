@@ -9,7 +9,7 @@ from .validator import validate_password
 from django.contrib.auth.hashers import make_password, check_password
 from functools import wraps
 from django.shortcuts import redirect
-from .utils import send_email_reset_link, login_required_custom,generate_reset_token, verify_reset_token,send_verify_email
+from .utils import send_email_reset_link, login_required_custom,generate_reset_token, verify_reset_token,send_verify_email, verify_role
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -74,8 +74,9 @@ def signin(request):
             if check_password(data['password'],user.password):
                 user.backend = 'django.contrib.auth.backends.ModelBackend'    
                 login(request, user)
+                
                 messages.success(request,f'logged in successfully as {user.username}')
-                return redirect('profile')        
+                return redirect(verify_role(user))        
             else:
                 messages.error(request,'Password is incorrect')
                 return render(request, 'authentication/signin.html', {'data':data})
@@ -164,3 +165,7 @@ def activate_account(request, email):
         messages.success(request,f'email submitted')
     return render(request, 'authentication/activate_account.html',{'email':email})
 
+def verify_user(request):
+    if not request.user.is_authenticated:
+        return redirec('signin')
+    return redirect(verify_role(request.user))
