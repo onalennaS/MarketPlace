@@ -111,8 +111,8 @@ def checkout(request):
 
 @login_required_custom
 def payment_successful(request,order_id):
-    order = Order.objects.filter(id=int(order_id))
-    return render(request, 'home/payment/payment_successful.html')
+    order = Order.objects.filter(id=int(order_id)).first()
+    return render(request, 'home/payment/payment_successful.html',{'order':order})
 
 @login_required_custom
 @has_password

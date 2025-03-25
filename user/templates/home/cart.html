@@ -42,7 +42,7 @@
                     <div class="col-12 col-md-9 d-flex justify-content-start mb-2">
                            <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
                             <a href="{% url 'view_product' cart_item.product.id %}">
-                                <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                                <img src="{{cart_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                             </a>
                             </div>
                             <div class="p-3 pt-0">

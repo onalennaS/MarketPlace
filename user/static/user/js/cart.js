@@ -360,7 +360,7 @@ function place_order(order_id) {
       }else{
         displayMessagesapi(data);
         setTimeout(() => {
-            window.location.href = '/dashboard/checkout/payment_successful/'+order_id;
+            window.location.href = '/account/dashboard/checkout/payment_successful/'+data.order_id;
         }, 2000);
       }
     })

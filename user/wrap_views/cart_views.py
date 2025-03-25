@@ -323,5 +323,5 @@ def palce_order(request):
             return JsonResponse({'message':'address not found ','status':'error'},status=404)
 
     transaction = transfer_money_to_business(request.user,order.business,total_amount,order)
-    return JsonResponse({"message": "Order Placed Successfully successfully",'status':'success'}, status=201)
+    return JsonResponse({"message": "Order Placed Successfully successfully",'status':'success','order_id':order.id}, status=201)
     

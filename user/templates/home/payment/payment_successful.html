@@ -33,7 +33,7 @@
         <div class="icon">✅</div>
         <h2 class="text-success mt-3">Payment Successful!</h2>
         <p>Your order has been placed successfully.</p>
-        <a href="track-order.html" class="btn btn-primary w-100">Track Order</a>
+        <a href="{% url 'track_orders' order.id %}" class="btn btn-primary w-100">Track Order</a>
     </div>
 
     <!-- Bootstrap JS -->
