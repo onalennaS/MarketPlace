@@ -41,3 +41,6 @@ def view_product(request, product_id):
     if product:
         return render(request,'products/view_product.html',{'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user)})
     return render(request,'products/view_product.html')
+
+def home(request):
+    return render(request,'products/landing_page.html')

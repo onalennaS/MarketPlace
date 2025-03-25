@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .order-status {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <div class="header">
+        <h1>Order Tracking Update - {{order.status}}</h1>
+        <h1>#{{order.order_id}}</h1>
+        <p>Your order is {{ description }}.</p>
+    </div>
+
+    <div class="content">
+        <p>Hello <strong>{{ user.username }}</strong>,</p>
+        <p>Your order <strong>#{{ order.order_id }}</strong> has been {{ descsription2 }}</p>
+
+        <div class="order-status">
+            <h3>Current Status: <span style="color: #007bff;">{{ order.status }}</span></h3>
+            <p><strong>Estimated Delivery:</strong> {{eta}} </p>
+        </div>
+
+        <p>You can track your order anytime by clicking the button  below:</p>
+
+        <div class="text-center">
+            <a href="{{ link }}" class="btn">Track Your Order</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>If you have any questions, contact our support team at <a href="mailto:support@sixskies.com">support@sixskies.com</a></p>
+        <p>Thank you for shopping with <strong>SixSkies</strong>!</p>
+    </div>
+</div>
+
+</body>
+</html>

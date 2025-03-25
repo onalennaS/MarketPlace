@@ -19,12 +19,12 @@ class Cart(models.Model):
         return f"{self.user.username} - {self.product.name} ({self.quantity})"
 
 class CartExtra(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="extras")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="extras")
     extra = models.ForeignKey(Extras, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.cart.user.username} - {self.extra.name} ({self.quantity})"
+        return f"{self.user.username} - {self.extra.name} ({self.quantity})"
 
 class CartAddons(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="CartAddon")
@@ -42,3 +42,30 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
+
+class CartDeliveryMethod(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    method = models.CharField(max_length=50, null=True)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.method}"
+
+class CartDeliveryAddress(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address_type = models.CharField(max_length=50,null=True)
+    house_no = models.CharField(max_length=50, null=True)
+    street = models.CharField(max_length=50, null=True)
+    complex_name = models.CharField(max_length=50, null=True)
+    area = models.CharField(max_length=50, null=True)
+    notes = models.CharField(max_length=200, null=True)
+
+    instutition = models.CharField(max_length=50, null=True)
+    block = models.CharField(max_length=50, null=True)
+    venue = models.CharField(max_length=50, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.address_type} "
+

@@ -45,11 +45,7 @@
                         <i class="fas fa-heart me-2"></i> Wish Lists
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
-                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
-                    </a>
-                </li>
+              
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
                         <i class="fas fa-star me-2"></i> Reviews
@@ -116,7 +112,12 @@
     </nav>
 
     <!-- Filter Options for Order History -->
-    <div class="mb-4 d-flex justify-content-end">
+    <div class="mb-4 d-flex justify-content-between">
+        <div>
+            <a href="{% url 'track_orders' order.id %}" class="btn btn-dark rounded-0 ">
+                <span>Track Order</span>
+            </a>
+        </div>
         <div>
             
             <a class="btn btn-outline-dark rounded-0 " href="{% url 'order_history'%}"> View Orders</a>
@@ -126,18 +127,18 @@
 
     <div id="viewdetails" style="display:block;">
         <div class="row  w-100 mx-0 mb-5" >
-            <div class="col-12  d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-                <div class=" w-100 d-flex justify-content-start"  >
+            <div class="col-12  d-flex justify-content-between flex-wrap w-100 p-3  border shadow" style="background-color:white;">
+                <div class=" w-100  d-flex justify-content-start flex-wrap"  >
                     <div class="d-flex justify-content-start">
-                        <span class="px-3  "><b>Order #123456</b></span>
+                        <span class="px-3  "><b>Order #{{order.order_id}}</b></span>
                        <span class="border border" style="width: 2px; height: 50%; background-color: black; margin-top: -5px;"></span>
                     </div>
                     <div class="d-flex justify-content-start">
-                        <span class="px-3">Ordered 16 May 2024 </span>
+                        <span class="px-3">Ordered {{order.created_at}} </span>
 
                          <span class="border border" style="width: 2px; height: 50%; background-color: black; margin-top: -5px;"></span>
                     </div>
-                    <span class="px-3"> Paid 16 May 2024 </span>
+                    <span class="px-3"> Paid {{order.created_at}} </span>
                 </div>
                 <div class="">
                     
@@ -149,14 +150,17 @@
            <div class="row d-flex  mx-0 justify-content-between w-100 p-4 border p-0  shadow " style="background-color:white;">
                <div class="col-12 col-md-4">
 
-                    <h6 class="fw-bold"><i class="fa fa-shopping-cart"></i> Shipping address</h6><br>
-                   <span class="text-muted small">Jeff</span><br>
-                   <span class="text-muted small">Next to kwena</span><br>
-                   <span class="text-muted small">34 Fortuna Ave</span><br>
-                   <span class="text-muted small">Bedworth Park</span><br>
-                   <span class="text-muted small">Vereeniging</span><br>
-                   <span class="text-muted small">1939</span>
+                    <h6 class="fw-bold"><i class="fa fa-shopping-cart"></i> Delivery address</h6><br>
+                   <span class="text-muted small">{{user.username}}</span><br>
+                   {% if order.delivery_address == "delivery" %}
+                   <span class="text-muted small">{{address.notes}}</span><br>
+                   <span class="text-muted small">{{address.address_line_1}}</span><br>
+                   <span class="text-muted small">{{address.address_line_2}}</span><br>
+                   <span class="text-muted small">{{address.address_line_3}}</span><br>
+                   <span class="text-muted small">{{address.address_line_4}}</span>
+                   {% else %}
 
+                   {% endif %}
                </div>
                
 
@@ -164,7 +168,7 @@
                    <div>
                         
                         <h6 class="fw-bold"><i class="fa fa-car"></i> Delivery Method</h6><br>
-                        <span class="text-muted small">Standard</span><br>
+                        <span class="text-muted small">{{order.delivery_method}}</span><br>
                    </div>
                    <div class="mt-4">
                     
@@ -176,10 +180,14 @@
                <div class="col-12 col-md-4">
                 
                     <h6 class="fw-bold"><i class="fa fa-list"></i> Order Summary</h6><br>
-                     <span class="d-flex justify-content-between text-muted small">2 items  <b>R 600</b></span>
-                    <span class="d-flex justify-content-between text-muted small" >Deslivery <b>R 50 </b></span><br><br>
-                    <span class="d-flex justify-content-between text-muted small">Order Total <b>R 650</b></span>
-                    <span class="d-flex justify-content-between text-muted small">Paid (credit/debit card) <b>- R 650</b></span><br>
+                     <span class="d-flex justify-content-between text-muted small">{{items_count}} items  <b>R {{price_total}}</b></span>
+                     <span class="d-flex justify-content-between text-muted small">{{extras_count}} extras  <b>R {{extra_total}}</b></span>
+                     {% if order.delivery_method == "delivery" %}
+                    <span class="d-flex justify-content-between text-muted small" >Delivery <b>R 15 </b></span>
+                    {% endif %}
+                    <br><br>
+                    <span class="d-flex justify-content-between text-muted small">Order Total <b>R {{total}}</b></span>
+                    <span class="d-flex justify-content-between text-muted small">Paid  <b>- R {{total}}</b></span><br>
 
 
                </div>
@@ -190,7 +198,7 @@
        <div class="row mx-0 w-100 " >
         <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
             <div class="" >
-                <h6 class="fw-bold">Deliverd Tue ,21 November 2024</h6>
+                <h6 class="fw-bold">{{order.status}} {% if order.status == "Delivered" %} Today ,21 November 2024 {% endif %}</h6>
                 <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
             </div>
             <div class="">
@@ -202,16 +210,15 @@
        
        <div class=" d-flex justify-content-between p-4 border shadow shadow" style="background-color:white;">
             <div class="w-100 d-flex justify-content-start" >
+            {% for order_item in order_items %}
                <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
                     <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
-
-                 <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div> 
+            {% endfor %}
+                 
             </div>
             <div class="tex-center ">
-                <a href="{% url 'track_orders' %}" style="text-decoration:none;">
+                <a href="{% url 'track_orders' order.id %}" style="text-decoration:none;" class="btn btn-outline-primary">
                    <span>Track</span> <br> <i class="fa fa-truck px-3"></i> <br> <span>Order</span>
 
                 </a>
@@ -244,45 +251,15 @@
   </div>
   <div class="offcanvas-body bg-light shadow border p-4 ">
     <div class="p-3 w-100 border fw-bold mb-3" style="background-color:white;">
-        Order #152576343, 16 May 2024
+        Order #{{order.order_id}}, 16 May 2024
     </div>
 
-    <div class="  w-100 mb-3" >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-            <div class="" >
-                <h6 class="">Sold by : <span class="fw-bold">Sixskies</span></h6>
-               <span class="text-muted small">Invoice Total: R 300</span>
-            </div>
-            <div class="">
-                
-               
-                <button class="btn btn-dark rounded-0"><i class="fa fa-download"></i> Download invoice</button>
-            </div>
-            
-        </div>
-       
-       <div class=" p-4 border shadow shadow" style="background-color:white;">
-            <h6 class="text-muted">Invoice items</h6>
-            <br>
-           <div class="d-flex justify-content-start mb-2">
-               <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div>
-                <div class="p-3">
-                    <h6 >Volkano earpods </h6>
-                    <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
-                    
-                </div>
-            </div>
-       </div>  
-
-    </div>
 
     <div class="  w-100 mb-3" >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
+        <div class="d-flex justify-content-between flex-wrap w-100 p-3  border shadow" style="background-color:white;">
             <div class="" >
-                <h6 class="">Sold by : <span class="fw-bold">Techno Spec.</span></h6>
-               <span class="text-muted small">Invoice Total: R 300</span>
+                <h6 class="">Sold by : <span class="fw-bold">{{order.business.name}}.</span></h6>
+               <span class="text-muted small">Invoice Total: R {{total}} </span>
             </div>
             <div class="">
                 
@@ -296,21 +273,39 @@
             <h6 class="text-muted">Invoice items</h6>
             <br>
           
-
+            {% for item in order_items %}
              <div class="d-flex justify-content-start mb-2">
                <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
                     <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <div class="p-3">
-                    <h6 >Teen Wolf Combo Keyboard and mouse RGB </h6>
-                    <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
+                    <h6 >{{item.product.name}}</h6>
+                    <span><b>R{{item.product.price}} </b> <span class="text-muted small px-3 fw-bold"> Qty : {{item.quantity}}</span></span>
                     
                 </div>
             </div>
+            {% endfor %}
        </div>  
        
     </div>
+                <div class="row p-2 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted fw-bold"> Extras</h6>
+                    {% for extra in extras %}
+                     <div class="">
+                    
+                        <div class="px-3 d-flex justify-content-between">
+                            <div class="">
+                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
+                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
+                            </div>
+                            
+                        </div>
+                        <hr style="border:1px solid black;">
+                    </div>
+                    {% endfor %}
 
+                  
+                </div>
 
   </div>
 </div>
@@ -335,31 +330,24 @@
        <div class=" p-4 border shadow shadow" style="background-color:white;">
             <h6 class="text-muted">Invoice items</h6>
             <br>
-            <a href="{% url 'view_product'%}">
-           <div class="d-flex justify-content-start mb-2">
-               <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div>
-                <div class="p-3">
-                    <h6 >Volkano earpods </h6>
-                    <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
-                    
-                </div>
-            </div>
-        </a>
-            <div class="d-flex justify-content-start mb-2">
-               <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div>
-                <div class="p-3">
-                    <h6 >Teen Wolf Combo Keyboard and mouse RGB </h6>
-                    <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
-                    
-                </div>
-            </div>
-       </div>  
+            {% for item in order_items %}
+                <a href="{% url 'view_product' item.product.id %}">
+                   <div class="d-flex justify-content-start mb-2">
+                       <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
+                            <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="p-3">
+                            <h6 >{{item.product.name}} </h6>
+                            <span><b>R{{item.product.price}} </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
+                            
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+           
 
     </div>
   </div>
+        
 </div>
 {% endblock %}

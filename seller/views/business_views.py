@@ -75,7 +75,7 @@ def register_business(request):
     business.save()
     address.save()
     moderation.save()
-    return JsonResponse({"message": "Business created successfully",'status':'success'}, status=201)
+    return JsonResponse({"message": "Business created successfully",'status':'success','id':business.id}, status=201)
 
     
 @login_required_custom

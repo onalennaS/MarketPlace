@@ -59,7 +59,9 @@
 
             margin-left: -25px;
         }
-    
+     .hidden {
+            display: none;
+        }
 </style>
 
 {% block nav %}
@@ -86,7 +88,7 @@
                     <div class=" p-3" style="background-color:white; width: 80%;">
 
                     <h6 class="card-title text-muted"><i class="fa fa-truck"></i><b> Delivery Method</b></h6>
-                        <p class="card-text pt-0 pb-0 px-3 fw-bold">Standard</p>
+                        <p class="card-text pt-0 pb-0 px-3 fw-bold">{{method}}</p>
                        
                     </div>
                     
@@ -103,15 +105,16 @@
                     <div class="d-flex justify-content-between">
                            <div class="d-flex justify-content-between w-100 " >
                                     <div class="form-check form-check-inline w-100 bg-light p-4 align-items-center rounded-2">
-                                      <input class="form-check-input mx-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                      <label class="form-check-label" for="inlineRadio1">Standard</label>
+                                      <input class="form-check-input mx-2" type="radio" name="delivery_method" id="inlineRadio1" value="pickup">
+                                      <label class="form-check-label" for="inlineRadio1">Pick up</label>
                                     </div>
                                     <div class="form-check form-check-inline w-100 bg-light p-4 align-items-center rounded-2">
-                                      <input class="form-check-input mx-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                      <label class="form-check-label" for="inlineRadio2">Premium</label>
+                                      <input class="form-check-input mx-2" type="radio" name="delivery_method" id="inlineRadio2" value="delivery">
+                                      <label class="form-check-label" for="inlineRadio2">Stadard Delivery</label>
                                     </div>
                               </div>
                             <div>
+                                 <button type="button" class="btn btn-success rounded-0 px-3"  onclick="add_cart_delivery_method()">Save</button>    
                                 
                                 <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('username')" >Cancel</button>    
                             </div>
@@ -122,30 +125,47 @@
         </div>
     </div>
     <div>
+        {% if method == "delivery" %}
         <div class="card w-100 mb-3 bg-light rounded-0">
             <div class="card-body  p-0" id="password-disp" style="display:block; background: white">
                <div class="d-flex justify-content-between w-100">
                     <div class=" p-3" style="background-color:white; width: 80%;">
 
                     <h6 class="card-title text-muted"><i class="fa fa-address-card"></i> <b> Delivery Address</b></h6>
-                        <button class="btn btn-success rounded-5 shadow mt-3 py-0 mx-4">Residential</button>
+                    {% if delivery_address %}
+                        {% if delivery_address.address_type == "residential" %}
+                        <button class="btn btn-success rounded-5 shadow mt-3 py-0 mx-4">{{delivery_address.address_type}}</button>
                         <div class="mx-5 mt-2">
-                            <span class="fw-bold">Next to Kwena</span><br>
-                            <span class="fw-bold">34 Fortuna Ave</span><br>
-                            <span class="fw-bold">Bedworth park, Vereeniging, 1939</span><br>
-                            <span class="small text-muted"> Jeff </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> 0645569327</span>
+                            <span class="fw-bold">{{delivery_address.house_no}} {{delivery_address.street}}</span><br>
+                            <span class="fw-bold">{{delivery_address.complex_name}} {{delivery_address.area}}</span><br>
+                            <span class="fw-bold text-muted">{{delivery_address.notes}}</span><br>
+                            <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> 0645569327</span>
                         </div>
+                        {% elif delivery_address.address_type == "campus" %}
+                            <button class="btn btn-success rounded-5 shadow mt-3 py-0 mx-4">{{delivery_address.address_type}}</button>
+                            <div class="mx-5 mt-2">
+                                <span class="fw-bold">{% if delivery_address.instutition == "vut" %} Vaal university of Technology{% endif %} </span><br>
+                                <span class="fw-bold">Block : {{delivery_address.block}} {{delivery_address.venue}}</span><br>
+                                <span class="fw-bold text-muted">{{delivery_address.notes}}</span><br>
+                                <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> 0645569327</span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                        
                     </div>
                    
-                     <button type="button" class="btn btn-outline-light border-0 rounded-0 m-0 mx-2 " onclick="edit_button('password')" style="height: 40px; color: transparent;" disabled>Edit</button>
                     <div class="position-relative ">
                         
                     <div class="p-2 d-flex justify-content-between position-absolute bottom-0 end-0">
+                        {% if delivery_address %}
                          <button type="button" class="btn btn-dark rounded-0 m-0 mx-2 " onclick="edit_button('password')" style="height: 40px;">Edit</button>
-                          <button type="button" class="btn btn-outline-danger rounded-0 m-0" style="height: 40px;">change</button>
+                         {% else %}
+                           <button type="button" class="btn btn-success rounded-0 m-0 mx-2 " onclick="edit_button('password')" style="height: 40px;">Add</button>
+                        {% endif %}
+                          
                     </div>
                     </div>
+                        
                </div>
             </div> 
 
@@ -157,49 +177,103 @@
                            <div class="w-100">
                                <div class="d-flex justify-content-between w-100 " >
                                     <div class="form-check form-check-inline w-100 bg-light p-4 align-items-center rounded-2">
-                                      <input class="form-check-input mx-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                      <input class="form-check-input mx-2" type="radio" name="toggle" id="residence" value="residence" onclick="toggleSection('residence_section')">
                                       <label class="form-check-label" for="inlineRadio1">Residential</label>
                                     </div>
                                     <div class="form-check form-check-inline w-100 bg-light p-4 align-items-center rounded-2">
-                                      <input class="form-check-input mx-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                      <label class="form-check-label" for="inlineRadio2">Business</label>
+                                      <input class="form-check-input mx-2" type="radio" name="toggle" id="campus" value="campus" onclick="toggleSection('campus_section')">
+                                      <label class="form-check-label" for="inlineRadio2">Campus</label>
                                     </div>
                               </div>
-                               <div class="form-floating mb-3 w-75">
-                                    <input type="text" class="form-control border border-dark border-top-0 border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='erecipient-name' value="">
-                                    <label for="floatingInput">Recipient Name</label>
-                              </div>
-                               <div class="form-floating mb-3 w-75">
-                                    <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='erecipient-phone' value="">
-                                    <label for="floatingInput">Recipient phone</label>
+                                <div id="residence_section" class="hidden mb-2">
+                                    <br>
+                                    <input type="rext" id="address_type" name="" value="residential" hidden>
+                                    <h4>Residential Delivery</h4>
+                                   <div class="form-floating mb-3 w-75">
+                                        <input type="text" class="form-control border border-dark border-top-0 border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="house_no" placeholder="Enter house/bulding number (e.g , 17)" name='erecipient-name' value="">
+                                        <label for="house_number">House / building number</label>
+                                  </div>
+                                    <div class="form-floating mb-3 w-75">
+                                        <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="street" placeholder="enter street name (e.g. Fortuna )" name='erecipient-phone' value="">
+                                        <label for="street_name">Street Name</label>
+                                    </div>
+                                   <!--   <div class="form-floating mb-3 w-75">
+                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='estreet' value="">
+                                          <label for="floatingInput">Street address</label>
+                                    </div> -->
+                                    <div class="form-floating mb-3 w-75">
+                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="complex_name" placeholder="enter bulding name (e.g. Mako Student Village)" name='complex_name' value="">
+                                          <label for="complex_name">Complex / building name<span class="small text-muted">(optional)</span></label>
+                                    </div>
+                                      <div class="form-floating mb-3 w-75">
+                                          <select type="text" class="form-select border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="area" placeholder="" name='area' value="">
+                                            <option value="bedworthpark" selected>
+                                                Bedworth Park
+                                            </option>
+                                          </select>
+                                          <label for="floatingInput">area</label>
+                                    </div>
+                                    <div class="form-floating mb-3 w-75">
+                                          <textarea type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="rnotes" placeholder="enter notes (e.g. ring door bell)" name='ecity' value=""></textarea>
+                                          <label for="notes">Notes</label>
+                                    </div>
+                                     <!-- <div class="form-floating mb-3 w-75">
+                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='eprovince' value="">
+                                          <label for="floatingInput">Province</label>
+                                    </div>
+                                    <div class="form-floating mb-3 w-75">
+                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='epostal' value="">
+                                          <label for="floatingInput">Postal Code</label>
+                                    </div> -->
+                                    
+                                     <button type="button" onclick="add_cart_delivery_address_resident()" class="btn btn-success rounded-0 mb-2 w-100">Save Address</button>
+                                     <button type="button" class="btn btn-outline-dark rounded-0 w-100" onclick="cancel_button('password')" >Cancel</button>    
                                 </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='estreet' value="">
-                                      <label for="floatingInput">Street address</label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='ecomplex' value="">
-                                      <label for="floatingInput">Complex / building <span class="small text-muted">(optional)</span></label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='esuburb' value="">
-                                      <label for="floatingInput">Suburb</label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='ecity' value="">
-                                      <label for="floatingInput">City / Town</label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='eprovince' value="">
-                                      <label for="floatingInput">Province</label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                      <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='epostal' value="">
-                                      <label for="floatingInput">Postal Code</label>
-                                </div>
-                                 <div class="mb-3 mt-4 w-50">
-                                      
-                                      <label style="color: white;">Postal Code</label>
+                                <div id="campus_section" class="hidden mb-5">
+                                    <form>
+                                        <br>
+                                        <h4>Institution</h4>
+                                        <div class="form-floating mb-3 w-75">
+                                          <select type="text" class="form-select border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="instutition" placeholder="" name='Institution' value="">
+                                            <option value="vut" selected>
+                                                Vaal University of Technology
+                                            </option>
+                                          </select>
+                                          <label for="floatingInput">Institution</label>
+                                    </div>
+                                        <div class="form-floating mb-3 w-75">
+                                        
+                                         <select type="text" class="form-select border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="block" placeholder="" name='block' value="">
+                                            <option value="A" selected>
+                                                Block A
+                                            </option>
+                                            <option value="T" >
+                                                Block T
+                                            </option>
+                                            <option value="P" >
+                                                Block P
+                                            </option>
+                                            <option value="GW" >
+                                                Block GW
+                                            </option>
+                                          </select>
+                                          <label for="floatingInput">Block</label>
+                                           </div>
+                                        <!-- Venue Section -->
+                                        <div class="form-floating mb-3 w-75">
+                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="venue" placeholder="Enter venue (e.g., Room 101)" name='venue' value="">
+                                          <label for="floatingInput">Venue</label>
+                                        </div>
+
+                                        <!-- Notes Section -->
+                                        <div class="form-floating mb-3 w-75">
+                                          <textarea type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="cnotes" placeholder="Enter notes (e.g., im at the hall way of the venue)" name='cnotes' value=""></textarea>
+                                          <label for="floatingInput">notes</label>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success mt-4 w-100" onclick="add_cart_delivery_address_campus()">Save Address</button>
+                                        <button type="button" class="btn btn-outline-dark rounded-0 px-3 mx-3" onclick="cancel_button('password')" >Cancel</button>    
+                                    </form>
                                 </div>
 
 
@@ -208,16 +282,17 @@
                             <div class="position-relative">
                                 <div class="position-absolute bottom-0 end-0 d-flex justify-content-between">
                                     
-                                <button type="submit" class="btn btn-primary px-3 rounded-0 shadow">Save </button>
-                                <button type="button" class="btn btn-outline-dark rounded-0 px-3 mx-3" onclick="cancel_button('password')" >Cancel</button>    
+                               
+                                
                                 </div>
                             </div>
                     </div>
                 </form>   
             </div>
         </div>
+        {% endif %}
     </div>
-
+    {% if method == "delivery" %}
       <div class="card  mb-3 p-0" id="username-disp" style="display:block; background: linear-gradient(135deg,  #1a2848, #2c76b7);">
                <div class="d-flex justify-content-between w-100">
                     <div class=" p-3" style="background-color:white; width: 100%;">
@@ -240,7 +315,7 @@
                     
                </div>
             </div> 
-
+            {% endif %}
           
 
               <div class="card mb-3  p-0" id="usernam-disp" style="display:block; background: white">
@@ -249,6 +324,7 @@
 
                     <h5 class="card-title mb-3 text-muted"><i class="fa fa-credit-card"></i><b> Payment Method</b></h5>
                         <p class="card-text pt-0 pb-0 px-3 fw-bold ">Credit & Debit Card
+    }
 </p>
     <i class="fa-brands fa-cc-mastercard fa-4x text-warning px-3 "></i>
     <i class="fa-brands fa-cc-visa fa-4x text-primary"></i>
@@ -266,59 +342,133 @@
 
        </div>
         <div class="col-12 col-md-4">
-           
+
+
+<!-- ==================wen on small screen show summary here======================================= -->
+<div class="mb-4  d-sm-block d-lg-none">
+            <div class="pad">
+                 <div class="row p-2 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted fw-bold"> Items for Delivery</h6>
+                    {% for cart in cart_items %}
+                     <div class="d-flex justify-content-start mb-2">
+                       <div class="border rounded mx-2 " style="max-width:80px; max-height: 80px; overflow: hidden;">
+                            <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="px-3">
+                            <h6 >{{cart.product.name}} </h6>
+                            <span><b>R{{cart.product.price}}</b> <span class="text-muted small px-3 fw-bold"> Qty : {{cart.quantity}}</span></span>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                  
+                </div>
+                
+            </div>
+        </div>
+        <div class="mb-4  d-sm-block d-lg-none">
+           <div class="pad">
+                 <div class="row p-2 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted fw-bold"> Extras</h6>
+                    {% for extra in extras %}
+                     <div class="">
+                    
+                        <div class="px-3 d-flex justify-content-between">
+                            <div class="">
+                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
+                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-danger" onclick="deleteExtra({{extra.id}})"> <i class="fa fa-trash "></i></button>
+                            </div>
+                        </div>
+                        <hr style="border:1px solid black;">
+                    </div>
+                    {% endfor %}
+
+                  
+                </div>
+                
+            </div>
+        </div>
+<!-- =====================END SUMMARY HERE =================================================== -->
 
     <div class="mb-4 ">
     <div class="pad">
          <div class="row p-4 border  shadow " style="background-color:white;">
             <h5 class="text-muted fw-bold"> Cart Summary</h5>
              <div class="d-flex justify-content-between flex-wrap">
-                <p class="fw-bold"><span class="text-muted">2 items :</p>
-                <p class="fw-bold">R 600  </p>
+                <p class="fw-bold"><span class="text-muted">{{items_count}} items :</p>
+                <p class="fw-bold">R {{cart_total}}  </p>
+
+            </div>
+             <div class="d-flex justify-content-between flex-wrap">
+                <p class="fw-bold"><span class="text-muted">{{extra_items}} extras :</p>
+                <p class="fw-bold">R {{extra_total}}  </p>
 
             </div>
             <div class="d-flex justify-content-between flex-wrap">
                 <p class="fw-bold"><span class="text-muted">Delivery :</p>
-                <p class="fw-bold">R 15  </p>
+                <p class="fw-bold">{% if method == "pickup" %} Pickup {% elif method == "delivery" %}R 15{% else %} None {% endif %} </p>
 
             </div>
             <hr style="border: 1px dashed black;">
             <div class="d-flex justify-content-between flex-wrap">
                 <p class="fw-bold"><span class="text-muted">To Pay : </span></p>
-               <h4 class="fw-bold text-success">R 615</h4>
+               <h4 class="fw-bold text-success">R {{checkout_total}}</h4>
                 
             </div>
                 
-            <button class="btn btn-success w-100 rounded-0"> Pay With Card</button>
+            <a onclick="place_order({{order.id}})" class="btn btn-success w-100 rounded-0"> Pay With Card</a >
             <p class="text-muted fw-bold text-center mt-3"><i class="fa fa-lock"></i> Secure Checkout</p>
         </div>
         
     </div>
 </div>
- <div class="mb-4">
+ <div class="mb-4 d-sm-none d-lg-block">
             <div class="pad">
                  <div class="row p-2 border  shadow " style="background-color:white;">
                     <h6 class="text-muted fw-bold"> Items for Delivery</h6>
+                    {% for cart in cart_items %}
                      <div class="d-flex justify-content-start mb-2">
                        <div class="border rounded mx-2 " style="max-width:80px; max-height: 80px; overflow: hidden;">
                             <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="px-3">
-                            <h6 >Volkano earpods </h6>
-                            <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
+                            <h6 >{{cart.product.name}} </h6>
+                            <span><b>R{{cart.product.price}}</b> <span class="text-muted small px-3 fw-bold"> Qty : {{cart.quantity}}</span></span>
                             
                         </div>
                     </div>
-                   <div class="d-flex justify-content-start mb-2">
-                       <div class="border rounded mx-2 " style="max-width: 80px; max-height: 80px; overflow: hidden;">
-                            <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                    {% endfor %}
+
+                  
+                </div>
+                
+            </div>
+        </div>
+        <div class="mb-4 d-sm-none d-lg-block">
+            <div class="pad">
+                 <div class="row p-2 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted fw-bold"> Extras</h6>
+                    {% for extra in extras %}
+                     <div class="">
+                    
+                        <div class="px-3 d-flex justify-content-between">
+                            <div class="">
+                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
+                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-danger" onclick="deleteExtra({{extra.id}})"> <i class="fa fa-trash "></i></button>
+                            </div>
                         </div>
-                       <div class="px-3">
-                            <span>Teen Wolf Combo Keyboard and mouse RGB </span><br>
-                            <span><b>R300 </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
-                            
-                        </div> 
-                   </div>
+                        <hr style="border:1px solid black;">
+                    </div>
+                    {% endfor %}
+
+                  
                 </div>
                 
             </div>
@@ -343,5 +493,17 @@
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
+
+       function toggleSection(sectionId) {
+        // Hide all sections first
+        document.getElementById('campus_section').classList.add('hidden');
+        document.getElementById('residence_section').classList.add('hidden');
+       
+        // Show the selected section
+        document.getElementById(sectionId).classList.remove('hidden');
+    }
 </script>
+<script src="{% static 'user/js/cart.js' %}"></script>
+
+
 {% endblock content %}

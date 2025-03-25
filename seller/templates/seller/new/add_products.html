@@ -194,12 +194,12 @@
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
-            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <a href="{% url 'orders' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-cart"></i>
                 <span>Orders</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-currency-exchange"></i>
                 <span>Sales & Transactions</span>
                 <span class="badge bg-primary ms-auto">3</span>
@@ -236,9 +236,11 @@
                 <label for="category">Category</label>
                 <select id="category" required style="background-color:inherit; color: inherit;">
                     <option value="">Select Category</option>
-                    <option>Electronics</option>
-                    <option>Clothing</option>
-                    <option>Food</option>
+                    <option value="Plate">Plate</option>
+                    <option value="Kota">Kota</option>
+                    <option value="Dagwood">Dagwood</option>
+                    <option value="Drinks">Drinks</option>
+
                 </select>
                 <div class="error-message">Please select a category</div>
             </div>

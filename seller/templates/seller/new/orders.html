@@ -1,7 +1,9 @@
 {% extends 'seller/base.html' %}
+{% load static%}
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+       <link rel="stylesheet" href="{% static 'css/message.css' %}">
 {% endblock %}
 
 
@@ -117,20 +119,20 @@
 {% endblock %}
 {% block nav %}
         <div class="nav-items">
-            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
                 <i class="bi bi-house"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <a href="{% url 'manage_product' business.id  %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
-            <a href="{% url 'orders' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <a href="{% url 'orders' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-cart"></i>
                 <span>Orders</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-currency-exchange"></i>
                 <span>Sales & Transactions</span>
                 <span class="badge bg-primary ms-auto">3</span>
@@ -188,15 +190,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong><i class="bi bi-clock"></i> Timestamp:</strong> <span id="modalTimestamp"></span></p>
-                    <p><strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong> <span id="modalMessage"></span></p>
+                    <div class="sm-d-block lg-d-flex sm-justify-content-between">
+                    <div>
+                        <p><strong><i class="bi bi-clock"></i> Timestamp:</strong> <span id="modalTimestamp"></span></p>
+                        <p><strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong> <span id="modalMessage"></span></p>
+                        
+                    </div>
+                    <div>
+                            <h6><i class="bi bi-gift"></i> Payment status : <span id="modalPaymentStatus"></span></h6>
+                           
+                            <h6><i class="bi bi-truck"></i> Delivery Method: <span id="modalDeliveryMethod" style="font-weight: 0;"></span></h6>
+                          <p class="fw-bold mt-3"><i class="bi bi-currency-dollar"></i> Total: <span id="modalTotal"></span></p>
+                            
+                    </div>
+                    <hr>
+                    </div>
                     <h6><i class="bi bi-list-check"></i> Order Items</h6>
                     <ul class="items-list" id="modalOrderItems"></ul>
-                    <p class="fw-bold mt-3"><i class="bi bi-currency-dollar"></i> Total: <span id="modalTotal"></span></p>
-                    <h6><i class="bi bi-gift"></i> Payment</h6>
-                    <p><strong>Status:</strong> <span id="modalPaymentStatus"></span></p>
-                    <h6><i class="bi bi-truck"></i> Delivery</h6>
-                    <p><strong>Address:</strong> <span id="modalDeliveryAddress"></span></p>
+
+                     <h6><i class="bi bi-list-check"></i> Extras</h6>
+                    <ul class="items-list" id="modalExtraItems"></ul>
+                  
                 </div>
                 <div class="modal-footer">
                     <button id="cancelOrder" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel Order</button>
@@ -208,20 +222,27 @@
 {% endblock %}
 
 {% block scripts %}
+    <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+<script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
     <script>
-        let orders = [
-    { 
+        let orders = {{all_orders|safe}};
+   /* { 
         id: 12345, 
         items: [
             { product: "Nike Sneakers", quantity: 1, extras: "Gift Wrap" },
             { product: "Adidas Shoes", quantity: 2, extras: "Extra Laces" }
         ],
+        extras : [
+            { item:"chease" },
+            { item : "Russian" }
+            ],
+            
         message: "Please deliver fast", 
         timestamp: "10:30 AM", 
         status: "new", 
         total: 500, 
         paymentStatus: "paid", 
-        deliveryAddress: "123 Main St" 
+        deliveryMethod: "Pickip" 
     },
     { 
         id: 12346, 
@@ -229,14 +250,15 @@
             { product: "Puma Shoes", quantity: 1, extras: ["palony", "french"]},
             { product: "Reebok Shoes", quantity: 1, extras: "Gift Box" }
         ],
+        extras : [],
         message: "Leave at the door", 
         timestamp: "11:15 AM", 
         status: "preparing", 
         total: 750, 
         paymentStatus: "pending", 
-        deliveryAddress: "456 Oak St" 
+        deliveryMethod: "Delivery" 
     }
-];
+]*/
 
 let activeStage = "new"; 
 let ordersEnabled = true;
@@ -256,10 +278,12 @@ function renderOrders(filteredOrders = null) {
         if (order.status === activeStage) {
             let card = `
                 <div class="col">
-                    <div class="card p-3 order-card" onclick="openOrderModal(${order.id})">
+                    <div class="card p-3 order-card" onclick="openOrderModal('${order.id}')">
+                        <div class="d-flex justify-content-between">
                         <h6><i class="bi bi-receipt"></i> Order #${order.id}</h6>
-                        <span class="status-label status-${order.status}">${order.status.toUpperCase()}</span>
                         <p class="text-muted small"><i class="bi bi-clock"></i> ${order.timestamp}</p>
+                        <span class="status-label status-${order.status}">${order.status.toUpperCase()}</span>
+                        </div>
                         <p><strong><i class="bi bi-chat-left-text"></i> Note:</strong> ${order.message}</p>
                         <h6><i class="bi bi-list-check"></i> Items:</h6>
                         <ul class="items-list">
@@ -267,6 +291,17 @@ function renderOrders(filteredOrders = null) {
                                 <li>
                                     ${item.product} (x${item.quantity})
                                     ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+
+                        <h6><i class="bi bi-list-check"></i> Extras:</h6>
+                        <ul class="items-list">
+                            ${order.extras.map(item => `
+                                <li>
+                                    ${item.item} 
+                                    
+
                                 </li>
                             `).join('')}
                         </ul>
@@ -287,7 +322,7 @@ function renderOrders(filteredOrders = null) {
 function openOrderModal(orderId) {
     selectedOrderId = orderId;
     let order = orders.find(o => o.id === orderId);
-    document.getElementById("modalOrderTitle").innerText = `Order #${order.id}`;
+    document.getElementById("modalOrderTitle").innerText = `Order #${order.id} - ${order.user}`;
     document.getElementById("modalTimestamp").innerText = order.timestamp;
     document.getElementById("modalMessage").innerText = order.message || "No note provided.";
     document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
@@ -296,9 +331,15 @@ function openOrderModal(orderId) {
             ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
         </li>
     `).join('');
+    document.getElementById("modalExtraItems").innerHTML = order.extras.map(item => `
+        <li>
+            ${item.item} 
+            
+        </li>
+    `).join('');
     document.getElementById("modalTotal").innerText = `R${order.total}`;
     document.getElementById("modalPaymentStatus").innerText = order.paymentStatus;
-    document.getElementById("modalDeliveryAddress").innerText = order.deliveryAddress;
+    document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
     new bootstrap.Modal(document.getElementById("orderModal")).show();
 }
 
@@ -307,6 +348,7 @@ function moveOrderToNextStage(orderId) {
     const order = orders.find(o => o.id === orderId);
     const stages = ["new", "preparing", "scheduled", "completed"];
     const currentIndex = stages.indexOf(order.status);
+    MoveOrderToNextStageAPI(`${order.id}`);
     if (currentIndex < stages.length - 1) {
         order.status = stages[currentIndex + 1];
         renderOrders();

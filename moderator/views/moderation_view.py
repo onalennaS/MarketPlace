@@ -4,6 +4,7 @@ from seller.wrap_models.business_model import Moderation,BusinessInformation
 from seller.utils.send_emails import send_email_reject, send_email_approve
 import json 
 from django.http import JsonResponse
+from django.contrib.auth.models import Group, User
 @login_required_custom
 def approve_business(request):
 
@@ -26,13 +27,17 @@ def approve_business(request):
 
 	if moderation.is_reviewed == True:
 		return JsonResponse({'status':'error', 'message':'business already reviewd'}, status=400)     
-
 	business.status = "approved"
 	business.save()
 	moderation.is_reviewed = True
 	moderation.status = "approved"
 	moderation.is_approved = True 
 	moderation.save()
+	group = Group.objects.filter(name="business").first()
+	user = User.objects.filter(id=business.owner.id).first()
+	if group and user:
+		user.groups.add(group)
+		user.save()
 	send_email_approve(business)
 	return JsonResponse({"message": "business reviewed successfully ",'status':'success'}, status=201)
 

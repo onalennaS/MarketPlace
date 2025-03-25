@@ -3,6 +3,8 @@ from functools import wraps
 from ..utils.authentication_utils import login_required_custom, has_password
 from ..wrap_models.business_model import BusinessInformation, Moderation,Address
 from ..wrap_models.product_model import Product, ProductModeration, RecentActivity, Extras,Addon
+from ..wrap_models.orders_model import Order, OrderItem, OrderExtra
+from transactions.models import BusinessWallet, BusinessTransaction
 # Create your views here.
 # Create your views here.
 
@@ -78,12 +80,66 @@ def view_product(request,product_id):
     return render(request, 'seller/new/view_product.html')
 
 @login_required_custom
-def orders(request):
-    return render(request, 'seller/new/orders.html')
+def orders(request, business_id):
+    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    orders = Order.objects.filter(business=business).all()
+    all_orders = []
+    for order in orders:
+        json_orders = {'items':[],'extras':[]}
+        json_orders['id'] = f'{order.order_id}' 
+        json_orders['message'] = 'Prepare order quickly'
+        json_orders['paymentStatus'] = "paid"
+        json_orders['deliveryMethod'] = "Pickup"
+        json_orders['timestamp'] = f'{order.created_at.strftime("%d %b %H:%M")}'
+        json_orders['total'] = f'{float(order.total_price())}'
+        json_orders['user'] = f'{order.user.username}'
+        if order.status == "Pending" :
+            json_orders['status'] = "new"
+        if order.status == "Processing":
+            json_orders['status'] = "preparing"
+        if order.status == "On route" :
+            json_orders['status'] = "scheduled"
+        if order.status == "Delivered":
+            json_orders['status'] = "completed"
+
+        order_items = OrderItem.objects.filter(order=order).all()
+        extra_items = OrderExtra.objects.filter(order=order).all()
+        for order_item in order_items:
+            item = {
+                'product':order_item.product.name, 
+                'quantity': order_item.quantity,
+                'extras' : [ extra.addon.name for extra in order_item.CartAddon.all() ]
+                    }
+            json_orders['items'].append(item)
+
+        for extra_item in extra_items:
+            item = {'item':f'{extra_item.extra.name}'}
+            json_orders['extras'].append(item)
+       
+        all_orders.append(json_orders)
+    
+
+    return render(request, 'seller/new/orders.html',{'business':business,'all_orders':all_orders})
 
 @login_required_custom
-def transaction(request):
-    return render(request, 'seller/new/sales.html')
+def transaction(request,business_id):
+    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    wallet = BusinessWallet.objects.filter(business=business).first()
+    transactions = BusinessTransaction.objects.filter(receiver=business).all()
+    trans_list = []
+    for trans in transactions:
+        data = {
+            
+            'ref':trans.ref,
+            'customer':trans.sender.username,
+            'transaction':trans.transaction_type,
+            'amount': float(trans.amount),
+            'status':trans.status,
+            'date':trans.timestamp.strftime("%Y-%m-%d")
+
+        }
+        trans_list.append(data)
+    return render(request, 'seller/new/sales.html',{'count_transactions':transactions.count(),'business':business,'wallet':wallet,'transactions':trans_list})
 
 @login_required_custom
 def customer(request):

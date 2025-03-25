@@ -9,44 +9,74 @@ from ..wrap_models.business_model import BusinessInformation, Address, Moderatio
 from ..wrap_models.product_model import Product, ProductModeration, RecentActivity, Extras,Addon
 from moderator.utils import send_email_pending_to_user
 
+
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
+
+
+@csrf_exempt  # Only use if CSRF protection is causing issues
 @login_required_custom
 def add_product(request):
-
-    if not request.method == "POST":
-        return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Request method not allowed'}, status=403)
 
     try:
-            data = json.loads(request.body)  # Parse JSON request body
-            errors = validate_business_data(data)
-            if errors:
-                return JsonResponse({"status":"error","message":f"{errors}"})
-    except json.JSONDecodeError:
-        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        description = request.POST.get('description')
+        small_description = request.POST.get('small_description')
+        business_id = request.POST.get('business_id')
 
-    print(data)
-    business = int(data.get('business_id'))
-    business = BusinessInformation.objects.filter(id=business).first()
-    name = data.get('name')
-    category = data.get('category')
-    price = data.get('price')
-    quantity = data.get('quantity')
-    description = data.get('description')
-    small_description = data.get('small_description')
-    product_exists = Product.objects.filter(business=business, name=name ).first()
-    if product_exists:
-        return JsonResponse({'message':'Product already exists', "status":"error"}, status=400) 
+        # Get the business instance
+        business = BusinessInformation.objects.filter(id=business_id).first()
+        if not business:
+            return JsonResponse({'status': 'error', 'message': 'Business not found'}, status=404)
 
-    product = Product.objects.create(business=business, name=name, category=category, price=price, quantity=quantity, description=description,small_description=small_description)
-    moderator = User.objects.filter(email="sixskies25@gmail.com").first()
-    moderation = ProductModeration.objects.create(product=product, moderator=moderator)
-    activity = RecentActivity.objects.create(business=business, product=product, activity="Added")
-    print(product)
-    print(moderation)
-    product.save()
-    moderation.save()
-    activity.save()
-    send_email_pending_to_user(product)
-    return JsonResponse({"message": "product added successfully",'status':'success'}, status=201)
+        # Check if the product already exists
+        if Product.objects.filter(business=business, name=name).exists():
+            return JsonResponse({'status': 'error', 'message': 'Product already exists'}, status=400)
+
+        # Handle file upload
+        image = request.FILES.get('image')  # Image from the request
+
+        # Validate image file
+        if image and not image.content_type.startswith('image/'):
+            return JsonResponse({'status': 'error', 'message': 'Invalid file type. Only images allowed'}, status=400)
+
+        # Create Product
+        product = Product.objects.create(
+            business=business,
+            name=name,
+            category=category,
+            price=price,
+            quantity=quantity,
+            description=description,
+            small_description=small_description,
+            image=image  # Store uploaded image
+        )
+
+        # Create moderation and activity logs
+        moderator = User.objects.filter(email="sixskies25@gmail.com").first()
+        moderation = ProductModeration.objects.create(product=product, moderator=moderator)
+        activity = RecentActivity.objects.create(business=business, product=product, activity="Added")
+
+        # Save all objects
+        product.save()
+        moderation.save()
+        activity.save()
+
+        # Notify the user
+        send_email_pending_to_user(product)
+
+        return JsonResponse({"message": "Product added successfully", 'status': 'success'}, status=201)
+
+    except ValidationError as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": "An unexpected error occurred", "details": str(e)}, status=500)
 
 
 @login_required_custom

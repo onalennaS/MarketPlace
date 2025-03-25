@@ -4,51 +4,104 @@
 
 {% block styles %}
 <style type="text/css">
-   .lists {
-  text-align: justify;
-  position: relative;
-  overflow-x: hidden;
-
-  
-}
-.lists:before, .active:after {
-  content: '';
-  width: 100%;
-  border: 2px solid green;
-  position: absolute;
-  bottom: 3.3em;
-  margin-top: -2px;
-  z-index: -1;
-  
-  
-}
-.active:after {
-  border-color: lightblue;
-}
-.lists:after {
-  content: "";
-  display: inline-block;
-  width: 100%;
-}
-.lists-item {
-  width: 2em;
-  height: 2em;
-  text-align: center;
-  line-height: 2em;
-  border-radius: 50%;
-  background: green;
-  margin: 0 1em;
-  display: inline-block;
-  color: white;
-
-
-}
-.active ~ .lists-item {
-  background: lightblue;
-}
-.current{
-    background: orange;
-}
+.track-order-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Arial', sans-serif;
+            color: #555;
+            background: #fff;
+            border-radius: 10px;
+        }
+        .progress {
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .text-muted {
+            color: #6c757d !important;
+        }
+        .status-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .status-step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        .status-step i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #6c757d;
+        }
+        .status-step.pending.active i {
+        --bs-bg-opacity: 1;
+        color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+        }
+        .status-step.pending.active span {
+            --bs-bg-opacity: 1;
+            color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+            font-weight: bold;
+        }
+        .status-step.processing.active i {
+        --bs-bg-opacity: 1;
+        color: rgba(var(--bs-warning-rgb),var(--bs-bg-opacity)) !important;
+        }
+        .status-step.processing.active span {
+            --bs-bg-opacity: 1;
+            color: rgba(var(--bs-warning-rgb),var(--bs-bg-opacity)) !important;
+            font-weight: bold;
+        }
+          .status-step.delivery.active i {
+            --bs-bg-opacity: 1;
+            color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
+        }
+        .status-step.delivery.active span {
+             --bs-bg-opacity: 1;
+            color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
+            font-weight: bold;
+        }
+        .status-step.delivered.active i {
+         --bs-bg-opacity: 1;
+            color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity)) !important;
+        }
+        .status-step.delivered.active span {
+             --bs-bg-opacity: 1;
+            color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity)) !important;
+            font-weight: bold;
+        }
+        .status-step span {
+            display: block;
+            font-size: 14px;
+            color: #6c757d;
+        }
 </style>
 {% endblock %}
 
@@ -90,11 +143,7 @@
                         <i class="fas fa-heart me-2"></i> Wish Lists
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'track_orders' %}">
-                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
-                    </a>
-                </li>
+           
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
                         <i class="fas fa-star me-2"></i> Reviews
@@ -161,21 +210,26 @@
         
             
     <div class="col-12  w-100  pad " id="order" style="display:block;" >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-             <div class=" " >
+        <div class="d-flex justify-content-between flex-wrap w-100 p-3  border shadow" style="background-color:white;">
+             <div class="d-flex justify-content-start flex-wrap" >
+                <div>
                     <span class="px-3 "><b>Order #123456</b></span>
-                    <span class="border border" style="width: 2px; height: 100%; background-color: black; margin-top: -20px;"></span>
+                  
+                </div>
+                <div>
+                    <span class="px-3 sm-text-sm">Ordered 16 May 2024 </span>
 
-                    <span class="px-3">Ordered 16 May 2024 </span>
-
-                     <span class="border border" style="width: 2px; height: 100%; background-color: black; margin-top: -20px;"></span>
-
+                    
+                </div>
+                <div>
+                    
                     <span class="px-3"> Paid 16 May 2024 </span>
+                </div>
                 </div>
 
             <div class="">
                 
-                <a class="btn btn-dark rounded-0" href="{% url 'order_details'%}"> View Details</a>
+                <a class="btn btn-dark rounded-0" href="{% url 'order_details' order.id %}"> View Details</a>
             </div>
             
         </div>
@@ -185,57 +239,72 @@
 
         <div class="  pad" style="overflow: hidden; ">
                 
-                <div class="row position-relative d-flex justify-content-between border shadow-md pt-5  " id="pad" style="overflow:hidden; z-index: 10;background-color: white;">
+            <div class="row position-relative d-flex justify-content-between border shadow-md pt-5  " id="pad" style="overflow:hidden; z-index: 10;background-color: white;">
 
-                <div class="col-12 col-md-5 p-3 position-absolute top-0">
-                    <h4>Steps</h4>
-                    <div class="px-2">
-                        <i class="fa fa-spinner text-primary"></i> <span>Processing Order</span><br>
-                        <i class="fa fa-gift text-primary"></i> <span>Packaging Order</span><br>
-                        <i class="fa fa-truck text-primary"></i> <span>Order In Transit</span><br>
-                        <i class="fa fa-check-circle text-primary"></i> <span>Delivered</span><br>
+                <!--  <h5 class="text-center mb-4"> Track Your Order</h5>
+                    <p class="text-center text-muted mb-4">Easily track your order status below.</p>
+                     -->
+
+                    <!-- Delivery Status Steps -->
+                    <div class="status-steps">
+                        <div class="status-step pending {% if order.status == 'Pending' %}active {% elif order.status == 'Processing' %}active{% elif order.status == 'On route' %}active{% elif order.status == 'Delivered' %}active{% endif %}">
+                            <i class="fas fa-hourglass-start"></i>
+                            <span>Pending</span>
+                        </div>
+                        <div class="status-step processing {% if order.status == 'Processing' %}active{% elif order.status == 'On route' %}active{% elif order.status == 'Delivered' %}active{% endif %}">
+                            <i class="fas fa-cogs"></i>
+                            <span>Processing</span>
+                        </div>
+                        <div class="status-step delivery {% if order.status == 'On route' %}active{% elif order.status == 'Delivered' %}active{% endif %}">
+                            <i class="fas fa-truck"></i>
+                            <span>On Route</span>
+                        </div>
+                        <div class="status-step delivered {% if order.status == 'Delivered' %}active{% endif %}">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Delivered</span>
+                        </div>
                     </div>
-                </div>
-                <p class="col-12 col-md-1 mt-5 pt-5">.</p>
-                 <ul class="lists col-12 col-md-6 ">
-                    <p>Current Step : <b>In Transit</b> </p>
-                  <li class="lists-item" style=" z-index:1 ;"><i class="fa fa-spinner"></i></li>
-                  
-                  <li class="lists-item"><i class="fa fa-gift"></i> </li>
 
-                  <li class="lists-item active current"><i class="fa fa-truck"></i></li>
-                  <li class="lists-item "><i class="fa fa-check-circle"></i></li>
-                 
-                  
-                  
-                </ul> 
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                       
+                        <div class="progress">
+                            {% if order.status == "Pending" %}
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar " style="width: 25%;">
+                               Pending
+                            </div>
+                            {% elif order.status == "Processing" %}
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 50%;">
+                               Processing
+                            </div>
+                            {% elif order.status == "On route" %}
+                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 75%;">
+                               On route
+                            </div>
+                            {% elif order.status == "Delivered" %}
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 100%;">
+                               Delivered
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <h6 class="text-sm"> Courier: FastShip Logistics</h6>
+                            <h6 class="text-sm"> Estimated Delivery: March 25, 2025</h6>
+                        </div>
+                    
+                    </div>
+
                 
             </div>
-            </div>
+        </div>
 
 
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="col-12 text-center py-5">
-                <h4 class="text-muted">No Orders Found!</h4>
-                <p class="text-muted">You haven't placed any orders yet.</p>
-                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
-                    <i class="fas fa-shopping-cart"></i> Continue Shopping
-                </a>
-            </div>
-        
+    
     </div>
 </div>
 

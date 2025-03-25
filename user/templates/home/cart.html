@@ -76,6 +76,7 @@
                         </div> 
                     </div>
                     {% endfor %}
+                   
                   {% else %}
                         <!-- No Wish List Items Found -->
                        <div class="col-12 text-center py-5 " >
@@ -88,6 +89,33 @@
                         </div> 
                     {% endif %}       
                 </div>
+                 {% if extras %}
+                       <div class="mb-4">
+                           <div class="pad">
+                 <div class="row p-2 border  shadow " style="background-color:white;">
+                    <h6 class="text-muted fw-bold"> Extras</h6>
+                    {% for extra in extras %}
+                     <div class="">
+                    
+                        <div class="px-3 d-flex justify-content-between">
+                            <div class="">
+                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
+                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-danger" onclick="deleteExtra({{extra.id}})"> <i class="fa fa-trash "></i></button>
+                            </div>
+                        </div>
+                        <hr style="border:1px solid black;">
+                    </div>
+                    {% endfor %}
+
+                  
+                </div>
+                
+            </div>
+                        </div>
+                    {% endif %}
             </div>
         </div>
     <div class="col-12 col-lg-4">
@@ -110,9 +138,9 @@
                         <p class="fw-bold">Total: <span class="text-muted">({{cart_items_count}} items)</span></p>
                         <h4 class="fw-bold text-success">R {{cart_total}}</h4>
                     </div>
-                    <a href="{% url 'checkout' %}" class="btn btn-success w-100 rounded-0"> Proced to Checkout</a>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
+                    <!-- <a href="{% url 'checkout' %}" class="btn btn-success w-100 rounded-0"> Proced to Checkout</a> -->
+                    <button type="button" class="btn btn-success w-100 rounded-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Proceed to checkout
 </button>
                 </div>
                 
@@ -121,11 +149,11 @@
 
     </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:9999">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Extras</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -133,17 +161,17 @@
             {% for extra in cart_items.0.product.business.extras.all %}
                     <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
                         <div>
-                            <h6 class="mb-1">{{extra.name}}</h6>
-                            <span> - R{{extra.price}}</span>
+                            <h6 class="mb-1 fw-bold">{{extra.name}}</h6>
+                            <span> R{{extra.price}}</span>
                         </div>
-                        <input type="checkbox"  value="{{extra.id}}" data-name="{{extra.name}}" class="extra form-check-input ">
+                        <input type="checkbox"  value="{{extra.id}}" data-name="{{extra.name}}" class="extras form-check-input ">
                     </li>
             {% endfor %}
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary w-100 rounded-0" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'checkout' %}" onclick="addExtraToCart()" class="btn btn-success w-100 rounded-0">Save & Proced </a>
       </div>
     </div>
   </div>

@@ -25,7 +25,7 @@ from .views.render_views import(user_profile ,
 
 from .views.business_views import register_business,appeal_registration
 from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras,delete_extras, add_addons, delete_addon
-
+from .views.order_views import move_order_next_stage
 urlpatterns = [
     path('', base, name='base'),
     path('user_profile/', user_profile, name='user_profile'),
@@ -40,9 +40,9 @@ urlpatterns = [
     path('edit_products/<int:business_id>/<int:product_id>', edit_products, name='edit_products'),
     path('view_product/<int:product_id>', view_product, name='view_product_admin'),
     
-    path('orders/', orders, name='orders'),
+    path('orders/<int:business_id>', orders, name='orders'),
     path('order_tracking/', order_tracking, name='order_tracking'),
-    path('transaction/', transaction, name='transaction'),
+    path('transaction/<int:business_id>', transaction, name='transaction'),
     path('pay_for_premium/', pay_for_premium, name='pay_for_premium'),
     path('manage_product/<int:business_id>', manage_product, name='manage_product'),
     path('reviews/', reviews, name='reviews'),
@@ -61,5 +61,6 @@ urlpatterns = [
     path('api/register_business/', register_business, name='register_business'),
     path('api/add_addons/', add_addons, name='add_addons'),
     path('api/delete_addon/', delete_addon, name='delete_addon'),
+    path('api/move_order_next_stage/', move_order_next_stage, name='move_order_next_stage'),
 
 ]

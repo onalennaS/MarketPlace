@@ -31,6 +31,7 @@ class Product(models.Model):
     is_flagged = models.BooleanField(default=False)
     sales = models.PositiveIntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    image = models.ImageField(upload_to="uploads/")
 
     def __str__(self):
         return self.name

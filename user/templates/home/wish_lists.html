@@ -40,57 +40,53 @@
                         <i class="fas fa-heart me-2"></i> Wish Lists
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'track_orders' %}">
-                        <i class="fas fa-map-marker-alt me-2"></i> Track Orders
-                    </a>
-                </li>
+            
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
                         <i class="fas fa-star me-2"></i> Reviews
                     </a>
                 </li>
                 <!-- Payment Section -->
-<div class="flex-container">
-    <h5 class="fw-bold text-white">Payment</h5>
-    <hr>
-</div>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-        <i class="fas fa-credit-card me-2"></i> Credit & Refunds
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-        <i class="fas fa-gift me-2"></i> Gift Card
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-        <i class="fas fa-users me-2"></i> Referrals & Earnings
-    </a>
-</li>
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">Payment</h5>
+                    <hr>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+                        <i class="fas fa-credit-card me-2"></i> Credit & Refunds
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+                        <i class="fas fa-gift me-2"></i> Gift Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+                        <i class="fas fa-users me-2"></i> Referrals & Earnings
+                    </a>
+                </li>
 
-<!-- More Section -->
-<div class="flex-container">
-    <h5 class="fw-bold text-white">More</h5>
-    <hr>
-</div>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-        <i class="fas fa-headset me-2"></i> Subscription Plan
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-        <i class="fas fa-history me-2"></i> Payment History
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-        <i class="fas fa-life-ring me-2"></i> Support
-    </a>
-</li>
+                <!-- More Section -->
+                <div class="flex-container">
+                    <h5 class="fw-bold text-white">More</h5>
+                    <hr>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-headset me-2"></i> Subscription Plan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-history me-2"></i> Payment History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+                        <i class="fas fa-life-ring me-2"></i> Support
+                    </a>
+                </li>   
             </ul>
             {% endblock %}
 {% block content %}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +26,12 @@ SECRET_KEY = 'django-insecure-#fk13o@n+i%t_!9u5xjhp43(_1xi^nde5ijc(7&zw*wx+@sybh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["sixskies.co.za"]
+CSRF_TRUSTED_ORIGINS = ["https://sixskies.co.za"]
 # settings.py
-SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
+
+#SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
+SITE_URL = "https://sixskies.co.za"  # Replace with your domain in production
 
 SITE_ID=2
 
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'shop',
     'administrator',
     'moderator',
+    'transactions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,6 +152,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+import os
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
