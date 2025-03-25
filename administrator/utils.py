@@ -1,5 +1,5 @@
 from functools import wraps
-
+from django.shortcuts import redirect
 # Check if uer is authenticated  decorator
 # redirect unauthenticated to sign in page
 def login_required_custom(view_func):
