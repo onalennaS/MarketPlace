@@ -30,9 +30,10 @@ def shop_base(request):
     items= 0
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
-    return render(request,'products/shop.html',{'products':products,'cart_items_count':items})
+    return render(request,'products/shop.html',{'products':products,'cart_items_count':items}) 
 
 
+@login_required_custom
 def view_product(request, product_id):
     product = Product.objects.filter(id=int(product_id)).first()
     items= 0
