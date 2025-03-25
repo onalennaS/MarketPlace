@@ -30,7 +30,7 @@ def shop_base(request):
     items= 0
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
-    return render(request,'products/shop.html',{'products':products,'cart_items_count':items}) 
+    return render(request,'products/shop1.html',{'products':products,'cart_items_count':items}) 
 
 
 @login_required_custom
