@@ -17,7 +17,7 @@ def move_order_next_stage(request):
     except json.JSONDecodeError:
         return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
 
-    print(data)
+
     order = Order.objects.filter(order_id=data.get('order_id')).first()
     if order:
         if order.status == "Pending":

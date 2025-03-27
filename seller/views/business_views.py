@@ -42,7 +42,7 @@ def register_business(request):
     address_type = data.get("address_type")
     open_time = data.get("open_time")
     close_time = data.get("close_time")
-    print(data)
+
           
             # Save business to the database
     business = BusinessInformation.objects.create(
@@ -111,7 +111,7 @@ def appeal_registration(request):
     address_type = data.get("address_type")
     open_time = data.get("open_time")
     close_time = data.get("close_time")
-    print(data)
+
      
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
     business.name = name

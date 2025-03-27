@@ -115,7 +115,7 @@ def edit_product(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)    
 
-    print(data)
+
     product = Product.objects.filter(id=int(data['product_id'])).first()
     if product:
 
@@ -125,7 +125,6 @@ def edit_product(request):
         product.quantity = data.get('quantity')
         product.description = data.get('description')
         product.small_description = data.get('small_description')
-        print(product.small_description)
         business = product.business
         activity = RecentActivity.objects.create(business=business, product=product, activity="Updated")
         activity.save()
@@ -180,7 +179,7 @@ def add_extras(request):
 	except json.JSONDecodeError:
 		return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
 
-	print(data)
+
 	business = int(data.get('business_id'))
 	business = BusinessInformation.objects.filter(id=business).first()
 	name = data.get('name')
@@ -227,7 +226,7 @@ def add_addons(request):
     except json.JSONDecodeError:
         return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
 
-    print(data)
+
     business = int(data.get('business_id'))
     business = BusinessInformation.objects.filter(id=business).first()
     name = data.get('name')

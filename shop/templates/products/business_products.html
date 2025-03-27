@@ -1,0 +1,429 @@
+{% extends 'products/shop_base2.html' %}
+{% block links %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+   {% endblock %}
+   {% block styles %}
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+        }
+
+        /* Business Hero Section */
+        .business-hero {
+            height: 400px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .business-hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .business-hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 30px;
+            color: white;
+        }
+
+        .business-name {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .business-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            
+        }
+
+        .business-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .business-description {
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .business-rating {
+         
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .business-data{
+        	   background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(3px);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: scroll;
+            padding-bottom: 5px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .category-tab {
+            padding: 12px 24px;
+            border-radius: 50px;
+            background: #f1f5f9;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .category-tab:hover {
+            background: #e2e8f0;
+        }
+
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Product Cards */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image-container {
+            height: 200px;
+            position: relative;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.8);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .wishlist-btn:hover, .wishlist-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .product-body {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-weight: 500;
+            margin-bottom: 0px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 35px;
+            
+
+        }
+
+        .product-price {
+            font-weight: 400;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .product-rating {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display:flex;
+            justify-content:space-between;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            border-radius: 8px;
+            padding: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .business-hero {
+                height: 300px;
+            }
+            
+            .business-name {
+                font-size: 2rem;
+            }
+            
+            .business-meta {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .product-image-container {
+                height: 150px;
+            }
+            
+            .category-tab {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+  {% endblock %}
+
+  {% block secend_nav %}
+{% endblock %}
+
+{% block home %}
+    <div class="container py-4">
+        <!-- Business Hero Section -->
+        <div class="business-hero">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" class="business-hero-image" alt="Campus Cafe">
+            <div class="business-hero-overlay">
+            	<div class="business-data">
+                <h1 class="business-name">{{business.name}}</h1>
+                
+                <div class="business-meta">
+                    <span class="business-meta-item">
+                        <i class="bi bi-geo-alt"></i> {{address.address_line_1}} {{address.address_line_2}} ,{{address.suburb}}, {{address.postal_code}}
+                    </span>
+                    <span class="business-meta-item">
+                        <i class="bi bi-clock"></i> Open until {{business.close_time}}
+                    </span>
+                    <span class="business-meta-item">
+                        <i class="bi bi-truck"></i> Delivery available
+                    </span>
+                </div>
+                
+                <div class="business-rating">
+                    <i class="bi bi-star-fill"></i> 4.8 (124 reviews)
+                </div>
+                
+               
+                <button class="btn btn-light me-2">
+                    <i class="bi bi-share"></i> Share
+                </button>
+                <button class="btn btn-outline-light">
+                    <i class="bi bi-heart"></i> Favorite
+                </button>
+            </div>
+            </div>
+        </div>
+         <!-- Business Info Section -->
+        <section class="mt-5 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="mb-4">About Campus Cafe</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="bi bi-info-circle me-2"></i> Business Details</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong>Category:</strong>{{business.category}}</li>
+                                <li class="mb-2"><strong>Location:</strong> {{address.address_line_1}} {{address.address_line_2}} ,{{address.suburb}}, {{address.postal_code}}</li>
+                                <li class="mb-2"><strong>Hours:</strong> {{business.open_time}} - {{business.close_time}} (Mon-Sun)</li>
+                                <li class="mb-2"><strong>Contact:</strong> {{business.phone}}</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="bi bi-truck me-2"></i> Delivery Information</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Campus delivery available</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Standard (48hrs) & Premium (2hrs) options</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Free delivery on orders over R200</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Student discount available</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Category Tabs -->
+        <h2 class="section-title">Our Menu</h2>
+        <div class="category-tabs" style="overflow-x:scroll;">
+        	{% for key, value in categories.items %}
+    <button class="category-tab " onclick="showCategory('{{ key }}')">{{ key }}</button>
+{% endfor %}
+           
+        </div>
+        
+        {% for key, value in categories.items %}
+        <!-- Drinks Category -->
+        <section id="{{key}}" class="category-section" style="display:none">
+            <div class="products-grid">
+                <!-- Product 1 -->
+                {% for product in value %}
+                <div class="product-card">
+                    <div class="product-image-container">
+                    	{% if product.image %}
+                        <img src="{{product.image.url}}" class="product-image" alt="Cappuccino">
+                        {% endif %}
+                        <span class="product-badge">10% OFF</span>
+                        <button class="wishlist-btn" onclick="toggleWishlist(this, 1)">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-body">
+                        <h6 class="product-title">{{product.name}}</h6>
+                        <div class="product-price">R {{product.price}}</div>
+                    
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill"></i> 4.3
+                            <span class="text-muted ms-1">(42 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </section>
+        {% endfor %}
+  
+        
+       
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle wishlist button
+        function toggleWishlist(button, productId) {
+            button.classList.toggle('active');
+            const icon = button.querySelector('i');
+            
+            if (button.classList.contains('active')) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+                // Add to wishlist API call
+                console.log(`Added product ${productId} to wishlist`);
+                alert('Added to wishlist!');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+                // Remove from wishlist API call
+                console.log(`Removed product ${productId} from wishlist`);
+                alert('Removed from wishlist!');
+            }
+        }
+
+        // Add to cart function
+        function addToCart(productId) {
+            // Add to cart API call
+            console.log(`Added product ${productId} to cart`);
+            // Show success message
+            alert('Product added to cart!');
+        }
+
+        // Show selected category and hide others
+        function showCategory(categoryId) {
+            // Hide all category sections
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected category
+            document.getElementById(categoryId).style.display = 'block';
+            
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+{% endblock %}

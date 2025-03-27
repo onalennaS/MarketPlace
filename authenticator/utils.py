@@ -88,6 +88,8 @@ def send_email_reset_link(recipient_email, reset_link):
 
 
 def verify_role(user):
+    
+
     if user.groups.filter(name="admin").exists():
         return 'admin_dashboard'
 
@@ -104,4 +106,10 @@ def verify_role(user):
 
 
     if user.groups.filter(name="customer").exists():
+        return 'shop_base'
+
+    group = Group.objects.filter(name="customer").first()
+    if group and user:
+        user.groups.add(group)
+        user.save()
         return 'shop_base'

@@ -27,21 +27,25 @@ def add_cart(request):
 		return JsonResponse({"message":"product does not exist", "status":"error"},status=404) 
 
 	product = Product.objects.filter(id=prodcut_id).first()
-	
+	check_items = Cart.objects.filter(user=user).all()
+	if len(check_items) > 0 :
+		items = check_items.filter(product__business_eq=business).all()
+		if not len(items) > 0:
+			return JsonResponse({"message":"Cannot add products from different businesses into the same cart", "status":"error"},status=404)
 	cart_exists = Cart.objects.filter(product=product,user=user).all()
 	if cart_exists:
 		return JsonResponse({"message":"Product already added to cart", "status":"error"},status=404) 
 
 	cart = Cart.objects.create(product=product,user=user)
 	cart.save()
-	print(extras)
+	
 	if extras:
 		for extra_id in extras.keys():
 			extra = Addon.objects.filter(id=int(extra_id)).first()
 			if extra:
 				extra = CartAddons.objects.create(cart=cart,addon=extra)
 				extra.save()
-				print(extra)
+				
 			else :
 				print("no extra found")
 	return JsonResponse({"message": "product added to cart successfully",'status':'success'}, status=201)
@@ -67,7 +71,7 @@ def add_extra_to_cart(request):
 			if extra:
 				extra = CartExtra.objects.create(user=request.user,extra=extra)
 				extra.save()
-				print(extra)
+				
 			else :
 				print("no extra found")
 	return JsonResponse({"message": "extras added to cart successfully",'status':'success'}, status=201)
@@ -216,7 +220,7 @@ def add_cart_delivery_address(request):
 		block = data.get('block')
 		venue = data.get('venue')
 		notes = data.get('notes')
-		print(notes)
+	
 		if not instutition:
 			return JsonResponse({'message':'instutition  is required','status':'error'},status=404)
 
@@ -290,10 +294,7 @@ def palce_order(request):
 
     total_amount = product_amount + extra_amount +delivery_amount
     
-    print("product subtotal : ",product_amount)
-    print("extras subtotal : ",extra_amount)
-    print("Delivery subtotal : ",delivery_amount)
-    print("total : ",total_amount)
+   
     order = Order.objects.create(business=business,user=request.user,total_amount=total_amount,delivery_method=delivery_method.method)
     order.save()
 

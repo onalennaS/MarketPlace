@@ -161,7 +161,7 @@ def email_order_traking_update(recipient_email,link,order):
     return True
 
 def send_email_order_traking_update(order ):
-    emails = [order.user.email,order.business.email, order.business.owner.email]
+    emails = [order.user.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
     email_order_traking_update(emails, page_link, order)
 
@@ -189,6 +189,6 @@ def email_order_delivered(recipient_email,link,order):
     return True
 
 def send_email_order_delivered(order):
-    emails = [order.user.email,order.business.email, order.business.owner.email]
+    emails = [order.user.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
     email_order_delivered(emails, page_link, order)

@@ -44,14 +44,14 @@ def get_order_extra(order):
 def get_cart_total(cart_items):
     total = 0
     for item in cart_items:
-        total += item.product.price
+        total += float(item.product.price)
 
     return total
 
 def get_extra_total(extras):
     total = 0
     for extra in extras:
-        total += int(extra.extra.price)
+        total += float(extra.extra.price)
     return total
 
 @login_required_custom
@@ -95,7 +95,7 @@ def checkout(request):
             method = "pickup"
         elif delivery_method.method == "delivery":
             method = "delivery"
-            delivery_total = 10
+            delivery_total = 15
         else:
             method = "None"
 

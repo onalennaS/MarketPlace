@@ -316,51 +316,34 @@
 <!-- Category Carousel -->
 <section class="container my-5">
     <div class="section-header">
-        <h2 class="section-title">Shop by Category</h2>
-        <a href="#" class="view-all">View all categories</a>
+        <h2 class="section-title">Shop by Business</h2>
+        <a href="#" class="view-all">View all Businesses</a>
     </div>
     
     <div id="categoryCarousel" class="carousel slide category-carousel" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="d-flex">
-                    <!-- Category 1 -->
-                    <div class="category-card flex-shrink-0" style="width: 200px;">
-                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Textbooks" class="category-img">
-                        <div class="category-overlay">
-                            <h5 class="category-title">Textbooks</h5>
+            {% for businesses in business_list %}
+                <div class="carousel-item active">
+                    <div class="d-flex">
+                        <!-- Category 1 -->
+                        {% for business in businesses %}
+                        <a href="{% url 'view_business_products' business.id %}" class="text-decoration-none">
+                        <div class="category-card flex-shrink-0" style="width: 200px;">
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Textbooks" class="category-img">
+                            <div class="category-overlay">
+                                <h5 class="category-title">{{business.name}}</h5>
+                                <span class="small text-primary">{{business.category}}</span>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Category 2 -->
-                    <div class="category-card flex-shrink-0" style="width: 200px;">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Electronics" class="category-img">
-                        <div class="category-overlay">
-                            <h5 class="category-title">Electronics</h5>
-                        </div>
-                    </div>
-                    
-                    <!-- Category 3 -->
-                    <div class="category-card flex-shrink-0" style="width: 200px;">
-                        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Fashion" class="category-img">
-                        <div class="category-overlay">
-                            <h5 class="category-title">Sweets and Snacks</h5>
-                        </div>
-                    </div>
-                    
-                    <!-- Category 4 -->
-                    <div class="category-card flex-shrink-0" style="width: 200px;">
-                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Furniture" class="category-img">
-                        <div class="category-overlay">
-                            <h5 class="category-title">Fast Food</h5>
-                        </div>
+                        </a>
+                        {% endfor %}
+                       
+                      
+                       
                     </div>
                 </div>
-            </div>
+            {% endfor %}
             <!-- <div class="carousel-item">
                 <div class="d-flex">
                   
@@ -402,15 +385,10 @@
                     <div class="product-price">R{{product.price}}</div>
                     <div class="product-rating">
                         <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
+                        
                         <span class="text-muted ms-2">(24)</span>
                     </div>
-                    <button class="btn btn-primary add-to-cart" onclick="addCart({{product.id}})">
-                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                    </button>
+                    
                 </div>
             </div>
         </div>

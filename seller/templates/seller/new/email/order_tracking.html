@@ -69,7 +69,7 @@
         <p>Your order <strong>#{{ order.order_id }}</strong> has been {{ descsription2 }}</p>
 
         <div class="order-status">
-            <h3>Current Status: <span style="color: #007bff;">{{ order.status }}</span></h3>
+            <h3>Current Status: <span style="color: #007bff;">{% if order.status == Processing %}Preparing{% else %}{{ order.status }}{% endif %}</span></h3>
             <p><strong>Estimated Delivery:</strong> {{eta}} </p>
         </div>
 
