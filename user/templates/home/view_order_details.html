@@ -212,7 +212,7 @@
             <div class="w-100 d-flex justify-content-start" >
             {% for order_item in order_items %}
                <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="{{order_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
             {% endfor %}
                  
@@ -276,7 +276,7 @@
             {% for item in order_items %}
              <div class="d-flex justify-content-start mb-2">
                <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{% static 'images/order2.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                    <img src="{{item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 <div class="p-3">
                     <h6 >{{item.product.name}}</h6>

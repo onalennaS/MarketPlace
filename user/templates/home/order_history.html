@@ -173,7 +173,7 @@
     <div class="  w-100 p-0 m-0 mb-4" id="order" style="display:block;" >
         <div class="d-flex justify-content-between w-100 p-3  border shadow p-0 m-0" style="background-color:white;overflow-x: scroll;">
             <div class="" >
-                <h6 class="fw-bold">{{order.status}} {% if order.status == "Delivered" %} Today ,21 November 2024 {% endif %}</h6>
+                <h6 class="fw-bold">{{order.status}} {{order.order_id}}</h6>
                 <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
             </div>
             <div class="">
@@ -186,7 +186,7 @@
        <div class=" d-flex justify-content-start p-4 border shadow shadow" style="background-color:white;">
         {% for order_item in order.order_items.all %}
            <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+                <img src="{{order_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
         {% endfor %}
 
