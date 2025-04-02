@@ -14,8 +14,8 @@
 
 {% block styles %}
 :root {
-    --primary: green;
-    --primary-dark: #026102;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
     --secondary: #f59e0b;
     --dark: #1e293b;
     --light: #f8fafc;
@@ -312,6 +312,19 @@ body {
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+}
+
+.text-footer {
+    color: var(--gray);
+    list-style: none;
+}
+
+.policy {
+    text-decoration: none;
+}
+
+.policy a:hover {
+    color: white;
 }
 
 .social-links a:hover {
@@ -634,7 +647,7 @@ body {
         <div class="row">
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <h5 class="footer-title">SixSkies</h5>
-                <p class="text-muted mb-3">The trusted student marketplace for campus communities</p>
+                <p class="text-footer mb-3">The trusted student marketplace for campus communities</p>
                 <div class="social-links">
                     <a href="#"><i class="bi bi-facebook"></i></a>
                     <a href="#"><i class="bi bi-instagram"></i></a>
@@ -671,14 +684,14 @@ body {
             </div>
         </div>
         <hr class="my-4 border-secondary">
-        <div class="row">
-            <div class="col-md-6 text-center text-md-start">
-                <p class="small text-muted mb-0">© 2023 SixSkies. All rights reserved.</p>
+        <div class="row text-white">
+            <div class="col-md-6 text-center text-md-start ">
+                <p class="small text-footer mb-0">© 2025 SixSkies. All rights reserved.</p>
             </div>
-            <div class="col-md-6 text-center text-md-end">
-                <a href="#" class="small text-muted me-3">Privacy</a>
-                <a href="#" class="small text-muted me-3">Terms</a>
-                <a href="#" class="small text-muted">Cookies</a>
+            <div class="policy col-md-6 text-center text-md-end text-md-start">
+                <a href="#" class="small text-footer me-3 policy">Privacy</a>
+                <a href="#" class="small text-footer me-3 policy">Terms</a>
+                <a href="#" class="small text-footer policy">Cookies</a>
             </div>
         </div>
     </div>

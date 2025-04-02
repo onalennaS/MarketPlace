@@ -6,35 +6,455 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     {% endblock %}
     {% block styles %}
-        .hero-section {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            padding: 100px 0;
-        }
-        
-        .feature-card {
-            transition: transform 0.3s;
-            border: none;
-            border-radius: 15px;
-        }
-        
-        .usp-icon {
-            font-size: 2.5rem;
-            color: #6366f1;
-        }
-        
-        .delivery-badge {
-            background: #e9ecef;
-            border-radius: 20px;
-            padding: 8px 20px;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        @media (max-width: 768px) {
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background-color: #f9fafb;
+        }
+        .navbar-scrolled {
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 8rem 0 6rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-feature {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .hero-feature span {
+            display: inline-block;
+            margin: 0 0.75rem;
+            opacity: 0.8;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-card h3 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .hero-card-item {
+            display: flex;
+            color: black;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+        }
+
+        .hero-card-item i {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+
+        .btn-hero {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-hero-primary {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+
+        .btn-hero-primary:hover {
+            background: #f8fafc;
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-hero-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-light {
+            background-color: #f9fafb;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            height: 100%;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1.25rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        .delivery-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Category Buttons */
+        .category-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.2s;
+            height: 100%;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-btn i {
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* USP Section */
+        .usp-icon-container {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.75rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .usp-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .usp-text {
+            color: var(--gray);
+            text-align: center;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-text {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-footer {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-footer:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
             .hero-section {
-                padding: 80px 0;
+                padding: 6rem 0 4rem;
             }
             
-            .display-4 {
-                font-size: 2.5rem;
+            .hero-title {
+                font-size: 2.75rem;
+            }
+            
+            .hero-card {
+                margin-top: 3rem;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+            
+            .section-title {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 5rem 0 3rem;
+            }
+            
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-feature {
+                font-size: 1rem;
+            }
+            
+            .hero-feature span {
+                margin: 0 0.5rem;
+            }
+            
+            .btn-hero {
+                padding: 0.6rem 1.5rem;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .usp-icon-container {
+                width: 70px;
+                height: 70px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .hero-section {
+                padding: 4rem 0 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .hero-feature {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .hero-feature span {
+                margin: 0;
+            }
+            
+            .btn-hero {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            
+            .feature-title {
+                font-size: 1.25rem;
+            }
+            
+            .usp-title {
+                font-size: 1.25rem;
             }
         }
     {% endblock %}
@@ -44,8 +464,8 @@
 
 {% block home %}
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<!-- Navbar -->
+<!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">
             <i class="bi bi-clouds"></i> SixSkies
@@ -64,39 +484,46 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#usp">Why Us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary ms-2" href="#">Get Started</a>
+                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                    <a class="btn btn-light" href="#">Get Started</a>
                 </li>
             </ul>
         </div>
     </div>
-</nav>
+</nav> -->
 
 <!-- Hero Section -->
 <section class="hero-section text-white">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-8 text-center text-lg-start">
-                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">
-                    The Student Marketplace Revolution
-                </h1>
-                <p class="lead mb-4 animate__animated animate__fadeIn">
-                    Buy & sell affordably within your campus community. 
-                    <span class="d-block mt-2">0% commission • Verified products only • Flexible delivery</span>
-                </p>
-                <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
-                    <a href="{% url 'shop_base' %}" class="btn btn-light btn-lg px-5 py-3">Start Buying</a>
-                    <a href="#" class="btn btn-outline-light btn-lg px-5 py-3">Start Selling</a>
+            <div class="col-lg-7">
+                <h1 class="hero-title">The Student Marketplace Revolution</h1>
+                <p class="hero-subtitle">Buy & sell affordably within your campus community.</p>
+                <div class="hero-feature">
+                    <span><i class="bi bi-check2-circle me-2"></i>0% commission</span>
+                    <span><i class="bi bi-check2-circle me-2"></i>Verified products</span>
+                    <span><i class="bi bi-check2-circle me-2"></i>Flexible delivery</span>
+                </div>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'shop_base' %}" class="btn btn-hero btn-hero-primary">Start Buying</a>
+                    <a href="#" class="btn btn-hero btn-hero-secondary">Start Selling</a>
                 </div>
             </div>
-            <div class="col-lg-4 mt-5 mt-lg-0">
-                <div class="bg-white p-4 rounded-3 shadow-lg text-dark">
-                    <h4 class="mb-3">Why students love SixSkies:</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i>No hidden fees</li>
-                        <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i>Campus delivery</li>
-                        <li><i class="bi bi-check2-circle text-primary me-2"></i>Secure payments</li>
-                    </ul>
+            <div class="col-lg-5">
+                <div class="hero-card ">
+                    <h3>Why students love SixSkies:</h3>
+                    <div class="hero-card-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>No hidden fees</span>
+                    </div>
+                    <div class="hero-card-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Campus delivery</span>
+                    </div>
+                    <div class="hero-card-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Secure payments</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,59 +531,54 @@
 </section>
 
 <!-- Features Section -->
-<section id="features" class="py-5 bg-light">
+<section id="features" class="section section-light">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3">Student-First Features</h2>
-            <p class="text-muted">Built for campus life, powered by Django</p>
-        </div>
+        <h2 class="section-title">Student-First Features</h2>
+        <p class="section-subtitle">Built for campus life, powered by Django</p>
         
         <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card card h-100 shadow">
-                    <div class="card-body p-4">
-                        <i class="bi bi-cash-coin usp-icon mb-3"></i>
-                        <h3>Affordable Trading</h3>
-                        <p class="text-muted">Lowest fees in the market with our simple structure:</p>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">✓ 0% selling fees</li>
-                            <li class="mb-2">✓ 10% payment processing</li>
-                            <li>✓ Optional delivery services</li>
-                        </ul>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-cash-coin"></i>
                     </div>
+                    <h3 class="feature-title">Affordable Trading</h3>
+                    <p>Lowest fees in the market with our simple structure:</p>
+                    <ul class="feature-list">
+                        <li>0% selling fees</li>
+                        <li>10% payment processing</li>
+                        <li>Optional delivery services</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card card h-100 shadow">
-                    <div class="card-body p-4">
-                        <i class="bi bi-truck usp-icon mb-3"></i>
-                        <h3>Flexible Delivery</h3>
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            <span class="delivery-badge">Standard </span>
-                            
-                            <span class="delivery-badge">Premium </span>
-                            <span class="delivery-badge">Pick-Up </span>
-                        </div>
-                        <p class="text-muted">Choose on-site pickup or our student-run delivery network</p>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
                     </div>
+                    <h3 class="feature-title">Flexible Delivery</h3>
+                    <div class="mb-3">
+                        <span class="delivery-badge">Standard</span>
+                        <span class="delivery-badge">Premium</span>
+                        <span class="delivery-badge">Pick-Up</span>
+                    </div>
+                    <p>Choose on-site pickup or our student-run delivery network</p>
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card card h-100 shadow">
-                    <div class="card-body p-4">
-                        <i class="bi bi-shield-check usp-icon mb-3"></i>
-                        <h3>Secure Platform</h3>
-                        <p class="text-muted">Enterprise-grade security powered by:</p>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">✓ Django framework</li>
-                            <li class="mb-2">✓ SSL encryption</li>
-                            <li>✓ Product verification</li>
-                            
-                            
-                        </ul>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
                     </div>
+                    <h3 class="feature-title">Secure Platform</h3>
+                    <p>Enterprise-grade security powered by:</p>
+                    <ul class="feature-list">
+                        <li>Django framework</li>
+                        <li>SSL encryption</li>
+                        <li>Product verification</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -164,116 +586,131 @@
 </section>
 
 <!-- Categories Section -->
-<section id="categories" class="py-5">
+<section id="categories" class="section">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3">Popular Student Categories</h2>
-            <p class="text-muted">Find what you need, sell what you don't</p>
-        </div>
+        <h2 class="section-title">Popular Student Categories</h2>
+        <p class="section-subtitle">Find what you need, sell what you don't</p>
         
-        <div class="row g-3">
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="btn btn-outline-dark w-100 py-3 d-flex align-items-center">
-                    <i class="bi bi-book me-2"></i>Textbooks
+        <div class="row g-4">
+            <div class="col-6 col-md-3">
+                <a href="#" class="category-btn">
+                    <i class="bi bi-book"></i>
+                    <span>Textbooks</span>
                 </a>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="btn btn-outline-dark w-100 py-3 d-flex align-items-center">
-                    <i class="bi bi-laptop me-2"></i>Fast Food & Meals
+            <div class="col-6 col-md-3">
+                <a href="#" class="category-btn">
+                    <i class="bi bi-cup-hot"></i>
+                    <span>Fast Food & Meals</span>
                 </a>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="btn btn-outline-dark w-100 py-3 d-flex align-items-center">
-                    <i class="bi bi-shirt me-2"></i>Electronics & Gadgets
+            <div class="col-6 col-md-3">
+                <a href="#" class="category-btn">
+                    <i class="bi bi-laptop"></i>
+                    <span>Electronics & Gadgets</span>
                 </a>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="#" class="btn btn-outline-dark w-100 py-3 d-flex align-items-center">
-                    <i class="bi bi-house-door me-2"></i>Snacks and Cakes
+            <div class="col-6 col-md-3">
+                <a href="#" class="category-btn">
+                    <i class="bi bi-basket"></i>
+                    <span>Snacks and Cakes</span>
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- USP Section -->
-<section id="usp" class="py-5 bg-light">
+<!-- Why Us Section -->
+<section id="why-us" class="section section-light">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3">Why SixSkies Works</h2>
-            <p class="text-muted">Solving real student problems</p>
-        </div>
+        <h2 class="section-title">Why SixSkies Works</h2>
+        <p class="section-subtitle">Solving real student problems</p>
         
-        <div class="row g-4">
+        <div class="row g-4 mt-3">
             <div class="col-md-4">
-                <div class="p-4 text-center">
-                    <div class="mb-4">
-                        <div class="bg-primary text-white rounded-circle mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
-                            <i class="bi bi-people-fill fs-4"></i>
-                        </div>
-                    </div>
-                    <h4>Community First</h4>
-                    <p class="text-muted">Verified student network ensures safe, relevant transactions</p>
+                <div class="usp-icon-container">
+                    <i class="bi bi-people"></i>
                 </div>
+                <h3 class="usp-title">Community First</h3>
+                <p class="usp-text">Verified student network ensures safe, relevant transactions</p>
             </div>
             
             <div class="col-md-4">
-                <div class="p-4 text-center">
-                    <div class="mb-4">
-                        <div class="bg-primary text-white rounded-circle mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
-                            <i class="bi bi-clock-history fs-4"></i>
-                        </div>
-                    </div>
-                    <h4>Time-Saving</h4>
-                    <p class="text-muted">Average transaction completed in 28 minutes</p>
+                <div class="usp-icon-container">
+                    <i class="bi bi-clock-history"></i>
                 </div>
+                <h3 class="usp-title">Time-Saving</h3>
+                <p class="usp-text">Average transaction completed in 28 minutes</p>
             </div>
             
             <div class="col-md-4">
-                <div class="p-4 text-center">
-                    <div class="mb-4">
-                        <div class="bg-primary text-white rounded-circle mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
-                            <i class="bi bi-graph-up-arrow fs-4"></i>
-                        </div>
-                    </div>
-                    <h4>Growing Network</h4>
-                    <p class="text-muted">Join 10+ students in our beta program</p>
+                <div class="usp-icon-container">
+                    <i class="bi bi-graph-up"></i>
                 </div>
+                <h3 class="usp-title">Growing Network</h3>
+                <p class="usp-text">Join 10+ students in our beta program</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Footer -->
-<footer class="bg-dark text-white py-5">
+<footer class="footer">
     <div class="container">
         <div class="row g-4">
-            <div class="col-md-4">
-                <h5><i class="bi bi-clouds"></i> SixSkies</h5>
-                <p class="text-muted mt-3">A student marketplace built with ❤️ using Django</p>
-                <div class="mt-4">
-                    <a href="#" class="btn btn-outline-light">Join 500 Student Challenge</a>
-                </div>
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h4 class="footer-title">
+                    <i class="bi bi-clouds"></i> SixSkies
+                </h4>
+                <p class="footer-text">A student marketplace built with ❤️ using Django</p>
+                <a href="#" class="btn btn-footer">
+                    Join 500 Student Challenge
+                </a>
             </div>
-            <div class="col-md-4">
-                <h6>Quick Links</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Safety Guidelines</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Delivery FAQ</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Contact Support</a></li>
+            
+            <div class="col-md-4 col-lg-3 offset-lg-1 mb-4 mb-md-0">
+                <h5 class="footer-links-title">Quick Links</h5>
+                <ul class="footer-links">
+                    <li><a href="#">Safety Guidelines</a></li>
+                    <li><a href="#">Delivery FAQ</a></li>
+                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
-                <h6>Connect</h6>
-                <div class="d-flex gap-3">
-                    <a href="#" class="text-white"><i class="bi bi-facebook fs-5"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-instagram fs-5"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+            
+            <div class="col-md-4 col-lg-3 offset-lg-1">
+                <h5 class="footer-links-title">Connect</h5>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
                 </div>
             </div>
+        </div>
+        
+        <hr class="mt-5 mb-4" style="border-color: rgba(255, 255, 255, 0.1);">
+        
+        <div class="text-center">
+            <p class="mb-0" style="color: #94a3b8;">© 2025 SixSkies. All rights reserved.</p>
         </div>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    });
+</script>
 {% endblock %}
