@@ -61,6 +61,8 @@ def send_email_verification_link(recipient_email, verify_link):
 def send_verify_email(email):
     reset_token = generate_reset_token(email)
     reset_link = f"{settings.SITE_URL}/auth/verify_email/{reset_token}/"
+    print("================")
+    print(reset_link)
     send_email_verification_link(email, reset_link)
 
 
@@ -109,6 +111,7 @@ def verify_role(user):
         return 'shop_base'
 
     group = Group.objects.filter(name="customer").first()
+
     if group and user:
         user.groups.add(group)
         user.save()

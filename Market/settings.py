@@ -30,8 +30,8 @@ ALLOWED_HOSTS = ["sixskies.co.za","market-nfem.onrender.com", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["https://sixskies.co.za","https://market-nfem.onrender.com", "http://127.0.0.1"]
 # settings.py
 
-#SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
-SITE_URL = "market-nfem.onrender.com"  # Replace with your domain in production
+SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
+#SITE_URL = "market-nfem.onrender.com"  # Replace with your domain in production
 
 SITE_ID=2
 
