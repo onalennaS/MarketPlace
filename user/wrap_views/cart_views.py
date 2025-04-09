@@ -29,7 +29,7 @@ def add_cart(request):
 	product = Product.objects.filter(id=prodcut_id).first()
 	check_items = Cart.objects.filter(user=user).all()
 	if len(check_items) > 0 :
-		items = check_items.filter(product__business_eq=business).all()
+		items = check_items.filter(product__business_in=[product]).all()
 		if not len(items) > 0:
 			return JsonResponse({"message":"Cannot add products from different businesses into the same cart", "status":"error"},status=404)
 	cart_exists = Cart.objects.filter(product=product,user=user).all()
@@ -276,9 +276,13 @@ def palce_order(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)   
 
+
     cart_items = Cart.objects.filter(user=request.user).all()
     cart_extras = CartExtra.objects.filter(user=request.user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=request.user).first()
+    if not delivery_method:
+        return JsonResponse({'status':'error', 'message':'please choose a '}, status=403)
+    
     address = CartDeliveryAddress.objects.filter(user=request.user).first()
     business = cart_items[0].product.business
     product_amount = 0
@@ -289,6 +293,8 @@ def palce_order(request):
         product_amount += int(item.product.price)
     for extra in cart_extras:
         extra_amount += int(extra.extra.price)
+
+    
     if delivery_method.method == "delivery":
     	delivery_amount += 15
 

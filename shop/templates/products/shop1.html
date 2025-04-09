@@ -468,6 +468,7 @@ body {
     <div class="row">
         {% for businesses in business_list %}
             {% for business in businesses %}
+            {% if business.status == "approved" %}
             <div class="col-6 col-md-3 col-lg-2">
                 <a href="{% url 'view_business_products' business.id %}" class="text-decoration-none">
                     <div class="category-card">
@@ -480,6 +481,7 @@ body {
                     </div>
                 </a>
             </div>
+            {% endif %}
             {% endfor %}
         {% endfor %}
     </div>
@@ -494,6 +496,7 @@ body {
     
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         {% for product in products %}
+        {% if product.status == "active" %}
         <div class="col">
             <div class="product-card">
                 <div class="product-img-container">
@@ -514,6 +517,7 @@ body {
                 </div>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </section>
