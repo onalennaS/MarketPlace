@@ -1,147 +1,371 @@
 {% extends 'home/base.html' %}
 
 {% block title %}Buyer Reviews{% endblock %}
+{% load static %}
+
 {% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
-                    </a>
-                </li>
-                  <div class="flex-container ">
+<ul class="nav flex-column px-3 mt-3">
+    <div class="flex-container ">
+        <h5 class="fw-bold">Profile </h5>
+        <hr >
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+            <i class="fas fa-user me-2"></i> Personal details
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+            <i class="fas fa-cog me-2"></i> Account Settings
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+            <i class="fas fa-user-cog me-2"></i> Address Book
+        </a>
+    </li>
+    <div class="flex-container ">
+        <h5 class="fw-bold">Orders</h5>
+        <hr >
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
+            <i class="fas fa-history me-2"></i> Order History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+            <i class="fas fa-heart me-2"></i> Wish Lists
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center active" href="{% url 'buyer_reviews' %}">
+            <i class="fas fa-star me-2"></i> Reviews
+        </a>
+    </li>
+    <!-- Payment Section -->
+    <div class="flex-container">
+        <h5 class="fw-bold text-white">Payment</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+            <i class="fas fa-credit-card me-2"></i> Credit & Refunds
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+            <i class="fas fa-gift me-2"></i> Gift Card
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+            <i class="fas fa-users me-2"></i> Referrals & Earnings
+        </a>
+    </li>
+    <!-- More Section -->
+    <div class="flex-container">
+        <h5 class="fw-bold text-white">More</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-headset me-2"></i> Subscription Plan
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-history me-2"></i> Payment History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-life-ring me-2"></i> Support
+        </a>
+    </li>   
+</ul>
+{% endblock %}
 
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-   
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">Payment</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-headset me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-headset me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-headset me-2"></i> Refferals & earnings
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">More</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Payment history
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Support
-                    </a>
-                </li>
-            </ul>
-            {% endblock %}
 {% block content %}
-<div class="container ">
-   <!-- Breadcrumb navigation -->
-   <nav aria-label="breadcrumb">
-    <ol class="breadcrumb" style="border-radius: 0; padding: 8px 15px;">
+<style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+        background-color: white;
+    }
+    
+    .review-card {
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+    }
+    
+    .review-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .review-header {
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .review-content {
+        padding: 16px 18px;
+    }
+    
+    .review-footer {
+        padding: 10px 18px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #eaecef;
+        text-align: right;
+    }
+    
+    /* Button styling */
+    .btn-view {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-view:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    /* Filter dropdown styling */
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .filter-label {
+        color: #495057;
+        font-weight: 500;
+        margin-right: 8px;
+    }
+    
+    .btn-filter {
+        background-color: transparent;
+        color: #495057;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-filter:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #3498db;
+        border-color: #3498db;
+    }
+    
+    /* Star rating styling */
+    .star-rating {
+        color: #ffc107;
+        margin-right: 8px;
+    }
+    
+    .star-inactive {
+        color: #e0e0e0;
+    }
+    
+    /* Empty state styling */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        color: #d5d8dc;
+        margin-bottom: 16px;
+    }
+    
+    .empty-state h4 {
+        color: #7f8c8d;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state p {
+        color: #95a5a6;
+        margin-bottom: 24px;
+        max-width: 500px;
+    }
+    
+    .btn-browse {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 24px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-browse:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(41, 128, 185, 0.3);
+    }
+</style>
 
-        <li class="breadcrumb-item">
-            <a href="{% url 'home' %}" style="color: black; text-decoration: none;">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{% url 'dash' %}" style="color: black; text-decoration: none;">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page" style="color: black;">Order History</li>
-    </ol>
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Buyer Reviews</li>
+        </ol>
     </nav>
 
-    
-
-    <!-- Review List -->
-    <div class="row">
-        {% if reviews %}
-            {% for review in reviews %}
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title" style="color: #165baa;">Review for {{ review.product.name }}</h5>
-                        <div class="d-flex align-items-center mb-3">
-                            <!-- Display star rating -->
-                            {% for i in range %}
-                                {% if i <= review.rating %}
-                                    <i class="fas fa-star text-warning"></i>
-                                {% else %}
-                                    <i class="fas fa-star text-muted"></i>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <p class="card-text">{{ review.comment }}</p>
-                        <p><strong>Reviewed on:</strong> {{ review.created_at|date:"M d, Y" }}</p>
-                    </div>
-                    <div class="card-footer text-end">
-                        <a href="{% url 'product_details' review.product.id %}" class="btn btn-primary btn-sm" style="background-color: #165baa; border-color: #165baa;">
-                            <i class="fas fa-eye"></i> View Product
-                        </a>
-                    </div>
+    <!-- Reviews Header Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-star"></i>
+                <h5>My Reviews</h5>
+            </div>
+            
+            <!-- Filter Options -->
+            <div class="d-flex align-items-center">
+                <span class="filter-label d-none d-md-block">Sort by</span>
+                <div class="dropdown">
+                    <button class="btn btn-filter dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Most recent
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">Most recent</a></li>
+                        <li><a class="dropdown-item" href="#">Highest rating</a></li>
+                        <li><a class="dropdown-item" href="#">Lowest rating</a></li>
+                    </ul>
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-            <!-- No Reviews Found Section -->
-            <div class="col-12 text-center py-5">
-                <h4 class="text-muted">You haven't written any reviews yet</h4>
-                <p class="text-muted">Once you've purchased products, you can leave reviews to help others. Start shopping now!</p>
-                <a href="{% url 'home' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
-                    <i class="fas fa-shopping-cart"></i> Browse Products
-                </a>
-            </div>
-        {% endif %}
+        </div>
+        
+        <div class="card-body">
+            {% if reviews %}
+                <div class="row">
+                    {% for review in reviews %}
+                    <div class="col-md-6 mb-3">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <h6 class="m-0">{{ review.product.name }}</h6>
+                            </div>
+                            <div class="review-content">
+                                <div class="d-flex align-items-center mb-2">
+                                    <!-- Display star rating -->
+                                    {% for i in range %}
+                                        {% if i <= review.rating %}
+                                            <i class="fas fa-star star-rating"></i>
+                                        {% else %}
+                                            <i class="fas fa-star star-inactive"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="ms-2 text-muted">{{ review.created_at|date:"M d, Y" }}</span>
+                                </div>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                            <div class="review-footer">
+                                <a href="{% url 'product_details' review.product.id %}" class="btn btn-view btn-sm">
+                                    <i class="fas fa-eye me-1"></i> View Product
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-star"></i>
+                    <h4>No Reviews Found</h4>
+                    <p>You haven't written any reviews yet. After purchasing products, you can share your experience to help other shoppers.</p>
+                    <a href="{% url 'home' %}" class="btn btn-browse">
+                        <i class="fas fa-shopping-cart me-1"></i> Browse Products
+                    </a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock content %}

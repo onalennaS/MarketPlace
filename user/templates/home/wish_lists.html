@@ -2,167 +2,284 @@
 
 {% block title %}Wish List{% endblock %}
 {% load static %}
-{% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
-                    </a>
-                </li>
-                  <div class="flex-container ">
 
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
 
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-            
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-                <!-- Payment Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Payment</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-credit-card me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-gift me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-users me-2"></i> Referrals & Earnings
-                    </a>
-                </li>
 
-                <!-- More Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">More</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription Plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-history me-2"></i> Payment History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-life-ring me-2"></i> Support
-                    </a>
-                </li>   
-            </ul>
-            {% endblock %}
 {% block content %}
-<div class="container  p-0">
-    <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
+<style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+    }
+    
+    /* Content styling */
+    .card-text {
+        color: #495057;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Button styling to match sidebar */
+    .btn-edit {
+        background-color: transparent;
+        color: #495057;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-edit:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #3498db;
+        border-color: #3498db;
+        transform: translateX(2px);
+    }
+    
+    .btn-cart {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cart:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    .btn-remove {
+        background-color: transparent;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove:hover {
+        background-color: rgba(231, 76, 60, 0.08);
+        color: #c0392b;
+        transform: translateY(-2px);
+    }
+    
+    .wishlist-img-container {
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .wishlist-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .empty-wishlist {
+        text-align: center;
+        padding: 60px 0;
+    }
+    
+    .empty-wishlist i {
+        font-size: 48px;
+        color: #d5d8dc;
+        margin-bottom: 16px;
+    }
+    
+    .empty-wishlist h4 {
+        color: #7f8c8d;
+        margin-bottom: 12px;
+    }
+    
+    .empty-wishlist p {
+        color: #95a5a6;
+        margin-bottom: 24px;
+    }
+    
+    .btn-continue-shopping {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 24px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-continue-shopping:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(41, 128, 185, 0.3);
+    }
+    
+    .price-current {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .price-original {
+        font-size: 14px;
+        color: #95a5a6;
+        text-decoration: line-through;
+    }
+</style>
 
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" class="text-dark text-decoration-none">Home</a>
+                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" class="text-dark text-decoration-none">Dashboard</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Wish List</li>
+            <li class="breadcrumb-item active" aria-current="page">Wish List</li>
         </ol>
     </nav>
 
-    <!-- Wish List Section -->
-    <div class="row pad">
-        
-            <div class="col-12 text-center p-3 py-2 d-flex justify-content-between pad">
-                
-                <h4 class="text-muted">My list</h4>
-               
-                <p class="text-muted">You have {{wishlist_items_count}} items in your wish list!</p>
+    <!-- Wish List Header Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-heart"></i>
+            <h5>My Wish List</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">Items you've saved for later</p>
+                <span class="badge bg-primary rounded-pill">{{wishlist_items_count}} items</span>
             </div>
-        {% if wishlist_items %}
-            {% for wishlist_item in wishlist_items %}
-            <div class="pad">
-               <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
-               
-              
+        </div>
+    </div>
 
-                <div class="col-12 col-md-6 d-flex justify-content-start mb-2">
-                        <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                            <img src="{{wishlist_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+    {% if wishlist_items %}
+        <!-- Wishlist Items -->
+        {% for wishlist_item in wishlist_items %}
+        <div class="profile-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-2 col-sm-3 mb-3 mb-md-0">
+                        <div class="wishlist-img-container">
+                            <img src="{{wishlist_item.product.image.url}}" alt="{{wishlist_item.product.name}}" class="wishlist-img">
                         </div>
-                        <div class="p-3">
-                            <h6 >{{wishlist_item.product.name}} </h6>
-                            <span class="text-primary small">{{wishlist_item.product.business}}</span><br>
-                            <i class="fa fa-star text-warning"></i><span class="text-muted small fw-bold"> 4.6</span><br>
-                            <span class="text-dark fw-bold">In-Stock : <button class="btn btn-light border  p-1 mx-3 small">BWP</button></span><br>
-                            
-                        </div>
-                </div>
-
-                    <div class="col-12 col-md-6 mt-3">
-                        <div class="d-flex justify-content-end">
-                            <h5 class="fw-bold ">R {{wishlist_item.product.price}}</h5>
-                        </div>
-                         <div class="d-flex justify-content-end">
-                            <del><h6 class="text-muted small fw-bold">R 530</h6></del>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-dark rounded-0 mx-2" onclick="deleteWishlist({{wishlist_item.id}})"><i class="fa fa-trash"></i> </button>
-                            <button class="btn btn-success rounded-0 " onclick="addCart({{wishlist_item.product.id}})"><i class="fa fa-plus"></i> <i class="fa fa-shopping-cart"></i> Add to Cart</button>  
-
-                        </div>
-                        
                     </div>
-               </div> 
-           </div>
-            {% endfor %} 
-        {% else %}
-            <!-- No Wish List Items Found -->
-           <div class="col-12 text-center py-5 " >
-                <i class="fa fa-heart" style="color: gray; font-size: 2rem;"></i>
-                <h4 class="text-muted">Your Wishlist  is Empty!</h4>
-                <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
-                <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
-                    <i class="fas fa-shopping-cart"></i> Continue Shopping
-                </a>
-            </div> 
-        {% endif %}      
+                    <div class="col-md-6 col-sm-9 mb-3 mb-md-0">
+                        <h5 class="mb-1">{{wishlist_item.product.name}}</h5>
+                        <p class="text-primary mb-1 small">{{wishlist_item.product.business}}</p>
+                        <div class="d-flex align-items-center mb-1">
+                            <i class="fas fa-star text-warning"></i>
+                            <span class="ms-1 text-muted small fw-bold">4.6</span>
+                        </div>
+                        <span class="badge bg-success">In Stock</span>
+                        <span class="badge bg-light text-dark border ms-2">BWP</span>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <p class="price-current mb-1">R {{wishlist_item.product.price}}</p>
+                        <p class="price-original mb-3">R 530</p>
+                        <div class="d-flex justify-content-md-end">
+                            <button class="btn btn-remove me-2" onclick="deleteWishlist({{wishlist_item.id}})">
+                                <i class="fas fa-trash me-1"></i> Remove
+                            </button>
+                            <button class="btn btn-cart" onclick="addCart({{wishlist_item.product.id}})">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <!-- Empty Wishlist -->
+        <div class="profile-card">
+            <div class="card-body">
+                <div class="empty-wishlist">
+                    <i class="fas fa-heart"></i>
+                    <h4>Your Wishlist is Empty!</h4>
+                    <p>Start adding your favorite items and plan ahead for special occasions!</p>
+                    <a href="{% url 'home' %}" class="btn btn-continue-shopping">
+                        <i class="fas fa-shopping-cart me-1"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
+
 <script src="{% static 'user/js/cart.js' %}"></script>
 {% endblock %}

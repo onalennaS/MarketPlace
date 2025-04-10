@@ -1,209 +1,320 @@
 {% extends 'home/base.html' %}
 
 {% block title %}Gift Card{% endblock %}
+{% load static %}
 
-{% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
-                    </a>
-                </li>
-                  <div class="flex-container ">
 
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
 
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-            
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">Payment</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-headset me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'gift_card' %}">
-                        <i class="fas fa-headset me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-headset me-2"></i> Refferals & earnings
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">More</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Payment history
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Support
-                    </a>
-                </li>
-            </ul>
-            {% endblock %}
 {% block content %}
 <style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
     
-    /* Inherit the font family from the sidebar */
-    .card {
-        background-color: transparent; /* Removes the background color */
-        border: 1px solid #ddd; /* Adds a subtle border for structure */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a soft shadow */
-        transition: border-color 0.3s ease, transform 0.3s ease;
-        font-family: Arial, sans-serif; /* Ensure the card text matches sidebar text */
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
     }
-
-    /* Apply hover effect */
-    .card:hover {
-        transform: scale(1.02);
-        border-color: #0f4f8a; /* Subtle highlight on hover */
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
     }
-
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
     .card-header {
-        color: #333; /* Ensures good contrast */
-        font-weight: normal; /* Heading is not bold */
-    }
-
-    .card-title {
         display: flex;
         align-items: center;
-        font-weight: normal; /* Ensures card titles are not bold */
+        justify-content: space-between;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
     }
-
-    .card-title i {
-        margin-right: 8px;
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
     }
-
-    .btn-custom {
-        background-color: #165baa;
-        color: white;
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+        background-color: white;
+    }
+    
+    /* Voucher card styling */
+    .voucher-card {
+        background: linear-gradient(135deg, #1a2848, #3498db);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .voucher-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .voucher-input-section {
+        background-color: white;
+        padding: 20px;
+        position: relative;
+    }
+    
+    .voucher-input {
         border: none;
+        border-bottom: 2px solid #3498db;
+        border-radius: 0;
+        padding: 10px 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: none;
     }
     
-    .btn-custom:hover {
-        background-color: #0f4f8a;
+    .voucher-input:focus {
+        border-color: #2980b9;
+        box-shadow: none;
     }
-
-    .form-check-label {
-        margin-left: 10px;
-    }
-
-     .triangle {
-            width: 0;
-            height: 0;
-            border-right: 120px solid transparent; /* Left side of the triangle */
-            border-bottom: 120px solid white; /* Bottom side of the triangle */
-            transform: scaleY(-1);
-
-            margin-left: -25px;
-        }
     
+    .triangle-separator {
+        position: absolute;
+        right: -20px;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-top: 80px solid transparent;
+        border-bottom: 80px solid transparent;
+        border-left: 20px solid white;
+        z-index: 1;
+    }
+    
+    .voucher-action-section {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Button styling */
+    .btn-apply {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-apply:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    /* Gift card history section */
+    .gift-card-history {
+        margin-top: 30px;
+    }
+    
+    .history-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .history-item:last-child {
+        border-bottom: none;
+    }
+    
+    .history-item-details {
+        display: flex;
+        align-items: center;
+    }
+    
+    .history-item-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(52, 152, 219, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+    
+    .history-item-icon i {
+        color: #3498db;
+        font-size: 16px;
+    }
+    
+    .history-item-text h6 {
+        margin: 0;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    .history-item-text p {
+        margin: 0;
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+    
+    .history-item-amount {
+        font-weight: 600;
+        color: #2ecc71;
+    }
 </style>
 
-
-<div class="container ">
-   <!-- Breadcrumb navigation -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb" style="border-radius: 0; padding: 8px 15px;">
-
-       <!--  <li class="breadcrumb-item">
-            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-        </li> -->
-
-        <li class="breadcrumb-item">
-            <a href="{% url 'dash' %}" style="color: black; text-decoration: none;"> My Account </a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page" style="color: black;">Gift Card</li>
-    </ol>
-</nav>
-
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Gift Card</li>
+        </ol>
     </nav>
 
-    <div>
-        <h5 class=" m-2"> Apply Gift Card Voucher to Redeem</h5>
-        <div class="card w-100 mb-3 bg-light rounded-0">
-            <div class="card-body  p-0" id="username-disp" style="display:block; background: linear-gradient(135deg,  #1a2848, #2c76b7);">
-               <div class="d-flex justify-content-between w-100">
-                    <div class=" p-3" style="background-color:white; width: 80%;">
-
-                    <div class="form-floating mb-3 w-75">
-                              <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='Voucher' value="">
-                              <label for="floatingInput">Voucher</label>
-                            </div>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="p-3">
-                         <button type="button" class="btn btn-outline-light rounded-0 m-0" onclick="">Apply</button>
-                    </div>
-               </div>
-            </div> 
-
+    <!-- Gift Card Header Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-gift"></i>
+                <h5>Gift Card</h5>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <h6 class="mb-4">Apply Gift Card Voucher to Redeem</h6>
             
+            <!-- Voucher Redemption Card -->
+            <div class="voucher-card mb-4">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="voucher-input-section h-100">
+                            <div class="form-floating">
+                                <input type="text" class="form-control voucher-input" id="giftCardVoucher" placeholder="Enter voucher code">
+                                <label for="giftCardVoucher">Voucher Code</label>
+                            </div>
+                            <div class="triangle-separator d-none d-md-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="voucher-action-section h-100">
+                            <button type="button" class="btn btn-apply">
+                                <i class="fas fa-check-circle me-2"></i> Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gift Card History -->
+            <div class="gift-card-history">
+                <h6 class="mb-3">Gift Card History</h6>
+                
+                <div class="history-item">
+                    <div class="history-item-details">
+                        <div class="history-item-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="history-item-text">
+                            <h6>Welcome Bonus</h6>
+                            <p>Apr 10, 2025</p>
+                        </div>
+                    </div>
+                    <div class="history-item-amount">
+                        +R 50
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-item-details">
+                        <div class="history-item-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="history-item-text">
+                            <h6>Birthday Gift</h6>
+                            <p>Mar 15, 2025</p>
+                        </div>
+                    </div>
+                    <div class="history-item-amount">
+                        +R 100
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-item-details">
+                        <div class="history-item-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="history-item-text">
+                            <h6>Holiday Promotion</h6>
+                            <p>Dec 24, 2024</p>
+                        </div>
+                    </div>
+                    <div class="history-item-amount">
+                        +R 75
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
 </div>
 
 <script type="text/javascript">
-    function edit_button(name){
-        var displays = document.getElementById(name+'-disp');
-        var forms = document.getElementById(name+'-form');
-
-        displays.style.display = 'none';
-        forms.style.display = 'block';
-    }
-    function cancel_button(name){
-        var displays = document.getElementById(name+'-disp');
-        var forms = document.getElementById(name+'-form');
-
-        forms.style.display = 'none';
-        displays.style.display = 'block';
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Focus handling for floating labels
+        const inputElement = document.getElementById('giftCardVoucher');
+        
+        inputElement.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        inputElement.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
 </script>
 {% endblock content %}

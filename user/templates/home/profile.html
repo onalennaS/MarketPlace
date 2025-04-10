@@ -3,259 +3,346 @@
 {% block title %}User Profile{% endblock %}
 
 {% block nav %}
-<ul class="nav flex-column px-3 mt-3">
-    <div class="flex-container">
-        <h5 class="fw-bold">Profile </h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center active" href="{% url 'profile' %}">
-            <i class="fas fa-user me-2"></i> Personal details
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center " href="{% url 'account_settings' %}">
-            <i class="fas fa-cog me-2"></i> Account Settings
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-            <i class="fas fa-user-cog me-2"></i> Address Book
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">Orders</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-            <i class="fas fa-history me-2"></i> Order History
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-            <i class="fas fa-heart me-2"></i> Wish Lists
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-            <i class="fas fa-star me-2"></i> Reviews
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">Payment</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-            <i class="fas fa-headset me-2"></i> Credit & Refunds
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-            <i class="fas fa-headset me-2"></i> Gift Card
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-            <i class="fas fa-headset me-2"></i> Referrals & earnings
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">More</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Subscription plan
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Payment history
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Support
-        </a>
-    </li>
-</ul>
 {% endblock %}
+
 {% block content %}
 <style>
-    .card {
+    /* Breadcrumb styling */
+    .breadcrumb {
         background-color: transparent;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s ease, transform 0.3s ease;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
     }
-
-    .card:hover {
-        transform: scale(1.02);
-        border-color: #0f4f8a;
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
     }
-
-    .btn-outline-light {
-        background-color: white;
-        color: #165baa;
-        border: 1px solid #165baa;
-        font-weight: bold;
-        padding: 0.5rem 1rem;
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
         transition: all 0.3s ease;
     }
-
-    .btn-outline-light:hover {
-        background-color: #165baa;
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+    }
+    
+    /* Content styling */
+    .card-text {
+        color: #495057;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .status-icon {
+        margin-left: 8px;
+        font-size: 14px;
+    }
+    
+    /* Form styling */
+    .form-floating .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 12px;
+        height: calc(3rem + 2px);
+        transition: all 0.2s ease;
+    }
+    
+    .form-floating .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .form-floating label {
+        padding: 12px;
+        color: #6c757d;
+    }
+    
+    /* Button styling to match sidebar */
+    .btn-edit {
+        background-color: transparent;
+        color: #495057;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-edit:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #3498db;
+        border-color: #3498db;
+        transform: translateX(2px);
+    }
+    
+    .btn-save {
+        background-color: #3498db;
         color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    .btn-cancel {
+        background-color: transparent;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        margin-left: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background-color: rgba(231, 76, 60, 0.08);
+        color: #c0392b;
+        transform: translateY(-2px);
+    }
+    
+    /* Verification icons */
+    .verified {
+        color: #2ecc71;
+    }
+    
+    .unverified {
+        color: #e74c3c;
     }
 </style>
 
-
-<div class="container ">
-   <!-- Breadcrumb navigation -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
-
-       <!--  <li class="breadcrumb-item">
-            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">Home</a>
-        </li> -->
-
-        <li class="breadcrumb-item">
-            <a href="{% url 'dash' %}" style="color: black; text-decoration: none;"> My Account </a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page" style="color: black;">Personal details</li>
-    </ol>
-</nav>
-
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Personal Details</li>
+        </ol>
     </nav>
 
-    <div>
-        <div>
-            <div class="card w-100 mb-3 bg-light rounded-0">
-                <div class="card-body" id="username-disp" style="display:block;">
-                    <h5 class="card-title"><i class="fa fa-user"></i> Username</h5>
-                    <div class="d-flex justify-content-between">
-                        <p class="card-text pt-0 pb-0">{{user.username}}</p>
-                        <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('username')">Edit</button>
-                    </div>
-                </div> 
-    
-                <div class="card-body" id="username-form" style="display:none;">
-                    <h5 class="card-title"><i class="fa fa-user"></i> Username</h5>
-                    <form method="POST" class="auth-form">
-                    {% csrf_token %}
-                        <div class="d-flex justify-content-between">
-                               <div class="form-floating mb-3 w-75">
-                                  <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.username}}">
-                                  <label for="floatingInput">Username</label>
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                    <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('username')" >Cancel</button>    
-                                </div>
-                        </div>
-                    </form>   
-                </div>
-            </div>
+    <!-- Username Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-user"></i>
+            <h5>Username</h5>
         </div>
-    
-        <div>
-            <div class="card w-100 mb-3 bg-light rounded-0">
-                <div class="card-body" id="fullname-disp">
-                    <h5 class="card-title"><i class="fa fa-id-card"></i> Full Name</h5>
-                    <div class="d-flex justify-content-between">
-                        <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
-                        <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('fullname')">Edit</button>
+        <div class="card-body" id="username-disp" style="display:block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">{{user.username}}</p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('username')">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                </button>
+            </div>
+        </div> 
+
+        <div class="card-body" id="username-form" style="display:none;">
+            <form method="POST" class="auth-form">
+            {% csrf_token %}
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username-input" placeholder="" name='username' value="{{user.username}}">
+                            <label for="username-input">Username</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end mb-3">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check me-1"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-cancel" onclick="cancel_button('username')">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>    
                     </div>
                 </div>
-                <div class="card-body" id="fullname-form" style="display:none;">
-                    <h6 class="card-title"><i class="fa fa-id-card"></i> Full Name</h6>
-                    <form method="POST" class="auth-form">
-                    {% csrf_token %}
-                        <div>
-                               <div class="form-floating mb-3 w-75">
-                                  <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Jeff">
-                                  <label for="floatingInput">First Name</label>
-                                </div>
-                                 <div class="form-floating mb-3 w-75">
-                                  <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="Nengovhela">
-                                  <label for="floatingInput">Last Name</label>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                    <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('fullname')" >Cancel</button>    
-                                </div>
-                        </div>
-                    </form>   
-                </div>
-            </div>
+            </form>   
         </div>
-    
-        <div>
-            <div class="card w-100 mb-3 bg-light rounded-0">
-                <div class="card-body" id="email-disp" style="display:block;">
-                    <h5 class="card-title"><i class="fa fa-envelope"></i> Email</h5>
-                    <div class="d-flex justify-content-between">
-                        <p class="card-text">{{user.email}} 
-                            {% if is_google_linked %}
-                            <i class="fa fa-times-circle text-danger p-3 pt-0 pb-0"> </i>
-                            {% else %}
-                            <i class="fa fa-circle-check text-success p-3 pt-0 pb-0"> </i>
-                            {% endif %}
-                        </p>
-                      <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('email')">Edit</button>
-                    </div>
-                </div>
-                <div class="card-body" id="email-form" style="display:none;">
-                    <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
-                    <form method="POST" class="auth-form">
-                    {% csrf_token %}
-                        <div class="d-flex justify-content-between">
-                               <div class="form-floating mb-3 w-75">
-                                  <input type="email" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="{{user.email}}">
-                                  <label for="floatingInput">Email</label>
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                    <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('email')" >Cancel</button>    
-                                </div>
-                        </div>
-                    </form>   
-                </div>
-            </div>
-        </div>
-    
-        <div>
-            <div class="card w-100 mb-3 bg-light rounded-0">
-                <div class="card-body" id="phone-disp" style="display:block;">
-                    <h5 class="card-title"><i class="fa fa-phone"></i> Phone</h5>
-                    <div class="d-flex justify-content-between">
-                        <p class="card-text">(+27) 64 548 9327 <i class="fa fa-check-circle text-success p-3 pt-0 pb-0"> </i></p>
-                         <button type="button" class="btn btn-outline-dark rounded-0 m-0" onclick="edit_button('phone')">Edit</button>
-                    </div>
-                </div>
-                <div class="card-body" id="phone-form" style="display:none;">
-                    <h6 class="card-title"><i class="fa fa-phone"></i> Phone</h6>
-                    <form method="POST" class="auth-form">
-                    {% csrf_token %}
-                        <div class="d-flex justify-content-between">
-                               <div class="form-floating mb-3 w-75">
-                                  <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" placeholder="" name='username' value="(+27) 64 548 9327">
-                                  <label for="floatingInput">Phone</label>
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-primary px-3 rounded-0">Save</button>
-                                    <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('phone')" >Cancel</button>    
-                                </div>
-                        </div>
-                    </form>   
-                </div>
-            </div>
-        </div>
-    
     </div>
+
+    <!-- Full Name Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-id-card"></i>
+            <h5>Full Name</h5>
+        </div>
+        <div class="card-body" id="fullname-disp">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('fullname')">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="fullname-form" style="display:none;">
+            <form method="POST" class="auth-form">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="firstname-input" placeholder="" name='first_name' value="Jeff">
+                            <label for="firstname-input">First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="lastname-input" placeholder="" name='last_name' value="Nengovhela">
+                            <label for="lastname-input">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check me-1"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-cancel" onclick="cancel_button('fullname')">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>    
+                    </div>
+                </div>
+            </form>   
+        </div>
+    </div>
+
+    <!-- Email Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-envelope"></i>
+            <h5>Email</h5>
+        </div>
+        <div class="card-body" id="email-disp" style="display:block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">
+                    {{user.email}}
+                    {% if is_google_linked %}
+                    <i class="fas fa-times-circle unverified status-icon" title="Not Verified"></i>
+                    {% else %}
+                    <i class="fas fa-check-circle verified status-icon" title="Verified"></i>
+                    {% endif %}
+                </p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('email')">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="email-form" style="display:none;">
+            <form method="POST" class="auth-form">
+            {% csrf_token %}
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email-input" placeholder="" name='email' value="{{user.email}}">
+                            <label for="email-input">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end mb-3">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check me-1"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-cancel" onclick="cancel_button('email')">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>    
+                    </div>
+                </div>
+            </form>   
+        </div>
+    </div>
+
+    <!-- Phone Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-phone"></i>
+            <h5>Phone</h5>
+        </div>
+        <div class="card-body" id="phone-disp" style="display:block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">
+                    (+27) 64 548 9327
+                    <i class="fas fa-check-circle verified status-icon" title="Verified"></i>
+                </p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('phone')">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="phone-form" style="display:none;">
+            <form method="POST" class="auth-form">
+            {% csrf_token %}
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="phone-input" placeholder="" name='phone' value="(+27) 64 548 9327">
+                            <label for="phone-input">Phone</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end mb-3">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check me-1"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-cancel" onclick="cancel_button('phone')">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>    
+                    </div>
+                </div>
+            </form>   
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     function edit_button(name){
