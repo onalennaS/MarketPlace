@@ -4,179 +4,622 @@
 {% load static %}
 
 {% block sidebar %}
-
 {% endblock %}
+
 {% block content %}
-<div class="container m-0 p-0">
+<style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+    }
+    
+    /* Cart item styling */
+    .cart-item {
+        background-color: white;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+        transition: all 0.2s ease;
+    }
+    
+    .cart-item:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-color: #3498db;
+    }
+    
+    .product-image {
+        width: 120px;
+        height: 120px;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-right: 16px;
+    }
+    
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    
+    .product-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 4px;
+    }
+    
+    .product-seller {
+        color: #3498db;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+    
+    .product-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+    
+    .product-rating i {
+        color: #f39c12;
+        font-size: 14px;
+        margin-right: 4px;
+    }
+    
+    .product-rating span {
+        color: #6c757d;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    
+    .product-extras {
+        color: #495057;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    .product-quantity {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .product-quantity input {
+        width: 60px;
+        margin-left: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 6px;
+        text-align: center;
+    }
+    
+    .product-price {
+        text-align: right;
+    }
+    
+    .product-price h5 {
+        color: #2c3e50;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    
+    .product-price del {
+        color: #95a5a6;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    /* Action buttons */
+    .btn-action {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        margin-right: 8px;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn-delete {
+        background-color: #34495e;
+        color: white;
+        border: none;
+    }
+    
+    .btn-delete:hover {
+        background-color: #2c3e50;
+    }
+    
+    .btn-wishlist {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+    }
+    
+    .btn-wishlist:hover {
+        background-color: #c0392b;
+    }
+    
+    /* Empty cart styling */
+    .empty-cart {
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .empty-cart i {
+        font-size: 48px;
+        color: #bdc3c7;
+        margin-bottom: 16px;
+    }
+    
+    .empty-cart h4 {
+        color: #7f8c8d;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    
+    .empty-cart p {
+        color: #95a5a6;
+        margin-bottom: 24px;
+    }
+    
+    .btn-shop {
+        background-color: transparent;
+        color: #3498db;
+        border: 1px solid #3498db;
+        border-radius: 24px;
+        padding: 8px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-shop:hover {
+        background-color: #3498db;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    /* Cart summary styling */
+    .summary-title {
+        color: #7f8c8d;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .summary-total p {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    .summary-total p span {
+        color: #95a5a6;
+        font-weight: 400;
+        font-size: 14px;
+    }
+    
+    .summary-total h4 {
+        color: #27ae60;
+        font-weight: 700;
+    }
+    
+    .btn-checkout {
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    
+    .btn-checkout:hover {
+        background-color: #2ecc71;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+    }
+    
+    /* Extras list styling */
+    .list-group-item {
+        padding: 12px 16px;
+        border-color: #eaecef;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .list-group-item:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .list-group-item h6 {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    .list-group-item span {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+    
+    .form-check-input {
+        cursor: pointer;
+    }
+    
+    /* Modal styling */
+    .modal-content {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-header {
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .modal-title {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    .modal-footer {
+        border-top: 1px solid #eaecef;
+        padding: 16px;
+    }
+    
+    .btn-modal-close {
+        background-color: #95a5a6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-modal-close:hover {
+        background-color: #7f8c8d;
+    }
+    
+    .btn-modal-save {
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-modal-save:hover {
+        background-color: #2ecc71;
+    }
+    
+    /* Features box styling */
+    .features-list p {
+        display: flex;
+        align-items: center;
+        color: #7f8c8d;
+        margin-bottom: 12px;
+    }
+    
+    .features-list p i {
+        color: #3498db;
+        margin-right: 10px;
+        font-size: 16px;
+    }
+    
+    /* Extra items styling */
+    .extra-item {
+        padding: 12px 0;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .extra-item:last-child {
+        border-bottom: none;
+    }
+    
+    .extra-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 4px;
+    }
+    
+    .extra-price {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .btn-remove-extra {
+        background-color: transparent;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+        border-radius: 6px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove-extra:hover {
+        background-color: rgba(231, 76, 60, 0.1);
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="container">
     <!-- Breadcrumb navigation -->
-
-    <nav aria-label="breadcrumb mt-0">
-        <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
-
-
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" class="text-dark text-decoration-none">Home</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" class="text-dark text-decoration-none">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Cart</li>
+            <li class="breadcrumb-item active" aria-current="page">Cart</li>
         </ol>
     </nav>
 
-    <!-- Wish List Section -->
-    <div class="row pad">
-        
-            <div class="col-12 text-center py-2 px-4 d-flex justify-content-between pad">
-                
-                <h4 class="text-muted">My Cart</h4>
-               
-                <p class="text-muted">You have {{cart_items_count}} items in your Cart!</p>
-            </div>
-<div class="row d-flex justify-content-between flex-wrap mb-5 mx-0">
-    <div class=" col-12 col-lg-8 " style="margin-bottom: 10px;">
-      {% if cart_items %}
-        {% for cart_item in cart_items %}
-            <div class="pad">
-               <div class="row p-4 border  shadow d-flex justify-content-between mb-3" style="background-color:white;">
-                    <div class="col-12 col-md-9 d-flex justify-content-start mb-2">
-                           <div class="border rounded mx-2 " style="width: 150px; height: 150px; overflow: hidden;">
-                            <a href="{% url 'view_product' cart_item.product.id %}">
-                                <img src="{{cart_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                            </a>
-                            </div>
-                            <div class="p-3 pt-0">
-                                <h6 >{{cart_item.product.name}} </h6>
-                                <span class="text-primary small">{{cart_item.product.business.name}} </span><br>
-                                <i class="fa fa-star text-warning small"></i><span class="text-muted small fw-bold small" > 4.6</span><br>
-                            
-                                <span class="text-dark small">Extras : {% for item in cart_item.CartAddon.all %}{{item.addon.name}}, {% endfor %}</span>
-                               
-                                <span class="text-dark fw-bold d-flex align-items-center small" >qty: <input type="number" min="1"value="{{cart_item.quantity}}" name="qty" id="qty" class="form-control w-25 p-1 mx-2"></span>
-                                
-                            </div>
-                    </div>
+    <!-- Cart header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0" style="color: #2c3e50; font-weight: 600;">
+            <i class="fas fa-shopping-cart me-2" style="color: #3498db;"></i>
+            My Cart
+        </h4>
+        <p class="mb-0" style="color: #7f8c8d; font-weight: 500;">
+            You have {{cart_items_count}} items in your cart
+        </p>
+    </div>
 
-                    <div class="col-12 col-md-3 mt-3  price">
-                        <div>    
-                            <div class="d-flex justify-content-end">
-                                <h5 class="fw-bold ">R {{cart_item.product.price}}</h5>
-                            </div>
-                             <div class="d-flex justify-content-end">
-                                <del><h6 class="text-muted small fw-bold">R 450</h6></del>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <div>
-                                    <button class="btn btn-dark rounded-5 p-2 mx-2 " onclick="deleteCart({{cart_item.id}})"><i class="fa fa-trash"></i> </button>
-                                    <button class="btn btn-danger rounded-5 p-2 " onclick="addWishlist({{cart_item.product.id}})"><i class="fa fa-plus"></i> <i class="fa fa-heart"></i></button>
-                                    <div>  
+    <div class="row">
+        <!-- Cart items and extras -->
+        <div class="col-lg-8 mb-4">
+            <!-- Cart items -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h5>Cart Items</h5>
+                </div>
+                <div class="card-body">
+                    {% if cart_items %}
+                        {% for cart_item in cart_items %}
+                            <div class="cart-item">
+                                <div class="row">
+                                    <div class="col-md-9 d-flex mb-3 mb-md-0">
+                                        <div class="product-image">
+                                            <a href="{% url 'view_product' cart_item.product.id %}">
+                                                <img src="{{cart_item.product.image.url}}" alt="{{cart_item.product.name}}">
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <h6 class="product-title">{{cart_item.product.name}}</h6>
+                                            <p class="product-seller">{{cart_item.product.business.name}}</p>
+                                            <div class="product-rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.6</span>
+                                            </div>
+                                            <p class="product-extras">
+                                                <strong>Extras:</strong> 
+                                                {% for item in cart_item.CartAddon.all %}
+                                                    {{item.addon.name}}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <div class="product-quantity">
+                                                Qty: 
+                                                <input type="number" min="1" value="{{cart_item.quantity}}" name="qty" id="qty" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <div class="product-price mb-3">
+                                            <h5>R {{cart_item.product.price}}</h5>
+                                            <del>R 450</del>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-action btn-delete me-2" onclick="deleteCart({{cart_item.id}})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-action btn-wishlist" onclick="addWishlist({{cart_item.product.id}})">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div> 
-                    </div>
-                    {% endfor %}
-                   
-                  {% else %}
-                        <!-- No Wish List Items Found -->
-                       <div class="col-12 text-center py-5 " >
-                            <i class="fa fa-shopping-cart" style="color: gray; font-size: 2rem;"></i>
-                            <h4 class="text-muted">Your Cart  is Empty!</h4>
-                            <p class="text-muted">Start adding your favorite items and plan ahead for special occasions!</p>
-                            <a href="{% url 'home' %}" class="btn btn-outline-primary rounded-pill" style="border-color: #165baa; color: #165baa;">
-                                <i class="fas fa-shopping-cart"></i> Continue Shopping
+                        {% endfor %}
+                    {% else %}
+                        <!-- Empty cart state -->
+                        <div class="empty-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h4>Your Cart is Empty!</h4>
+                            <p>Start adding your favorite items and plan ahead for special occasions!</p>
+                            <a href="{% url 'home' %}" class="btn btn-shop">
+                                <i class="fas fa-shopping-cart me-2"></i> Continue Shopping
                             </a>
-                        </div> 
-                    {% endif %}       
-                </div>
-                 {% if extras %}
-                       <div class="mb-4">
-                           <div class="pad">
-                 <div class="row p-2 border  shadow " style="background-color:white;">
-                    <h6 class="text-muted fw-bold"> Extras</h6>
-                    {% for extra in extras %}
-                     <div class="">
-                    
-                        <div class="px-3 d-flex justify-content-between">
-                            <div class="">
-                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
-                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
-                            </div>
-                            <div>
-                                <button class="btn btn-outline-danger" onclick="deleteExtra({{extra.id}})"> <i class="fa fa-trash "></i></button>
-                            </div>
-                        </div>
-                        <hr style="border:1px solid black;">
-                    </div>
-                    {% endfor %}
-
-                  
-                </div>
-                
-            </div>
                         </div>
                     {% endif %}
-            </div>
-        </div>
-    <div class="col-12 col-lg-4">
-        <div class="check mb-4">
-            <div class="pad">
-                 <div class="row p-4 border  shadow " style="background-color:white;">
-                    <p class="text-muted small"> <i class="fa fa-lock pe-1"></i> Secure Checkout</p>
-                    <p class="text-muted"> <i class="fa fa-credit-card pe-1"> </i> Multiple Payment Method</p>
-                    <p class="text-muted"> <i class="fa fa-truck pe-1"></i> Fast, Relaible Delivery</p>
                 </div>
-                
             </div>
-        </div>
 
-        <div class=" checkout">
-            <div class="pad">
-                 <div class="row p-4 border  shadow " style="background-color:white;">
-                    <h6 class="text-muted "> Cart Summary</h6>
-                    <div class="d-flex justify-content-between flex-wrap">
-                        <p class="fw-bold">Total: <span class="text-muted">({{cart_items_count}} items)</span></p>
-                        <h4 class="fw-bold text-success">R {{cart_total}}</h4>
+            <!-- Extras -->
+            {% if extras %}
+                <div class="profile-card">
+                    <div class="card-header">
+                        <i class="fas fa-plus-circle"></i>
+                        <h5>Extras</h5>
                     </div>
-                    <!-- <a href="{% url 'checkout' %}" class="btn btn-success w-100 rounded-0"> Proced to Checkout</a> -->
-                    <button type="button" class="btn btn-success w-100 rounded-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Proceed to checkout
-</button>
+                    <div class="card-body">
+                        {% for extra in extras %}
+                            <div class="extra-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="extra-name">{{extra.extra.name}}</h6>
+                                        <span class="extra-price">R{{extra.extra.price}}</span>
+                                    </div>
+                                    <button class="btn btn-remove-extra" onclick="deleteExtra({{extra.id}})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                
-            </div>
+            {% endif %}
         </div>
 
-    </div>
+        <!-- Cart summary and checkout -->
+        <div class="col-lg-4">
+            <!-- Features -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h5>Shopping Protection</h5>
+                </div>
+                <div class="card-body features-list">
+                    <p><i class="fas fa-lock"></i> Secure Checkout</p>
+                    <p><i class="fas fa-credit-card"></i> Multiple Payment Methods</p>
+                    <p><i class="fas fa-truck"></i> Fast, Reliable Delivery</p>
+                </div>
+            </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:9999">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Extras</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ul class="list-group list-group-flush w-100" id="itemList">
-            {% for extra in cart_items.0.product.business.extras.all %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
-                        <div>
-                            <h6 class="mb-1 fw-bold">{{extra.name}}</h6>
-                            <span> R{{extra.price}}</span>
-                        </div>
-                        <input type="checkbox"  value="{{extra.id}}" data-name="{{extra.name}}" class="extras form-check-input ">
-                    </li>
-            {% endfor %}
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary w-100 rounded-0" data-bs-dismiss="modal">Close</button>
-        <a href="{% url 'checkout' %}" onclick="addExtraToCart()" class="btn btn-success w-100 rounded-0">Save & Proced </a>
-      </div>
+            <!-- Cart summary -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <i class="fas fa-receipt"></i>
+                    <h5>Cart Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="summary-total">
+                        <p>Total: <span>({{cart_items_count}} items)</span></p>
+                        <h4>R {{cart_total}}</h4>
+                    </div>
+                    <button type="button" class="btn btn-checkout" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fas fa-lock me-2"></i> Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
+<!-- Extras Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:9999">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fas fa-plus-circle me-2" style="color: #3498db;"></i>
+                    Add Extras
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush w-100" id="itemList">
+                    {% for extra in cart_items.0.product.business.extras.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
+                            <div>
+                                <h6 class="mb-1">{{extra.name}}</h6>
+                                <span>R{{extra.price}}</span>
+                            </div>
+                            <input type="checkbox" value="{{extra.id}}" data-name="{{extra.name}}" class="extras form-check-input">
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-modal-close" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Close
+                </button>
+                <a href="{% url 'checkout' %}" onclick="addExtraToCart()" class="btn btn-modal-save">
+                    <i class="fas fa-check me-2"></i> Save & Proceed
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
 <script src="{% static 'user/js/cart.js' %}"></script>
 {% endblock content %}

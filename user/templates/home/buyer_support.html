@@ -2,46 +2,289 @@
 
 {% block title %}Buyer Support{% endblock %}
 
+{% block nav %}
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+    }
+    
+    /* List group styling */
+    .list-group-item {
+        background-color: transparent;
+        border-left: none;
+        border-right: none;
+        border-color: #eaecef;
+        padding: 16px 0;
+    }
+    
+    .list-group-item:first-child {
+        border-top: none;
+    }
+    
+    .list-group-item strong {
+        color: #2c3e50;
+        display: block;
+        margin-bottom: 6px;
+    }
+    
+    .list-group-item p {
+        color: #6c757d;
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+    
+    .list-group-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .list-group-item a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+    
+    /* Form styling */
+    .form-floating .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 12px;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 10px 12px;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .form-label {
+        color: #495057;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    /* Button styling */
+    .btn-primary {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    .btn-outline-primary {
+        background-color: transparent;
+        color: #3498db;
+        border: 1px solid #3498db;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-weight: 500;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #2980b9;
+        border-color: #2980b9;
+        transform: translateY(-2px);
+    }
+    
+    /* Table styling */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+    
+    .table thead th {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 2px solid #3498db;
+        padding: 12px 15px;
+    }
+    
+    .table tbody tr {
+        transition: all 0.2s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .table tbody td {
+        padding: 12px 15px;
+        vertical-align: middle;
+        border-top: 1px solid #eaecef;
+        color: #495057;
+        font-size: 14px;
+    }
+    
+    /* Badge styling */
+    .badge {
+        padding: 6px 10px;
+        font-weight: 500;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+    
+    .badge-success {
+        background-color: #2ecc71;
+        color: white;
+    }
+    
+    .badge-warning {
+        background-color: #f39c12;
+        color: white;
+    }
+    
+    .badge-secondary {
+        background-color: #7f8c8d;
+        color: white;
+    }
+    
+    /* Section title styling */
+    .section-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 16px;
+        font-size: 18px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #eaecef;
+    }
+    
+    .section-subtitle {
+        color: #6c757d;
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+</style>
+
+<div class="container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" style="color: black; text-decoration: none;">Home</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" style="color: black; text-decoration: none;">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Support</li>
+            <li class="breadcrumb-item active" aria-current="page">Support</li>
         </ol>
     </nav>
-<div class="container py-4">
-    <!-- Page Header -->
-    <div class="text-center mb-4">
-        <h2 class="fw-bold" style="color: #165baa;">Buyer Support</h2>
-        <p class="text-muted">Find answers to your questions or contact our support team for assistance.</p>
+
+    <!-- Page header -->
+    <div class="mb-4">
+        <h4 class="section-title">
+            <i class="fas fa-headset me-2" style="color: #3498db;"></i>
+            Buyer Support
+        </h4>
+        <p class="section-subtitle">Find answers to your questions or contact our support team for assistance.</p>
     </div>
 
     <!-- Support Sections -->
     <div class="row">
         <!-- FAQ Section -->
         <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
+            <div class="profile-card">
+                <div class="card-header">
+                    <i class="fas fa-question-circle"></i>
+                    <h5>Frequently Asked Questions</h5>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title" style="color: #165baa;">Frequently Asked Questions</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <strong>How do I track my order?</strong>
-                            <p class="text-muted">Visit the <a href="{% url 'order_history' %}">Track Orders</a> page for real-time updates on your orders.</p>
+                            <p>Visit the <a href="{% url 'order_history' %}">Track Orders</a> page for real-time updates on your orders.</p>
                         </li>
                         <li class="list-group-item">
                             <strong>What is the return policy?</strong>
-                            <p class="text-muted">We offer a 30-day return policy. For more details, visit our <a href="#">Return Policy</a> page.</p>
+                            <p>We offer a 30-day return policy. For more details, visit our <a href="#">Return Policy</a> page.</p>
                         </li>
                         <li class="list-group-item">
                             <strong>How can I contact support?</strong>
-                            <p class="text-muted">You can contact our support team using the form below or via email.</p>
+                            <p>You can contact our support team using the form below or via email.</p>
                         </li>
                     </ul>
                 </div>
@@ -50,9 +293,12 @@
 
         <!-- Contact Support Section -->
         <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
+            <div class="profile-card">
+                <div class="card-header">
+                    <i class="fas fa-envelope"></i>
+                    <h5>Contact Support</h5>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title" style="color: #165baa;">Contact Support</h5>
                     <form method="post" action="#">
                         {% csrf_token %}
                         <div class="mb-3">
@@ -63,7 +309,9 @@
                             <label for="message" class="form-label">Message</label>
                             <textarea id="message" name="message" class="form-control" rows="4" placeholder="Describe your issue" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" style="background-color: #165baa; border-color: #165baa;">Submit</button>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-paper-plane me-2"></i> Submit
+                        </button>
                     </form>
                 </div>
             </div>
@@ -71,46 +319,54 @@
     </div>
 
     <!-- Support Tickets Section -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <h5 class="fw-bold mb-3" style="color: #165baa;">Your Support Tickets</h5>
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-ticket-alt"></i>
+            <h5>Your Support Tickets</h5>
+        </div>
+        <div class="card-body">
             {% if support_tickets %}
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Ticket ID</th>
-                            <th>Subject</th>
-                            <th>Status</th>
-                            <th>Submitted On</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for ticket in support_tickets %}
-                        <tr>
-                            <td>{{ ticket.id }}</td>
-                            <td>{{ ticket.subject }}</td>
-                            <td>
-                                {% if ticket.status == 'open' %}
-                                    <span class="badge bg-success">Open</span>
-                                {% elif ticket.status == 'pending' %}
-                                    <span class="badge bg-warning">Pending</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Closed</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ ticket.created_at|date:"M d, Y" }}</td>
-                            <td>
-                                <a href="{% url 'ticket_details' ticket.id %}" class="btn btn-sm btn-outline-primary">
-                                    View Details
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Submitted On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in support_tickets %}
+                            <tr>
+                                <td>{{ ticket.id }}</td>
+                                <td>{{ ticket.subject }}</td>
+                                <td>
+                                    {% if ticket.status == 'open' %}
+                                        <span class="badge badge-success">Open</span>
+                                    {% elif ticket.status == 'pending' %}
+                                        <span class="badge badge-warning">Pending</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary">Closed</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ ticket.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'ticket_details' ticket.id %}" class="btn btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <p class="text-muted text-center">You have not submitted any support tickets yet.</p>
+                <div class="text-center py-4">
+                    <i class="fas fa-ticket-alt mb-3" style="font-size: 36px; color: #eaecef;"></i>
+                    <p class="text-muted">You have not submitted any support tickets yet.</p>
+                </div>
             {% endif %}
         </div>
     </div>

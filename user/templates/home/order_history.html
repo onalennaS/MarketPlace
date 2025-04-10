@@ -1,174 +1,372 @@
 {% extends 'home/base.html' %}
 
 {% block title %}Order History{% endblock %}
-
-{% block styles %}
-
-{% endblock %}
 {% load static %}
 
 {% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
-                    </a>
-                </li>
-                  <div class="flex-container ">
-
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">Payment</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-headset me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-headset me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-headset me-2"></i> Refferals & earnings
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">More</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Payment history
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Support
-                    </a>
-                </li>
-            </ul>
-            {% endblock %}
+<ul class="nav flex-column px-3 mt-3">
+    <div class="flex-container ">
+        <h5 class="fw-bold">Profile </h5>
+        <hr >
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+            <i class="fas fa-user me-2"></i> Personal details
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+            <i class="fas fa-cog me-2"></i> Account Settings
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+            <i class="fas fa-user-cog me-2"></i> Address Book
+        </a>
+    </li>
+    <div class="flex-container ">
+        <h5 class="fw-bold">Orders</h5>
+        <hr >
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center active" href="{% url 'order_history' %}">
+            <i class="fas fa-history me-2"></i> Order History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+            <i class="fas fa-heart me-2"></i> Wish Lists
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+            <i class="fas fa-star me-2"></i> Reviews
+        </a>
+    </li>
+    <!-- Payment Section -->
+    <div class="flex-container">
+        <h5 class="fw-bold text-white">Payment</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+            <i class="fas fa-credit-card me-2"></i> Credit & Refunds
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+            <i class="fas fa-gift me-2"></i> Gift Card
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+            <i class="fas fa-users me-2"></i> Referrals & Earnings
+        </a>
+    </li>
+    <!-- More Section -->
+    <div class="flex-container">
+        <h5 class="fw-bold text-white">More</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-headset me-2"></i> Subscription Plan
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-history me-2"></i> Payment History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-life-ring me-2"></i> Support
+        </a>
+    </li>   
+</ul>
+{% endblock %}
 
 {% block content %}
-<div class="container  p-0">
+<style>
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+        background-color: white;
+    }
+    
+    .order-header-info {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .order-header-info h6 {
+        margin: 0;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    .order-header-info p {
+        margin: 5px 0 0;
+        color: #495057;
+        font-size: 14px;
+    }
+    
+    .product-container {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+    
+    .product-thumbnail {
+        width: 80px;
+        height: 80px;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+    
+    .product-thumbnail:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .product-thumbnail img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+    
+    /* Button styling */
+    .btn-view {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-view:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    /* Filter dropdown styling */
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .filter-label {
+        color: #495057;
+        font-weight: 500;
+        margin-right: 8px;
+    }
+    
+    .btn-filter {
+        background-color: transparent;
+        color: #495057;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-filter:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #3498db;
+        border-color: #3498db;
+    }
+    
+    /* Empty state styling */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        color: #d5d8dc;
+        margin-bottom: 16px;
+    }
+    
+    .empty-state h4 {
+        color: #7f8c8d;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state p {
+        color: #95a5a6;
+        margin-bottom: 24px;
+        max-width: 500px;
+    }
+    
+    .btn-browse {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 24px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-browse:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(41, 128, 185, 0.3);
+    }
+</style>
+
+<div class="container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="border-radius: 0; padding: 8px 15px;">
-
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" style="color: black; text-decoration: none;">Home</a>
+                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" style="color: black; text-decoration: none;">Dashboard</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Order History</li>
+            <li class="breadcrumb-item active" aria-current="page">Order History</li>
         </ol>
     </nav>
 
-    <!-- Filter Options for Order History -->
-    <div class="mb-4 d-flex justify-content-end">
-        <div>
-            
-        <span>Orders placed in</span>
-        <div class="btn-group">
-          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Last 3 months
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Last 3 months</a></li>
-            <li><a class="dropdown-item" href="#">Last 6 months</a></li>
-            <li><a class="dropdown-item" href="#">Last 1 year</a></li>
-          </ul>
-        </div>
-        </div>
-    </div>
-
-
-{% for order in orders %}
-    <div class="  w-100 p-0 m-0 mb-4" id="order" style="display:block;" >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow p-0 m-0" style="background-color:white;overflow-x: scroll;">
-            <div class="" >
-                <h6 class="fw-bold">{{order.status}} #{{order.order_id}}</h6>
-                <p><b>Date</b> : <span id="order_date">{{order.created_at}}</span></p>
+    <!-- Order History Header Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-shopping-bag"></i>
+                <h5>Order History</h5>
             </div>
-            <div class="">
+            
+            <!-- Filter Options -->
+            <div class="d-flex align-items-center">
+                <span class="filter-label d-none d-md-block">Orders placed in</span>
+                <div class="dropdown">
+                    <button class="btn btn-filter dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Last 3 months
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#">Last 3 months</a></li>
+                        <li><a class="dropdown-item" href="#">Last 6 months</a></li>
+                        <li><a class="dropdown-item" href="#">Last 1 year</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        {% if orders %}
+        <div class="card-body p-0">
+            {% for order in orders %}
+            <div class="border-bottom p-3">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="order-header-info">
+                        <h6>{{order.status}} #{{order.order_id}}</h6>
+                        <p><strong>Date:</strong> {{order.created_at}}</p>
+                    </div>
+                    <a class="btn btn-view" href="{% url 'order_details' order.id %}">
+                        <i class="fas fa-eye me-1"></i> View Details
+                    </a>
+                </div>
                 
-                <a class="btn btn-dark rounded-0" href="{% url 'order_details' order.id %}"> View Details</a>
+                <div class="product-container">
+                    {% for order_item in order.order_items.all %}
+                    <div class="product-thumbnail">
+                        <img src="{{order_item.product.image.url}}" alt="{{order_item.product.name}}">
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            
+            {% endfor %}
         </div>
-       
-       <div class=" d-flex justify-content-start p-4 border shadow shadow" style="background-color:white;">
-        {% for order_item in order.order_items.all %}
-           <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                <img src="{{order_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
+        {% else %}
+        <div class="card-body">
+            <div class="empty-state">
+                <i class="fas fa-shopping-bag"></i>
+                <h4>No Orders Found</h4>
+                <p>You haven't placed any orders yet. Browse products and start shopping today!</p>
+                <a href="{% url 'home' %}" class="btn btn-browse">
+                    <i class="fas fa-shopping-cart me-1"></i> Browse Products
+                </a>
             </div>
-        {% endfor %}
-
-            
-       </div>  
+        </div>
+        {% endif %}
     </div>
-{% endfor %}
-<!-- %$*************view details order *********************** -->
-    
-
-    <div class="text-center py-5 border shadow " style="background-color: white; display: none;">
-        <h4 class="text-muted">No Orders Found</h4>
-        <p class="text-muted">You haven't placed any orders yet. Browse products and start shopping today!</p>
-        <a href="{% url 'home' %}" class="btn btn-outline-primary" style="border-color: #165baa; color: #165baa;">
-            <i class="fas fa-shopping-cart"></i> Browse Products
-        </a>
-    </div>
-    {% endif %}
 </div>
-
-
-
-
-
-
-
 {% endblock content %}

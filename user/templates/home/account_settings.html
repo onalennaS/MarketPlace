@@ -1,191 +1,448 @@
-{% extends 'products/shop_base.html' %}
+{% extends 'home/base.html' %}
 
-{% block title %}Account Settings {% endblock %}
+{% block title %}Account Settings{% endblock %}
+
 {% block nav %}
-<ul class="nav flex-column px-3 mt-3">
-    <div class="flex-container">
-        <h5 class="fw-bold">Profile </h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-            <i class="fas fa-user me-2"></i> Personal details
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center active" href="{% url 'account_settings' %}">
-            <i class="fas fa-cog me-2"></i> Account Settings
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-            <i class="fas fa-user-cog me-2"></i> Address Book
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">Orders</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'order_history' %}">
-            <i class="fas fa-history me-2"></i> Order History
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-            <i class="fas fa-heart me-2"></i> Wish Lists
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-            <i class="fas fa-star me-2"></i> Reviews
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">Payment</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-            <i class="fas fa-headset me-2"></i> Credit & Refunds
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-            <i class="fas fa-headset me-2"></i> Gift Card
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-            <i class="fas fa-headset me-2"></i> Referrals & earnings
-        </a>
-    </li>
-    <div class="flex-container">
-        <h5 class="fw-bold">More</h5>
-        <hr>
-    </div>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Subscription plan
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Payment history
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-            <i class="fas fa-headset me-2"></i> Support
-        </a>
-    </li>
-</ul>
 {% endblock %}
 
 {% block content %}
 <style>
-    .card {
+    /* Breadcrumb styling */
+    .breadcrumb {
         background-color: transparent;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s ease, transform 0.3s ease;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eaecef;
     }
-
-    .card:hover {
-        transform: scale(1.02);
-        border-color: #0f4f8a;
+    
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
     }
-
-    .btn-outline-light {
-        background-color: white;
-        color: #165baa;
-        border: 1px solid #165baa;
-        font-weight: bold;
-        padding: 0.5rem 1rem;
+    
+    .breadcrumb-item a:hover {
+        color: #2980b9;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: #f8f9fa;
+        border: 1px solid #eaecef;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 16px;
         transition: all 0.3s ease;
     }
-
-    .btn-outline-light:hover {
-        background-color: #165baa;
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .card-header i {
+        color: #3498db;
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 16px 18px;
+    }
+    
+    /* Content styling */
+    .card-text {
+        color: #495057;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .status-icon {
+        margin-left: 8px;
+        font-size: 14px;
+    }
+    
+    /* Form styling */
+    .form-floating .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 12px;
+        height: calc(3rem + 2px);
+        transition: all 0.2s ease;
+    }
+    
+    .form-floating .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .form-floating label {
+        padding: 12px;
+        color: #6c757d;
+    }
+    
+    /* Button styling to match sidebar */
+    .btn-edit {
+        background-color: transparent;
+        color: #495057;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-edit:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: #3498db;
+        border-color: #3498db;
+        transform: translateX(2px);
+    }
+    
+    .btn-save {
+        background-color: #3498db;
         color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    .btn-cancel {
+        background-color: transparent;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+        border-radius: 6px;
+        padding: 7px 14px;
+        font-weight: 500;
+        margin-left: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cancel:hover {
+        background-color: rgba(231, 76, 60, 0.08);
+        color: #c0392b;
+        transform: translateY(-2px);
+    }
+    
+    /* Verification icons */
+    .verified {
+        color: #2ecc71;
+    }
+    
+    .unverified {
+        color: #e74c3c;
+    }
+    
+    /* Password strength meter */
+    .password-strength {
+        margin-top: 8px;
+    }
+    
+    .progress {
+        height: 6px;
+        border-radius: 3px;
+        background-color: #f1f1f1;
+        margin-top: 5px;
+    }
+    
+    /* Table styling */
+    .activity-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    
+    .activity-table th {
+        background-color: rgba(52, 152, 219, 0.05);
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #2c3e50;
+        border-bottom: 1px solid #eaecef;
+    }
+    
+    .activity-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eaecef;
+        color: #495057;
+    }
+    
+    .activity-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .activity-table tr:hover {
+        background-color: rgba(52, 152, 219, 0.03);
+    }
+    
+    /* Badge styling */
+    .badge {
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 12px;
+    }
+    
+    .badge-success {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .badge-secondary {
+        background-color: rgba(127, 140, 141, 0.1);
+        color: #7f8c8d;
+        border: 1px solid rgba(127, 140, 141, 0.2);
+    }
+    
+    .badge-danger {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    /* Device list styling */
+    .device-item {
+        padding: 12px 15px;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .device-item:hover {
+        border-color: #3498db;
+        background-color: rgba(52, 152, 219, 0.03);
+    }
+    
+    /* QR code container */
+    .qr-code-container {
+        background-color: white;
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        padding: 15px;
+        display: inline-block;
+    }
+    
+    .secret-key {
+        background-color: rgba(52, 152, 219, 0.05);
+        border: 1px solid #eaecef;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-family: monospace;
+        font-size: 14px;
+        user-select: all;
+    }
+    
+    /* Requirements list */
+    .requirements-list {
+        list-style-type: none;
+        padding-left: 5px;
+        margin-top: 10px;
+    }
+    
+    .requirements-list li {
+        color: #7f8c8d;
+        font-size: 13px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .requirements-list li i {
+        margin-right: 8px;
+        font-size: 12px;
+    }
+    
+    .requirement-met {
+        color: #2ecc71;
+    }
+    
+    .requirement-unmet {
+        color: #e74c3c;
     }
 </style>
 
 <div class="container">
+    <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" style="color: black; text-decoration: none;"> My Account </a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;">Security settings</li>
+            <li class="breadcrumb-item active" aria-current="page">Security Settings</li>
         </ol>
     </nav>
 
-    <div>
-        <div class="card w-100 mb-3 bg-light rounded-0">
-            <div class="card-body" id="password-disp" style="display:block;">
-                <div class="d-flex justify-content-between w-100">
-                    <div class="p-3" style=" width: 80%;">
-                        <h5 class="card-title"><i class="fa fa-user"></i> <b>Password</b></h5>
-                        <p class="card-text pt-0 pb-0">***********</p>
+    <!-- Password Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-lock"></i>
+            <h5>Password</h5>
+        </div>
+        <div class="card-body" id="password-disp" style="display:block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">
+                    ••••••••••••
+                    <span class="ms-2 text-muted" style="font-size: 13px;">Last changed: 3 months ago</span>
+                </p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('password')">
+                    <i class="fas fa-pencil-alt me-1"></i> Change
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body" id="password-form" style="display:none;">
+            <form method="POST" class="auth-form">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="current-password" name="current_password" required>
+                            <label for="current-password">Current Password</label>
+                        </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-outline-light rounded-0 m-0" onclick="edit_button('password')">Change</button>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="new-password" name="new_password" required>
+                            <label for="new-password">New Password</label>
+                        </div>
+                        <div class="password-strength">
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">Password strength:</small>
+                                <small id="password-strength-text">Weak</small>
+                            </div>
+                            <div class="progress">
+                                <div id="password-strength-meter" class="progress-bar" role="progressbar" style="width: 25%; background-color: #e74c3c;"></div>
+                            </div>
+                        </div>
+                        <ul class="requirements-list">
+                            <li id="req-length"><i class="fas fa-times-circle requirement-unmet"></i> At least 8 characters</li>
+                            <li id="req-uppercase"><i class="fas fa-times-circle requirement-unmet"></i> Include uppercase letter</li>
+                            <li id="req-number"><i class="fas fa-times-circle requirement-unmet"></i> Include number</li>
+                            <li id="req-special"><i class="fas fa-times-circle requirement-unmet"></i> Include special character</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="confirm-password" name="confirm_password" required>
+                            <label for="confirm-password">Confirm New Password</label>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check me-1"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-cancel" onclick="cancel_button('password')">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
 
-            <div class="card-body" id="password-form" style="display:none;">
-                <h5 class="card-title"><i class="fa fa-user"></i><b> Password</b></h5>
-                <form method="POST" class="auth-form">
-                {% csrf_token %}
-                    <div class="d-flex justify-content-between">
-                        <div class="form-floating mb-3 w-75">
-                            <input type="text" class="form-control border-top-0 border-end-0 border-start-0 border-bottom-2" id="floatingInput" name="password" value="***********">
-                            <label for="floatingInput">Password</label>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-outline-light px-3 rounded-0">Save</button>
-                            <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('password')">Cancel</button>
-                        </div>
-                    </div>
-                </form>
+    <!-- Login Activity Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-history"></i>
+            <h5>Login Activity</h5>
+        </div>
+        <div class="card-body" id="activity-disp" style="display:block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">
+                    View login activity details
+                    <span class="ms-2 text-muted" style="font-size: 13px;">Last login: Apr 9, 2025, 10:23 AM</span>
+                </p>
+                <button type="button" class="btn btn-edit" onclick="edit_button('activity')">
+                    <i class="fas fa-eye me-1"></i> View
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body" id="activity-form" style="display:none;">
+            <div class="table-responsive">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Device</th>
+                            <th>Location</th>
+                            <th>IP Address</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Apr 9, 2025, 10:23 AM</td>
+                            <td>Windows 11 - Chrome</td>
+                            <td>New York, USA</td>
+                            <td>192.168.1.xxx</td>
+                            <td><span class="badge badge-success">Current</span></td>
+                        </tr>
+                        <tr>
+                            <td>Apr 7, 2025, 3:45 PM</td>
+                            <td>iOS 18 - Safari</td>
+                            <td>New York, USA</td>
+                            <td>172.16.254.xxx</td>
+                            <td><span class="badge badge-secondary">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>Apr 2, 2025, 8:12 AM</td>
+                            <td>Android 15 - Chrome</td>
+                            <td>Boston, USA</td>
+                            <td>10.0.0.xxx</td>
+                            <td><span class="badge badge-secondary">Success</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3 text-end">
+                <p class="small text-muted">Don't recognize a login? <a href="#" style="color: #e74c3c; text-decoration: none;">Secure your account</a></p>
+                <button type="button" class="btn btn-cancel" onclick="cancel_button('activity')">
+                    <i class="fas fa-times me-1"></i> Close
+                </button>
             </div>
         </div>
     </div>
 
-    <div>
-        <div class="card w-100 mb-3 bg-light rounded-0">
-            <div class="card-body" id="activity-disp" style="display:block;">
-                <div class="d-flex justify-content-between">
-                    <div class="p-3" style="width: 80%;">
-                        <h5 class="card-title"><i class="fa fa-user"></i><b>Login activity</b></h5>
-                        <p class="card-text">View login activity details <i class="fa fa-info-circle text-primary"></i></p>
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-outline-light rounded-0 m-0" onclick="edit_button('activity')">View</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-body" id="activity-form" style="display:none;">
-                <h5 class="card-title"><i class="fa fa-user"></i> <b>Activity</b></h5>
-                <form method="POST" class="auth-form">
-                {% csrf_token %}
-                    <div class="d-flex justify-content-between">
-                        <p>Last Login : 21 November 2024</p>
-                        <div>
-                            <button type="submit" class="btn btn-outline-light px-3 rounded-0">Save</button>
-                            <button type="button" class="btn btn-outline-danger rounded-0 px-3" onclick="cancel_button('activity')">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+    
 <script type="text/javascript">
     function edit_button(name) {
         var displays = document.getElementById(name + '-disp');
@@ -202,5 +459,63 @@
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
+    
+    // Password strength checker
+    document.getElementById('new-password')?.addEventListener('input', function(e) {
+        const password = e.target.value;
+        const meter = document.getElementById('password-strength-meter');
+        const text = document.getElementById('password-strength-text');
+        
+        // Check requirements
+        const hasLength = password.length >= 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+        
+        // Update requirement icons
+        document.getElementById('req-length').innerHTML = hasLength ? 
+            '<i class="fas fa-check-circle requirement-met"></i> At least 8 characters' : 
+            '<i class="fas fa-times-circle requirement-unmet"></i> At least 8 characters';
+            
+        document.getElementById('req-uppercase').innerHTML = hasUppercase ? 
+            '<i class="fas fa-check-circle requirement-met"></i> Include uppercase letter' : 
+            '<i class="fas fa-times-circle requirement-unmet"></i> Include uppercase letter';
+            
+        document.getElementById('req-number').innerHTML = hasNumber ? 
+            '<i class="fas fa-check-circle requirement-met"></i> Include number' : 
+            '<i class="fas fa-times-circle requirement-unmet"></i> Include number';
+            
+        document.getElementById('req-special').innerHTML = hasSpecial ? 
+            '<i class="fas fa-check-circle requirement-met"></i> Include special character' : 
+            '<i class="fas fa-times-circle requirement-unmet"></i> Include special character';
+        
+        // Calculate strength
+        let strength = 0;
+        if (hasLength) strength += 25;
+        if (hasUppercase) strength += 25;
+        if (hasNumber) strength += 25;
+        if (hasSpecial) strength += 25;
+        
+        // Update UI
+        meter.style.width = strength + '%';
+        
+        if (strength <= 25) {
+            meter.style.backgroundColor = '#e74c3c';
+            text.textContent = 'Weak';
+            text.style.color = '#e74c3c';
+        } else if (strength <= 50) {
+            meter.style.backgroundColor = '#f39c12';
+            text.textContent = 'Fair';
+            text.style.color = '#f39c12';
+        } else if (strength <= 75) {
+            meter.style.backgroundColor = '#3498db';
+            text.textContent = 'Good';
+            text.style.color = '#3498db';
+        } else {
+            meter.style.backgroundColor = '#27ae60';
+            text.textContent = 'Strong';
+            text.style.color = '#27ae60';
+        }
+    });
 </script>
 {% endblock content %}
