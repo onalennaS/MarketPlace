@@ -7,184 +7,454 @@
 
 {% load static %}
 {% block content %}
+    <!-- Hero Section with Background -->
+    <div class="business-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="display-4 fw-bold text-white mb-3">Register Your Business</h1>
+                    <p class="lead text-white-50 mb-4">Join the SixSkies marketplace and start selling to millions of customers</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="d-flex justify-content-center">
-   
-<div class="add-business-container mt-5">
-    <h2 class="text-center">Register Your Business</h2>
-    <p class="text-center text-muted">Provide accurate details to register your business on SixSkies.</p>
+    <div class="container register-business-container">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="section-title text-center mb-4">Business Registration</h2>
+                <p class="text-center text-muted mb-5">Provide accurate details to register your business on SixSkies.</p>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
-        <!-- Business Logo -->
-        <div class="mb-3 text-center">
-            <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
-            <input type="file" class="form-control" id="businessLogo" accept="image/*" required>
-            <div class="mt-3">
-                <img id="logoPreview" class="logo-preview" alt="Business Logo Preview">
+                <form action="#" method="POST" enctype="multipart/form-data">
+                    <!-- Business Logo -->
+                    <div class="mb-4 text-center">
+                        <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
+                        <div class="logo-upload-container">
+                            <div class="logo-preview-wrapper mb-3">
+                                <img id="logoPreview" class="logo-preview" alt="Business Logo Preview">
+                                <div class="upload-icon-wrapper">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <input type="file" class="form-control" id="businessLogo" accept="image/*" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Business Name -->
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label fw-bold">Business Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your business name" required>
+                        </div>
+
+                        <!-- Business Type -->
+                        <div class="col-md-6 mb-3">
+                            <label for="business_type" class="form-label fw-bold">Business Type</label>
+                            <select class="form-control" id="business_type" required>
+                                <option value="">Select Type</option>
+                                <option value="sole_proprietorship">Sole Proprietorship</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="corporation">Corporation</option>
+                                <option value="limited_liability">Limited Liability Company (LLC)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Business Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold">Business Description</label>
+                        <textarea class="form-control" id="description" rows="4" placeholder="Describe your business" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <!-- Business Registration Number -->
+                        <div class="col-md-6 mb-3">
+                            <label for="registration_number" class="form-label fw-bold">Business Registration Number</label>
+                            <input type="text" class="form-control" id="registration_number" placeholder="Enter registration number (if available)">
+                        </div>
+
+                        <!-- Business Category -->
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label fw-bold">Category</label>
+                            <select class="form-control" id="categorys" required>
+                                <option value="">Select Category</option>
+                                <option value="food">Food & Beverages</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="form-section mt-5 mb-4">
+                        <div class="section-icon">
+                            <i class="fas fa-address-card"></i>
+                        </div>
+                        <h4 class="section-title-small">Contact Information</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label fw-bold">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="telephone" class="form-label fw-bold">Telephone (Optional)</label>
+                            <input type="tel" class="form-control" id="telephone" placeholder="Enter telephone number">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">Business Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter business email" required>
+                    </div>
+
+                    <!-- Address Information Section -->
+                    <div class="form-section mt-5 mb-4">
+                        <div class="section-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4 class="section-title-small">Address Information</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="address_line_1" class="form-label fw-bold">Address Line 1</label>
+                            <input type="text" class="form-control" id="address_line_1" placeholder="Enter address line 1" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address_line_2" class="form-label fw-bold">Address Line 2</label>
+                            <input type="text" class="form-control" id="address_line_2" placeholder="Enter address line 2">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="suburb" class="form-label fw-bold">Suburb</label>
+                            <input type="text" class="form-control" id="suburb" placeholder="Enter suburb" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label fw-bold">City</label>
+                            <input type="text" class="form-control" id="city" placeholder="Enter city name" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="province" class="form-label fw-bold">Province</label>
+                            <input type="text" class="form-control" id="province" placeholder="Enter province name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="postal_code" class="form-label fw-bold">Postal Code</label>
+                            <input type="text" class="form-control" id="postal_code" placeholder="Enter postal code" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label fw-bold">Country</label>
+                            <input type="text" class="form-control" id="country" placeholder="Enter country name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address_type" class="form-label fw-bold">Address Type</label>
+                            <select class="form-control" id="address_type" required>
+                                <option value="">Select Type</option>
+                                <option value="retail">Home</option>
+                                <option value="services">Office</option>
+                                <option value="food">Shipping</option>
+                                <option value="technology">Business</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Operating Hours Section -->
+                    <div class="form-section mt-5 mb-4">
+                        <div class="section-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4 class="section-title-small">Operating Hours</h4>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="open_time" class="form-label fw-bold">Opening Hour</label>
+                            <input type="time" class="form-control" id="open_time" name="openingHour" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="close_time" class="form-label fw-bold">Closing Hour</label>
+                            <input type="time" class="form-control" id="close_time" name="closingHour" required>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="termsAgreement" required>
+                        <label for="termsAgreement" class="form-check-label">I agree to the <a href="#" class="text-primary">Terms & Conditions</a>.</label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <a onclick="registerBusiness()" type="button" class="btn btn-primary btn-lg submit-btn">
+                            <i class="fas fa-store me-2"></i>Submit Registration
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <!-- Business Name -->
-        <div class="mb-3">
-            <label for="name" class="form-label fw-bold">Business Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter your business name" required>
-        </div>
-
-        <!-- Business Type -->
-        <div class="mb-3">
-            <label for="business_type" class="form-label fw-bold">Business Type</label>
-            <select class="form-control" id="business_type" required>
-                <option value="">Select Type</option>
-                <option value="sole_proprietorship">Sole Proprietorship</option>
-                <option value="partnership">Partnership</option>
-                <option value="corporation">Corporation</option>
-                <option value="limited_liability">Limited Liability Company (LLC)</option>
-            </select>
-        </div>
-
-
-        <!-- Business Description -->
-        <div class="mb-3">
-            <label for="description" class="form-label fw-bold">Business Description</label>
-            <textarea class="form-control" id="description" rows="4" placeholder="Describe your business" required></textarea>
-        </div>
-
-        <!-- Business Registration Number -->
-        <div class="mb-3">
-            <label for="registration_number" class="form-label fw-bold">Business Registration Number</label>
-            <input type="text" class="form-control" id="registration_number" placeholder="Enter registration number (if available)">
-        </div>
-
-        <!-- Business Category -->
-        <div class="mb-3">
-            <label for="category" class="form-label fw-bold">category</label>
-            <select class="form-control" id="categorys" required>
-                <option value="">Select Category</option>
-                <option value="food">Food & beverages</option>
-                
-               
-            </select>
-        </div>
-
-        <!-- Contact Information -->
-        <h4 class="mt-4">Contact Information</h4>
-
-        <div class="mb-3">
-            <label for="phone" class="form-label fw-bold">Phone Number</label>
-            <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
-        </div>
-        <div class="mb-3">
-            <label for="telephone" class="form-label fw-bold">Telephone (Optional)</label>
-            <input type="url" class="form-control" id="telephone" placeholder="Enter business website URL">
-        </div>
-
-        <div class="mb-3">
-            <label for="email" class="form-label fw-bold">Business Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter business email" required>
-        </div>
-
-
-
-        <!-- Contact Information -->
-        <h4 class="mt-4">Address Information</h4>
-          <div class="mb-3">
-            <label for="address_line_1" class="form-label fw-bold">address_line_1</label>
-            <input type="text" class="form-control" id="address_line_1" placeholder="Enter address_line_1" required>
-        </div>
-          <div class="mb-3">
-            <label for="address_line_2" class="form-label fw-bold">address_line_2</label>
-            <input type="text" class="form-control" id="address_line_2" placeholder="Enter your buaddress_line_2" required>
-        </div>
-          <div class="mb-3">
-            <label for="suburb" class="form-label fw-bold">suburb</label>
-            <input type="text" class="form-control" id="suburb" placeholder="Enter your suburb" required>
-        </div>
-          <div class="mb-3">
-            <label for="city" class="form-label fw-bold">city Name</label>
-            <input type="text" class="form-control" id="city" placeholder="Enter your city name" required>
-        </div>
-          <div class="mb-3">
-            <label for="province" class="form-label fw-bold">province Name</label>
-            <input type="text" class="form-control" id="province" placeholder="Enter your province name" required>
-        </div>
-          <div class="mb-3">
-            <label for="postal_code" class="form-label fw-bold">postal_code Name</label>
-            <input type="text" class="form-control" id="postal_code" placeholder="Enter your postal_code name" required>
-        </div>
-          <div class="mb-3">
-            <label for="country" class="form-label fw-bold">country Name</label>
-            <input type="text" class="form-control" id="country" placeholder="Enter your country name" required>
-        </div>
-       
-          <div class="mb-3">
-            <label for="address_type" class="form-label fw-bold">address_type</label>
-            <select class="form-control" id="address_type" required>
-                <option value="">Select Category</option>
-                <option value="retail">Home</option>
-                <option value="services">office</option>
-                <option value="food">Shipping</option>
-                <option value="technology">Business</option>
-               
-            </select>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="operatingHours" class="form-label fw-bold">Operating Hours</label>
+        <!-- Benefits Section -->
+        <div class="mt-5 mb-5">
             <div class="row">
-                <div class="col-md-6">
-                    <input type="time" class="form-control" id="open_time" name="openingHour" required>
-                    <small class="text-muted">Opening Hour</small>
+                <div class="col-12 text-center mb-4">
+                    <h2 class="section-title">Why Register Your Business with Us?</h2>
+                    <p class="text-muted">Enjoy these benefits when you sell on SixSkies marketplace</p>
                 </div>
-                <div class="col-md-6">
-                    <input type="time" class="form-control" id="close_time" name="closingHour" required>
-                    <small class="text-muted">Closing Hour</small>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h4>Global Reach</h4>
+                        <p>Access millions of customers and expand your business beyond local markets.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Business Analytics</h4>
+                        <p>Track performance, analyze trends, and make data-driven decisions.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Secure Payments</h4>
+                        <p>Reliable payment processing and fraud protection for peace of mind.</p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <!-- Owner Details -->
-       <!--  <h4 class="mt-4">Owner Details</h4>
-
-        <div class="mb-3">
-            <label for="ownerName" class="form-label fw-bold">Full Name</label>
-            <input type="text" class="form-control" id="ownerName" placeholder="Enter full name" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="ownerPhone" class="form-label fw-bold">Owner's Phone Number</label>
-            <input type="tel" class="form-control" id="ownerPhone" placeholder="Enter phone number" required>
-        </div> -->
-
-        <!-- Terms and Conditions -->
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="termsAgreement" required>
-            <label for="termsAgreement" class="form-check-label">I agree to the <a href="#">Terms & Conditions</a>.</label>
-        </div>
-
-        <!-- Submit Button -->
-        <a onclick="registerBusiness()" type="button" class="btn btn-primary w-100">Submit Registration</a>
-
-    </form>
-</div>
- </div>
-<script>
-    document.getElementById('businessLogo').addEventListener('change', function(event) {
-        let file = event.target.files[0];
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let preview = document.getElementById('logoPreview');
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+    <style>
+        /* Hero Section */
+        .business-hero {
+            background: linear-gradient(135deg, #3498db, #1a5276);
+            padding: 80px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
         }
-    });
-</script>
+        
+        .business-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.8;
+        }
 
+        /* Registration Form Container */
+        .register-business-container {
+            margin-bottom: 60px;
+        }
 
-<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-<script type="text/javascript" src="{% static 'seller/js/register_business_request.js' %}"></script>
+        /* Section Title Styling */
+        .section-title {
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            height: 4px;
+            width: 50px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        /* Form Section Styling */
+        .form-section {
+            position: relative;
+            padding-left: 40px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 10px;
+        }
+        
+        .section-icon {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-title-small {
+            margin: 0;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Logo Upload Styling */
+        .logo-upload-container {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .logo-preview-wrapper {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px dashed #cbd5e0;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        
+        .logo-preview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .upload-icon-wrapper {
+            position: absolute;
+            font-size: 40px;
+            color: #cbd5e0;
+        }
+        
+        .logo-preview-wrapper:hover .upload-icon-wrapper {
+            color: #3498db;
+        }
+
+        /* Form Control Styling */
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Submit Button Styling */
+        .submit-btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, #2980b9, #216795);
+        }
+
+        /* Benefits Section */
+        .benefit-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .benefit-icon {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+        }
+        
+        .benefit-card h4 {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-card p {
+            color: #7f8c8d;
+            margin-bottom: 0;
+        }
+
+        /* Animation for Submit Button */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+        
+        .submit-btn {
+            animation: pulse 2s infinite;
+        }
+    </style>
+
+    <script>
+        document.getElementById('businessLogo').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let preview = document.getElementById('logoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.querySelector('.upload-icon-wrapper').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+    <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+    <script type="text/javascript" src="{% static 'seller/js/register_business_request.js' %}"></script>
 {% endblock %}
