@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Landing Page | SixSkies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #444;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            padding: 80px 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://cdn.jsdelivr.net/gh/tailwindtoolbox/Rainblur-Landing-Page@main/pattern.png');
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        /* Steps Section */
+        .steps-section {
+            padding: 80px 0;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .step-card {
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background-color: white;
+            height: 100%;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: white;
+            text-align: center;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(135deg, #2980b9, #2471a3);
+        }
+        
+        .btn-outline-light {
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            background-color: #222;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <!-- Logo and Brand Name -->
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-shop me-2 text-primary"></i>
+                <span class="text-primary">Versity Finds</span> Marketplace
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Main Navigation Links -->
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'home' %}"><i class="bi bi-house-door me-1"></i> Home</a>
+                    </li>
+                   
+                </ul>
+                
+                <!-- User Account Section -->
+                <div class="d-flex align-items-center">
+                    
+                    
+                    <!-- Welcome Message & User Menu -->
+                    <div class="d-flex align-items-center ms-3 border-start ps-3">
+                        <span class="me-3 d-none d-lg-block">Welcome, <span class="fw-bold text-primary">{{ user.username }}</span></span>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="rounded-circle bg-light p-1 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-person-circle fs-4 text-primary"></i>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="width: 250px; border-radius: 10px;" aria-labelledby="userDropdown">
+                                <li class="px-3 py-2 bg-light rounded-top">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-primary text-white p-2 d-flex justify-content-center align-items-center me-2" style="width: 40px; height: 40px;">
+                                            <span class="fw-bold">{{ user.username|slice:":1" }}</span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">{{ user.username }}</h6>
+                                            <small class="text-muted">{{ user.email }}</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider mx-2"></li>
+                                <li><a class="dropdown-item py-2" href="{% url 'home' %}"><i class="bi bi-house-door me-2"></i> Home</a></li>
+                               
+                                <li><hr class="dropdown-divider mx-2"></li>
+                                <li><a class="dropdown-item py-2 text-danger fw-bold" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Add SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Logout Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: 'Logout Confirmation',
+                    text: 'Are you sure you want to logout?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3a7bd5',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, logout',
+                    cancelButtonText: 'Cancel',
+                    background: '#fff',
+                    borderRadius: '15px',
+                    customClass: {
+                        confirmButton: 'btn btn-primary px-4 py-2',
+                        cancelButton: 'btn btn-danger px-4 py-2'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Logged Out!',
+                            text: 'You have been successfully logged out.',
+                            icon: 'success',
+                            confirmButtonColor: '#3a7bd5',
+                            confirmButtonText: 'OK',
+                            background: '#fff',
+                            borderRadius: '15px',
+                            customClass: {
+                                confirmButton: 'btn btn-primary px-4 py-2'
+                            },
+                            buttonsStyling: false
+                        }).then(() => {
+                            // Redirect to logout URL
+                            window.location.href = "{% url 'logout' %}";
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Grow Your Business with Versity Finds</h1>
+                    <p class="lead mb-4">Take your business to the next level by joining our marketplace. Access thousands of customers and boost your sales with our easy-to-use platform.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'business' %}" class="btn btn-light btn-lg">
+                            Get Started <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="#learn-more" class="btn btn-outline-light btn-lg">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Features Section -->
+    <section id="learn-more" class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Why Sell on Versity Finds?</h2>
+                <p class="text-muted">Discover the advantages of becoming a seller on our platform</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-globe"></i>
+                        </div>
+                        <h4>Expand Your Reach</h4>
+                        <p class="text-muted">Access a wide customer base and increase your visibility in the market.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                        <h4>Maximize Profits</h4>
+                        <p class="text-muted">Enjoy competitive fees and various tools to optimize your revenue.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h4>Easy Management</h4>
+                        <p class="text-muted">Use our intuitive dashboard to manage inventory, orders, and analytics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-danger bg-opacity-10 text-danger">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4>Secure Payments</h4>
+                        <p class="text-muted">Rest easy with our secure payment processing and fraud protection.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-info bg-opacity-10 text-info">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h4>Growth Insights</h4>
+                        <p class="text-muted">Access detailed analytics and reports to help grow your business.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-secondary bg-opacity-10 text-secondary">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h4>Dedicated Support</h4>
+                        <p class="text-muted">Get assistance from our seller support team whenever you need it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps Section -->
+    <section class="steps-section">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">How to Get Started</h2>
+                    <p class="text-muted">Follow these simple steps to set up your business on Versity Finds</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="step-number">1</div>
+                            <h4 class="mb-0">Register</h4>
+                        </div>
+                        <p class="text-muted">Complete the registration form with your business information and details.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="step-number">2</div>
+                            <h4 class="mb-0">Verification</h4>
+                        </div>
+                        <p class="text-muted">We'll review your application and verify your business credentials.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="step-number">3</div>
+                            <h4 class="mb-0">Start Selling</h4>
+                        </div>
+                        <p class="text-muted">Once approved, set up your store, add products, and start selling.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+                      
+             
+    </section>
+
+   
+
+    <!-- FAQ Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Frequently Asked Questions</h2>
+                <p class="text-muted">Find answers to common questions about selling on SixSkies</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    How much does it cost to sell on SixSkies?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We offer competitive commission rates starting at just 5% per sale. There are no monthly fees or hidden charges. You only pay when you make a sale.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    How long does the approval process take?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Most businesses are reviewed and approved within 2-3 business days. We'll notify you via email once your application has been processed.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    What types of businesses can sell on SixSkies?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We welcome a wide variety of businesses including retail products, food & beverages, services, digital products, and more. All businesses must comply with our terms of service and quality standards.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 shadow-sm">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    How do I get paid for my sales?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Payments are processed every two weeks. You can select your preferred payment method (direct deposit, PayPal, etc.) in your seller dashboard settings.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="fw-bold mb-4">Versity Finds Marketplace</h4>
+                    <p>Connecting businesses with customers across the globe. Join our community of successful sellers today.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-white"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-twitter fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Shop Now</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sell On SixSkies</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5 class="mb-4">Seller Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Seller Guide</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Success Stories</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Fee Structure</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Seller Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="mb-4">Get Updates</h5>
+                    <p>Subscribe to our newsletter for updates and tips.</p>
+                    <form class="mt-3">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-md-0">© 2025 Versity Finds Marketplace. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-white text-decoration-none">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

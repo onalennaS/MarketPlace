@@ -102,9 +102,24 @@
         padding: 15px;
         margin-bottom: 30px;
     }
+    
+    .dashboard-notice {
+        background-color: #e7f3ff;
+        border-left: 4px solid #3498db;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+    }
 </style>
 
 <div class="container py-5">
+    <!-- Enhanced notice about accessing dashboard -->
+    <div class="dashboard-notice">
+        <i class="bi bi-info-circle-fill me-2 text-primary"></i>
+        <strong> Click on any approved business card to access its dashboard and manage all business operations.<br>
+            Business Dashboard Access:</strong> Only businesses with an <span class="badge bg-success">Approved</span> status can access the full dashboard features. Businesses with <span class="badge bg-warning text-dark">Pending</span> status are being reviewed by our team and will gain access once approved. You can still view business details for any business by clicking the "Details" button.
+    </div>
+    
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-lg-8">
@@ -115,9 +130,6 @@
             <a href="{% url 'home' %}" class="home-button">
                 <i class="bi bi-shop me-2"></i>Shop on Versity Finds
             </a>
-            
-            
-            
         </div>
     </div>
    
@@ -133,22 +145,40 @@
                             <span class="status-badge position-absolute top-0 end-0 m-3 badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %}">
                                 {{ business.status|title }}
                             </span>
-                            <a href="{% url 'business_status' business.id %}" class="text-decoration-none text-dark">
-                                <div class="card-body p-4">
+                            {% if business.status == 'approved' %}
+                                <a href="{% url 'seller_dashboard' business.id %}" class="text-decoration-none text-dark">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-bold mb-3">{{ business.name }}</h5>
+                                        <div class="d-flex align-items-center gap-2 mb-3">
+                                            <i class="bi bi-building fs-5 text-secondary"></i>
+                                            <span class="text-muted">{{ business.category }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">#{{ business.id }}</small>
+                                            <a href="{% url 'business_status' business.id %}" 
+                                               class="btn btn-sm btn-outline-primary hover-scale">
+                                                Details <i class="bi bi-chevron-right ms-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% else %}
+                                <div class="card-body p-4" onclick="showStatusAlert('{{ business.status }}', event)">
                                     <h5 class="card-title fw-bold mb-3">{{ business.name }}</h5>
                                     <div class="d-flex align-items-center gap-2 mb-3">
                                         <i class="bi bi-building fs-5 text-secondary"></i>
                                         <span class="text-muted">{{ business.category }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">#{{ business.id }}</small>
-                                        <a href="{% url 'business_status' business.id %}" 
-                                           class="btn btn-sm btn-outline-primary hover-scale">
-                                            Details <i class="bi bi-chevron-right ms-1"></i>
-                                        </a>
+                                            <small class="text-muted">#{{ business.id }}</small>
+                                            <a href="{% url 'business_status' business.id %}" 
+                                               class="btn btn-sm btn-outline-primary hover-scale"
+                                               onclick="event.stopPropagation()">
+                                                Details <i class="bi bi-chevron-right ms-1"></i>
+                                            </a>
                                     </div>
                                 </div>
-                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -183,12 +213,41 @@
             </div>
         {% endif %}
     </div>
-    
-    
+</div>
 
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-<!-- At the end of your body tag -->
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<!-- Bootstrap and SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function showStatusAlert(status, event) {
+        // Prevent the alert if clicking on a child link (e.g., the Details button)
+        if (event.target.closest('a[href]')) {
+            return;
+        }
+        
+        if (status === 'pending') {
+            Swal.fire({
+                title: 'Dashboard Access Restricted',
+                html: '<p>You cannot access the dashboard while your business is still under review.</p><p>Please wait for approval before accessing seller dashboard features.</p>',
+                icon: 'info',
+                confirmButtonText: 'Understood',
+                confirmButtonColor: '#3498db'
+            });
+        } else if (status === 'rejected') {
+            Swal.fire({
+                title: 'Business Application Rejected',
+                html: '<p>Your business application has been rejected and cannot access the dashboard.</p><p>Please check the details section for reasons and reapplication instructions.</p>',
+                icon: 'error',
+                confirmButtonText: 'View Details',
+                confirmButtonColor: '#3498db'
+            });
+        }
+    }
+</script>
 
 {% endblock %}
