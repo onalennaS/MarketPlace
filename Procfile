@@ -1,1 +1,2 @@
-web: gunicorn Market.wsgi --bind 0.0.0.0:
+web: python manage.py migrate && gunicorn Market.wsgi
+
