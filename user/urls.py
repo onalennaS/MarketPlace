@@ -38,5 +38,9 @@ urlpatterns = [
     path('api/user/add_cart_delivery_address/', cart_views.add_cart_delivery_address, name='add_cart_delivery_address'),
     path('api/user/checkout/palce_order/', cart_views.palce_order, name='palce_order'),
     
+   path('seller/', views.seller_landing_page, name='seller_landing_page'),
+  
+
+
   
 ]

@@ -186,3 +186,10 @@ def payment_history(request):
 @login_required_custom
 def subscription_plan(request):
     return render(request, 'home/subscription_plan.html')
+
+
+@login_required_custom
+def seller_landing_page(request):
+   return render(request, 'seller/new/seller_landing_page.html')
+
+

@@ -166,3 +166,4 @@ def delete_business(request, business_id):
 def business_status(request, id):
     business = BusinessInformation.objects.get(id=id)
     return render(request, 'business_status.html', {'business': business})
+    
