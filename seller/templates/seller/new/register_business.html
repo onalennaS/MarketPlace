@@ -2,93 +2,193 @@
 
 {% block title %}My Businesses{% endblock %}
 
-{% block secend_nav %}
-{% endblock %}
+{% block secend_nav %}{% endblock %}
 
 {% load static %}
 {% block content %}
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-lg-8 mx-auto">
-            <h1 class="fw-bold text-center">My Registered Businesses</h1>
-            <p class="text-muted text-center">Manage your registered business profiles and applications</p>
-        </div>
-    </div>
-    
-    <div class="row g-4">
-        {% if businesses %}
-            {% for business in businesses %}
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a href="{% if business.status == 'approved' %}{% url 'seller_dashboard' business.id %}{% elif business.status == 'pending' %}{% url 'business_status' business.id %}{% elif business.status == 'rejected' %}{% url 'business_status' business.id %}{% endif %}" class="text-decoration-none">
-                        <div class="card h-100 business-card shadow border-0 rounded-3 overflow-hidden">
-                            <div class="position-relative">
-                               
-                                <div class="position-absolute top-0 end-0 p-2">
-                                    <span class="badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %}">
-                                        {{ business.status|title }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">{{ business.name }}</h5>
-                                <p class="card-text text-muted mb-1">
-                                    <small><i class="bi bi-tag-fill me-1"></i> {{ business.category }}</small>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <small class="text-muted">ID: #{{ business.id }}</small>
-                                    <i class="bi bi-arrow-right-circle"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
-            <!-- Add New Business Card -->
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <a href="{% url 'register_business_form' %}" class="text-decoration-none">
-                    <div class="card h-100 business-card border-dashed shadow-sm rounded-3 bg-light">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-4">
-                            <div class="rounded-circle bg-white p-3 mb-3 shadow-sm">
-                                <i class="bi bi-plus-lg fs-4 text-primary"></i>
-                            </div>
-                            <h5 class="text-primary">Register New Business</h5>
-                            <p class="text-muted small">Add a new business profile to your account</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        {% else %}
-            <div class="col-md-8 mx-auto text-center py-5">
-               
-                   
-                   
-                <a href="{% url 'register_business_form' %}" class="btn btn-primary btn-lg px-4">
-                    <i class="bi bi-plus-circle me-2"></i>Register New Business
-                </a>
-            </div>
-            
-        {% endif %}
-    </div>
-</div>
 
 <style>
     .business-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.125);
+        border-radius: 12px;
+        overflow: hidden;
     }
+    
     .business-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 1rem 3rem rgba(0,0,0,0.1)!important;
     }
+    
     .border-dashed {
-        border: 2px dashed #dee2e6 !important;
+        border: 2px dashed #dee2e6!important;
+        border-radius: 12px;
     }
-    .empty-state {
-        padding: 2rem;
+    
+    .status-badge {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 2;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        border-radius: 20px;
+        padding: 5px 10px;
+    }
+    
+    .hover-scale {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+        transform: scale(1.05);
+    }
+    
+    .icon-wrapper {
+        height: 60px;
+        width: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .no-businesses-card {
+        border-radius: 15px;
         background-color: #f8f9fa;
-        border-radius: 1rem;
+    }
+    
+    /* New styles for the added features */
+    .home-button {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+        border-radius: 30px;
+        padding: 12px 25px;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+    
+    .home-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        background: linear-gradient(135deg, #2980b9, #2471a3);
+    }
+    
+    .stats-container {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    
+    .quick-actions {
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        padding: 15px;
+        margin-bottom: 30px;
     }
 </style>
 
-<!-- Optional: Add Bootstrap Icons if not already included in shop_base2.html -->
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold mb-3">Managed Businesses</h1>
+            <p class="text-muted mb-4">View and manage all your registered business entities</p>
+        </div>
+        <div class="col-lg-4 text-lg-end d-flex align-items-center justify-content-lg-end">
+            <a href="{% url 'home' %}" class="home-button">
+                <i class="bi bi-shop me-2"></i>Shop on Versity Finds
+            </a>
+            
+            
+            
+        </div>
+    </div>
+   
+    
+    <!-- Businesses Section -->
+    <h4 class="mb-3"><i class="bi bi-buildings me-2 text-primary"></i>Your Businesses</h4>
+    <div class="row g-4 justify-content-center">
+        {% if businesses %}
+            {% for business in businesses %}
+                <div class="col-sm-6 col-md-4 col-xl-3">
+                    <div class="card h-100 business-card shadow-sm">
+                        <div class="position-relative">
+                            <span class="status-badge position-absolute top-0 end-0 m-3 badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %}">
+                                {{ business.status|title }}
+                            </span>
+                            <a href="{% url 'business_status' business.id %}" class="text-decoration-none text-dark">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-3">{{ business.name }}</h5>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <i class="bi bi-building fs-5 text-secondary"></i>
+                                        <span class="text-muted">{{ business.category }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">#{{ business.id }}</small>
+                                        <a href="{% url 'business_status' business.id %}" 
+                                           class="btn btn-sm btn-outline-primary hover-scale">
+                                            Details <i class="bi bi-chevron-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <!-- Add New Business Card -->
+            <div class="col-sm-6 col-md-4 col-xl-3">
+                <div class="card h-100 business-card border-dashed hover-scale bg-light">
+                    <a href="{% url 'register_business_form' %}" class="text-decoration-none d-flex h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
+                            <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle mb-3">
+                                <i class="bi bi-plus-lg fs-4 text-primary"></i>
+                            </div>
+                            <h5 class="text-primary mb-2">Add New Business</h5>
+                            <p class="text-muted small mb-0">Click here to register a new business entity</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-8 mx-auto text-center py-5">
+                <div class="card border-dashed py-5 no-businesses-card">
+                    <div class="card-body">
+                        <i class="bi bi-building-add fs-1 text-primary mb-4 d-block"></i>
+                        <h3 class="mb-4">No Businesses Found</h3>
+                        <p class="text-muted mb-4">Get started by registering your first business entity</p>
+                        <a href="{% url 'register_business_form' %}" class="btn btn-primary btn-lg px-4 py-3 hover-scale">
+                            <i class="bi bi-plus-circle me-2"></i>Register First Business
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    
+
+<!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<!-- At the end of your body tag -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}

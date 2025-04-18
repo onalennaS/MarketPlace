@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from functools import wraps
@@ -7,24 +7,23 @@ from ..utils.user_data_validation import validate_business_data
 from ..utils.send_emails import send_email_pending, send_email_appeal
 import json 
 from ..wrap_models.business_model import BusinessInformation, Address, Moderation
+from django.contrib import messages
 
-# Create your views here.
 # Create your views here.
 
 @login_required_custom
 def register_business(request):
-
     if not request.method == "POST":
         return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
 
     try:
-            data = json.loads(request.body)  # Parse JSON request body
-            errors = validate_business_data(data)
-            if errors:
-                return JsonResponse({"status":"error","message":f"{errors}"})
-
+        data = json.loads(request.body)  # Parse JSON request body
+        errors = validate_business_data(data)
+        if errors:
+            return JsonResponse({"status":"error","message":f"{errors}"})
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)     
+
     name = data.get("name")
     business_type = data.get("business_type")
     description = data.get("description")
@@ -43,55 +42,62 @@ def register_business(request):
     open_time = data.get("open_time")
     close_time = data.get("close_time")
 
-          
-            # Save business to the database
+    # Save business to the database
     business = BusinessInformation.objects.create(
-                owner=request.user,
-                name=name,
-                business_type=business_type,
-                description=description,
-                registration_number=registration_number,
-                category=category,
-                phone=phone,
-                email=email,
-                open_time=open_time,
-                close_time=close_time
-                
-            )
+        owner=request.user,
+        name=name,
+        business_type=business_type,
+        description=description,
+        registration_number=registration_number,
+        category=category,
+        phone=phone,
+        email=email,
+        open_time=open_time,
+        close_time=close_time
+    )
+    
     address = Address.objects.create(
-                business=business,
-                address_line_1=address_line_1,
-                address_line_2=address_line_2,
-                suburb=suburb,
-                city=city,
-                province=province,
-                postal_code=postal_code,
-                
-                address_type=address_type)
+        business=business,
+        address_line_1=address_line_1,
+        address_line_2=address_line_2,
+        suburb=suburb,
+        city=city,
+        province=province,
+        postal_code=postal_code,
+        address_type=address_type
+    )
 
     moderator = User.objects.filter(email="sixskies25@gmail.com").first()
-    moderation = Moderation.objects.create(business=business,moderator=moderator)
+    moderation = Moderation.objects.create(business=business, moderator=moderator)
     send_email_pending(business)
+    
+    # Save the business, address, and moderation records
     business.save()
     address.save()
     moderation.save()
-    return JsonResponse({"message": "Business created successfully",'status':'success','id':business.id}, status=201)
 
-    
+    # Redirect to business status page (pending status) or dashboard if approved
+    if business.status == "pending":
+        return redirect('business_status', business_id=business.id)
+    elif business.status == "approved":
+        return redirect('seller_dashboard', business_id=business.id)
+    else:
+        # Handle rejected or other cases
+        return redirect('business_status', business_id=business.id)
+
 @login_required_custom
 def appeal_registration(request):
-
     if not request.method == "POST":
         return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
 
     try:
-            data = json.loads(request.body)  # Parse JSON request body
-            errors = validate_business_data(data)
-            if errors:
-                return JsonResponse({"status":"error","message":f"{errors}"})
-
+        data = json.loads(request.body)  # Parse JSON request body
+        errors = validate_business_data(data)
+        if errors:
+            return JsonResponse({"status":"error","message":f"{errors}"})
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)     
+
     business_id = data.get('business_id')
     name = data.get("name")
     business_type = data.get("business_type")
@@ -112,7 +118,6 @@ def appeal_registration(request):
     open_time = data.get("open_time")
     close_time = data.get("close_time")
 
-     
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
     business.name = name
     business.business_type = business_type
@@ -133,17 +138,31 @@ def appeal_registration(request):
     address.postal_code = postal_code
     address.country = country
     address.address_type = address_type
-            # Save business to the database
-    
 
+    # Save business to the database
     moderator = User.objects.filter(email="sixskies25@gmail.com").first()
-    moderation = Moderation.objects.filter(business=business,moderator=moderator).first()
+    moderation = Moderation.objects.filter(business=business, moderator=moderator).first()
     moderation.is_reviewed = False
     moderation.status = 'pending'
     send_email_appeal(business)
+
+    # Save the updated business, address, and moderation records
     business.save()
     address.save()
     moderation.save()
+
     return JsonResponse({"message": "Business appeal requested successfully",'status':'success'}, status=201)
 
-    
+from django.views.decorators.http import require_POST
+
+@login_required_custom
+@require_POST
+def delete_business(request, business_id):
+    business = get_object_or_404(BusinessInformation, id=business_id, owner=request.user)
+    business.delete()
+    messages.success(request, "Business deleted successfully.")
+    return redirect('business')  # Use existing URL pattern
+
+def business_status(request, id):
+    business = BusinessInformation.objects.get(id=id)
+    return render(request, 'business_status.html', {'business': business})
