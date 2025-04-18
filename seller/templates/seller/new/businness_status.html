@@ -1,42 +1,145 @@
-
 {% extends 'products/shop_base2.html' %}
 
-{% block title %}Register new Business{% endblock %}
+{% block title %}Business Details{% endblock %}
 
-{% block secend_nav %}
-{% endblock %}
+{% block secend_nav %}{% endblock %}
 
 {% load static %}
 {% block content %}
 
-{% if business.status == "pending" %}
-<div class="card shadow p-4">
-        <div class="card-body"> 
-            <h2 class="text-warning">Pending Approval {{business.status}}</h2>
-            <p class="text-muted">
-                Your business is currently under review. This process may take some time.  
-                You will receive a notification once it has been approved.
-            </p>
-            <div class="spinner-border text-warning" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <br>
-            <a href="/" class="btn btn-primary mt-3">Go Back</a>
-        </div>
-    </div>
-{% elif business.status == "rejected" %}
-    <div class="card shadow p-4">
-        <div class="card-body">
-            <h2 class="text-warning">Business Request not Approved</h2>
-            <p class="text-muted">
-                {{moderation.reason}}
-            </p>
-            <i class="fa fa-times text-danger"></i>
-            <br>
-            <a href="{% url 'appeal_registration_view' business.id %}" class="btn btn-primary mt-3">request appeal </a>
-        </div>
-    </div>
+<style>
+    .status-card {
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .status-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-action {
+        transition: all 0.3s ease;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+    
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .delete-btn:hover {
+        background-color: #dc3545!important;
+        color: white!important;
+    }
+    
+    .business-detail-card {
+        border-radius: 12px;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+    
+    .business-header {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+</style>
 
-{% endif %}
+<div class="container py-5">
+   
+            </nav>
+            
+            <div class="business-detail-card mb-4">
+                <div class="business-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="fw-bold mb-2">{{ business.name }}</h1>
+                        <div class="d-flex gap-3 align-items-center">
+                            <span class="badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %} px-3 py-2">
+                                {{ business.status|title }}
+                            </span>
+                            <span class="text-muted">#{{ business.id }}</span>
+                        </div>
+                    </div>
+                    
+                    <form id="delete-business-form" 
+                          action="{% url 'delete_business' business.id %}" 
+                          method="POST" class="ms-auto">
+                        {% csrf_token %}
+                        <button type="button" 
+                                class="btn btn-outline-danger delete-btn btn-action"
+                                onclick="confirmDelete('{{ business.id }}', '{{ business.name }}')">
+                            <i class="bi bi-trash me-1"></i> Delete Business
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="card-body p-4">
+                    {% if business.status == "pending" %}
+                        <div class="status-card bg-warning bg-opacity-10 p-4 text-center mb-4">
+                            <i class="bi bi-hourglass-split status-icon text-warning"></i>
+                            <h2 class="text-warning mb-3">Pending Approval</h2>
+                            <p class="text-muted mb-4">
+                                Your business is currently under review. This process may take some time.
+                                You will receive a notification once it has been approved.
+                            </p>
+                        </div>
+                    {% elif business.status == "rejected" %}
+                        <div class="status-card bg-danger bg-opacity-10 p-4 text-center mb-4">
+                            <i class="bi bi-x-circle status-icon text-danger"></i>
+                            <h2 class="text-danger mb-3">Business Request Not Approved</h2>
+                            <p class="text-muted mb-4">
+                                {{moderation.reason}}
+                            </p>
+                            <a href="{% url 'appeal_registration_view' business.id %}" class="btn btn-primary btn-lg btn-action px-4">
+                                <i class="bi bi-arrow-right-circle me-2"></i>Request Appeal
+                            </a>
+                        </div>
+                    {% elif business.status == "approved" %}
+                        <div class="status-card bg-success bg-opacity-10 p-4 text-center mb-4">
+                            <i class="bi bi-check-circle status-icon text-success"></i>
+                            <h2 class="text-success mb-3">Business Approved</h2>
+                            <p class="text-muted mb-4">
+                                Your business has been approved and is now active.
+                            </p>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Business details can be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert Delete Confirmation -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(businessId, businessName) {
+        Swal.fire({
+            title: 'Delete Business?',
+            html: `<p>You are about to permanently delete:<br><strong>${businessName}</strong></p><p class='text-danger'>This action cannot be undone!</p>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Confirm Delete',
+            cancelButtonText: 'Cancel',
+            focusCancel: true,
+            customClass: {
+                confirmButton: 'btn btn-danger px-4 py-2',
+                cancelButton: 'btn btn-secondary px-4 py-2'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-business-form').submit();
+            }
+        });
+    }
+</script>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
 {% endblock %}

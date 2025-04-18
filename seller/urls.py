@@ -1,31 +1,34 @@
 from django.urls import path
-from .views.render_views import(user_profile ,
-                                    base,
-                                    dashboard,
-                                    business,
-                                    register_business_form,
-                                    business_status,
-                                    business_info,
-                                    view_stats,
-                                    add_products,
-                                    edit_products,
-                                    orders,
-                                    order_tracking,
-                                    transaction,
-                                    pay_for_premium,
-                                    manage_product,
-                                    reviews,
-                                    settings,
-                                    customer,
-                                    invoice,
-                                    report,
-                                    appeal_registration_view,
-                                    view_product
-                                    ) 
 
-from .views.business_views import register_business,appeal_registration
-from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras,delete_extras, add_addons, delete_addon
+from .views.render_views import (user_profile,
+                                  base,
+                                  dashboard,
+                                  business,
+                                  register_business_form,
+                                  business_status,
+                                  business_info,
+                                  view_stats,
+                                  add_products,
+                                  edit_products,
+                                  orders,
+                                  order_tracking,
+                                  transaction,
+                                  pay_for_premium,
+                                  manage_product,
+                                  reviews,
+                                  settings,
+                                  customer,
+                                  invoice,
+                                  report,
+                                  appeal_registration_view,
+                                  view_product
+                                  )
+
+from .views.business_views import register_business, appeal_registration, delete_business
+from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras, delete_extras, add_addons, delete_addon
 from .views.order_views import move_order_next_stage
+
+
 urlpatterns = [
     path('', base, name='base'),
     path('user_profile/', user_profile, name='user_profile'),
@@ -55,12 +58,24 @@ urlpatterns = [
     path('api/add_extra/', add_extras, name='api_add_extras'),
     path('api/delete_extra/', delete_extras, name='api_delete_extras'),
     path('api/delete_product/', delete_product, name='api_delete_product'),
-     path('api/edit_product/', ep, name='api_edit_product'),
+    path('api/edit_product/', ep, name='api_edit_product'),
     path('api/add_product/', api_add_product, name='api_add_product'),
     path('api/appeal_registration/', appeal_registration, name='appeal_registration'),
     path('api/register_business/', register_business, name='register_business'),
     path('api/add_addons/', add_addons, name='add_addons'),
     path('api/delete_addon/', delete_addon, name='delete_addon'),
     path('api/move_order_next_stage/', move_order_next_stage, name='move_order_next_stage'),
+    
+    # Fixed URL pattern for delete_business
+    path('delete_business/<int:business_id>/', delete_business, name='delete_business'),
+    
+    # If you want to keep the my_businesses URL
+    path('my_businesses/', business, name='my_businesses'),
 
-]
+    # Fixed URL pattern for business_status page
+     path('business/<int:business_id>/', business_status, name='business_status'),
+
+
+
+
+     ]
