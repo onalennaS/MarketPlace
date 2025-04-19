@@ -40,7 +40,7 @@ sitemaps_dict = {
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('god_level/', admin.site.urls),
     path('',include('shop.urls')),
     path('seller/',include('seller.urls')),
     path('auth/', include('authenticator.urls')),
