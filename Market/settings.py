@@ -81,6 +81,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 MIDDLEWARE = [
+    "csp.middleware.CSPMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,6 +93,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
+MIDDLEWARE += ['authenticator.middleware.security_headers.PermissionsPolicyMiddleware']
+
+
+INSTALLED_APPS += ['csp']
+
+
+from csp.constants import SELF
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF, "versityfinds.co.za"],
+        "script-src": [SELF, "versityfinds.co.za"],
+        "style-src": [SELF, "versityfinds.co.za"],
+        
+    },
+}
 
 ROOT_URLCONF = 'Market.urls'
 
@@ -160,11 +177,19 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+
+
 SECURE_SSL_REDIRECT = True
 
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 
 # Static files (CSS, JavaScript, Images)
