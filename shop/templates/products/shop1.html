@@ -1,6 +1,6 @@
 {% extends 'products/shop_base2.html' %}
 
-{% block title %}View Product{% endblock %}
+{% block title %}SixSkies Marketplace{% endblock %}
 {% load static %}
 
 {% block links %}
@@ -28,6 +28,105 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--dark);
     background-color: #f9fafb;
+}
+
+/* Search Bar Styles */
+.search-container {
+    display: flex;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: visible; /* Changed from hidden to visible to show dropdown */
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    padding-right: 50px;
+    border: none;
+    height: 50px;
+    font-size: 1rem;
+    margin-left: 20px; /* Add space between dropdown and search input */
+    flex: 1;
+}
+
+.search-input:focus {
+    box-shadow: none;
+    border-color: var(--primary);
+}
+
+.search-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background-color: var(--primary);
+    border: none;
+    width: 50px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.search-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Department Dropdown Styles */
+.dropdown {
+    position: relative;
+    z-index: 1050;
+} 
+
+.dropdown-toggle {
+    white-space: nowrap;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-toggle::after {
+    margin-left: 0.5em;
+}
+
+.dropdown-menu {
+    position: absolute;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1051;
+}
+
+.dropdown-item:hover {
+    background-color: #e6eef9;
+}
+
+/* Quick Links */
+.quick-links {
+    margin-bottom: 1.5rem;
+}
+
+.quick-link-item {
+    text-align: center;
+    padding: 12px;
+    transition: all 0.3s;
+    border-radius: 8px;
+}
+
+.quick-link-item:hover {
+    background-color: #e6eef9;
+    transform: translateY(-3px);
+}
+
+.quick-link-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.quick-link-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--dark);
 }
 
 /* Hero Carousel */
@@ -149,6 +248,18 @@ body {
     font-weight: 600;
 }
 
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e53e3e;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
 .wishlist-btn {
     position: absolute;
     top: 10px;
@@ -194,6 +305,13 @@ body {
     color: var(--primary);
     font-size: 1.1rem;
     margin-bottom: 8px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-right: 8px;
 }
 
 .product-rating {
@@ -263,72 +381,86 @@ body {
     text-decoration: underline;
 }
 
-/* Footer */
-.footer {
-    background-color: var(--dark);
-    color: white;
-    padding: 3rem 0 1.5rem;
-    margin-top: 3rem;
+/* Deal of the Day */
+.deal-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    background: white;
+    margin-bottom: 2rem;
 }
 
-.footer-title {
+.deal-img-container {
+    height: 300px;
+    position: relative;
+}
+
+.deal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.deal-badge {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    background: #e53e3e;
+    color: white;
+    padding: 8px 20px;
     font-weight: 600;
-    margin-bottom: 1.25rem;
     font-size: 1.1rem;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 
-.footer-links {
-    list-style: none;
-    padding-left: 0;
+.deal-content {
+    padding: 20px;
 }
 
-.footer-links li {
-    margin-bottom: 0.75rem;
+.deal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-.footer-links a {
+.deal-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.deal-original {
+    text-decoration: line-through;
     color: var(--gray);
-    text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    margin-right: 10px;
 }
 
-.footer-links a:hover {
-    color: white;
-}
-
-.social-links {
+.deal-timer {
     display: flex;
-    gap: 1rem;
+    gap: 10px;
+    margin: 15px 0;
 }
 
-.social-links a {
+.timer-item {
+    background: var(--dark);
     color: white;
-    background-color: rgba(255,255,255,0.1);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
+    padding: 10px;
+    border-radius: 8px;
+    width: 70px;
+    text-align: center;
 }
 
-.text-footer {
-    color: var(--gray);
-    list-style: none;
+.timer-number {
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-.policy {
-    text-decoration: none;
-}
-
-.policy a:hover {
-    color: white;
-}
-
-.social-links a:hover {
-    background-color: var(--primary);
+.timer-text {
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 
 /* Responsive Adjustments */
@@ -339,6 +471,10 @@ body {
     
     .product-img-container {
         height: 160px;
+    }
+    
+    .deal-img-container {
+        height: 250px;
     }
 }
 
@@ -364,6 +500,18 @@ body {
     
     .product-price {
         font-size: 1rem;
+    }
+
+    .deal-img-container {
+        height: 200px;
+    }
+
+    .deal-title {
+        font-size: 1.3rem;
+    }
+
+    .deal-price {
+        font-size: 1.5rem;
     }
 }
 
@@ -408,6 +556,132 @@ body {
     .product-rating {
         font-size: 0.8rem;
     }
+
+    .deal-img-container {
+        height: 180px;
+    }
+
+    .deal-badge {
+        font-size: 0.9rem;
+        padding: 6px 15px;
+    }
+
+    .deal-title {
+        font-size: 1.1rem;
+    }
+
+    .deal-price {
+        font-size: 1.3rem;
+    }
+
+    .timer-item {
+        width: 60px;
+        padding: 6px;
+    }
+
+    .timer-number {
+        font-size: 1.2rem;
+    }
+}
+/* Footer Styles */
+.footer {
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 3rem 0 2rem;
+    margin-top: 4rem;
+}
+
+.footer-title {
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: white;
+}
+
+.text-footer {
+    color: #cbd5e1;
+}
+
+.footer-links {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.social-links i {
+    font-size: 1.1rem;
+}
+
+hr.border-secondary {
+    opacity: 0.1;
+}
+
+.policy {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.policy:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Footer Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .footer {
+        padding: 2rem 0 1.5rem;
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .footer-title {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
 }
 {% endblock %}
 
@@ -415,8 +689,99 @@ body {
 {% endblock %}
 
 {% block content %}
+<!-- Search Bar with Department Dropdown -->
+<div class="container mt-4">
+    <form action="#" method="GET">
+        <div class="search-container d-flex">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 50px; border-right: 1px solid #dee2e6; min-width: 160px; background-color: #f1f5f9;">
+                    All Departments
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">All Departments</a></li>
+                    <li><a class="dropdown-item" href="#">Textbooks</a></li>
+                    <li><a class="dropdown-item" href="#">Electronics</a></li>
+                    <li><a class="dropdown-item" href="#">Furniture</a></li>
+                    <li><a class="dropdown-item" href="#">Clothing</a></li>
+                    <li><a class="dropdown-item" href="#">School Supplies</a></li>
+                </ul>
+            </div>
+            <input type="text" name="query" class="form-control search-input" placeholder="Search for products, textbooks, electronics..." aria-label="Search">
+            <button type="submit" class="search-btn">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Quick Links -->
+<div class="container quick-links">
+    <div class="row">
+        <div class="col-3 col-md-2">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-tag"></i>
+                    </div>
+                    <div class="quick-link-text">Deals</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 col-md-2">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-star"></i>
+                    </div>
+                    <div class="quick-link-text">Bestsellers</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 col-md-2">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-box"></i>
+                    </div>
+                    <div class="quick-link-text">New</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 col-md-2">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <div class="quick-link-text">Textbooks</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 col-md-2 d-none d-md-block">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-laptop"></i>
+                    </div>
+                    <div class="quick-link-text">Electronics</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 col-md-2 d-none d-md-block">
+            <a href="#" class="text-decoration-none">
+                <div class="quick-link-item">
+                    <div class="quick-link-icon">
+                        <i class="bi bi-house"></i>
+                    </div>
+                    <div class="quick-link-text">Dorm</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
 <!-- Hero Carousel -->
-<div class="container ">
+<div class="container">
     <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
@@ -458,6 +823,138 @@ body {
     </div>
 </div>
 
+<!-- Deal of the Day -->
+<section class="container my-5">
+    <div class="section-header">
+        <h2 class="section-title">Deal of the Day</h2>
+        <a href="#" class="view-all">View all deals</a>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="deal-card">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <div class="deal-img-container">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="deal-img" alt="Deal of the Day">
+                            <div class="deal-badge">45% OFF</div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="deal-content">
+                            <h3 class="deal-title">Premium Wireless Noise-Cancelling Headphones</h3>
+                            <div class="mb-3">
+                                <span class="deal-price">R899</span>
+                                <span class="deal-original">R1,599</span>
+                            </div>
+                            <p>Experience crystal-clear sound with these high-quality wireless headphones. Perfect for studying or listening to lectures on the go.</p>
+                            
+                            <div class="deal-timer">
+                                <div class="timer-item">
+                                    <div class="timer-number">08</div>
+                                    <div class="timer-text">Hours</div>
+                                </div>
+                                <div class="timer-item">
+                                    <div class="timer-number">45</div>
+                                    <div class="timer-text">Mins</div>
+                                </div>
+                                <div class="timer-item">
+                                    <div class="timer-number">22</div>
+                                    <div class="timer-text">Secs</div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary btn-lg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shop by Category -->
+<section class="container my-5">
+    <div class="section-header">
+        <h2 class="section-title">Shop by Category</h2>
+        <a href="#" class="view-all">View all categories</a>
+    </div>
+    
+    <div class="row">
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1526406915894-7bcd65f60845?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Electronics" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Electronics</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Books & Textbooks" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Books & Textbooks</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Furniture" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Furniture</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Clothing" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Clothing</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Stationery" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Stationery</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-6 col-md-3 col-lg-2">
+            <a href="#" class="text-decoration-none">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                         alt="Sports & Fitness" class="category-img">
+                    <div class="category-overlay">
+                        <h5 class="category-title">Sports & Fitness</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Shop by Business -->
 <section class="container my-5">
     <div class="section-header">
@@ -473,176 +970,477 @@ body {
                 <a href="{% url 'view_business_products' business.id %}" class="text-decoration-none">
                     <div class="category-card">
                         <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="{{business.name}}" class="category-img">
-                        <div class="category-overlay">
-                            <h5 class="category-title">{{business.name}}</h5>
-                            <span class="small">{{business.category}}</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </div>
+                        alt="{{business.name}}" class="category-img">
+                   <div class="category-overlay">
+                       <h5 class="category-title">{{business.name}}</h5>
+                       <span class="small">{{business.category}}</span>
+                   </div>
+               </div>
+           </a>
+       </div>
+       {% endif %}
+       {% endfor %}
+   {% endfor %}
+</div>
 </section>
 
 <!-- Popular Products -->
 <section class="container my-5">
-    <div class="section-header">
-        <h2 class="section-title">Most Popular</h2>
-        <a href="#" class="view-all">View all popular items</a>
-    </div>
-    
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-        {% for product in products %}
-        {% if product.status == "active" %}
-        <div class="col">
-            <div class="product-card">
-                <div class="product-img-container">
-                    <a href="{% url 'view_product' product.id %}">
-                        <img src="{{product.image.url}}" alt="{{product.image}}" class="product-img">
-                    </a>
-                    <button onclick="addWishlist({{product.id}})" class="wishlist-btn">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
-                <div class="product-body">
-                    <h5 class="product-title">{{product.name}}</h5>
-                    <div class="product-price">R{{product.price}}</div>
-                    <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <span class="text-muted ms-2">(24)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
+<div class="section-header">
+   <h2 class="section-title">Most Popular</h2>
+   <a href="#" class="view-all">View all popular items</a>
+</div>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+   {% for product in products %}
+   {% if product.status == "active" %}
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <a href="{% url 'view_product' product.id %}">
+                   <img src="{{product.image.url}}" alt="{{product.image}}" class="product-img">
+               </a>
+               <button onclick="addWishlist({{product.id}})" class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+               {% if product.discount_percentage > 0 %}
+               <span class="discount-badge">{{product.discount_percentage}}% OFF</span>
+               {% endif %}
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">{{product.name}}</h5>
+               <div class="product-price">
+                   {% if product.discount_percentage > 0 %}
+                   <span class="original-price">R{{product.original_price}}</span>
+                   {% endif %}
+                   R{{product.price}}
+               </div>
+               <div class="product-rating">
+                   {% if product.rating %}
+                       {% for i in product.get_star_list %}
+                           {% if i == 1 %}
+                           <i class="bi bi-star-fill"></i>
+                           {% elif i == 0.5 %}
+                           <i class="bi bi-star-half"></i>
+                           {% else %}
+                           <i class="bi bi-star"></i>
+                           {% endif %}
+                       {% endfor %}
+                       <span class="text-muted ms-2">({{product.review_count}})</span>
+                   {% else %}
+                       <i class="bi bi-star"></i>
+                       <i class="bi bi-star"></i>
+                       <i class="bi bi-star"></i>
+                       <i class="bi bi-star"></i>
+                       <i class="bi bi-star"></i>
+                       <span class="text-muted ms-2">(0)</span>
+                   {% endif %}
+               </div>
+               <button onclick="addToCart({{product.id}})" class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   {% endif %}
+   {% endfor %}
+</div>
+</section>
+
+<!-- Flash Sales -->
+<section class="container my-5">
+<div class="section-header">
+   <h2 class="section-title">Flash Sales</h2>
+   <a href="#" class="view-all">View all sales</a>
+</div>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1099&q=80" 
+                    alt="Wireless Headphones" class="product-img">
+               <span class="discount-badge">30% OFF</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Sony WH-1000XM4 Wireless Headphones</h5>
+               <div class="product-price">
+                   <span class="original-price">R1,799.99</span>
+                   R1,249.99
+               </div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(45)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                    alt="Smart Watch" class="product-img">
+               <span class="discount-badge">25% OFF</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Apple Watch Series 7</h5>
+               <div class="product-price">
+                   <span class="original-price">R5,349.00</span>
+                   R3,999.00
+               </div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(89)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-md-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                    alt="Headphones" class="product-img">
+               <span class="discount-badge">40% OFF</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Premium Wireless Earbuds</h5>
+               <div class="product-price">
+                   <span class="original-price">R1,299.99</span>
+                   R779.99
+               </div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(37)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-lg-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                    alt="Sneakers" class="product-img">
+               <span class="discount-badge">35% OFF</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Nike Air Max Running Shoes</h5>
+               <div class="product-price">
+                   <span class="original-price">R2,199.99</span>
+                   R1,429.99
+               </div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(56)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+</div>
 </section>
 
 <!-- New Arrivals -->
 <section class="container my-5">
-    <div class="section-header">
-        <h2 class="section-title">New Arrivals</h2>
-        <a href="#" class="view-all">View all new items</a>
-    </div>
-    
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-        <div class="col">
-            <div class="product-card">
-                <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1099&q=80" 
-                         alt="Wireless Headphones" class="product-img">
-                    <span class="product-badge">New</span>
-                    <button class="wishlist-btn">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
-                <div class="product-body">
-                    <h5 class="product-title">Sony WH-1000XM4 Wireless Headphones</h5>
-                    <div class="product-price">$249.99</div>
-                    <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <span class="text-muted ms-2">(8)</span>
-                    </div>
-                    <button class="btn btn-primary add-to-cart">
-                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col">
-            <div class="product-card">
-                <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
-                         alt="Smart Watch" class="product-img">
-                    <span class="product-badge">New</span>
-                    <button class="wishlist-btn">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
-                <div class="product-body">
-                    <h5 class="product-title">Apple Watch Series 7</h5>
-                    <div class="product-price">$349.00</div>
-                    <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <span class="text-muted ms-2">(15)</span>
-                    </div>
-                    <button class="btn btn-primary add-to-cart">
-                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Additional products to fill the grid -->
-        <div class="col d-none d-md-block">
-            <div class="product-card">
-                <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
-                         alt="Headphones" class="product-img">
-                    <span class="product-badge">New</span>
-                    <button class="wishlist-btn">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
-                <div class="product-body">
-                    <h5 class="product-title">Premium Wireless Earbuds</h5>
-                    <div class="product-price">$129.99</div>
-                    <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <span class="text-muted ms-2">(12)</span>
-                    </div>
-                    <button class="btn btn-primary add-to-cart">
-                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col d-none d-lg-block">
-            <div class="product-card">
-                <div class="product-img-container">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
-                         alt="Sneakers" class="product-img">
-                    <span class="product-badge">New</span>
-                    <button class="wishlist-btn">
-                        <i class="bi bi-heart"></i>
-                    </button>
-                </div>
-                <div class="product-body">
-                    <h5 class="product-title">Nike Air Max Running Shoes</h5>
-                    <div class="product-price">$189.99</div>
-                    <div class="product-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <span class="text-muted ms-2">(21)</span>
-                    </div>
-                    <button class="btn btn-primary add-to-cart">
-                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="section-header">
+   <h2 class="section-title">New Arrivals</h2>
+   <a href="#" class="view-all">View all new items</a>
+</div>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1099&q=80" 
+                    alt="Wireless Headphones" class="product-img">
+               <span class="product-badge">New</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Sony WH-1000XM4 Wireless Headphones</h5>
+               <div class="product-price">R2,499.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(8)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                    alt="Smart Watch" class="product-img">
+               <span class="product-badge">New</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Apple Watch Series 7</h5>
+               <div class="product-price">R4,999.00</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(15)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-md-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                    alt="Headphones" class="product-img">
+               <span class="product-badge">New</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Premium Wireless Earbuds</h5>
+               <div class="product-price">R1,299.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(12)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-lg-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                    alt="Sneakers" class="product-img">
+               <span class="product-badge">New</span>
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Nike Air Max Running Shoes</h5>
+               <div class="product-price">R1,899.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(21)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+</div>
+</section>
+
+<!-- Student Recommendations -->
+<section class="container my-5">
+<div class="section-header">
+   <h2 class="section-title">Student Recommendations</h2>
+   <a href="#" class="view-all">View all</a>
+</div>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                    alt="Laptop" class="product-img">
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Lenovo ThinkPad Student Edition</h5>
+               <div class="product-price">R12,499.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(78)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1544511916-0148ccdeb877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                    alt="Scientific Calculator" class="product-img">
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">Texas Instruments TI-84 Plus CE</h5>
+               <div class="product-price">R1,899.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(104)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-md-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1026&q=80" 
+                    alt="Backpack" class="product-img">
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">North Face Borealis Backpack</h5>
+               <div class="product-price">R899.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-half"></i>
+                   <span class="text-muted ms-2">(153)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+   
+   <div class="col d-none d-lg-block">
+       <div class="product-card">
+           <div class="product-img-container">
+               <img src="https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" 
+                    alt="Digital Tablet" class="product-img">
+               <button class="wishlist-btn">
+                   <i class="bi bi-heart"></i>
+               </button>
+           </div>
+           <div class="product-body">
+               <h5 class="product-title">iPad Air with Apple Pencil</h5>
+               <div class="product-price">R9,499.99</div>
+               <div class="product-rating">
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star-fill"></i>
+                   <i class="bi bi-star"></i>
+                   <span class="text-muted ms-2">(86)</span>
+               </div>
+               <button class="btn btn-primary add-to-cart">
+                   <i class="bi bi-cart-plus me-1"></i> Add to Cart
+               </button>
+           </div>
+       </div>
+   </div>
+</div>
+</section>
+
+<!-- CTA Newsletter -->
+<section class="container my-5">
+<div class="card bg-primary text-white rounded-3 shadow">
+   <div class="card-body p-4 p-md-5">
+       <div class="row align-items-center">
+           <div class="col-md-7 mb-4 mb-md-0">
+               <h3>Get Student Exclusive Offers</h3>
+               <p class="mb-0">Subscribe to our newsletter and get special discounts and early access to student deals.</p>
+           </div>
+           <div class="col-md-5">
+               <form id="newsletter-form">
+                   <div class="input-group">
+                       <input type="email" class="form-control" placeholder="Your email address" required>
+                       <button class="btn btn-light" type="submit">Subscribe</button>
+                   </div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
 </section>
 
 <!-- Footer -->
@@ -700,25 +1498,249 @@ body {
         </div>
     </div>
 </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Wishlist button functionality
-    document.querySelectorAll('.wishlist-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            this.classList.toggle('active');
-            const icon = this.querySelector('i');
-            if (this.classList.contains('active')) {
-                icon.classList.remove('bi-heart');
-                icon.classList.add('bi-heart-fill');
-            } else {
-                icon.classList.remove('bi-heart-fill');
-                icon.classList.add('bi-heart');
+    // Cart functionality
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    let cartCount = cartItems.length;
+    
+    function updateCartCounter() {
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = cartCount;
+            cartCountElement.style.display = cartCount > 0 ? 'flex' : 'none';
+        }
+    }
+    
+    function addToCart(productId) {
+        // Check if product already exists in cart
+        const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+        
+        if (existingItemIndex !== -1) {
+            // Update quantity if item already exists
+            cartItems[existingItemIndex].quantity += 1;
+        } else {
+            // Add new item to cart
+            cartItems.push({
+                id: productId,
+                quantity: 1,
+                dateAdded: new Date().toISOString()
+            });
+        }
+        
+        // Update local storage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        
+        // Update cart counter
+        cartCount = calculateTotalItems();
+        updateCartCounter();
+        
+        // Show confirmation toast
+        showToast('Item added to cart successfully!');
+    }
+    
+    function calculateTotalItems() {
+        return cartItems.reduce((total, item) => total + item.quantity, 0);
+    }
+    
+    // Wishlist functionality
+    let wishlistItems = JSON.parse(localStorage.getItem('wishlistItems')) || [];
+    
+    function addWishlist(productId) {
+        const wishlistBtn = event.currentTarget;
+        
+        // Check if product is already in wishlist
+        const index = wishlistItems.indexOf(productId);
+        
+        if (index === -1) {
+            // Add to wishlist
+            wishlistItems.push(productId);
+            wishlistBtn.classList.add('active');
+            showToast('Item added to wishlist!');
+        } else {
+            // Remove from wishlist
+            wishlistItems.splice(index, 1);
+            wishlistBtn.classList.remove('active');
+            showToast('Item removed from wishlist!');
+        }
+        
+        // Update local storage
+        localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
+    }
+    
+    // Initialize wishlist buttons state
+    function initWishlistButtons() {
+        const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+        
+        wishlistButtons.forEach(button => {
+            const productId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+            if (wishlistItems.includes(productId)) {
+                button.classList.add('active');
             }
         });
+    }
+    
+    // Toast notification
+    function showToast(message) {
+        // Create toast element if it doesn't exist
+        let toastContainer = document.getElementById('toast-container');
+        
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.style.position = 'fixed';
+            toastContainer.style.bottom = '20px';
+            toastContainer.style.right = '20px';
+            toastContainer.style.zIndex = '1050';
+            document.body.appendChild(toastContainer);
+        }
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast show bg-white';
+        toast.style.minWidth = '250px';
+        toast.style.margin = '0.5rem 0';
+        toast.style.boxShadow = '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)';
+        toast.style.borderRadius = '0.25rem';
+        
+        toast.innerHTML = `
+            <div class="toast-header">
+                <strong class="me-auto">SixSkies</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+    
+    // Newsletter form handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const newsletterForm = document.getElementById('newsletter-form');
+        
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const emailInput = this.querySelector('input[type="email"]');
+                const email = emailInput.value.trim();
+                
+                if (email) {
+                    // Simulate sending subscription request
+                    emailInput.value = '';
+                    showToast('Thank you for subscribing to our newsletter!');
+                    
+                    // In a real implementation, you would send this to your server
+                    console.log('Newsletter subscription:', email);
+                }
+            });
+        }
+        
+        // Initialize components
+        initWishlistButtons();
+        updateCartCounter();
+        initDealCountdown();
     });
-</script>
-<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-<script src="{% static 'user/js/cart.js' %}"></script>
+    
+    // Deal of the day countdown timer
+    function initDealCountdown() {
+        // Set the deal end time (24 hours from now)
+        const dealEndTime = new Date();
+        dealEndTime.setHours(dealEndTime.getHours() + 24);
+        
+        // Update countdown every second
+        const countdownTimer = setInterval(updateCountdown, 1000);
+        
+        function updateCountdown() {
+            const now = new Date();
+            const timeDifference = dealEndTime - now;
+            
+            if (timeDifference <= 0) {
+                // Deal has ended
+                clearInterval(countdownTimer);
+                document.querySelectorAll('.timer-number').forEach(element => {
+                    element.textContent = '00';
+                });
+                return;
+            }
+            
+            // Calculate time units
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            
+            // Update the DOM
+            document.querySelector('.timer-number:nth-child(1)').textContent = hours.toString().padStart(2, '0');
+            document.querySelector('.timer-item:nth-child(2) .timer-number').textContent = minutes.toString().padStart(2, '0');
+            document.querySelector('.timer-item:nth-child(3) .timer-number').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Initialize countdown immediately
+        updateCountdown();
+    }
+    
+    // Dynamic product loading for infinite scroll
+    let currentPage = 1;
+    let isLoading = false;
+    
+    function loadMoreProducts() {
+        if (isLoading) return;
+        
+        isLoading = true;
+        currentPage++;
+        
+        // Show loading spinner
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.id = 'loading-spinner';
+        loadingSpinner.className = 'text-center my-4';
+        loadingSpinner.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+        
+        const popularProductsSection = document.querySelector('.section:contains("Most Popular")');
+        if (popularProductsSection) {
+            popularProductsSection.appendChild(loadingSpinner);
+        }
+        
+        // Simulate API call to fetch more products
+        setTimeout(() => {
+            // In a real implementation, this would be an AJAX call to your backend
+            // For now, we'll just simulate the behavior
+            
+            // Remove loading spinner
+            document.getElementById('loading-spinner')?.remove();
+            isLoading = false;
+            
+            // Simulate end of products after page 3
+            if (currentPage > 3) {
+                showToast('No more products to load!');
+            }
+        }, 1500);
+    }
+    
+    // Implement infinite scroll
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            loadMoreProducts();
+        }
+    });
+    
+    // Initialize dynamic image error handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const productImages = document.querySelectorAll('.product-img');
+        
+        productImages.forEach(img => {
+            img.onerror = function() {
+                this.src = 'https://via.placeholder.com/300x300?text=Product+Image';
+            };
+        });
+    });
+    </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
