@@ -26,16 +26,16 @@ SECRET_KEY = 'django-insecure-#fk13o@n+i%t_!9u5xjhp43(_1xi^nde5ijc(7&zw*wx+@sybh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*","sixskies.co.za","market-nfem.onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["versityfinds.co.za","market-nfem.onrender.com", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "https://sixskies.co.za",
-    "https://market-nfem.onrender.com"
+    "https://versityfinds.co.za",
+    "https://versityfinds.co.za"
 ]
 
 # settings.py
 
-SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
+SITE_URL = "https://versityfinds.co.za"  # Replace with your domain in production
 #SITE_URL = "market-nfem.onrender.com"  # Replace with your domain in production
 
 SITE_ID=2
@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
+    'django.contrib.sitemaps',
 
 ]
 

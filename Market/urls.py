@@ -18,7 +18,26 @@ from django.contrib import admin
 from django.urls import path, include
 from authenticator import views
 from django.conf import settings
+
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+
+from shop.sitemaps import ShopSitemap
+from authenticator.sitemaps import AuthSitemap
+from user.sitemaps import UserSitemap
+from seller.sitemaps import SellerSitemap
+
+
+
+sitemaps_dict = {
+    'products': ShopSitemap,
+    'auth': AuthSitemap,
+    'user': UserSitemap,
+     'shop': ShopSitemap,
+      'seller': SellerSitemap,
+
+}
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('shop.urls')),
@@ -29,7 +48,8 @@ urlpatterns = [
     path('shop/',include('shop.urls')),
      path('moderator/',include('moderator.urls')),
     path('administrator/',include('administrator.urls')),
-    path('transactions/', include('transactions.urls'))
+    path('transactions/', include('transactions.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps_dict}, name='sitemap'),
 
 ]
 
