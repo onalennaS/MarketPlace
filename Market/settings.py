@@ -81,7 +81,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 MIDDLEWARE = [
-    "csp.middleware.CSPMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -96,19 +95,6 @@ MIDDLEWARE = [
 MIDDLEWARE += ['authenticator.middleware.security_headers.PermissionsPolicyMiddleware']
 
 
-INSTALLED_APPS += ['csp']
-
-
-from csp.constants import SELF
-
-CONTENT_SECURITY_POLICY = {
-    "DIRECTIVES": {
-        "default-src": [SELF, "versityfinds.co.za"],
-        "script-src": [SELF, "versityfinds.co.za"],
-        "style-src": [SELF, "versityfinds.co.za"],
-        
-    },
-}
 
 ROOT_URLCONF = 'Market.urls'
 
@@ -185,7 +171,7 @@ SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'DENY'
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
