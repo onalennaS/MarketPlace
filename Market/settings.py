@@ -27,7 +27,12 @@ SECRET_KEY = 'django-insecure-#fk13o@n+i%t_!9u5xjhp43(_1xi^nde5ijc(7&zw*wx+@sybh
 DEBUG = True
 
 ALLOWED_HOSTS = ["*","sixskies.co.za","market-nfem.onrender.com", "127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ["*","https://sixskies.co.za","https://market-nfem.onrender.com", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "https://sixskies.co.za",
+    "https://market-nfem.onrender.com"
+]
+
 # settings.py
 
 SITE_URL = "http://127.0.0.1:8000"  # Replace with your domain in production
