@@ -33,7 +33,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://versityfinds.co.za",
     "https://versityfinds.co.za"
 ]
-
+# Required if frontend needs to access csrftoken
+CSRF_COOKIE_HTTPONLY = False
+# Strongly recommended
+CSRF_COOKIE_SECURE = True  # Only over HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'  # or 'Strict' depending on use case
 # settings.py
 
 SITE_URL = "https://versityfinds.co.za"  # Replace with your domain in production
