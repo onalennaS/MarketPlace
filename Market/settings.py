@@ -34,16 +34,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://versityfinds.co.za"
 ]
 # Required if frontend needs to access csrftoken
-# CSRF_COOKIE_HTTPONLY = False
-# # Strongly recommended
-# CSRF_COOKIE_SECURE = False  # Only over HTTPS
-# CSRF_COOKIE_SAMESITE = 'Lax'  # or 'Strict' depending on use case
-# settings.py
+
 
 SITE_URL = "https://versityfinds.co.za"  # Replace with your domain in production
 #SITE_URL = "market-nfem.onrender.com"  # Replace with your domain in production
 
-SITE_ID=2
+SITE_ID=3
 
 # CUSTOM USer Model 
 
@@ -163,24 +159,28 @@ USE_I18N = True
 USE_TZ = True
 
 
-# SECURE_HSTS_SECONDS = 31536000  # 1 year
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
 
 
+X_FRAME_OPTIONS = 'DENY'
 
-# SECURE_SSL_REDIRECT = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# SESSION_COOKIE_SECURE = True
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+CSRF_COOKIE_HTTPONLY = False
+# Strongly recommended
+CSRF_COOKIE_SAMESITE = 'Lax'  # or 'Strict' depending on use case
 
-# CSRF_COOKIE_SECURE = True
-
-# X_FRAME_OPTIONS = 'DENY'
-
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
-
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
