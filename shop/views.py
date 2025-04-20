@@ -70,3 +70,17 @@ def view_product(request, product_id):
 
 def home(request):
     return render(request,'products/landing_page.html')
+
+
+
+
+from django.http import HttpResponse
+from django.conf import settings
+import os
+
+def robots_txt(request):
+    file_path = os.path.join(settings.BASE_DIR, 'authenticator', 'static', 'robots.txt')
+    with open(file_path, 'r') as f:
+        content = f.read()
+
+    return HttpResponse(content, content_type="text/plain")
