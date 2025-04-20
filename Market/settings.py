@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEGUB')
+DEBUG = True
 
 PAYSTACK_MAIN_ACCOUNT = config('PAYSTACK_MAIN_ACCOUNT')
 PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
