@@ -336,7 +336,7 @@ def palce_order(request):
     response_data = initiate_split_payment(
                email=request.user.email,
                total_amount=total_amount,
-               seller_subaccount=business.subaccount_code,
+               seller_subaccount=business.account_code,
                delivery_amount=delivery_amount,
                order=order
      )
