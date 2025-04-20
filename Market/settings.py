@@ -34,10 +34,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://versityfinds.co.za"
 ]
 # Required if frontend needs to access csrftoken
-CSRF_COOKIE_HTTPONLY = False
-# Strongly recommended
-CSRF_COOKIE_SECURE = True  # Only over HTTPS
-CSRF_COOKIE_SAMESITE = 'Lax'  # or 'Strict' depending on use case
+# CSRF_COOKIE_HTTPONLY = False
+# # Strongly recommended
+# CSRF_COOKIE_SECURE = False  # Only over HTTPS
+# CSRF_COOKIE_SAMESITE = 'Lax'  # or 'Strict' depending on use case
 # settings.py
 
 SITE_URL = "https://versityfinds.co.za"  # Replace with your domain in production
@@ -163,23 +163,23 @@ USE_I18N = True
 USE_TZ = True
 
 
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_SECONDS = 31536000  # 1 year
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
 
 
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
-X_FRAME_OPTIONS = 'DENY'
+# X_FRAME_OPTIONS = 'DENY'
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
 
-SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+# SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 
 # Static files (CSS, JavaScript, Images)
