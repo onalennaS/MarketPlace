@@ -120,6 +120,10 @@ def payment_successful(request,order_id):
     return render(request, 'home/payment/payment_successful.html',{'order':order})
 
 @login_required_custom
+def payment_failed(request):
+    return render(request, 'home/payment/payment_failed.html')
+
+@login_required_custom
 @has_password
 def buyer_dashboard(request):
     return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})

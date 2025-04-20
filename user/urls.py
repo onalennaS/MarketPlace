@@ -22,6 +22,9 @@ urlpatterns = [
     path('dashboard/address', views.address, name='address'),
     path('dashboard/payment_history', views.payment_history, name='payment_history'),
     path('dashboard/checkout/payment_successful/<int:order_id>', views.payment_successful, name='payment_successful'),
+    path('dashboard/checkout/payment_failed/', views.payment_failed, name='payment_failed'),
+    
+
     path('dashboard/subscription_plan', views.subscription_plan, name='subscription_plan'),
     path('dashboard/', views.dash, name='dash'),
 

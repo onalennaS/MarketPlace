@@ -55,7 +55,7 @@ def payment_callback(request):
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)
         else:
-            return JsonResponse({"error": "payment failed"}, status=404) #redirect("payment_failed")
+            return redirect("payment_failed") #redirect("payment_failed")
     else:
         return JsonResponse({"error": "Failed to verify transaction"}, status=500)
 
