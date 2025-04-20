@@ -7,6 +7,7 @@ import json
 from django.http import JsonResponse
 from transactions.utils.business_transaction import transfer_money_to_business
 from transactions.utils.payments import initiate_split_payment
+from django.conf import settings
 
 
 @login_required_custom

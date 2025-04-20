@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render , settings
 from django.http import JsonResponse
 from seller.wrap_models.business_model import BusinessInformation, Moderation,Address
 from .utils.business_transaction import withdraw_business_funds
 from seller.wrap_models.orders_model import Order
+from django.conf import settings
+
 # Create your views here.
 import json
 def business_withdrawal(request):
@@ -55,3 +57,33 @@ def payment_callback(request):
             return JsonResponse({"error": "payment failed"}, status=404) #redirect("payment_failed")
     else:
         return JsonResponse({"error": "Failed to verify transaction"}, status=500)
+
+@csrf_exempt
+def paystack_webhook(request):
+    secret = settings.PAYSTACK_SECRET_KEY
+    paystack_signature = request.headers.get('x-paystack-signature')
+
+    body = request.body
+    expected_signature = hmac.new(
+        key=bytes(secret, 'utf-8'),
+        msg=body,
+        digestmod=hashlib.sha512
+    ).hexdigest()
+
+    if paystack_signature != expected_signature:
+        return HttpResponse(status=400)
+
+    event = json.loads(body)
+
+    if event["event"] == "charge.success":
+        reference = event["data"]["reference"]
+        # Find your order and mark it as paid
+        try:
+            order = Order.objects.get(reference=reference)
+            order.status = "paid"
+            order.save()
+        except Order.DoesNotExist:
+            pass
+
+    return HttpResponse(status=200)
+
