@@ -42,6 +42,7 @@ function addExtraToCart() {
     // Get data from form
     const formData = {
         extras: storeSelectedCheckboxesExtras(),
+        qty : document.getElementById('quantity').value(),
     };
 
     console.log(formData);
@@ -71,6 +72,43 @@ function addExtraToCart() {
         console.error('Error submitting form:', error);
     });
 }
+
+/*function ContinueCheckout(product_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        product_id: product_id,
+        qty : document.getElementById('qty').value(),
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/account/api/user/continue_checkout/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            window.location.href = '/account/dashboard/checkout';
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}*/
 
 
 function deleteExtra(extra_id) {
@@ -360,7 +398,7 @@ function place_order(order_id) {
       }else{
         displayMessagesapi(data);
         setTimeout(() => {
-            window.location.href = '/account/dashboard/checkout/payment_successful/'+data.order_id;
+            window.location.href = data['authorization_url'];
         }, 2000);
       }
     })

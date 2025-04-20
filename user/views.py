@@ -30,7 +30,12 @@ def home(request):
 
 
 def get_cart_items(user):
-    return Cart.objects.filter(user=user).all().count()
+    cart_count = Cart.objects.filter(user=user).all().count() 
+    items_in_cart_qty = Cart.objects.filter(user=user).all()
+    cnt = 0
+    for item in items_in_cart_qty:
+        cnt += item.quantity
+    return cnt
 
 def get_extra_count(user):
     return CartExtra.objects.filter(user=user).all().count()
@@ -44,9 +49,9 @@ def get_order_extra(order):
 def get_cart_total(cart_items):
     total = 0
     for item in cart_items:
-        total += float(item.product.price)
+        total += float(item.product.price) * item.quantity + 0.29
 
-    return total
+    return round(total,2)
 
 def get_extra_total(extras):
     total = 0

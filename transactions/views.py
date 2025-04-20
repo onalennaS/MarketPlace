@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from seller.wrap_models.business_model import BusinessInformation, Moderation,Address
 from .utils.business_transaction import withdraw_business_funds
+from seller.wrap_models.orders_model import Order
 # Create your views here.
 import json
 def business_withdrawal(request):
@@ -20,3 +21,37 @@ def business_withdrawal(request):
 	if not withdraw:
 		return JsonResponse({'message':'Insuficient funds for withdrawal', "status":"error"}, status=400) 
 	return JsonResponse({'message':"your withdrwal was successfully processed",'status':'success'},status=200)
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+#@csrf_exempt
+def payment_callback(request):
+    reference = request.GET.get('reference')
+    if not reference:
+        return JsonResponse({"error": "No reference provided"}, status=400)
+
+    # Verify transaction
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+
+    verify_url = f"https://api.paystack.co/transaction/verify/{reference}"
+    response = requests.get(verify_url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()["data"]
+        if data["status"] == "success":
+            # Mark order as paid
+            try:
+                order = Order.objects.get(ref=reference)
+                order.paid = True
+                order.save()
+                transaction = transfer_money_to_business(request.user,order.business,total_amount,order)
+                return redirect("payment_successful",order.id)  # or render a success page
+            except Order.DoesNotExist:
+                return JsonResponse({"error": "Order not found"}, status=404)
+        else:
+            return JsonResponse({"error": "payment failed"}, status=404) #redirect("payment_failed")
+    else:
+        return JsonResponse({"error": "Failed to verify transaction"}, status=500)

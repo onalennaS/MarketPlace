@@ -4,7 +4,7 @@ from .product_model import Product, Extras, Addon
 from seller.wrap_models.business_model import BusinessInformation
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+ 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)  # Auto-incrementing ID
     order_id = models.CharField(max_length=20, unique=True, blank=True)  # Custom Order ID
@@ -12,6 +12,8 @@ class Order(models.Model):
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)  # Order Total
     delivery_method = models.CharField(max_length=50,null=True)
+    ref = models.CharField(max_length=250,null=True,default="")
+    paid = models.BooleanField(default=False)
     status = models.CharField(
         max_length=20,
         choices=[("Pending", "Pending"), ("Processing", "Processing"),("On route", "On route"), ("Delivered", "Delivered"), ("Failed", "Failed")],

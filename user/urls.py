@@ -25,8 +25,7 @@ urlpatterns = [
     path('dashboard/subscription_plan', views.subscription_plan, name='subscription_plan'),
     path('dashboard/', views.dash, name='dash'),
 
-    
-
+    path('api/user/update_quantity/', cart_views.update_quantity, name='update_quantity'),
     path('api/user/add_cart/', cart_views.add_cart, name='add_cart'),
     path('api/user/add_extra_to_cart/', cart_views.add_extra_to_cart, name='add_extra_to_cart'),
     path('api/user/delete_extra/', cart_views.delete_extra, name='delete_extra'),

@@ -27,11 +27,20 @@ def add_cart(request):
 		return JsonResponse({"message":"product does not exist", "status":"error"},status=404) 
 
 	product = Product.objects.filter(id=prodcut_id).first()
-	check_items = Cart.objects.filter(user=user).all()
-	if len(check_items) > 0 :
-		items = check_items.filter(product__business_in=[product]).all()
-		if not len(items) > 0:
-			return JsonResponse({"message":"Cannot add products from different businesses into the same cart", "status":"error"},status=404)
+	if not product:
+		return JsonResponse({"message": "Product not found", "status": "error"}, status=404)
+
+	# Get all cart items for the user
+	cart_items = Cart.objects.filter(user=user)
+
+	if cart_items.exists():
+    # Check if there's any item from a different business
+		different_business_items = cart_items.exclude(product__business=product.business)
+		if different_business_items.exists():
+			return JsonResponse({
+				"message": "Cannot add products from different businesses into the same cart",
+					"status": "error"
+			}, status=400)
 	cart_exists = Cart.objects.filter(product=product,user=user).all()
 	if cart_exists:
 		return JsonResponse({"message":"Product already added to cart", "status":"error"},status=404) 
@@ -49,9 +58,8 @@ def add_cart(request):
 			else :
 				print("no extra found")
 	return JsonResponse({"message": "product added to cart successfully",'status':'success'}, status=201)
+
 @login_required_custom
-
-
 def add_extra_to_cart(request):
 	if not request.method == "POST":
 		return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
@@ -63,7 +71,6 @@ def add_extra_to_cart(request):
 
 	extras = data.get('extras')
 	user = request.user
-
 	
 	if extras:
 		for extra_id in extras.keys():
@@ -74,6 +81,23 @@ def add_extra_to_cart(request):
 				
 			else :
 				print("no extra found")
+	return JsonResponse({"message": "extras added to cart successfully",'status':'success'}, status=201)
+
+@login_required_custom
+def update_quantity(request):
+	if not request.method == "POST":
+		return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+	try:
+		data = json.loads(request.body)  # Parse JSON request body
+	except json.JSONDecodeError:
+		return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+	print(data)
+	product_in_cart = Cart.objects.filter(id=int(data.get('id'))).first()
+	if product_in_cart:
+		product_in_cart.quantity = int(data.get('quantity'))
+		product_in_cart.save()
+	else:
+		return JsonResponse({"message":"Item not found ", "status":"error"},status=400)
 	return JsonResponse({"message": "extras added to cart successfully",'status':'success'}, status=201)
 
 
@@ -281,9 +305,14 @@ def palce_order(request):
     cart_extras = CartExtra.objects.filter(user=request.user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=request.user).first()
     if not delivery_method:
-        return JsonResponse({'status':'error', 'message':'please choose a '}, status=403)
+        return JsonResponse({'status':'error', 'message':'please choose a Delivery method'}, status=403)
     
     address = CartDeliveryAddress.objects.filter(user=request.user).first()
+    if not address:
+        return JsonResponse({'status':'error', 'message':'Please add delivery address'}, status=403)
+    if not address.address_type:
+        return JsonResponse({'status':'error', 'message':'Please add delivery address'}, status=403)
+
     business = cart_items[0].product.business
     product_amount = 0
     extra_amount = 0 
@@ -303,8 +332,18 @@ def palce_order(request):
    
     order = Order.objects.create(business=business,user=request.user,total_amount=total_amount,delivery_method=delivery_method.method)
     order.save()
+    response_data = initiate_split_payment(
+               email=request.user.email,
+               total_amount=total_amount,
+               seller_subaccount=business.subaccount_code,
+               delivery_amount=delivery_amount,
+               order=order
+     )
 
-    send_email_order_confirmation(order,cart_extras,cart_items,total_amount)
+    if not response_data:
+        order.delete()
+        return JsonResponse({"status": "error", "message": "Payment initialization failed"}, status=400)
+    #send_email_order_confirmation(order,cart_extras,cart_items,total_amount)
     for item in cart_items:
         order_item = OrderItem.objects.create(order=order,product=item.product,quantity=item.quantity)
         order_item.save()
@@ -328,7 +367,12 @@ def palce_order(request):
             order_address.save()
         else:
             return JsonResponse({'message':'address not found ','status':'error'},status=404)
-
-    transaction = transfer_money_to_business(request.user,order.business,total_amount,order)
-    return JsonResponse({"message": "Order Placed Successfully successfully",'status':'success','order_id':order.id}, status=201)
     
+    
+    else:
+        return JsonResponse({
+                "status": "success",
+                "message": "Payment initialized",
+                "authorization_url": response_data["authorization_url"],
+               
+         })

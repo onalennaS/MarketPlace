@@ -11,7 +11,7 @@ class Product(models.Model):
         ('technology', 'Technology'),
         ('other', 'Other'),
     ]
- 
+  
     STATUS_CHOICES = [
         ('active', 'Active'),
         ('inactive', 'Inactive'),
