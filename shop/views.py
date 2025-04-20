@@ -79,7 +79,7 @@ from django.conf import settings
 import os
 
 def robots_txt(request):
-    file_path = os.path.join(settings.BASE_DIR, 'authenticator', 'static', 'robots.txt')
+    file_path = os.path.join(settings.BASE_DIR, 'shop', 'static', 'robots.txt')
     with open(file_path, 'r') as f:
         content = f.read()
 
