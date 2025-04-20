@@ -6,7 +6,7 @@ from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderA
 import json
 from django.http import JsonResponse
 from transactions.utils.business_transaction import transfer_money_to_business
-
+from transactions.utils.payments import initiate_split_payment
 
 
 @login_required_custom
