@@ -6,9 +6,9 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
     delivery_amount = float(delivery_amount)
 
     # --- Breakdown in rands ---
-    product_total = total_amount - delivery_amount
+    product_total = total_amount - delivery_amount - 4
     product_total_kobo = int(product_total * 100)
-    delivery_kobo = int(delivery_amount * 100)
+    delivery_kobo = int(4+delivery_amount * 100)
     grand_total_kobo = int(total_amount * 100)
 
     # --- Fixed platform cut ---
@@ -29,10 +29,10 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
                 "subaccount": seller_subaccount,
                 "share": seller_cut_kobo
             },
-            {
-                "subaccount": settings.PAYSTACK_MAIN_ACCOUNT,
-                "share": platform_cut_kobo
-            }
+            # {
+            #     "subaccount": settings.PAYSTACK_MAIN_ACCOUNT,
+            #     "share": platform_cut_kobo
+            # }
         ]
     }
 
