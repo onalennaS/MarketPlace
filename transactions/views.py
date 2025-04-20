@@ -4,7 +4,7 @@ from seller.wrap_models.business_model import BusinessInformation, Moderation,Ad
 from .utils.business_transaction import withdraw_business_funds
 from seller.wrap_models.orders_model import Order
 from django.conf import settings
-
+import requests
 # Create your views here.
 import json
 def business_withdrawal(request):

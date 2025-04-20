@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from ..utils import login_required_custom, has_password, send_email_order_confirmation
 from seller.wrap_models.product_model import Product, Extras,Addon
 from ..wrap_models.cart_models import Cart, CartExtra, Wishlist,CartAddons,CartDeliveryMethod,CartDeliveryAddress
@@ -8,7 +8,6 @@ from django.http import JsonResponse
 from transactions.utils.business_transaction import transfer_money_to_business
 from transactions.utils.payments import initiate_split_payment
 from django.conf import settings
-
 
 @login_required_custom
 def add_cart(request):
@@ -92,7 +91,7 @@ def update_quantity(request):
 		data = json.loads(request.body)  # Parse JSON request body
 	except json.JSONDecodeError:
 		return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
-	print(data)
+	
 	product_in_cart = Cart.objects.filter(id=int(data.get('id'))).first()
 	if product_in_cart:
 		product_in_cart.quantity = int(data.get('quantity'))
@@ -370,8 +369,8 @@ def palce_order(request):
             return JsonResponse({'message':'address not found ','status':'error'},status=404)
     
     
-    else:
-        return JsonResponse({
+
+    return JsonResponse({
                 "status": "success",
                 "message": "Payment initialized",
                 "authorization_url": response_data["authorization_url"],

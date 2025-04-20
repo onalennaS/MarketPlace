@@ -111,7 +111,7 @@ def checkout(request):
     extra_items = get_extra_count(request.user)
     price_total = get_cart_total(cart_items)
     extra_total = get_extra_total(extras)
-    checkout_total = price_total + extra_total + delivery_total
+    checkout_total = round(price_total + extra_total + delivery_total,2)
     return render(request, 'home/checkout.html', {'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'delivery_address':delivery_address,'cart_items':cart_items,"cart_total":price_total,"items_count":items,"method":method,"checkout_total":checkout_total})
 
 @login_required_custom

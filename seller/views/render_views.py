@@ -85,39 +85,40 @@ def orders(request, business_id):
     orders = Order.objects.filter(business=business).all()
     all_orders = []
     for order in orders:
-        json_orders = {'items':[],'extras':[]}
-        json_orders['id'] = f'{order.order_id}' 
-        json_orders['message'] = 'Prepare order quickly'
-        json_orders['paymentStatus'] = "paid"
-        json_orders['deliveryMethod'] = "Pickup"
-        json_orders['timestamp'] = f'{order.created_at.strftime("%d %b %H:%M")}'
-        json_orders['total'] = f'{float(order.total_price())}'
-        json_orders['user'] = f'{order.user.username}'
-        if order.status == "Pending" :
-            json_orders['status'] = "new"
-        if order.status == "Processing":
-            json_orders['status'] = "preparing"
-        if order.status == "On route" :
-            json_orders['status'] = "scheduled"
-        if order.status == "Delivered":
-            json_orders['status'] = "completed"
+        if order.paid == True:
+            json_orders = {'items':[],'extras':[]}
+            json_orders['id'] = f'{order.order_id}' 
+            json_orders['message'] = 'Prepare order quickly'
+            json_orders['paymentStatus'] = "paid"
+            json_orders['deliveryMethod'] = "Pickup"
+            json_orders['timestamp'] = f'{order.created_at.strftime("%d %b %H:%M")}'
+            json_orders['total'] = f'{float(order.total_price())}'
+            json_orders['user'] = f'{order.user.username}'
+            if order.status == "Pending" :
+                json_orders['status'] = "new"
+            if order.status == "Processing":
+                json_orders['status'] = "preparing"
+            if order.status == "On route" :
+                json_orders['status'] = "scheduled"
+            if order.status == "Delivered":
+                json_orders['status'] = "completed"
 
-        order_items = OrderItem.objects.filter(order=order).all()
-        extra_items = OrderExtra.objects.filter(order=order).all()
-        for order_item in order_items:
-            item = {
-                'product':order_item.product.name, 
-                'quantity': order_item.quantity,
-                'extras' : [ extra.addon.name for extra in order_item.CartAddon.all() ]
-                    }
-            json_orders['items'].append(item)
+            order_items = OrderItem.objects.filter(order=order).all()
+            extra_items = OrderExtra.objects.filter(order=order).all()
+            for order_item in order_items:
+                item = {
+                    'product':order_item.product.name, 
+                    'quantity': order_item.quantity,
+                    'extras' : [ extra.addon.name for extra in order_item.CartAddon.all() ]
+                        }
+                json_orders['items'].append(item)
 
-        for extra_item in extra_items:
-            item = {'item':f'{extra_item.extra.name}'}
-            json_orders['extras'].append(item)
-       
-        all_orders.append(json_orders)
-    
+            for extra_item in extra_items:
+                item = {'item':f'{extra_item.extra.name}'}
+                json_orders['extras'].append(item)
+           
+            all_orders.append(json_orders)
+        
 
     return render(request, 'seller/new/orders.html',{'business':business,'all_orders':all_orders})
 
