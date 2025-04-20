@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'fdgq4cgq3c3cq35gq35g3hcvw4h6568e5bynb57j5v6jbsetv4wt34tvgvcg5vq4yv35c3qtg3qq3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["versityfinds.co.za","market-nfem.onrender.com", "127.0.0.1"]
@@ -96,7 +96,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
-MIDDLEWARE += ['authenticator.middleware.security_headers.PermissionsPolicyMiddleware']
+# MIDDLEWARE += ['authenticator.middleware.security_headers.PermissionsPolicyMiddleware']
 
 
 
