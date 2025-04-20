@@ -319,7 +319,7 @@ def palce_order(request):
     delivery_amount = 0 
     
     for item in cart_items:
-        product_amount += int(item.product.price)
+        product_amount += int(item.product.price) * int(item.quantity)
     for extra in cart_extras:
         extra_amount += int(extra.extra.price)
 

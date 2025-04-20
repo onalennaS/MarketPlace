@@ -1,4 +1,4 @@
-from django.shortcuts import render 
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from seller.wrap_models.business_model import BusinessInformation, Moderation,Address
 from .utils.business_transaction import withdraw_business_funds

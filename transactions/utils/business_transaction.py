@@ -17,8 +17,8 @@ def transfer_money_to_business(user,business,amount,order):
     	receiver_wallet.save()
 
     
-    receiver_wallet.balance += float(str(amount))
-    receiver_wallet.total += float(str(amount))
+    receiver_wallet.balance = Decimal(str(receiver_wallet.balance))  + Decimal(str(amount))
+    receiver_wallet.total = Decimal(str(receiver_wallet.total)) + Decimal(str(amount))
     receiver_wallet.save()
 
     transaction = BusinessTransaction.objects.create(sender=sender, receiver=receiver, amount=amount,ref=order, status="Success", transaction_type=transaction_type)
