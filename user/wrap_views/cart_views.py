@@ -337,7 +337,8 @@ def palce_order(request):
                total_amount=total_amount,
                seller_subaccount=business.account_code,
                delivery_amount=delivery_amount,
-               order=order
+               order=order,
+               cart_items=cart_items
      )
 
     if not response_data:

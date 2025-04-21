@@ -1,14 +1,34 @@
 import requests
 from django.conf import settings
+#get order 
+#get number of items in the order 
+#calculate the product fee on each order in this case its R4 per item
+#get the total prodcut fee
+#minus the paystack fee from the product fee
+#that remainng product fee is plartform cut
 
-def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amount, order):
+def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amount, order, cart_items):
     total_amount = float(total_amount)
     delivery_amount = float(delivery_amount)
+    items_count = 0
+    for item in cart_items:
+        items_count += 1
+
+    if items_count == 0:
+        items_count = 1
+        
+    product_fee = 4 * items_count
+    product_fee_kobo = int(product_fee * 100)
+
+    # paystack_fee = (total_amount * (2.9/100)) + 1 
+    # paystack_fee_vat = paystack_fee * 1.15
+    # product_fee_minus_paystack_fee_vat = product_fee - paystack_fee_vat
+
 
     # --- Breakdown in rands ---
-    product_total = (total_amount - delivery_amount) - 4
+    product_total = (total_amount - delivery_amount) 
     product_total_kobo = int(product_total * 100)
-    delivery_kobo = int((4+delivery_amount) * 100)
+    delivery_kobo = int((delivery_amount) * 100)
     grand_total_kobo = int(total_amount * 100)
 
     # --- Fixed platform cut ---
@@ -18,7 +38,8 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
     if product_total_kobo <= platform_cut_kobo:
         platform_cut_kobo = 0  # fallback, no split if value is too small
 
-    seller_cut_kobo = product_total_kobo - platform_cut_kobo
+    seller_cut_kobo = product_total_kobo  - platform_cut_kobo - product_fee_kobo
+ 
 
     # --- Split by amount ---
     split_data = {
