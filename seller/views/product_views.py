@@ -23,7 +23,7 @@ def add_product(request):
     try:
         name = request.POST.get('name')
         category = request.POST.get('category')
-        price = int(request.POST.get('price')) + 4
+        price = float(request.POST.get('price')) + float(4)
         quantity = request.POST.get('quantity')
         description = request.POST.get('description')
         small_description = request.POST.get('small_description')
