@@ -49,8 +49,8 @@ def get_order_extra(order):
 def get_cart_total(cart_items):
     total = 0
     for item in cart_items:
-        total += float(item.product.price) * item.quantity 
-
+        total += item.product.price * item.quantity 
+        
     return round(total,2)
 
 def get_extra_total(extras):

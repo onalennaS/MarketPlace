@@ -353,6 +353,10 @@ def palce_order(request):
             for addon in cart_addons:
                 order_addon = OrderAddons.objects.create(product=order_item, addon=addon.addon)
                 order_addon.save()
+        product_to_update = Product.objects.filter(id=item.product.id).first()
+        if product_to_update:
+        	product_to_update.quantity -= 1
+        	product_to_update.save()
         item.delete()
     if cart_extras:
         for extra in cart_extras:

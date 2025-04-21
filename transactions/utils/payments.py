@@ -27,9 +27,9 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
 
     # --- Breakdown in rands ---
     product_total = (total_amount - delivery_amount) 
-    product_total_kobo = int(product_total * 100)
-    delivery_kobo = int((delivery_amount) * 100)
-    grand_total_kobo = int(total_amount * 100)
+    product_total_kobo = float(product_total * 100)
+    delivery_kobo = float((delivery_amount) * 100)
+    grand_total_kobo = float(total_amount * 100)
 
     # --- Fixed platform cut ---
     platform_cut_kobo = 60  # R0.60 in kobo
