@@ -5,6 +5,7 @@ from ..wrap_models.business_model import BusinessInformation, Moderation,Address
 from ..wrap_models.product_model import Product, ProductModeration, RecentActivity, Extras,Addon
 from ..wrap_models.orders_model import Order, OrderItem, OrderExtra
 from transactions.models import BusinessWallet, BusinessTransaction
+from decimal import Decimal
 # Create your views here.
 # Create your views here.
 
@@ -134,7 +135,7 @@ def transaction(request,business_id):
             'ref':trans.ref,
             'customer':trans.sender.username,
             'transaction':trans.transaction_type,
-            'amount': float(trans.amount),
+            'amount': Decimal(trans.amount),
             'status':trans.status,
             'date':trans.timestamp.strftime("%Y-%m-%d")
 
