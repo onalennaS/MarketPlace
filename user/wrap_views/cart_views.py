@@ -330,8 +330,7 @@ def palce_order(request):
     total_amount = product_amount + extra_amount +delivery_amount
     
    
-    order = Order.objects.create(business=business,user=request.user,total_amount=total_amount,delivery_method=delivery_method.method)
-    order.save()
+    
     response_data = initiate_split_payment(
                email=request.user.email,
                total_amount=total_amount,
@@ -343,7 +342,6 @@ def palce_order(request):
      )
 
     if not response_data:
-        order.delete()
         return JsonResponse({"status": "error", "message": "Payment initialization failed"}, status=400)
     return JsonResponse({
                 "status": "success",
