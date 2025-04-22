@@ -121,7 +121,7 @@ def edit_product(request):
 
         product.name = data.get('name')
         product.category = data.get('category')
-        product.price = data.get('price')
+        product.price = float(data.get('price')) + float(4)
         product.quantity = data.get('quantity')
         product.description = data.get('description')
         product.small_description = data.get('small_description')
@@ -184,7 +184,7 @@ def add_extras(request):
 	business = BusinessInformation.objects.filter(id=business).first()
 	name = data.get('name')
 	
-	price = data.get('price')
+	price = float(data.get('price')) + float(0.55)
 
 	extras_exists = Extras.objects.filter(business=business, name=name ).first()
 	if extras_exists:

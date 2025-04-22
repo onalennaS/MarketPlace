@@ -42,7 +42,7 @@ function addExtraToCart() {
     // Get data from form
     const formData = {
         extras: storeSelectedCheckboxesExtras(),
-        qty : document.getElementById('quantity').value(),
+        
     };
 
     console.log(formData);
@@ -63,7 +63,7 @@ function addExtraToCart() {
       }else{
         displayMessagesapi(data);
         setTimeout(() => {
-            window.location.href = '/account/dashboard/checkout';
+            
         }, 2000);
       }
     })

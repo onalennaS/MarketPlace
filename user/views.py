@@ -3,6 +3,7 @@ from .utils import login_required_custom, has_password
 from allauth.socialaccount.models import SocialAccount
 from .wrap_models.cart_models import Cart , Wishlist,CartDeliveryMethod, CartDeliveryAddress, CartExtra
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddress
+from decimal import Decimal
 def is_google_linked(user):
     try:
         social_account = SocialAccount.objects.get(user=user)
@@ -56,8 +57,22 @@ def get_cart_total(cart_items):
 def get_extra_total(extras):
     total = 0
     for extra in extras:
-        total += float(extra.extra.price)
+        total += extra.extra.price
     return total
+
+def get_discount(cart_items):
+    discount_factor = 0
+    for item in cart_items:
+        discount_factor += item.quantity
+    discount = 4
+    discounted_amount = 0
+    if discount_factor == 3 :
+        discounted_amount = Decimal(discount) * Decimal(1)
+    elif discount_factor >3 and discount_factor < 6 :
+        discounted_amount = Decimal(discount) * Decimal(1.5)
+    elif discount_factor > 5 and discount_factor < 8:
+        discounted_amount = discount * 3
+    return Decimal(discounted_amount)
 
 @login_required_custom
 @has_password
@@ -112,7 +127,9 @@ def checkout(request):
     price_total = get_cart_total(cart_items)
     extra_total = get_extra_total(extras)
     checkout_total = round(price_total + extra_total + delivery_total,2)
-    return render(request, 'home/checkout.html', {'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'delivery_address':delivery_address,'cart_items':cart_items,"cart_total":price_total,"items_count":items,"method":method,"checkout_total":checkout_total})
+    discount = get_discount(cart_items)
+    total_to_pay = Decimal(checkout_total)  - Decimal(discount)
+    return render(request, 'home/checkout.html', {'discount':round(discount,2),'total_to_pay':total_to_pay,'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'delivery_address':delivery_address,'cart_items':cart_items,"cart_total":price_total,"items_count":items,"method":method,"checkout_total":checkout_total})
 
 @login_required_custom
 def payment_successful(request,order_id):

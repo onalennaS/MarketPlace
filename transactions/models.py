@@ -27,13 +27,13 @@ class BusinessWallet(models.Model):
 class BusinessTransaction(models.Model):
     STATUS_CHOICES = [("Success", "Success"), ("Failed", "Failed"), ("Pending", "Pending")]
     ref = models.CharField(max_length=60,null=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_transactions")
-    receiver = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="received_transactions")
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_transactions",null=True)
+    receiver = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="received_transactions",null=True)
     transaction_type = models.CharField(max_length=50,null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     timestamp = models.DateTimeField(default=now)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Pending")
-
+    fees = models.DecimalField(max_digits=10, decimal_places=2,null=True,default=0.00)
     def __str__(self):
         return f"{self.sender} -> {self.receiver}: {self.amount} ({self.status})"
 

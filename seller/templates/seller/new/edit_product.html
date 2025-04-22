@@ -190,12 +190,12 @@
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
-            <a href="{% url 'orders' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <a href="{% url 'orders' business.id  %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-cart"></i>
                 <span>Orders</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-currency-exchange"></i>
                 <span>Sales & Transactions</span>
                 <span class="badge bg-primary ms-auto">3</span>

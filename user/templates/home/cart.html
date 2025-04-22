@@ -488,7 +488,7 @@
                                             </p>
                                             <div class="product-quantity">
                                                 Qty: 
-                                                <input type="number" min="1" value="{{cart_item.quantity}}" name="qty" data-id="{{cart_item.id}}" class="qty-input form-control ">
+                                                <input type="number" min="1" value="{{cart_item.quantity}}" name="qty"  data-id="{{cart_item.id}}" class="qty-input form-control ">
                                             </div>
                                         </div>
                                     </div>
@@ -610,7 +610,7 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-modal-save" onclick="addExtraToCart()" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-modal-save" onclick="addExtraToCart()" >
                     <i class="fas fa-plus me-2"></i> Add Items 
                 </button>
                 <a href="{% url 'checkout' %} " class="btn btn-modal-close">

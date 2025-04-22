@@ -5,9 +5,10 @@ from .utils.business_transaction import withdraw_business_funds
 from seller.wrap_models.orders_model import Order
 from django.conf import settings
 import requests
-from .utils.business_transaction import transfer_money_to_business
-# Create your views here.
+from .utils.business_transaction import transfer_money_to_business, clean_cart
+
 import json
+
 def business_withdrawal(request):
 	if not request.method == "POST":
 		return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
@@ -50,7 +51,8 @@ def payment_callback(request):
                 order = Order.objects.get(ref=reference)
                 order.paid = True
                 order.save()
-                transaction = transfer_money_to_business(order.user,order.business,order.total_amount-19,order)
+                transaction = transfer_money_to_business(order.user,order.business,order,reference)
+                clean_carts = clean_cart(order.user)
                 return redirect("payment_successful",order.id)  # or render a success page
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)

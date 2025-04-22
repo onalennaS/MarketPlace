@@ -140,8 +140,8 @@
                         <td><img src="https://via.placeholder.com/50" alt="Product" class="product-img"></td>
                         <td><a href="{% url 'view_product_admin' product.id %}" >{{product.name}}</a></td>
                         <td>{{product.category}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.quantity}}</td>
+                        <td>{{product.price|add:"-4"|floatformat:2 }}</td>
+                        <td>{{product.quantity }} </td>
                         {% if product.status == 'pending' %}
                         <td><span class="badge bg-warning">{{product.status}}</span></td>
 

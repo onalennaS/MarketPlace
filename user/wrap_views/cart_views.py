@@ -319,9 +319,9 @@ def palce_order(request):
     delivery_amount = 0 
     
     for item in cart_items:
-        product_amount += int(item.product.price) * int(item.quantity)
+        product_amount += float(item.product.price) * float(item.quantity)
     for extra in cart_extras:
-        extra_amount += int(extra.extra.price)
+        extra_amount += float(extra.extra.price) 
 
     
     if delivery_method.method == "delivery":
@@ -338,43 +338,13 @@ def palce_order(request):
                seller_subaccount=business.account_code,
                delivery_amount=delivery_amount,
                order=order,
-               cart_items=cart_items
+               cart_items=cart_items,
+               cart_extras=cart_extras
      )
 
     if not response_data:
         order.delete()
         return JsonResponse({"status": "error", "message": "Payment initialization failed"}, status=400)
-    #send_email_order_confirmation(order,cart_extras,cart_items,total_amount)
-    for item in cart_items:
-        order_item = OrderItem.objects.create(order=order,product=item.product,quantity=item.quantity)
-        order_item.save()
-        cart_addons = CartAddons.objects.filter(cart=item).all()
-        if cart_addons:
-            for addon in cart_addons:
-                order_addon = OrderAddons.objects.create(product=order_item, addon=addon.addon)
-                order_addon.save()
-        product_to_update = Product.objects.filter(id=item.product.id).first()
-        if product_to_update:
-        	product_to_update.quantity -= 1
-        	product_to_update.save()
-        item.delete()
-    if cart_extras:
-        for extra in cart_extras:
-            order_extra = OrderExtra.objects.create(order=order,extra=extra.extra,quantity=extra.quantity)
-            order_extra.save()
-            extra.delete()
-    if delivery_method.method == "delivery":
-        if address.address_type == "residential":
-            order_address = OrderAddress.objects.create(order=order,address_line_1=address.house_no, address_line_2=address.street,address_line_3=address.complex_name,address_line_4=address.area,notes=address.notes)
-            order_address.save()
-        elif address.address_type == "campus":
-            order_address = OrderAddress.objects.create(order=order,address_line_1=address.instutition, address_line_2=address.block,address_line_3=address.venue,notes=address.notes)
-            order_address.save()
-        else:
-            return JsonResponse({'message':'address not found ','status':'error'},status=404)
-    
-    
-
     return JsonResponse({
                 "status": "success",
                 "message": "Payment initialized",
