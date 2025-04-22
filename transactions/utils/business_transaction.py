@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from ..models import BusinessWallet, BusinessTransaction
 from decimal import Decimal
 from user.wrap_models.cart_models import Cart, CartExtra,CartDeliveryMethod,CartDeliveryAddress
-
+from seller.wrap_models.orders_model import Order
 
 def transfer_money_to_business(user,business,order,ref):
     sender = user
