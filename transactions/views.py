@@ -86,7 +86,7 @@ def paystack_webhook(request):
         reference = event["data"]["reference"]
         # Find your order and mark it as paid
         try:
-            order = Order.objects.get(reference=reference)
+            order = Order.objects.get(ref=reference)
             order.status = "paid"
             order.save()
         except Order.DoesNotExist:

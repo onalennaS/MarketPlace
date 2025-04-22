@@ -13,14 +13,14 @@ def transfer_money_to_business(user,business,order,ref):
     transaction_type = "Purchase"
 
 
-    transaction = BusinessTransaction.objects.filter(ref=ref).first()
+    transaction = BusinessTransaction.objects.filter(ref=order.ref).first()
     if transaction:
         transaction.sender = sender
         transaction.receiver = receiver
         transaction.transaction_type = transaction_type
         transaction.status = "success"
         transaction.save()
-        return transaction.id
+        
 
     receiver_wallet = BusinessWallet.objects.filter(business=receiver).first()
     if not receiver_wallet:
@@ -31,11 +31,11 @@ def transfer_money_to_business(user,business,order,ref):
     receiver_wallet.balance = Decimal(str(receiver_wallet.balance))  + Decimal(str(transaction.amount))
     receiver_wallet.total = Decimal(str(receiver_wallet.total)) + Decimal(str(transaction.amount))
     receiver_wallet.save()
-    return False
+    return True
 
 
 def create_transaction(ref,amount,fees):
-    transaction = BusinessTransaction.objects.create(ref=ref, fees=fees, amount=amount)
+    transaction = BusinessTransaction.objects.create(ref=ref, fees=fees, amount=amount,transaction_type="Purchase")
     transaction.save()
     return True
 
@@ -63,6 +63,9 @@ def clean_cart(user,ref,order):
     transaction = BusinessTransaction.objects.filter(ref=order.ref).first()
     order.total_amount = transaction.amount
     order.save()
+    transaction.sender = order.user
+    transaction.business = order.business
+    transaction.save()
     cart_items = Cart.objects.filter(user=user).all()
     cart_extras = CartExtra.objects.filter(user=user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=user).first()
