@@ -113,7 +113,7 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
         data = response.json()["data"]
         order.ref = data['reference']
         order.save()
-        transaction = create_transaction(data['reference'],seller_cut_kobo/100,platform_cut )
+        transaction = create_transaction(data['reference'],seller_cut_kobo/100,platform_cut,order.user,order.business)
         return {
             "authorization_url": data["authorization_url"]
         }
