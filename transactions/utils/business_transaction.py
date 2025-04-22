@@ -6,35 +6,35 @@ from decimal import Decimal
 from user.wrap_models.cart_models import Cart, CartExtra, Wishlist,CartAddons,CartDeliveryMethod,CartDeliveryAddress
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddons,OrderAddress
 from seller.wrap_models.product_model import Product, Extras,Addon
-def transfer_money_to_business(user,business,order,ref):
+def transfer_money_to_business(user=None,business=None,order=None,ref=None,status=None):
     sender = user
     receiver = business
     transaction_type = "Purchase"
 
+    if order.ref:
+        transaction = BusinessTransaction.objects.filter(ref=order.ref).first()
+    else:
+        transaction = BusinessTransaction.objects.filter(ref=ref).first()
 
-    transaction = BusinessTransaction.objects.filter(ref=order.ref).first()
     if transaction:
-        transaction.sender = sender
-        transaction.receiver = receiver
-        transaction.transaction_type = transaction_type
-        transaction.status = "success"
+        transaction.status = status
         transaction.save()
         
-
-    receiver_wallet = BusinessWallet.objects.filter(business=receiver).first()
-    if not receiver_wallet:
-    	receiver_wallet = BusinessWallet.objects.create(business=receiver)
-    	receiver_wallet.save()
+    if receiver:
+        receiver_wallet = BusinessWallet.objects.filter(business=receiver).first()
+        if not receiver_wallet:
+        	receiver_wallet = BusinessWallet.objects.create(business=receiver)
+        	receiver_wallet.save()
 
     
-    receiver_wallet.balance = Decimal(str(receiver_wallet.balance))  + Decimal(str(transaction.amount))
-    receiver_wallet.total = Decimal(str(receiver_wallet.total)) + Decimal(str(transaction.amount))
-    receiver_wallet.save()
+        receiver_wallet.balance = Decimal(str(receiver_wallet.balance))  + Decimal(str(transaction.amount))
+        receiver_wallet.total = Decimal(str(receiver_wallet.total)) + Decimal(str(transaction.amount))
+        receiver_wallet.save()
     return True
 
 
-def create_transaction(ref,amount,fees):
-    transaction = BusinessTransaction.objects.create(ref=ref, fees=fees, amount=amount,transaction_type="Purchase")
+def create_transaction(ref,amount,fees,sender,receiver):
+    transaction = BusinessTransaction.objects.create(ref=ref, fees=fees, amount=amount,transaction_type="Purchase",sender=sender,receiver=receiver)
     transaction.save()
     return True
 

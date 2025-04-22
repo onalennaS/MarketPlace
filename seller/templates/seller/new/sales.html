@@ -136,8 +136,8 @@
                     {% for transaction in transactions %}
                     <tr>
                         <td>{{transaction.ref}}</td>
-                        <td>{{transaction.sender.username}}</td>
-                        <td>{{transaction.transaction_type}}</td>
+                        <td>{{transaction.customer}}</td>
+                        <td>{{transaction.transaction}}</td>
                         <td>{{transaction.amount}}</td>
                         <td><span class="badge bg-success">{{transaction.status}}</span></td>
                         <td>2025-02-28</td>

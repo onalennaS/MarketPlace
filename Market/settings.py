@@ -223,7 +223,7 @@ EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Replace with your Gmail address
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Replace with the App Password you generated
+EMAIL_HOST_USER = 'sixskies25@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'atyj aawq azyk napt'  # Replace with the App Password you generated
 
 

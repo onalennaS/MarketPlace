@@ -135,12 +135,13 @@ def transaction(request,business_id):
             'ref':trans.ref,
             'customer':trans.sender.username,
             'transaction':trans.transaction_type,
-            'amount': Decimal(trans.amount),
+            'amount': trans.amount,
             'status':trans.status,
             'date':trans.timestamp.strftime("%Y-%m-%d")
 
         }
         trans_list.append(data)
+    trans_list.reverse()
     return render(request, 'seller/new/sales.html',{'count_transactions':transactions.count(),'business':business,'wallet':wallet,'transactions':trans_list})
 
 @login_required_custom

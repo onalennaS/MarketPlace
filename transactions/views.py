@@ -51,21 +51,23 @@ def payment_callback(request):
                 order = Order.objects.get(ref=reference)
                 order.paid = True
                 order.save()
-                transaction = transfer_money_to_business(order.user,order.business,order,order.ref)
+                transaction = transfer_money_to_business(order.user,order.business,order,order.ref,"Success")
                 clean_carts = clean_cart(order.user,order.business,order)
                 return redirect("payment_successful",order.id)  # or render a success page
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)
         else:
+            transaction = transfer_money_to_business(ref=reference,status="Failed")
             order = Order.objects.get(ref=reference)
             order.delete()
             return redirect("payment_failed") #redirect("payment_failed")
     else:
+        transaction = transfer_money_to_business(ref=reference,status="Failed")
         order = Order.objects.get(ref=reference)
         order.delete()
         return redirect("payment_failed")
 
-@csrf_exempt
+#@csrf_exempt
 def paystack_webhook(request):
     secret = settings.PAYSTACK_SECRET_KEY
     paystack_signature = request.headers.get('x-paystack-signature')
@@ -87,10 +89,16 @@ def paystack_webhook(request):
         # Find your order and mark it as paid
         try:
             order = Order.objects.get(ref=reference)
-            order.status = "paid"
+            order.paid = True
             order.save()
         except Order.DoesNotExist:
             pass
-
+    elif event["event"] != "charge.success":
+        try:
+            order = Order.objects.get(ref=reference)
+            order.paid = False
+            order.save()
+        except Order.DoesNotExist:
+            pass
     return HttpResponse(status=200)
 
