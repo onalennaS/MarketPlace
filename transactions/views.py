@@ -57,9 +57,13 @@ def payment_callback(request):
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)
         else:
+            order = Order.objects.get(ref=reference)
+            order.delete()
             return redirect("payment_failed") #redirect("payment_failed")
     else:
-        return JsonResponse({"error": "Failed to verify transaction"}, status=500)
+        order = Order.objects.get(ref=reference)
+        order.delete()
+        return redirect("payment_failed")
 
 @csrf_exempt
 def paystack_webhook(request):

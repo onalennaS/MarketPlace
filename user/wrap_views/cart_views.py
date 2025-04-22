@@ -330,7 +330,8 @@ def palce_order(request):
     total_amount = product_amount + extra_amount +delivery_amount
     
    
-    
+    order = Order.objects.create(business=business,user=request.user,delivery_method=delivery_method.method)
+    order.save()
     response_data = initiate_split_payment(
                email=request.user.email,
                total_amount=total_amount,
