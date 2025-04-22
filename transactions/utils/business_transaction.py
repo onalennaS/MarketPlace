@@ -59,12 +59,10 @@ def withdraw_business_funds(business,amount):
     transaction.save()
     return True
 
-def clean_cart(user,ref):
-    transaction = BusinessTransaction.objects.filter(ref=ref).first()
-    order = Order.objects.filter(ref=ref).first()
-    if order:
-        order.total_amount = transaction.amount
-        order.save()
+def clean_cart(user,ref,order):
+    transaction = BusinessTransaction.objects.filter(ref=order.ref).first()
+    order.total_amount = transaction.total_amount
+    order.save()
     cart_items = Cart.objects.filter(user=user).all()
     cart_extras = CartExtra.objects.filter(user=user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=user).first()
