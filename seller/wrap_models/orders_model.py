@@ -10,7 +10,7 @@ class Order(models.Model):
     order_id = models.CharField(max_length=20, unique=True, blank=True)  # Custom Order ID
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to User
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)  # Order Total
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)  # Order Total
     delivery_method = models.CharField(max_length=50,null=True)
     ref = models.CharField(max_length=250,null=True,default="")
     paid = models.BooleanField(default=False)
