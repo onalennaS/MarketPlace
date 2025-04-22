@@ -51,7 +51,7 @@ def payment_callback(request):
                 order = Order.objects.get(ref=reference)
                 order.paid = True
                 order.save()
-                transaction = transfer_money_to_business(order.user,order.business,order,reference)
+                transaction = transfer_money_to_business(order.user,order.business,order,order.ref)
                 clean_carts = clean_cart(order.user,order.business,order)
                 return redirect("payment_successful",order.id)  # or render a success page
             except Order.DoesNotExist:

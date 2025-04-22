@@ -9,7 +9,6 @@ from seller.wrap_models.product_model import Product, Extras,Addon
 def transfer_money_to_business(user,business,order,ref):
     sender = user
     receiver = business
-    order = order.order_id
     transaction_type = "Purchase"
 
 
