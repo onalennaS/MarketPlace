@@ -30,12 +30,6 @@ def has_password(view_func):
 def email_order_confirmation(recipient_email,link,order,extras, order_items,total):
     try:
         user = User.objects.values('username').get(email=recipient_email[0])
-        print("*"*100)
-        print(user)
-        print("*"*100)
-        print(order.delivery_method)
-
-
     except User.DoesNotExist:
         logger.error(f"No user found with email: {recipient_email[1]}")
         return False  # Return failure if user doesn't exist
@@ -57,11 +51,5 @@ def email_order_confirmation(recipient_email,link,order,extras, order_items,tota
 
 def send_email_order_confirmation(order,extras, order_items, total ):
     emails = [order.user.email,order.business.email, order.business.owner.email]
-    print("*"*100)
-    print(order)
-    print("*"*100)
-    print(order_items)
-    print("*"*100)
-    print(extras)
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
     email_order_confirmation(emails, page_link, order, extras, order_items, total)
