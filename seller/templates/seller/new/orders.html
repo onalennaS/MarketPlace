@@ -565,6 +565,10 @@
             <i class="bi bi-gear"></i>
             <span>Settings</span>
         </a>
+        <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
     </div>
 {% endblock %}
 
@@ -1043,4 +1047,27 @@
             return true;
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... (keep existing JavaScript code the same) ...
+      
+            // Add Logout Confirmation Function
+            function confirmLogout(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Logout?',
+                    text: 'Are you sure you want to logout?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0d6efd',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, logout!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = event.currentTarget.href;
+                    }
+                });
+            }
+        });
+      </script>
 {% endblock %}
