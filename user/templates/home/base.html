@@ -419,9 +419,17 @@
         }
 
         @media (max-width: 768px) {
-            .on-nav {
-                display: none;
-            }
+  .nav-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 8px;
+  }
+  
+  .dropdown-item {
+    padding: 12px 20px;
+  }
+}
+
             
             .desktop-search-form {
                 display: none;
@@ -655,7 +663,7 @@
 </div>
 
 <!-- Mobile navigation elements (only visible on mobile) -->
-<div class="mobile-elements d-flex d-lg-none">
+<div class="mobile-elements d-flex d-lg-none ms-auto"> 
     <a class="nav-icon position-relative mx-1" href="{% url 'wish_lists' %}">                
         <i class="fas fa-heart text-danger"></i>
     </a>
