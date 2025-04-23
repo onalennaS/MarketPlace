@@ -46,7 +46,7 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
     paystack_fee_vat = paystack_fee * 1.15
     product_fee_minus_paystack_fee_vat = product_fee - paystack_fee_vat
     if product_fee_minus_paystack_fee_vat > 1 :
-        platform_cut = (product_fee_minus_paystack_fee_vat*(30/100) ) + paystack_fee_vat 
+        platform_cut = (product_fee_minus_paystack_fee_vat*(40/100) ) + paystack_fee_vat 
     
     else:
         platform_cut = product_fee_minus_paystack_fee_vat + paystack_fee_vat 
