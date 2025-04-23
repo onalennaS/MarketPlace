@@ -169,3 +169,6 @@ def verify_user(request):
     if not request.user.is_authenticated:
         return redirec('signin')
     return redirect(verify_role(request.user))
+
+def not_allowed(request):
+    return render(request,'user/home/errors/not_allowed.html')

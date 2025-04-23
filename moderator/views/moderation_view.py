@@ -5,7 +5,10 @@ from seller.utils.send_emails import send_email_reject, send_email_approve
 import json 
 from django.http import JsonResponse
 from django.contrib.auth.models import Group, User
+from seller.utils.authentication_utils import verify_role
+
 @login_required_custom
+@verify_role(['admin','moderator'])
 def approve_business(request):
 
 	if not request.method == "POST":
@@ -42,6 +45,7 @@ def approve_business(request):
 	return JsonResponse({"message": "business reviewed successfully ",'status':'success'}, status=201)
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def reject_business(request):
 
 	if not request.method == "POST":
@@ -74,6 +78,7 @@ def reject_business(request):
 	return JsonResponse({"message": "business reviewed successfully ",'status':'success'}, status=201)
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def ban_business(request):
 
 	if not request.method == "POST":

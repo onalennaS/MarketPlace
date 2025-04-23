@@ -2,12 +2,13 @@ from django.shortcuts import render
 from ..utils import login_required_custom, send_email_approve_to_user,send_email_reject_to_user
 from seller.wrap_models.business_model import Moderation,BusinessInformation
 from seller.wrap_models.product_model import ProductModeration, Product
+from seller.utils.authentication_utils import verify_role
 
 import json 
 from django.http import JsonResponse
 
-
 @login_required_custom
+@verify_role(['admin','moderator'])
 def approve_product(request):
 
 	if not request.method == "POST":
@@ -40,6 +41,7 @@ def approve_product(request):
 	return JsonResponse({"message": "business reviewed successfully ",'status':'success'}, status=201)
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def reject_product(request):
 
 	if not request.method == "POST":
@@ -72,6 +74,7 @@ def reject_product(request):
 	return JsonResponse({"message": "product reviewed successfully ",'status':'success'}, status=201)
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def deactivate_product(request):
 
 	if not request.method == "POST":

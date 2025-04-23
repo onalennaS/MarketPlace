@@ -14,6 +14,8 @@ urlpatterns = [
     path('verify_email/<token>/', views.verify_email, name='verify_email'),
     path('activate_account/<email>', views.activate_account, name='activate_account'),
 
+    path('not_allowed/', views.not_allowed, name='not_allowed'),
+    
     
     
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from ..utils.authentication_utils import login_required_custom, has_password
+from ..utils.authentication_utils import login_required_custom, has_password, verify_role
 #from ..utils.send_emails import 
 from ..utils.product_validation import validate_business_data
 import json 
@@ -13,9 +13,9 @@ from moderator.utils import send_email_pending_to_user
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 
-
 @csrf_exempt  # Only use if CSRF protection is causing issues
 @login_required_custom
+@verify_role('business')
 def add_product(request):
     if request.method != "POST":
         return JsonResponse({'status': 'error', 'message': 'Request method not allowed'}, status=403)
@@ -78,8 +78,8 @@ def add_product(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": "An unexpected error occurred", "details": str(e)}, status=500)
 
-
 @login_required_custom
+@verify_role('business')
 def delete_product(request):
 
     if not request.method == "POST":
@@ -101,8 +101,8 @@ def delete_product(request):
     return JsonResponse({'status':'error', 'message':'product not found'}, status=403)
 
 
-
 @login_required_custom
+@verify_role('business')
 def edit_product(request):
 
     if not request.method == "POST":
@@ -133,8 +133,8 @@ def edit_product(request):
     return JsonResponse({"message": "product Not found",'status':'error'}, status=201)
 
 
-
 @login_required_custom
+@verify_role('business')
 def activate_product(request):
 
     if not request.method == "POST":
@@ -150,8 +150,8 @@ def activate_product(request):
         return JsonResponse({"error": "Invalid JSON data"}, status=400)     
     return JsonResponse({"message": "product added successfully",'status':'success'}, status=201)
 
-
 @login_required_custom
+@verify_role('business')
 def deactivate_product(request):
 
     if not request.method == "POST":
@@ -168,6 +168,7 @@ def deactivate_product(request):
     return JsonResponse({"message": "product added successfully",'status':'success'}, status=201)
 
 @login_required_custom
+@verify_role('business')
 def add_extras(request):
 
 	if not request.method == "POST":
@@ -195,8 +196,8 @@ def add_extras(request):
 	
 	return JsonResponse({"message": f"Extras {name} added successfully",'status':'success'}, status=201)
 
-
 @login_required_custom
+@verify_role('business')
 def delete_extras(request):
 
     if not request.method == "POST":
@@ -213,8 +214,8 @@ def delete_extras(request):
         return JsonResponse({"message": f"Extra {extra.name} deleted successfully",'status':'success'}, status=201)
     return JsonResponse({'status':'error', 'message':'product not found'}, status=403)
 
-
 @login_required_custom
+@verify_role('business')
 def add_addons(request):
 
     if not request.method == "POST":
@@ -241,8 +242,8 @@ def add_addons(request):
     
     return JsonResponse({"message": f"Add-On {name} added successfully",'status':'success'}, status=201)
 
-
 @login_required_custom
+@verify_role('business')
 def delete_addon(request):
 
     if not request.method == "POST":

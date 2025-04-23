@@ -1,12 +1,13 @@
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from ..utils.authentication_utils import login_required_custom
+from ..utils.authentication_utils import login_required_custom, verify_role
 import json 
 from ..wrap_models.orders_model import Order
 from ..utils.send_emails import send_email_order_traking_update, send_email_order_delivered
 
 
 @login_required_custom
+@verify_role('business')
 def move_order_next_stage(request):
 
     if not request.method == "POST":

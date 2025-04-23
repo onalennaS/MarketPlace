@@ -157,12 +157,13 @@ def address(request):
 @login_required_custom
 def order_history(request):
     orders = Order.objects.filter(user=request.user).all()
-    
     return render(request, 'home/order_history.html',{'orders':orders})
 
 @login_required_custom
 def view_order_details(request,order_id):
     order = Order.objects.filter(id=int(order_id)).first()
+    if request.user != order.user:
+        return  render(request, 'home/errors/400.html')
     order_items = OrderItem.objects.filter(order=order).all()
     extras = OrderExtra.objects.filter(order=order).all()
     items_count = get_order_items(order)

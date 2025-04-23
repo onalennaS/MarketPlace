@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from functools import wraps
-from ..utils.authentication_utils import login_required_custom, has_password
+from ..utils.authentication_utils import login_required_custom, has_password, verify_role
 from ..utils.user_data_validation import validate_business_data
 from ..utils.send_emails import send_email_pending, send_email_appeal
 import json 
@@ -12,6 +12,7 @@ from django.contrib import messages
 # Create your views here.
 
 @login_required_custom
+@verify_role('business')
 def register_business(request):
     if not request.method == "POST":
         return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
@@ -85,6 +86,7 @@ def register_business(request):
         # Handle rejected or other cases
         return redirect('business_status', business_id=business.id)
 
+@verify_role('business')
 @login_required_custom
 def appeal_registration(request):
     if not request.method == "POST":
@@ -155,6 +157,7 @@ def appeal_registration(request):
 
 from django.views.decorators.http import require_POST
 
+@verify_role('business')
 @login_required_custom
 @require_POST
 def delete_business(request, business_id):
@@ -163,6 +166,7 @@ def delete_business(request, business_id):
     messages.success(request, "Business deleted successfully.")
     return redirect('business')  # Use existing URL pattern
 
+@verify_role('business')
 def business_status(request, id):
     business = BusinessInformation.objects.get(id=id)
     return render(request, 'business_status.html', {'business': business})

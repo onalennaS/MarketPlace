@@ -2,16 +2,21 @@ from django.shortcuts import render
 from ..utils import login_required_custom
 from seller.wrap_models.business_model import Moderation,BusinessInformation, Address
 from seller.wrap_models.product_model import ProductModeration, Product
+from seller.utils.authentication_utils import verify_role
+
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def dashboard(request):
 	return render(request, 'moderator/dashboard.html')
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def user(request):
 	return render(request, 'moderator/user.html')
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def business(request):
 	moderations = Moderation.objects.all()
 	all_business = moderations
@@ -22,22 +27,25 @@ def business(request):
 	return render(request, 'moderator/business.html', {'moderations' : moderations,'approved':f'{len(approved)}', 'rejected':len(rejected), 'all_business':len(all_business), 'pending':len(pending)})
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def view_business(request,business_id):
 	business = BusinessInformation.objects.filter(id=int(business_id)).first()
 	address = Address.objects.filter(business=business).first()
 	return render(request, 'moderator/view_business.html', {'business' : business, 'address':address})
 
-
 @login_required_custom
+@verify_role(['admin','moderator'])
 def notificatons(request):
 	return render(request, 'moderator/notifications.html')
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def settings(request):
 	return None
 	return render(request, 'moderator/settings.html')
 
 @login_required_custom
+@verify_role(['admin','moderator'])
 def product(request):
 	moderations = ProductModeration.objects.all()
 	products = moderations
@@ -49,8 +57,8 @@ def product(request):
 		print(product.product, product.product.business.name,product.product.status)
 	return render(request, 'moderator/product.html', {'moderations':moderation,'products' : moderations,'approved':f'{len(approved)}', 'rejected':len(rejected), 'all_products':len(products), 'pending':len(pending)})
 
-
 @login_required_custom
+@verify_role(['admin','moderator'])
 def view_product_moderator(request,product_id):
     product = Product.objects.filter(id=int(product_id)).first()
     if product:
