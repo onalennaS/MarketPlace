@@ -565,10 +565,13 @@
             <i class="bi bi-gear"></i>
             <span>Settings</span>
         </a>
-        <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
+        <a href="#" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
             <i class="bi bi-box-arrow-right"></i>
             <span>Logout</span>
         </a>
+        <form id="logoutForm" method="POST" action="{% url 'logout' %}" style="display: none;">
+            {% csrf_token %}
+        </form>
     </div>
 {% endblock %}
 
@@ -650,27 +653,18 @@
                                 <div class="detail-value" id="modalTimestamp"></div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Delivery Method</div>
-                                <div class="detail-value" id="modalDeliveryMethod"></div>
-                            </div>
-                            <div class="detail-item">
                                 <div class="detail-label">Payment Status</div>
                                 <div class="detail-value">
                                     <span id="modalPaymentStatus" class="payment-status payment-paid"></span>
                                 </div>
                             </div>
                             <div class="detail-item">
+                                <div class="detail-label">Delivery Method</div>
+                                <div class="detail-value" id="modalDeliveryMethod"></div>
+                            </div>
+                            <div class="detail-item">
                                 <div class="detail-label">Total Amount</div>
                                 <div class="detail-value" id="modalTotal"></div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Delivery Amount</div>
-                                <div class="detail-value" id="modalDelivery"></div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Net Amount <small>(fees deducted)</small></div>
-
-                                <div class="detail-value" id="modalNet"></div>
                             </div>
                         </div>
                     </div>
@@ -814,8 +808,6 @@
             
             document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
             document.getElementById("modalTotal").innerText = `R${order.total}`;
-             document.getElementById("modalDelivery").innerText = `R${order.delivery}`;
-              document.getElementById("modalNet").innerText = `R${order.recieved}`;
             
             // Order items
             document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
@@ -1059,26 +1051,32 @@
         }
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ... (keep existing JavaScript code the same) ...
-      
-            // Add Logout Confirmation Function
-            function confirmLogout(event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: 'Logout?',
-                    text: 'Are you sure you want to logout?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#0d6efd',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, logout!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = event.currentTarget.href;
-                    }
-                });
+        // Replace the existing logout script with this
+    function confirmLogout(event) {
+        event.preventDefault();
+        
+        // Check if SweetAlert2 is available
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3a7bd5',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        } else {
+            // Fallback if SweetAlert is not available
+            if (confirm('Are you sure you want to logout?')) {
+                document.getElementById('logoutForm').submit();
             }
-        });
-      </script>
+        }
+    }
+        </script>
 {% endblock %}

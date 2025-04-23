@@ -36,7 +36,7 @@
     {% endblock %}
     <style>
         /* Enhanced Custom Styles with Better Variables Organization */
-:root {
+        :root {
     /* Layout */
     --sidebar-width: 280px;
     --sidebar-collapsed-width: 70px; /* Slightly reduced */
@@ -872,6 +872,9 @@ img {
         margin: 0 2px;
     }
 }
+        
+        {% block styles %}
+        {% endblock %}
     </style>
 </head>
 <body>
@@ -959,7 +962,7 @@ img {
             </div>
 
             <div class="icons">
-    
+  
 
 <!-- Hidden logout form -->
 <form id="logoutForm" method="post" action="{% url 'logout' %}" style="display: none;">
@@ -1136,23 +1139,7 @@ img {
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     </script>
-    <script>
-        document.getElementById('logoutBtn').addEventListener('click', function () {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You will be logged out of your account.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, logout'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
-                }
-            });
-        });
-    </script>
+    
     
     
     {% block scripts %}
