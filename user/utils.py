@@ -27,7 +27,7 @@ def has_password(view_func):
     return _wrapped_view
 
 
-def email_order_confirmation(recipient_email,link,order,extras, order_items,total):
+def email_order_confirmation(recipient_email,link,order,extras, order_items,total,discount):
     try:
         user = User.objects.values('username').get(email=recipient_email[0])
     except User.DoesNotExist:
