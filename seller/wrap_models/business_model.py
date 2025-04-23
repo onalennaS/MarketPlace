@@ -56,8 +56,8 @@ class Address(models.Model):
     address_line_2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Complex/Apartment")
     suburb = models.CharField(max_length=100, verbose_name="Suburb")
     city = models.CharField(max_length=100, verbose_name="City/Municipality")
-    province = models.CharField(max_length=2, choices=PROVINCE_CHOICES, verbose_name="Province")
-    postal_code = models.CharField(max_length=4, verbose_name="Postal Code")  # SA postal codes are 4 digits
+    province = models.CharField(max_length=100, choices=PROVINCE_CHOICES, verbose_name="Province")
+    postal_code = models.CharField(max_length=50, verbose_name="Postal Code")  # SA postal codes are 4 digits
     
     
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
