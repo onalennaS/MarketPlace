@@ -34,7 +34,10 @@ def dashboard(request,business_id):
     order_count = orders.count()
     recent_orders = orders.order_by('-created_at')[:4]
     total_customers = orders.values('user').distinct().count()
-    average_paid_order_amount = round(orders.filter(paid=True).aggregate(avg_amount=Avg('total_amount'))['avg_amount'])
+    try:
+        average_paid_order_amount = round(orders.filter(paid=True).aggregate(avg_amount=Avg('total_amount'))['avg_amount'])
+    except Exception as e:
+        average_paid_order_amount = 0
     paid_order_count = orders.filter(paid=True).count()
 
     daily_sales = get_sales_data(TruncDay)
