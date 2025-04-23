@@ -62,6 +62,7 @@ def get_extra_total(extras):
         total += extra.extra.price
     return total
 
+
 def get_discount(cart_items):
     discount_factor = 0
     for item in cart_items:
