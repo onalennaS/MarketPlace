@@ -646,18 +646,27 @@
                                 <div class="detail-value" id="modalTimestamp"></div>
                             </div>
                             <div class="detail-item">
+                                <div class="detail-label">Delivery Method</div>
+                                <div class="detail-value" id="modalDeliveryMethod"></div>
+                            </div>
+                            <div class="detail-item">
                                 <div class="detail-label">Payment Status</div>
                                 <div class="detail-value">
                                     <span id="modalPaymentStatus" class="payment-status payment-paid"></span>
                                 </div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Delivery Method</div>
-                                <div class="detail-value" id="modalDeliveryMethod"></div>
-                            </div>
-                            <div class="detail-item">
                                 <div class="detail-label">Total Amount</div>
                                 <div class="detail-value" id="modalTotal"></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Delivery Amount</div>
+                                <div class="detail-value" id="modalDelivery"></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Net Amount <small>(fees deducted)</small></div>
+
+                                <div class="detail-value" id="modalNet"></div>
                             </div>
                         </div>
                     </div>
@@ -801,6 +810,8 @@
             
             document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
             document.getElementById("modalTotal").innerText = `R${order.total}`;
+             document.getElementById("modalDelivery").innerText = `R${order.delivery}`;
+              document.getElementById("modalNet").innerText = `R${order.recieved}`;
             
             // Order items
             document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `

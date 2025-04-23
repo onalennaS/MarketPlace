@@ -6,15 +6,71 @@ from ..wrap_models.product_model import Product, ProductModeration, RecentActivi
 from ..wrap_models.orders_model import Order, OrderItem, OrderExtra
 from transactions.models import BusinessWallet, BusinessTransaction
 from decimal import Decimal
+from user.wrap_models.cart_models import CartDeliveryMethod, CartDeliveryAddress
+from django.db.models import Count
+from django.db.models import Avg
+from django.db.models.functions import TruncDay, TruncWeek, TruncMonth
+from django.db.models import Sum
+from django.utils.dateformat import DateFormat
 # Create your views here.
 # Create your views here.
+def get_sales_data(trunc_func):
+        return Order.objects.filter(paid=True) \
+            .annotate(period=trunc_func('created_at')) \
+            .values('period') \
+            .annotate(total=Sum('total_amount')) \
+            .order_by('period')
+
+def process_data(queryset):
+        labels = [entry['period'].strftime('%d %b') for entry in queryset]
+        data = [float(entry['total']) for entry in queryset]
+        return labels, data
 
 @login_required_custom
 @verify_role('business')
 def dashboard(request,business_id):
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    orders = Order.objects.filter(business=business).all()
+    order_count = orders.count()
+    recent_orders = orders.order_by('-created_at')[:4]
+    total_customers = orders.values('user').distinct().count()
+    average_paid_order_amount = round(orders.filter(paid=True).aggregate(avg_amount=Avg('total_amount'))['avg_amount'])
+    paid_order_count = orders.filter(paid=True).count()
+
+    daily_sales = get_sales_data(TruncDay)
+    weekly_sales = get_sales_data(TruncWeek)
+    monthly_sales = get_sales_data(TruncMonth)
+
+    daily_labels, daily_data = process_data(daily_sales)
+    weekly_labels, weekly_data = process_data(weekly_sales)
+    monthly_labels, monthly_data = process_data(monthly_sales)
+
+    customers_by_month = (
+        orders.annotate(month=TruncMonth('created_at'))  # Replace 'created_at' with your order date field
+        .values('month')
+        .annotate(count=Count('user', distinct=True))  # Count distinct users for each month
+        .order_by('month')
+    )
+
+    labels = [DateFormat(entry['month']).format('M') for entry in customers_by_month]
+    data = [entry['count'] for entry in customers_by_month]
+   
     if business:
-        return render(request, 'seller/new/dashboard.html', {'business':business})
+        return render(request, 'seller/new/dashboard.html', {'business':business,
+                                                                "order_count":order_count,
+                                                                'total_customers':total_customers,
+                                                                "average_paid_order_amount":average_paid_order_amount,
+                                                                "transaction":paid_order_count,
+                                                                "recent_orders":recent_orders,
+                                                                 'daily_labels': daily_labels,
+                                                                'daily_data': daily_data,
+                                                                'weekly_labels': weekly_labels,
+                                                                'weekly_data': weekly_data,
+                                                                'monthly_labels': monthly_labels,
+                                                                'monthly_data': monthly_data,
+                                                                 'customer_labels': labels,
+                                                                'customer_data': data,
+                                                                })
     return render(request, 'seller/new/dashboard.html')
 
 @login_required_custom
@@ -94,16 +150,33 @@ def orders(request, business_id):
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
     orders = Order.objects.filter(business=business).all()
     all_orders = []
+    
+
     for order in orders:
         if order.paid == True:
+            delivery_method = CartDeliveryMethod.objects.filter(user=order.user).first()
+            # if delivery_method:
+            #     return render(request,"<h1> it works {delivery_method}</h>")
+            if delivery_method.method == "delivery" :
+                address = CartDeliveryAddress.objects.filter(user=order.user).first()
+                message = address.notes
+                method = 'Delivery'
+                delivery = 15
+            else:
+                message = None
+                method = 'Pickup'
+                delivery = 0
+
             json_orders = {'items':[],'extras':[]}
             json_orders['id'] = f'{order.order_id}' 
-            json_orders['message'] = 'Prepare order quickly'
+            json_orders['message'] = f"{message}"
             json_orders['paymentStatus'] = "paid"
-            json_orders['deliveryMethod'] = "Pickup"
+            json_orders['deliveryMethod'] = f'{method}'
             json_orders['timestamp'] = f'{order.created_at.strftime("%d %b %H:%M")}'
             json_orders['total'] = f'{float(order.total_price())}'
             json_orders['user'] = f'{order.user.username}'
+            json_orders['recieved'] = f'{order.total_amount}'
+            json_orders['delivery'] = f'{delivery}'
             if order.status == "Pending" :
                 json_orders['status'] = "new"
             if order.status == "Processing":
