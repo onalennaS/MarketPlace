@@ -6,7 +6,7 @@ from seller.wrap_models.orders_model import Order
 from django.conf import settings
 import requests
 from .utils.business_transaction import transfer_money_to_business, clean_cart
-from user.utils import login_required_custom, has_password, send_email_order_confirmation
+
 import json
 
 def business_withdrawal(request):
@@ -53,6 +53,7 @@ def payment_callback(request):
                 order.save()
                 transaction = transfer_money_to_business(order.user,order.business,order,order.ref,"Success")
                 clean_carts = clean_cart(order.user,order.business,order)
+                
                 return redirect("payment_successful",order.id)  # or render a success page
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)

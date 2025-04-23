@@ -6,6 +6,9 @@ from decimal import Decimal
 from user.wrap_models.cart_models import Cart, CartExtra, Wishlist,CartAddons,CartDeliveryMethod,CartDeliveryAddress
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddons,OrderAddress
 from seller.wrap_models.product_model import Product, Extras,Addon
+from user.utils import login_required_custom, has_password, send_email_order_confirmation
+
+
 def transfer_money_to_business(user=None,business=None,order=None,ref=None,status=None):
     sender = user
     receiver = business
@@ -69,6 +72,8 @@ def clean_cart(user,ref,order):
     cart_extras = CartExtra.objects.filter(user=user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=user).first()
     address = CartDeliveryAddress.objects.filter(user=user).first()
+    order,extras, order_items, total 
+    send_email_order_confirmation(order,cart_extras,cart_items,order )
     for item in cart_items:
         order_item = OrderItem.objects.create(order=order,product=item.product,quantity=item.quantity)
         order_item.save()
