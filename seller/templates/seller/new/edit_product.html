@@ -3,182 +3,407 @@
 {% block links %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add new product</title>
+    <title>Edit Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="{% static 'css/message.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
 {% endblock %}
 {% block styles %}
+    :root {
+        --primary-color: #4f46e5;
+        --primary-light: #6366f1;
+        --primary-dark: #4338ca;
+        --success-color: #10b981;
+        --danger-color: #ef4444;
+        --text-color: #1f2937;
+        --text-light: #6b7280;
+        --bg-color: #f9fafb;
+        --border-color: #e5e7eb;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: 12px;
+    }
+
+    .card {
+        background: var(--bg-color);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-header i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-right: 0.75rem;
+    }
+
+    h2 {
+        color: var(--text-color);
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    h3 {
+        color: var(--text-color);
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin: 0;
+    }
+
+    .subtitle {
+        color: var(--text-light);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: span 2;
+    }
+
+    label {
+        font-weight: 500;
+        color: var(--text-color);
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.15s ease;
+        background-color: #ffffff;
+    }
+
+    input:focus, select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    button {
+        background: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        padding: 0.85rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .dynamic-section {
+        display: none;
+        padding: 1.5rem;
+        background: #ffffff;
+        border-radius: 8px;
+        margin-top: 1rem;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .dynamic-section h4 {
+        margin-bottom: 1.2rem;
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .form-inline {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-inline > * {
+        flex: 1;
+    }
+
+    .add-btn {
+        background: var(--success-color);
+        width: auto;
+        margin-top: 0.75rem;
+    }
+
+    .add-btn:hover {
+        background: #0ea571;
+    }
+
+    .remove-btn {
+        background: var(--danger-color);
+        width: auto;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .remove-btn:hover {
+        background: #dc2626;
+    }
+
+    .preview-container {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .image-preview {
+        max-width: 120px;
+        height: auto;
+        border-radius: 8px;
+        display: none;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+    }
+
+    .color-preview {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid var(--border-color);
+    }
+
+    .image-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .image-upload input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-btn {
+        background: #ffffff;
+        color: var(--text-color);
+        border: 1px dashed var(--border-color);
+        padding: 1rem;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .upload-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .upload-btn i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .radio-label input {
+        width: auto;
+        margin: 0;
+    }
+
+    .ql-container {
+        border-radius: 0 0 8px 8px;
+        font-size: 0.95rem;
+        background-color: #ffffff;
+    }
+
+    .ql-toolbar {
+        border-radius: 8px 8px 0 0;
+        border-color: var(--border-color);
+        background-color: #f8f9fa;
+    }
+
+    .ql-editor {
+        min-height: 180px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .error-message {
+        color: var(--danger-color);
+        font-size: 0.8rem;
+        margin-top: 0.4rem;
+        display: none;
+    }
+
+    input:invalid, select:invalid {
+        border-color: var(--danger-color);
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .cancel-btn {
+        background: transparent;
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .cancel-btn:hover {
+        background: #f3f4f6;
+    }
+
+    .save-btn {
+        min-width: 150px;
+    }
+
+    /* Dark mode support - will use system settings or your theme */
+    @media (prefers-color-scheme: dark) {
         :root {
-            --primary-color: #6366f1;
-            --success-color: #22c55e;
-            --danger-color: #ef4444;
-            --text-color: #374151;
+            --bg-color: #1f2937;
+            --text-color: #f3f4f6;
+            --text-light: #d1d5db;
+            --border-color: #374151;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
+        input, select, .upload-btn {
+            background-color: #111827;
+            color: var(--text-color);
+            border-color: #374151;
         }
 
+        .ql-container, .ql-toolbar {
+            background-color: #111827;
+            border-color: #374151;
+        }
 
+        .ql-toolbar .ql-stroke {
+            stroke: #d1d5db;
+        }
+
+        .ql-toolbar .ql-fill {
+            fill: #d1d5db;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: #9ca3af;
+        }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
         .form-container {
-            width: 100%;
-           
-            background: none;
-            padding: 2rem;
-            border-radius: 12px;
-            align-items:
-
-        }
-
-        h2 {
-            text-align: center;
-            color: var(--text-color);
-            font-weight: 600;
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            font-weight: 500;
-            color: var(--text-color);
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        input, select, button, .ql-container {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.15s ease;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        button {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            padding: 0.75rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background: #4f46e5;
-        }
-
-        .dynamic-section {
-            display: none;
             padding: 1rem;
-            background: #f9fafb;
-            border-radius: 8px;
-            margin-top: 1rem;
-            border: 1px solid #e5e7eb;
         }
 
-        .dynamic-section h4 {
-            margin-bottom: 1rem;
-            color: var(--text-color);
+        .card {
+            padding: 1.25rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: 1;
         }
 
         .form-inline {
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 1rem;
-            margin-bottom: 1rem;
         }
 
-        .form-inline > * {
-            flex: 1;
+        .action-buttons {
+            flex-direction: column-reverse;
         }
 
-        .add-btn {
-            background: var(--success-color);
-            width: auto;
-            margin-top: 0.5rem;
+        .action-buttons button {
+            width: 100%;
         }
 
-        .add-btn:hover {
-            background: #16a34a;
+        h2 {
+            font-size: 1.5rem;
         }
 
-        .remove-btn {
-            background: var(--danger-color);
-            width: auto;
-            padding: 0.5rem 1rem;
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        .image-preview {
-            max-width: 200px;
-            height: auto;
-            margin-top: 1rem;
-            border-radius: 6px;
-            display: none;
+        .card-header i {
+            margin-bottom: 0.5rem;
         }
-
-        .color-preview {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid #e5e7eb;
-        }
-
-        .ql-container {
-            height: 200px;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .form-inline {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .form-inline > * {
-                width: 100%;
-            }
-
-            button {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .image-preview {
-                max-width: 150px;
-            }
-        }
-
-        .error-message {
-            color: var(--danger-color);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        input:invalid, select:invalid {
-            border-color: var(--danger-color);
-        }
+    }
 {% endblock %}
 {% block nav %}
         <div class="nav-items">
@@ -217,128 +442,168 @@
                 <span>Settings</span>
             </a>
         </div>
-        {% endblock %}
+{% endblock %}
 {% block content %}
-    <div class="form-container ">
-        <h2>Edit Product</h2>
-        <form id="productForm">
-            <div class="form-group">
-                <label for="productName">Product Name</label>
-                <input type="text" id="name" value="{{product.name}}" required style="background-color:inherit; color: inherit;">
-                <div class="error-message">Please enter a product name</div>
-            </div>
-
-             <div class="form-group">
-                <label for="stock">What's inside</label>
-                <input type="text" id="small_description" value="{{product.small_description}}" required style="background-color:inherit; color: inherit;">
-                <div class="error-message">Please enter contents</div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="category">Category</label>
-                <select id="category" required style="background-color:inherit; color: inherit;">
-                    <option value="{{product.category}}">{{product.category}}</option>
-                    
-                </select>
-                <div class="error-message">Please select a category</div>
-            </div>
-
-            <div class="form-group">
-                <label for="price">Price</label>
-                <input type="number" id="price" step="0.01" value="{{product.price}}" required style="background-color:inherit; color: inherit;">
-                <div class="error-message">Please enter a valid price</div>
-            </div>
-
-            <div class="form-group">
-                <label for="stock">Stock Quantity</label>
-                <input type="number" id="quantity" value="{{product.quantity}}" required style="background-color:inherit; color: inherit;">
-                <div class="error-message">Please enter stock quantity</div>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description</label>
-                <div id="description" class="quill-container"></div>
-                <input type="hidden" id="descriptionInput" style="background-color:inherit; color: inherit;">
-            </div>
-
-            <div class="form-group">
-                <label>Product Status</label>
-                <select id="status" required style="background-color:inherit; color: inherit;">
-                    <option value="{{product.status}}">{{product.status}}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Main Product Image</label>
-                <input type="file" id="image" accept="image/*" required style="background-color:inherit; color: inherit;">
-                <img id="imagePreview" class="image-preview" alt="Image preview">
-            </div>
-
-            <!-- <div class="form-group">
-                <label>Product Colors</label>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="hasColors" value="yes" onclick="toggleSection('colorSection', true)"> Yes
-                    </label>
-                    <label>
-                        <input type="radio" name="hasColors" value="no" onclick="toggleSection('colorSection', false)" checked> No
-                    </label>
+    <div class="form-container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-edit"></i>
+                <div>
+                    <h2>Edit Product</h2>
+                    <p class="subtitle">Update your product information</p>
                 </div>
             </div>
+            
+            <form id="productForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="name" value="{{product.name}}" required>
+                        <div class="error-message">Please enter a product name</div>
+                    </div>
 
-            <div id="colorSection" class="dynamic-section">
-                <h4>Color Options</h4>
-                <div id="colorGroups"></div>
-                <button type="button" class="add-btn" onclick="addColorField()">
-                    <i class="fas fa-plus"></i> Add Color
-                </button>
-            </div>
+                    <div class="form-group">
+                        <label for="small_description">What's Inside</label>
+                        <input type="text" id="small_description" value="{{product.small_description}}" required>
+                        <div class="error-message">Please enter contents</div>
+                    </div>
 
-            <div class="form-group">
-                <label>Food Item</label>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="isFood" value="yes" onclick="toggleSection('foodSection', true)"> Yes
-                    </label>
-                    <label>
-                        <input type="radio" name="isFood" value="no" onclick="toggleSection('foodSection', false)" checked> No
-                    </label>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="{{product.category}}">{{product.category}}</option>
+                        </select>
+                        <div class="error-message">Please select a category</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Product Status</label>
+                        <select id="status" required>
+                            <option value="{{product.status}}">{{product.status}}</option>
+                        </select>
+                        <div class="error-message">Please select a status</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" step="0.01" value="{{product.price}}" required>
+                        <div class="error-message">Please enter a valid price</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Stock Quantity</label>
+                        <input type="number" id="quantity" value="{{product.quantity}}" required>
+                        <div class="error-message">Please enter stock quantity</div>
+                    </div>
                 </div>
-            </div>
 
-            <div id="foodSection" class="dynamic-section">
-                <h4>Food Extras</h4>
-                <div id="extraOptions"></div>
-                <button type="button" class="add-btn" onclick="addExtraField()">
-                    <i class="fas fa-plus"></i> Add Extra
-                </button>
-            </div> -->
+                <div class="form-group full-width">
+                    <label for="description">Product Description</label>
+                    <div id="description" class="quill-container"></div>
+                    <input type="hidden" id="descriptionInput">
+                </div>
 
-            <button type="button" onclick="editProduct({{product.id}})">
-                <i class="fas fa-save"></i> Save Product
-            </button>
-        </form>
+                <div class="form-group full-width">
+                    <label>Main Product Image</label>
+                    <div class="image-upload">
+                        <div class="upload-btn">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Upload image</span>
+                            <input type="file" id="image" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="preview-container">
+                        <img id="imagePreview" class="image-preview" alt="Product image preview">
+                        <span id="noImageText">No image selected</span>
+                    </div>
+                    <div class="error-message">Please upload a product image</div>
+                </div>
+
+                <!-- <div class="form-group full-width">
+                    <label>Product Options</label>
+                    <div class="card" style="box-shadow: none; margin-bottom: 0; padding: 1rem;">
+                        <h3>Color Options</h3>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="hasColors" value="yes" onclick="toggleSection('colorSection', true)"> 
+                                <span>Yes, this product has color options</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="hasColors" value="no" onclick="toggleSection('colorSection', false)" checked> 
+                                <span>No color options</span>
+                            </label>
+                        </div>
+                        <div id="colorSection" class="dynamic-section">
+                            <div id="colorGroups"></div>
+                            <button type="button" class="add-btn" onclick="addColorField()">
+                                <i class="fas fa-plus"></i> Add Color
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <div class="card" style="box-shadow: none; margin-bottom: 0; padding: 1rem;">
+                        <h3>Food Item Options</h3>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="isFood" value="yes" onclick="toggleSection('foodSection', true)"> 
+                                <span>Yes, this is a food item</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="isFood" value="no" onclick="toggleSection('foodSection', false)" checked> 
+                                <span>Not a food item</span>
+                            </label>
+                        </div>
+                        <div id="foodSection" class="dynamic-section">
+                            <div id="extraOptions"></div>
+                            <button type="button" class="add-btn" onclick="addExtraField()">
+                                <i class="fas fa-plus"></i> Add Extra
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="action-buttons">
+                    <button type="button" class="cancel-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="button" class="save-btn" onclick="editProduct({{product.id}})">
+                        <i class="fas fa-save"></i> Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-<input type="hidden" id="data" name="" hidden value="{{product.description}}">
+    <input type="hidden" id="data" name="" hidden value="{{product.description}}">
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
+        // Initialize Quill editor
         const quill = new Quill('#description', {
             theme: 'snow',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
+                    [{ 'header': [1, 2, 3, false] }],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link'],
                     ['clean']
                 ]
             },
             placeholder: 'Enter product description...'
         });
-       quill.root.innerHTML = document.getElementById('data').value;
         
-       
-    
+        // Set existing product description
+        quill.root.innerHTML = document.getElementById('data').value;
+        
+        // Function to toggle dynamic sections
+        function toggleSection(sectionId, show) {
+            const section = document.getElementById(sectionId);
+            section.style.display = show ? 'block' : 'none';
+        }
+        
+        // Function to remove fields
         function removeField(element) {
             element.closest('.form-inline').remove();
         }
@@ -347,17 +612,60 @@
         document.getElementById('image').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const preview = document.getElementById('imagePreview');
+            const noImageText = document.getElementById('noImageText');
+            
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
+                    noImageText.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             } else {
                 preview.style.display = 'none';
+                noImageText.style.display = 'block';
             }
         });
+
+        // Add color field function
+        function addColorField() {
+            const colorGroups = document.getElementById('colorGroups');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'form-inline';
+            newGroup.innerHTML = `
+                <input type="text" placeholder="Color Name (e.g. Red)">
+                <input type="color" value="#ff0000">
+                <input type="number" placeholder="Stock" min="0">
+                <button type="button" class="remove-btn" onclick="removeField(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <div class="color-preview" style="background-color: #ff0000;"></div>
+            `;
+            colorGroups.appendChild(newGroup);
+            
+            // Update color preview when color input changes
+            const colorInput = newGroup.querySelector('input[type="color"]');
+            const preview = newGroup.querySelector('.color-preview');
+            colorInput.addEventListener('input', function() {
+                preview.style.backgroundColor = this.value;
+            });
+        }
+
+        // Add extra field function for food items
+        function addExtraField() {
+            const extraOptions = document.getElementById('extraOptions');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'form-inline';
+            newGroup.innerHTML = `
+                <input type="text" placeholder="Option Name (e.g. Extra cheese)">
+                <input type="number" placeholder="Price" step="0.01" min="0">
+                <button type="button" class="remove-btn" onclick="removeField(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            extraOptions.appendChild(newGroup);
+        }
 
         // Form validation
         document.getElementById('productForm').addEventListener('submit', function(e) {
@@ -377,14 +685,52 @@
             if (valid) {
                 // Handle form submission
                 const formData = {
-                    description: quill.root.innerHTML,
-                    // Add other form fields here
+                    name: document.getElementById('name').value,
+                    small_description: document.getElementById('small_description').value,
+                    category: document.getElementById('category').value,
+                    price: document.getElementById('price').value,
+                    quantity: document.getElementById('quantity').value,
+                    status: document.getElementById('status').value,
+                    description: quill.root.innerHTML
                 };
                 console.log('Form data:', formData);
-                alert('Product saved successfully!');
+                // Proceed with edit function call
+                editProduct({{product.id}});
             }
         });
+
+        // Edit product function (placeholder - actual implementation in external js)
+        function editProduct(productId) {
+            // Update hidden input with Quill content
+            document.getElementById('descriptionInput').value = quill.root.innerHTML;
+            
+            // This is a placeholder - actual implementation should be in product_requests.js
+            console.log(`Editing product with ID: ${productId}`);
+            console.log('Description:', quill.root.innerHTML);
+            
+            // Show success message
+            alert('Product updated successfully!');
+        }
+
+        // Cancel button action
+        document.querySelector('.cancel-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                // Redirect to product management page
+                window.location.href = "{% url 'manage_product' business.id %}";
+            }
+        });
+
+        // Initialize - if there's already an image for the product
+        // You may need to add this code if your product already has an image
+        // const existingImageUrl = "{{ product.image_url|default:'' }}";
+        // if (existingImageUrl) {
+        //     const preview = document.getElementById('imagePreview');
+        //     const noImageText = document.getElementById('noImageText');
+        //     preview.src = existingImageUrl;
+        //     preview.style.display = 'block';
+        //     noImageText.style.display = 'none';
+        // }
     </script>
     <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-<script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
+    <script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
 {% endblock %}
