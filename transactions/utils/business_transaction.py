@@ -9,6 +9,42 @@ from seller.wrap_models.product_model import Product, Extras,Addon
 from user.utils import login_required_custom, has_password, send_email_order_confirmation
 
 
+def get_cart_total(cart_items):
+    total = 0
+    for item in cart_items:
+        total += item.product.price * item.quantity 
+        
+    return round(total,2)
+
+def get_extra_total(extras):
+    total = 0
+    for extra in extras:
+        total += extra.extra.price
+    return total
+
+def get_discount(cart_items):
+    discount_factor = 0
+    for item in cart_items:
+        discount_factor += item.quantity
+    discount = 4
+    discounted_amount = 0
+    if discount_factor == 3 :
+        discounted_amount = Decimal(discount) * Decimal(1)
+    elif discount_factor >3 and discount_factor < 6 :
+        discounted_amount = Decimal(discount) * Decimal(1.5)
+    elif discount_factor > 5 and discount_factor < 8:
+        discounted_amount = discount * 3
+    return Decimal(discounted_amount)
+
+def get_delivery_total(order):
+    delivery_method = CartDeliveryMethod.objects.filter(user=order.user).first()
+    if delivery_method:
+        if delivery_method.method == "pickup":
+            return 0
+        elif delivery_method.method == "delivery":
+            return 15
+        
+
 def transfer_money_to_business(user=None,business=None,order=None,ref=None,status=None):
     sender = user
     receiver = business
@@ -72,8 +108,13 @@ def clean_cart(user,ref,order):
     cart_extras = CartExtra.objects.filter(user=user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=user).first()
     address = CartDeliveryAddress.objects.filter(user=user).first()
-
-    send_email_order_confirmation(order,cart_extras,cart_items,order )
+    delivery_total = get_delivery_total(order)
+    price_total = get_cart_total(cart_items)
+    extra_total = get_extra_total(cart_extras)
+    checkout_total = round(price_total + extra_total + delivery_total,2)
+    discount = get_discount(cart_items)
+    total_to_pay = Decimal(checkout_total)  - Decimal(discount)
+    send_email_order_confirmation(order,cart_extras,cart_items,total_to_pay,discount )
     for item in cart_items:
         order_item = OrderItem.objects.create(order=order,product=item.product,quantity=item.quantity)
         order_item.save()

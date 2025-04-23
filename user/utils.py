@@ -34,7 +34,7 @@ def email_order_confirmation(recipient_email,link,order,extras, order_items,tota
         logger.error(f"No user found with email: {recipient_email[1]}")
         return False  # Return failure if user doesn't exist
 
-    email_content = render_to_string("home/email/order_placed.html", {'order':order,'total':total,'user': user, 'link': link ,'extras':extras,'order_items':order_items})
+    email_content = render_to_string("home/email/order_placed.html", {'order':order,'total':total,'user': user, 'link': link ,'extras':extras,'order_items':order_items,'discount':discount})
     text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
 
     email = EmailMultiAlternatives(
@@ -49,7 +49,7 @@ def email_order_confirmation(recipient_email,link,order,extras, order_items,tota
     #logger.info(f"Your Business Registration is Under Review email sent to {recipient_email[0]} and {recipient_email[1]}")
     return True
 
-def send_email_order_confirmation(order,extras, order_items, total ):
+def send_email_order_confirmation(order,extras, order_items, total,discount ):
     emails = [order.user.email,order.business.email, order.business.owner.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
-    email_order_confirmation(emails, page_link, order, extras, order_items, total)
+    email_order_confirmation(emails, page_link, order, extras, order_items, total,discount)

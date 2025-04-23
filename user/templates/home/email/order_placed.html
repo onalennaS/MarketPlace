@@ -66,7 +66,7 @@
     <div class="content">
         <p>Hello <strong>{{ user.username }}</strong>,</p>
         <p>Your order <strong> #{{ order.order_id }} </strong> has been successfully placed on <strong>{{ order.created_at }}</strong>.</p>
-
+        <p>Business : {{order.business}}</p>
         <div class="order-details">
             <h3>Order Summary</h3>
             <p><strong>Items:</strong></p>
@@ -86,6 +86,7 @@
             <p><strong>Delivery:</strong> <strong>R15</strong></p>
 
             {% endif %}
+            <p><strong>Discount:</strong> <strong>R{{discount}}</strong></p>
             <p><strong>Total:</strong> <strong>R{{ total }}</strong></p>
         </div>
 
@@ -98,7 +99,7 @@
     </div>
 
     <div class="footer">
-        <p>If you have any questions, contact our support team at <a href="mailto:support@sixskies.com">support@sixskies.com</a></p>
+        <p>If you have any questions, contact our support team at <a href="mailto:versityfinds@gmail.com">support@versityfinds.co.za</a></p>
         <p>Thank you for shopping with <strong>SixSkies</strong>!</p>
     </div>
 </div>
