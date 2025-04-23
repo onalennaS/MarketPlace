@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>400 - Bad Request | VersityFinds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-ZMHf9Bzr2PiwZ2DzowKXmXmiKzoX8TVFWD+kfBeZ6CymvOyKraFZX1fj+ibJdLb7OaZ9OnHzqT+hX1JYSlb3qg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .error-icon {
+      font-size: 6rem;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .error-code {
+      font-size: 5rem;
+      font-weight: bold;
+      color: #ffd369;
+    }
+    .message {
+      font-size: 1.8rem;
+      margin: 10px 0;
+    }
+    .description {
+      font-size: 1rem;
+      margin-bottom: 30px;
+      color: #e0e0e0;
+    }
+    a.button {
+      text-decoration: none;
+      background: #ffd369;
+      color: #1e3c72;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+    a.button:hover {
+      background: #ffcc00;
+      transform: scale(1.05);
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="error-code">400</div>
+    <div class="message">Bad Request</div>
+    <div class="description">
+      Whoops! The request couldn't be processed.<br>
+      Please check the URL or try again later.
+    </div>
+    <a href="/" class="button"><i class="fas fa-home"></i> Go Back Home</a>
+  </div>
+  <footer>
+    &copy; <span id="year"></span> VersityFinds. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

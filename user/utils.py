@@ -79,4 +79,4 @@ def send_email_order_confirmation(order,extras, order_items, total,discount ):
     business_page_link = f"{settings.SITE_URL}/seller/orders/{order.business.id}"
 
     email_order_confirmation_user(user_email, page_link, order, extras, order_items, total,discount)
-    email_order_confirmation_business(user_email,business_email, page_link, order, extras, order_items, total,discount)
+    email_order_confirmation_business(user_email,business_email, business_page_link, order, extras, order_items, total,discount)

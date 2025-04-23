@@ -4,6 +4,7 @@ from allauth.socialaccount.models import SocialAccount
 from .wrap_models.cart_models import Cart , Wishlist,CartDeliveryMethod, CartDeliveryAddress, CartExtra
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddress
 from decimal import Decimal
+from django.http import HttpResponse
 def is_google_linked(user):
     try:
         social_account = SocialAccount.objects.get(user=user)
@@ -178,8 +179,9 @@ def view_order_details(request,order_id):
 @login_required_custom
 def track_orders(request,order_id):
     order = Order.objects.filter(id=order_id).first()
-    return render(request, 'home/track_orders.html',{'order':order})
-
+    if request.user == order.user:
+        return render(request, 'home/track_orders.html',{'order':order})
+    return  render(request, 'home/errors/400.html')
 @login_required_custom
 def buyer_reviews(request):
     return render(request, 'home/buyer_reviews.html')
