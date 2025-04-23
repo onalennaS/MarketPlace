@@ -51,7 +51,7 @@ def email_order_confirmation_user(recipient_email,link,order,extras, order_items
 
 def email_order_confirmation_business(user,recipient_email,link,order,extras, order_items,total,discount):
     try:
-        user = User.objects.values('username').get(email=user)
+        user = User.objects.values('username').get(email=user[0])
     except User.DoesNotExist:
         logger.error(f"No user found with email: {recipient_email[1]}")
         return False  # Return failure if user doesn't exist
