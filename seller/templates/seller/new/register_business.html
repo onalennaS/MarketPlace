@@ -248,6 +248,51 @@
             });
         }
     }
+
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fix the navbar toggler functionality
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        
+        if (navbarToggler) {
+            // Remove any existing event listeners first to avoid duplicates
+            const newToggler = navbarToggler.cloneNode(true);
+            navbarToggler.parentNode.replaceChild(newToggler, navbarToggler);
+            
+            // Add the click event listener to the new toggler
+            newToggler.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Get the target offcanvas element
+                const targetId = this.getAttribute('data-bs-target');
+                const offcanvasElement = document.querySelector(targetId);
+                
+                if (offcanvasElement) {
+                    // Remove existing backdrop attribute if it exists
+                    if (offcanvasElement.hasAttribute('data-bs-backdrop')) {
+                        offcanvasElement.removeAttribute('data-bs-backdrop');
+                    }
+                    
+                    try {
+                        // Initialize the offcanvas with proper options
+                        const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement, {
+                            backdrop: true  // Ensure this is a boolean, not a string
+                        });
+                        
+                        // Show the offcanvas
+                        bsOffcanvas.show();
+                    } catch (error) {
+                        console.error('Error initializing offcanvas:', error);
+                    }
+                } else {
+                    console.error('Offcanvas element not found with selector:', targetId);
+                }
+            });
+        } else {
+            console.error('Navbar toggler button not found');
+        }
+    });
 </script>
 
 {% endblock %}

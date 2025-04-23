@@ -45,68 +45,291 @@
         padding: 2rem;
         border-bottom: 1px solid #e9ecef;
     }
+    
+    /* Added styles for new features */
+    .business-details-section {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .detail-row {
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+    
+    .edit-button {
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .detail-row:hover .edit-button {
+        opacity: 1;
+    }
+    
+    .status-history-item {
+        border-left: 3px solid #dee2e6;
+        padding-left: 1.5rem;
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+    
+    .status-history-item::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 0;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background-color: #fff;
+        border: 3px solid #6c757d;
+    }
+    
+    .status-history-item.approved::before {
+        border-color: #28a745;
+    }
+    
+    .status-history-item.rejected::before {
+        border-color: #dc3545;
+    }
+    
+    .status-history-item.pending::before {
+        border-color: #ffc107;
+    }
+    
+    .business-actions-bar {
+        position: sticky;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 1rem;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+        border-top: 1px solid #e9ecef;
+        z-index: 100;
+        display: none;
+    }
+    
+    .copy-tooltip {
+        position: relative;
+        cursor: pointer;
+    }
+    
+    .copy-tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -70px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .copy-tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+    
+    .note-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+    
+    .notes-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .note-item {
+        background-color: white;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-left: 3px solid #3498db;
+    }
 </style>
 
 <div class="container py-5">
-   
-            </nav>
+    <div class="business-detail-card mb-4">
+        <div class="business-header d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="fw-bold mb-2" id="business-name">{{ business.name }}</h1>
+                <div class="d-flex gap-3 align-items-center">
+                    <span class="badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %} px-3 py-2">
+                        {{ business.status|title }}
+                    </span>
+                    <span class="text-muted copy-tooltip" onclick="copyToClipboard('{{ business.id }}')">
+                        #{{ business.id }}
+                        <span class="tooltiptext" id="idTooltip">Copy ID</span>
+                    </span>
+                </div>
+            </div>
             
-            <div class="business-detail-card mb-4">
-                <div class="business-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="fw-bold mb-2">{{ business.name }}</h1>
-                        <div class="d-flex gap-3 align-items-center">
-                            <span class="badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %} px-3 py-2">
-                                {{ business.status|title }}
-                            </span>
-                            <span class="text-muted">#{{ business.id }}</span>
+            <form id="delete-business-form" 
+                  action="{% url 'delete_business' business.id %}" 
+                  method="POST" class="ms-auto">
+                {% csrf_token %}
+                <button type="button" 
+                        class="btn btn-outline-danger delete-btn btn-action"
+                        onclick="confirmDelete('{{ business.id }}', '{{ business.name }}')">
+                    <i class="bi bi-trash me-1"></i> Delete Business
+                </button>
+            </form>
+        </div>
+        
+        <div class="card-body p-4">
+            {% if business.status == "pending" %}
+                <div class="status-card bg-warning bg-opacity-10 p-4 text-center mb-4">
+                    <i class="bi bi-hourglass-split status-icon text-warning"></i>
+                    <h2 class="text-warning mb-3">Pending Approval</h2>
+                    <p class="text-muted mb-4">
+                        Your business is currently under review. This process may take some time.
+                        You will receive a notification once it has been approved.
+                    </p>
+                    <div class="progress mb-3" style="height: 8px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
+                             role="progressbar" style="width: 50%" 
+                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="text-muted small">Estimated review time: 24-48 hours</p>
+                </div>
+            {% elif business.status == "rejected" %}
+                <div class="status-card bg-danger bg-opacity-10 p-4 text-center mb-4">
+                    <i class="bi bi-x-circle status-icon text-danger"></i>
+                    <h2 class="text-danger mb-3">Business Request Not Approved</h2>
+                    <p class="text-muted mb-4">
+                        {{moderation.reason}}
+                    </p>
+                    <a href="{% url 'appeal_registration_view' business.id %}" class="btn btn-primary btn-lg btn-action px-4">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Request Appeal
+                    </a>
+                </div>
+            {% elif business.status == "approved" %}
+                <div class="status-card bg-success bg-opacity-10 p-4 text-center mb-4">
+                    <i class="bi bi-check-circle status-icon text-success"></i>
+                    <h2 class="text-success mb-3">Business Approved</h2>
+                    <p class="text-muted mb-4">
+                        Your business has been approved and is now active.
+                    </p>
+                    <a href="{% url 'seller_dashboard' business.id %}" class="btn btn-success btn-lg btn-action px-4">
+                        <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                    </a>
+                </div>
+            {% endif %}
+            
+            <!-- Business details section -->
+            <div class="business-details-section">
+                <h4 class="mb-4"><i class="bi bi-info-circle me-2"></i>Business Details</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-row d-flex align-items-center justify-content-between" id="detail-name">
+                            <div>
+                                <div class="detail-label">Business Name</div>
+                                <div class="detail-value">{{ business.name }}</div>
+                            </div>
+                            <button class="btn btn-sm btn-light edit-button" onclick="editDetail('name')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="detail-row d-flex align-items-center justify-content-between" id="detail-category">
+                            <div>
+                                <div class="detail-label">Category</div>
+                                <div class="detail-value">{{ business.category }}</div>
+                            </div>
+                            <button class="btn btn-sm btn-light edit-button" onclick="editDetail('category')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <form id="delete-business-form" 
-                          action="{% url 'delete_business' business.id %}" 
-                          method="POST" class="ms-auto">
-                        {% csrf_token %}
-                        <button type="button" 
-                                class="btn btn-outline-danger delete-btn btn-action"
-                                onclick="confirmDelete('{{ business.id }}', '{{ business.name }}')">
-                            <i class="bi bi-trash me-1"></i> Delete Business
-                        </button>
-                    </form>
+                    <div class="col-md-6">
+                        <div class="detail-row d-flex align-items-center justify-content-between" id="detail-email">
+                            <div>
+                                <div class="detail-label">Business Email</div>
+                                <div class="detail-value">{{ business.email }}</div>
+                            </div>
+                            <button class="btn btn-sm btn-light edit-button" onclick="editDetail('email')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="detail-row d-flex align-items-center justify-content-between" id="detail-phone">
+                            <div>
+                                <div class="detail-label">Phone Number</div>
+                                <div class="detail-value">{{ business.phone }}</div>
+                            </div>
+                            <button class="btn btn-sm btn-light edit-button" onclick="editDetail('phone')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="card-body p-4">
-                    {% if business.status == "pending" %}
-                        <div class="status-card bg-warning bg-opacity-10 p-4 text-center mb-4">
-                            <i class="bi bi-hourglass-split status-icon text-warning"></i>
-                            <h2 class="text-warning mb-3">Pending Approval</h2>
-                            <p class="text-muted mb-4">
-                                Your business is currently under review. This process may take some time.
-                                You will receive a notification once it has been approved.
-                            </p>
+            </div>
+            
+            <!-- Status history section -->
+            <div class="business-details-section" id="status-history-section">
+                <h4 class="mb-4"><i class="bi bi-clock-history me-2"></i>Status History</h4>
+                <div class="status-history">
+                    <!-- Status history will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Notes section -->
+            <div class="business-details-section">
+                <h4 class="mb-4"><i class="bi bi-journal-text me-2"></i>Business Notes</h4>
+                <div class="note-container">
+                    <div class="notes-list" id="notes-list">
+                        <!-- Notes will be populated by JavaScript -->
+                    </div>
+                    <div class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Add a note..." id="note-input">
+                            <button class="btn btn-primary" type="button" onclick="addNote()">
+                                <i class="bi bi-plus"></i> Add
+                            </button>
                         </div>
-                    {% elif business.status == "rejected" %}
-                        <div class="status-card bg-danger bg-opacity-10 p-4 text-center mb-4">
-                            <i class="bi bi-x-circle status-icon text-danger"></i>
-                            <h2 class="text-danger mb-3">Business Request Not Approved</h2>
-                            <p class="text-muted mb-4">
-                                {{moderation.reason}}
-                            </p>
-                            <a href="{% url 'appeal_registration_view' business.id %}" class="btn btn-primary btn-lg btn-action px-4">
-                                <i class="bi bi-arrow-right-circle me-2"></i>Request Appeal
-                            </a>
-                        </div>
-                    {% elif business.status == "approved" %}
-                        <div class="status-card bg-success bg-opacity-10 p-4 text-center mb-4">
-                            <i class="bi bi-check-circle status-icon text-success"></i>
-                            <h2 class="text-success mb-3">Business Approved</h2>
-                            <p class="text-muted mb-4">
-                                Your business has been approved and is now active.
-                            </p>
-                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating action bar -->
+    <div class="business-actions-bar" id="business-actions-bar">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold">{{ business.name }}</span>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="scrollToTop()">
+                        <i class="bi bi-arrow-up"></i> Back to Top
+                    </button>
+                    {% if business.status == "approved" %}
+                    <a href="{% url 'seller_dashboard' business.id %}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                    </a>
                     {% endif %}
-                    
-                    <!-- Business details can be added here -->
                 </div>
             </div>
         </div>
@@ -116,6 +339,34 @@
 <!-- SweetAlert Delete Confirmation -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // Sample data for status history - in a real app, this would come from your backend
+    const statusHistory = [
+        { 
+            status: 'pending', 
+            date: '2025-04-20T14:30:00', 
+            message: 'Business registration submitted for review' 
+        },
+        // Add more history items based on business.status or from database
+        {% if business.status == "approved" or business.status == "rejected" %}
+        { 
+            status: '{{ business.status }}', 
+            date: '2025-04-22T09:15:00', 
+            message: '{{ business.status|title }} by admin' 
+        }
+        {% endif %}
+    ];
+    
+    // Sample notes - in a real app, this would come from your backend
+    let businessNotes = [
+        { 
+            id: 1, 
+            text: 'Initial business registration completed', 
+            date: '2025-04-20T14:30:00',
+            author: 'You'
+        }
+    ];
+    
+    // Function to confirm delete with SweetAlert
     function confirmDelete(businessId, businessName) {
         Swal.fire({
             title: 'Delete Business?',
@@ -137,6 +388,402 @@
             }
         });
     }
+    
+    // Function to edit business details
+    function editDetail(detailType) {
+        const detailElement = document.getElementById(`detail-${detailType}`);
+        const valueElement = detailElement.querySelector('.detail-value');
+        const currentValue = valueElement.textContent.trim();
+        
+        Swal.fire({
+            title: `Edit ${detailType.charAt(0).toUpperCase() + detailType.slice(1)}`,
+            input: 'text',
+            inputValue: currentValue,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#3085d6',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to write something!';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // In a real app, you would send this to the server
+                valueElement.textContent = result.value;
+                
+                // Show success message
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `${detailType.charAt(0).toUpperCase() + detailType.slice(1)} updated!`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true
+                });
+                
+                // If it's the business name, update all references
+                if (detailType === 'name') {
+                    document.getElementById('business-name').textContent = result.value;
+                }
+                
+                // In real implementation, you would send an AJAX request to update the database
+                // Example:
+                /*
+                fetch('/update-business-detail/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        businessId: '{{ business.id }}',
+                        detailType: detailType,
+                        value: result.value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        valueElement.textContent = result.value;
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: `${detailType.charAt(0).toUpperCase() + detailType.slice(1)} updated!`,
+                            showConfirmButton: false,
+                            timer: 1500,
+                            toast: true
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.error || 'Failed to update detail'
+                        });
+                    }
+                });
+                */
+            }
+        });
+    }
+    
+    // Function to copy business ID to clipboard
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const tooltip = document.getElementById("idTooltip");
+            tooltip.textContent = "Copied!";
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+            
+            setTimeout(() => {
+                tooltip.style.visibility = "hidden";
+                tooltip.style.opacity = "0";
+                setTimeout(() => {
+                    tooltip.textContent = "Copy ID";
+                }, 300);
+            }, 2000);
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+    
+    // Function to render status history
+    function renderStatusHistory() {
+        const historyContainer = document.querySelector('.status-history');
+        historyContainer.innerHTML = '';
+        
+        statusHistory.forEach((item, index) => {
+            const historyItem = document.createElement('div');
+            historyItem.className = `status-history-item ${item.status} ${index === statusHistory.length - 1 ? 'last' : ''}`;
+            
+            const date = new Date(item.date);
+            const formattedDate = date.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            historyItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <h6 class="fw-bold mb-1">${item.status.charAt(0).toUpperCase() + item.status.slice(1)}</h6>
+                    <span class="text-muted small">${formattedDate}</span>
+                </div>
+                <p class="text-muted mb-0">${item.message}</p>
+            `;
+            
+            historyContainer.appendChild(historyItem);
+        });
+    }
+    
+    // Function to render notes
+    function renderNotes() {
+        const notesContainer = document.getElementById('notes-list');
+        notesContainer.innerHTML = '';
+        
+        if (businessNotes.length === 0) {
+            notesContainer.innerHTML = '<div class="text-center text-muted py-3">No notes yet</div>';
+            return;
+        }
+        
+        businessNotes.forEach(note => {
+            const date = new Date(note.date);
+            const formattedDate = date.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note-item';
+            noteElement.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>${note.author}</strong>
+                        <span class="text-muted small ms-2">${formattedDate}</span>
+                    </div>
+                    <button class="btn btn-sm text-danger" onclick="deleteNote(${note.id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="mt-2">${note.text}</div>
+            `;
+            
+            notesContainer.appendChild(noteElement);
+        });
+    }
+    
+    // Function to add a new note
+    function addNote() {
+        const noteInput = document.getElementById('note-input');
+        const noteText = noteInput.value.trim();
+        
+        if (noteText === '') {
+            return;
+        }
+        
+        const newNote = {
+            id: businessNotes.length > 0 ? Math.max(...businessNotes.map(note => note.id)) + 1 : 1,
+            text: noteText,
+            date: new Date().toISOString(),
+            author: 'You'
+        };
+        
+        businessNotes.push(newNote);
+        renderNotes();
+        noteInput.value = '';
+        
+        // Show toast notification
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Note added successfully',
+            showConfirmButton: false,
+            timer: 1500,
+            toast: true
+        });
+        
+        // In a real implementation, you would send this to the server
+        // Example:
+        /*
+        fetch('/add-business-note/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                businessId: '{{ business.id }}',
+                text: noteText
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                businessNotes.push({
+                    id: data.noteId,
+                    text: noteText,
+                    date: data.date,
+                    author: data.author
+                });
+                renderNotes();
+                noteInput.value = '';
+                
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Note added successfully',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.error || 'Failed to add note'
+                });
+            }
+        });
+        */
+    }
+    
+    // Function to delete a note
+    function deleteNote(noteId) {
+        Swal.fire({
+            title: 'Delete Note?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                businessNotes = businessNotes.filter(note => note.id !== noteId);
+                renderNotes();
+                
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Note deleted',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true
+                });
+                
+                // In a real implementation, you would send this to the server
+                // Example:
+                /*
+                fetch('/delete-business-note/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        businessId: '{{ business.id }}',
+                        noteId: noteId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        businessNotes = businessNotes.filter(note => note.id !== noteId);
+                        renderNotes();
+                        
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Note deleted',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            toast: true
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.error || 'Failed to delete note'
+                        });
+                    }
+                });
+                */
+            }
+        });
+    }
+    
+    // Function for scroll to top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Function to handle note input key press (Enter to submit)
+    function setupNoteInput() {
+        const noteInput = document.getElementById('note-input');
+        if (noteInput) {
+            noteInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addNote();
+                }
+            });
+        }
+    }
+    
+    // Function to handle scroll events for the floating action bar
+    function handleScroll() {
+        const actionsBar = document.getElementById('business-actions-bar');
+        if (window.scrollY > 300) {
+            actionsBar.style.display = 'block';
+        } else {
+            actionsBar.style.display = 'none';
+        }
+    }
+    
+    // Initialize everything when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        renderStatusHistory();
+        renderNotes();
+        setupNoteInput();
+        
+        // Set up scroll event listener for the floating action bar
+        window.addEventListener('scroll', handleScroll);
+        
+        // Initialize tooltip functionality for Bootstrap
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+    // Fix the navbar toggler functionality
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  
+  if (navbarToggler) {
+    // Remove any existing event listeners first to avoid duplicates
+    const newToggler = navbarToggler.cloneNode(true);
+    navbarToggler.parentNode.replaceChild(newToggler, navbarToggler);
+    
+    // Add the click event listener to the new toggler
+    newToggler.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get the target offcanvas element
+      const targetId = this.getAttribute('data-bs-target');
+      const offcanvasElement = document.querySelector(targetId);
+      
+      if (offcanvasElement) {
+        // Remove existing backdrop attribute if it exists
+        if (offcanvasElement.hasAttribute('data-bs-backdrop')) {
+          offcanvasElement.removeAttribute('data-bs-backdrop');
+        }
+        
+        try {
+          // Initialize the offcanvas with proper options
+          const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement, {
+            backdrop: true  // Ensure this is a boolean, not a string
+          });
+          
+          // Show the offcanvas
+          bsOffcanvas.show();
+        } catch (error) {
+          console.error('Error initializing offcanvas:', error);
+        }
+      } else {
+        console.error('Offcanvas element not found with selector:', targetId);
+      }
+    });
+  } else {
+    console.error('Navbar toggler button not found');
+  }
+
 </script>
 
 <!-- Bootstrap Icons -->
