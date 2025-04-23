@@ -50,8 +50,10 @@ def get_order_extra(order):
 def get_cart_total(cart_items):
     total = 0
     for item in cart_items:
-        total += item.product.price * item.quantity 
-        
+        try:
+            total += item.product.price * item.quantity 
+        except Exception as e:
+            total += item.product.price
     return round(total,2)
 
 def get_extra_total(extras):
