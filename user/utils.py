@@ -27,7 +27,7 @@ def has_password(view_func):
     return _wrapped_view
 
 
-def email_order_confirmation(recipient_email,link,order,extras, order_items,total,discount):
+def email_order_confirmation_user(recipient_email,link,order,extras, order_items,total,discount):
     try:
         user = User.objects.values('username').get(email=recipient_email[0])
     except User.DoesNotExist:
@@ -49,7 +49,34 @@ def email_order_confirmation(recipient_email,link,order,extras, order_items,tota
     #logger.info(f"Your Business Registration is Under Review email sent to {recipient_email[0]} and {recipient_email[1]}")
     return True
 
+def email_order_confirmation_business(user,recipient_email,link,order,extras, order_items,total,discount):
+    try:
+        user = User.objects.values('username').get(email=user)
+    except User.DoesNotExist:
+        logger.error(f"No user found with email: {recipient_email[1]}")
+        return False  # Return failure if user doesn't exist
+
+    email_content = render_to_string("home/email/business_order_placed.html", {'order':order,'total':total,'user': user, 'link': link ,'extras':extras,'order_items':order_items,'discount':discount})
+    text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
+
+    email = EmailMultiAlternatives(
+        subject=f"Order {order.order_id} Confirmation ",
+        body=text_content,
+        from_email=settings.EMAIL_HOST_USER,
+        to=recipient_email,
+    )
+    email.attach_alternative(email_content, "text/html")  # Attach HTML version
+    email.send()
+
+    #logger.info(f"Your Business Registration is Under Review email sent to {recipient_email[0]} and {recipient_email[1]}")
+    return True
+
 def send_email_order_confirmation(order,extras, order_items, total,discount ):
-    emails = [order.user.email,order.business.email, order.business.owner.email]
+    user_email = [order.user.email]
+    business_email = [order.business.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
-    email_order_confirmation(emails, page_link, order, extras, order_items, total,discount)
+
+    business_page_link = f"{settings.SITE_URL}/seller/orders/{order.business.id}"
+
+    email_order_confirmation_user(user_email, page_link, order, extras, order_items, total,discount)
+    email_order_confirmation_business(user_email,business_email, page_link, order, extras, order_items, total,discount)
