@@ -1,184 +1,628 @@
 {% extends 'seller/base.html' %}
-{% load static%}
+{% load static %}
+
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-       <link rel="stylesheet" href="{% static 'css/message.css' %}">
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 {% endblock %}
-
 
 {% block styles %}
-        /* Sticky Header & Tabs */
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    :root {
+        --primary-color: #4f46e5;
+        --primary-hover: #4338ca;
+        --success-color: #10b981;
+        --success-light: #ecfdf5;
+        --warning-color: #f59e0b;
+        --warning-light: #fffbeb;
+        --info-color: #3b82f6;
+        --info-light: #eff6ff;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
+        --completed-color: #10b981;
+        --text-color: #1f2937;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --border-radius: 0.5rem;
+    }
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        color: var(--text-color);
+    }
+
+    .dashboard-header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dashboard-header .header-icon {
+        color: var(--primary-color);
+        background-color: rgba(79, 70, 229, 0.1);
+        height: 32px;
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.375rem;
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-box input {
+        padding-left: 2.5rem;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--border-color);
+        height: 40px;
+    }
+
+    .search-box .bi-search {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+    }
+
+    .control-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s;
+    }
+
+    .btn-toggle {
+        background-color: var(--info-light);
+        color: var(--info-color);
+        border: 1px solid var(--info-color);
+    }
+
+    .btn-toggle:hover {
+        background-color: var(--info-color);
+        color: white;
+    }
+
+    .btn-toggle.disabled {
+        background-color: var(--danger-light);
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
+    }
+
+    .btn-toggle.disabled:hover {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    /* Tabs */
+    .tabs-container {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: inherit;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .order-tabs {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.25rem;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .order-tabs::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    .tab-item {
+        white-space: nowrap;
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-color);
+        border: none;
+        background: none;
+    }
+
+    .tab-item:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .tab-item.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .tab-badge {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: inherit;
+        border-radius: 9999px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .tab-item:not(.active) .tab-badge {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+
+    /* Order Cards */
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1rem;
+    }
+
+    .order-card {
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid var(--border-color);
+        background-color: white;
+        height: 100%;
+    }
+
+    .order-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .order-header {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .order-id {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .order-time {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .order-body {
+        padding: 1rem;
+    }
+
+    .order-note {
+        background-color: #f9fafb;
+        border-radius: var(--border-radius);
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .order-note strong {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+
+    .items-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1rem 0;
+    }
+
+    .item-entry {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .item-entry:last-child {
+        border-bottom: none;
+    }
+
+    .item-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .item-quantity {
+        color: var(--text-muted);
+        background-color: #f3f4f6;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .item-extras {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        padding: 0.25rem 0.5rem;
+        background-color: #f9fafb;
+        border-radius: 0.25rem;
+        display: inline-block;
+    }
+
+    .order-footer {
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order-status {
+        padding: 0.35rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .status-new {
+        background-color: var(--info-light);
+        color: var(--info-color);
+    }
+
+    .status-preparing {
+        background-color: var(--warning-light);
+        color: var(--warning-color);
+    }
+
+    .status-scheduled {
+        background-color: #e0e7ff;
+        color: #4f46e5;
+    }
+
+    .status-completed {
+        background-color: var(--success-light);
+        color: var(--success-color);
+    }
+
+    .status-canceled {
+        background-color: var(--danger-light);
+        color: var(--danger-color);
+    }
+
+    .order-total {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .order-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .detail-item {
+        background-color: #f9fafb;
+        padding: 1rem;
+        border-radius: var(--border-radius);
+    }
+
+    .detail-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .payment-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .payment-paid {
+        background-color: var(--success-light);
+        color: var(--success-color);
+    }
+
+    .payment-pending {
+        background-color: var(--warning-light);
+        color: var(--warning-color);
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel {
+        background-color: white;
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
+    }
+
+    .btn-cancel:hover {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .btn-next {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+    }
+
+    .btn-next:hover {
+        background-color: var(--primary-hover);
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+    }
+
+    .spinner-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .dashboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
         }
-        .nav-tabs {
+        
+        .header-actions {
             display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
         }
-        .nav-tabs .nav-item {
-            flex: 1;
+        
+        .search-box, .control-btn {
+            width: 100%;
         }
-
-        /* Order Card Styling */
-        .order-card {
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
+        
+        .orders-grid {
+            grid-template-columns: 1fr;
         }
-        .order-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
-        .status-label {
-            display: inline-block;
-            width: 100px;
-            text-align: center;
-            
-            border-radius: 5px;
-            padding: 3px 0;
-            font-size: 0.9rem;
+        
+        .order-detail-grid {
+            grid-template-columns: 1fr;
         }
-        .status-new { background: #17a2b8; } /* Blue */
-        .status-preparing { background: #ffc107; } /* Yellow */
-        .status-scheduled { background: #007bff; } /* Dark Blue */
-        .status-completed { background: #28a745; } /* Green */
-        .status-canceled { background: #dc3545; } /* Red */
-
-        /* Items List Styling */
-        .items-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        
+        .modal-footer {
+            flex-direction: column;
         }
-        .items-list li {
-            padding: 10px;
-            border-bottom: 1px solid #e9ecef;
-            transition: background 0.2s ease-in-out;
+        
+        .action-btn {
+            width: 100%;
+            justify-content: center;
         }
-        .items-list li:last-child {
-            border-bottom: none;
-        }
-        .items-list li:hover {
-            background: #f8f9fa;
-        }
-        .item-extras {
-            background: #f8f9fa;
-            padding: 8px;
-            border-radius: 5px;
-            margin-top: 5px;
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        /* Modal Styling */
-        .modal-content {
-            border-radius: 10px;
-
-        }
-        .modal-body {
-            padding: 20px;
-            background-color:inherit;
-        }
-        .modal-body h6 {
-            margin-top: 15px;
-            font-weight: 600;
-        }
-        .modal-body ul {
-            padding-left: 20px;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .form-control, .btn {
-                width: 100%;
-            }
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1001;
-        }
-
+    }
 {% endblock %}
+
 {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'manage_product' business.id  %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'orders' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>Orders</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-currency-exchange"></i>
-                <span>Sales & Transactions</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-            <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-               <i class="bi bi-building"></i>
-                <span>Business information</span>
-            </a>
-            <a href="{% url 'settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </div>
-        {% endblock %}
+    <div class="nav-items">
+        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'manage_product' business.id  %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+        </a>
+        <a href="{% url 'orders' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <i class="bi bi-cart"></i>
+            <span>Orders</span>
+            <span class="badge bg-primary ms-auto">3</span>
+        </a>
+        <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Sales & Transactions">
+            <i class="bi bi-currency-exchange"></i>
+            <span>Sales & Transactions</span>
+            <span class="badge bg-primary ms-auto">3</span>
+        </a>
+        <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+            <i class="bi bi-people"></i>
+            <span>Customers</span>
+        </a>
+        <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <i class="bi bi-bar-chart"></i>
+            <span>Reports</span>
+        </a>
+        <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business Information">
+           <i class="bi bi-building"></i>
+            <span>Business Information</span>
+        </a>
+        <a href="{% url 'settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+{% endblock %}
 
 {% block content %}
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center header-container mb-3 flex-wrap mt-4">
-        <h1 class="h4"><i class="bi bi-cart-check"></i> Order Management</h1>
-        <input type="text" id="searchOrder" placeholder="Search Order #" class="form-control w-25" style="background-color:inherit; color: inherit;">
-        <button id="toggleOrders" class="btn btn-info"><i class="bi bi-pause-circle"></i> Stop Orders</button>
+    <div class="dashboard-header d-flex justify-content-between align-items-center flex-wrap">
+        <h1>
+            <span class="header-icon"><i class="bi bi-cart-check"></i></span>
+            Order Management
+        </h1>
+        <div class="header-actions d-flex gap-3">
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" id="searchOrder" class="form-control" placeholder="Search order #" style="background-color:inherit; color: inherit;">
+            </div>
+            <button id="toggleOrders" class="control-btn btn-toggle">
+                <i class="bi bi-pause-circle"></i> 
+                <span>Stop Orders</span>
+            </button>
+        </div>
     </div>
 
-    <!-- Sticky Navigation Tabs -->
-    <ul class="nav nav-tabs sticky-header mb-4" style="background-color: inherit;">
-        <li class="nav-item"><button class="nav-link active" data-stage="new">New (<span id="count-new">0</span>)</button></li>
-        <li class="nav-item"><button class="nav-link" data-stage="preparing">Preparing (<span id="count-preparing">0</span>)</button></li>
-        <li class="nav-item"><button class="nav-link" data-stage="scheduled">Scheduled (<span id="count-scheduled">0</span>)</button></li>
-        <li class="nav-item"><button class="nav-link" data-stage="completed">Completed (<span id="count-completed">0</span>)</button></li>
-        <li class="nav-item"><button class="nav-link" data-stage="canceled">Canceled (<span id="count-canceled">0</span>)</button></li>
-    </ul>
+    <!-- Tabs -->
+    <div class="tabs-container">
+        <div class="order-tabs">
+            <button class="tab-item active" data-stage="new">
+                <i class="bi bi-bell"></i> New
+                <span class="tab-badge" id="count-new">0</span>
+            </button>
+            <button class="tab-item" data-stage="preparing">
+                <i class="bi bi-clock-history"></i> Preparing
+                <span class="tab-badge" id="count-preparing">0</span>
+            </button>
+            <button class="tab-item" data-stage="scheduled">
+                <i class="bi bi-calendar-check"></i> Scheduled
+                <span class="tab-badge" id="count-scheduled">0</span>
+            </button>
+            <button class="tab-item" data-stage="completed">
+                <i class="bi bi-check-circle"></i> Completed
+                <span class="tab-badge" id="count-completed">0</span>
+            </button>
+            <button class="tab-item" data-stage="canceled">
+                <i class="bi bi-x-circle"></i> Canceled
+                <span class="tab-badge" id="count-canceled">0</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Orders Container -->
-    <div id="ordersContainer" class="row row-cols-1 row-cols-md-2 g-3"></div>
+    <div id="ordersContainer" class="orders-grid"></div>
 
     <!-- Loading Spinner -->
-    <div class="spinner-border text-primary loading-spinner" role="status">
-        <span class="visually-hidden">Loading...</span>
+    <div class="loading-spinner" role="status">
+        <div class="spinner-backdrop">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
 
     <!-- Order Details Modal -->
@@ -186,35 +630,66 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="modalOrderTitle" class="modal-title"><i class="bi bi-receipt"></i> Order Details</h5>
+                    <h5 id="modalOrderTitle" class="modal-title">
+                        <i class="bi bi-receipt"></i> Order Details
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="sm-d-block lg-d-flex sm-justify-content-between">
-                    <div>
-                        <p><strong><i class="bi bi-clock"></i> Timestamp:</strong> <span id="modalTimestamp"></span></p>
-                        <p><strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong> <span id="modalMessage"></span></p>
-                        
+                    <div class="modal-section">
+                        <h6 class="modal-section-title">
+                            <i class="bi bi-info-circle"></i> Order Information
+                        </h6>
+                        <div class="order-detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Order Time</div>
+                                <div class="detail-value" id="modalTimestamp"></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value">
+                                    <span id="modalPaymentStatus" class="payment-status payment-paid"></span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Delivery Method</div>
+                                <div class="detail-value" id="modalDeliveryMethod"></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Total Amount</div>
+                                <div class="detail-value" id="modalTotal"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                            <h6><i class="bi bi-gift"></i> Payment status : <span id="modalPaymentStatus"></span></h6>
-                           
-                            <h6><i class="bi bi-truck"></i> Delivery Method: <span id="modalDeliveryMethod" style="font-weight: 0;"></span></h6>
-                          <p class="fw-bold mt-3"><i class="bi bi-currency-dollar"></i> Total: <span id="modalTotal"></span></p>
-                            
+                    
+                    <div class="modal-section">
+                        <h6 class="modal-section-title">
+                            <i class="bi bi-chat-left-text"></i> Customer Note
+                        </h6>
+                        <div class="order-note" id="modalMessage"></div>
                     </div>
-                    <hr>
+                    
+                    <div class="modal-section">
+                        <h6 class="modal-section-title">
+                            <i class="bi bi-bag"></i> Order Items
+                        </h6>
+                        <ul class="items-list" id="modalOrderItems"></ul>
                     </div>
-                    <h6><i class="bi bi-list-check"></i> Order Items</h6>
-                    <ul class="items-list" id="modalOrderItems"></ul>
-
-                     <h6><i class="bi bi-list-check"></i> Extras</h6>
-                    <ul class="items-list" id="modalExtraItems"></ul>
-                  
+                    
+                    <div class="modal-section">
+                        <h6 class="modal-section-title">
+                            <i class="bi bi-plus-circle"></i> Extras
+                        </h6>
+                        <ul class="items-list" id="modalExtraItems"></ul>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="cancelOrder" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel Order</button>
-                    <button id="moveOrder" class="btn btn-primary"><i class="bi bi-arrow-right-circle"></i> Move to Next</button>
+                    <button id="cancelOrder" class="action-btn btn-cancel">
+                        <i class="bi bi-x-circle"></i> Cancel Order
+                    </button>
+                    <button id="moveOrder" class="action-btn btn-next">
+                        <i class="bi bi-arrow-right-circle"></i> Move to Next Stage
+                    </button>
                 </div>
             </div>
         </div>
@@ -223,182 +698,349 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-<script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
+    <script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
     <script>
         let orders = {{all_orders|safe}};
-   /* { 
-        id: 12345, 
-        items: [
-            { product: "Nike Sneakers", quantity: 1, extras: "Gift Wrap" },
-            { product: "Adidas Shoes", quantity: 2, extras: "Extra Laces" }
-        ],
-        extras : [
-            { item:"chease" },
-            { item : "Russian" }
-            ],
-            
-        message: "Please deliver fast", 
-        timestamp: "10:30 AM", 
-        status: "new", 
-        total: 500, 
-        paymentStatus: "paid", 
-        deliveryMethod: "Pickip" 
-    },
-    { 
-        id: 12346, 
-        items: [
-            { product: "Puma Shoes", quantity: 1, extras: ["palony", "french"]},
-            { product: "Reebok Shoes", quantity: 1, extras: "Gift Box" }
-        ],
-        extras : [],
-        message: "Leave at the door", 
-        timestamp: "11:15 AM", 
-        status: "preparing", 
-        total: 750, 
-        paymentStatus: "pending", 
-        deliveryMethod: "Delivery" 
-    }
-]*/
+        let activeStage = "new"; 
+        let ordersEnabled = true;
+        let selectedOrderId = null;
 
-let activeStage = "new"; 
-let ordersEnabled = true;
-let selectedOrderId = null;
+        // Render orders based on active stage
+        function renderOrders(filteredOrders = null) {
+            const container = document.getElementById("ordersContainer");
+            container.innerHTML = "";
 
-// Render orders based on active stage
-function renderOrders(filteredOrders = null) {
-    const container = document.getElementById("ordersContainer");
-    container.innerHTML = "";
+            let statusCounts = { new: 0, preparing: 0, scheduled: 0, completed: 0, canceled: 0 };
 
-    let statusCounts = { new: 0, preparing: 0, scheduled: 0, completed: 0, canceled: 0 };
+            const ordersToRender = filteredOrders || orders;
 
-    const ordersToRender = filteredOrders || orders;
-
-    ordersToRender.forEach(order => {
-        statusCounts[order.status]++;
-        if (order.status === activeStage) {
-            let card = `
-                <div class="col">
-                    <div class="card p-3 order-card" onclick="openOrderModal('${order.id}')">
-                        <div class="d-flex justify-content-between">
-                        <h6><i class="bi bi-receipt"></i> Order #${order.id}</h6>
-                        <p class="text-muted small"><i class="bi bi-clock"></i> ${order.timestamp}</p>
-                        <span class="status-label status-${order.status}">${order.status.toUpperCase()}</span>
+            ordersToRender.forEach(order => {
+                statusCounts[order.status]++;
+                if (order.status === activeStage) {
+                    let card = `
+                        <div class="order-card" onclick="openOrderModal('${order.id}')">
+                            <div class="order-header">
+                                <div class="order-id">
+                                    <i class="bi bi-receipt"></i> Order #${order.id}
+                                </div>
+                                <div class="order-time">
+                                    <i class="bi bi-clock"></i> ${order.timestamp}
+                                </div>
+                            </div>
+                            <div class="order-body">
+                                <div class="order-note">
+                                    <strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong>
+                                    <span>${order.message || "No note provided."}</span>
+                                </div>
+                                <div>
+                                    <div class="section-title">
+                                        <i class="bi bi-bag"></i> Items (${order.items.length})
+                                    </div>
+                                    <ul class="items-list">
+                                        ${order.items.map(item => `
+                                            <li class="item-entry">
+                                                <div class="item-name">
+                                                    ${item.product}
+                                                    <span class="item-quantity">x${item.quantity}</span>
+                                                </div>
+                                                ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                ${order.extras && order.extras.length > 0 ? `
+                                    <div>
+                                        <div class="section-title">
+                                            <i class="bi bi-plus-circle"></i> Extras (${order.extras.length})
+                                        </div>
+                                        <ul class="items-list">
+                                            ${order.extras.map(item => `
+                                                <li class="item-entry">
+                                                    <div class="item-name">
+                                                        ${item.item}
+                                                    </div>
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-status status-${order.status}">${order.status}</span>
+                                <span class="order-total">R${order.total}</span>
+                            </div>
                         </div>
-                        <p><strong><i class="bi bi-chat-left-text"></i> Note:</strong> ${order.message}</p>
-                        <h6><i class="bi bi-list-check"></i> Items:</h6>
-                        <ul class="items-list">
-                            ${order.items.map(item => `
-                                <li>
-                                    ${item.product} (x${item.quantity})
-                                    ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
-                                </li>
-                            `).join('')}
-                        </ul>
+                    `;
+                    container.innerHTML += card;
+                }
+            });
 
-                        <h6><i class="bi bi-list-check"></i> Extras:</h6>
-                        <ul class="items-list">
-                            ${order.extras.map(item => `
-                                <li>
-                                    ${item.item} 
-                                    
-
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                </div>
-            `;
-            container.innerHTML += card;
+            // Update status counts
+            for (let stage in statusCounts) {
+                document.getElementById(`count-${stage}`).innerText = statusCounts[stage];
+            }
         }
-    });
 
-    // Update status counts
-    for (let stage in statusCounts) {
-        document.getElementById(`count-${stage}`).innerText = statusCounts[stage];
-    }
-}
-
-// Open order modal
-function openOrderModal(orderId) {
-    selectedOrderId = orderId;
-    let order = orders.find(o => o.id === orderId);
-    document.getElementById("modalOrderTitle").innerText = `Order #${order.id} - ${order.user}`;
-    document.getElementById("modalTimestamp").innerText = order.timestamp;
-    document.getElementById("modalMessage").innerText = order.message || "No note provided.";
-    document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
-        <li>
-            ${item.product} (x${item.quantity})
-            ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
-        </li>
-    `).join('');
-    document.getElementById("modalExtraItems").innerHTML = order.extras.map(item => `
-        <li>
-            ${item.item} 
+        // Open order modal
+        function openOrderModal(orderId) {
+            selectedOrderId = orderId;
+            let order = orders.find(o => o.id === orderId);
             
-        </li>
-    `).join('');
-    document.getElementById("modalTotal").innerText = `R${order.total}`;
-    document.getElementById("modalPaymentStatus").innerText = order.paymentStatus;
-    document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
-    new bootstrap.Modal(document.getElementById("orderModal")).show();
-}
+            document.getElementById("modalOrderTitle").innerHTML = `
+                <i class="bi bi-receipt"></i> Order #${order.id} ${order.user ? '- ' + order.user : ''}
+            `;
+            
+            document.getElementById("modalTimestamp").innerText = order.timestamp;
+            document.getElementById("modalMessage").innerText = order.message || "No note provided.";
+            
+            // Set payment status with appropriate class
+            const paymentStatusEl = document.getElementById("modalPaymentStatus");
+            paymentStatusEl.innerText = order.paymentStatus;
+            paymentStatusEl.className = 'payment-status';
+            paymentStatusEl.classList.add(order.paymentStatus === 'paid' ? 'payment-paid' : 'payment-pending');
+            
+            document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
+            document.getElementById("modalTotal").innerText = `R${order.total}`;
+            
+            // Order items
+            document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
+                <li class="item-entry">
+                    <div class="item-name">
+                        ${item.product}
+                        <span class="item-quantity">x${item.quantity}</span>
+                    </div>
+                    ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                </li>
+            `).join('');
+            
+            // Extra items
+            document.getElementById("modalExtraItems").innerHTML = 
+                order.extras && order.extras.length > 0 
+                ? order.extras.map(item => `
+                    <li class="item-entry">
+                        <div class="item-name">${item.item}</div>
+                    </li>
+                `).join('')
+                : '<li class="item-entry">No extras added</li>';
+            
+            // Update button states based on order status
+            const moveOrderBtn = document.getElementById("moveOrder");
+            const cancelOrderBtn = document.getElementById("cancelOrder");
+            
+            if (order.status === 'completed' || order.status === 'canceled') {
+                moveOrderBtn.disabled = true;
+                cancelOrderBtn.disabled = true;
+            } else {
+                moveOrderBtn.disabled = false;
+                cancelOrderBtn.disabled = false;
+            }
+            
+            new bootstrap.Modal(document.getElementById("orderModal")).show();
+        }
 
-// Move order to the next stage
-function moveOrderToNextStage(orderId) {
-    const order = orders.find(o => o.id === orderId);
-    const stages = ["new", "preparing", "scheduled", "completed"];
-    const currentIndex = stages.indexOf(order.status);
-    MoveOrderToNextStageAPI(`${order.id}`);
-    if (currentIndex < stages.length - 1) {
-        order.status = stages[currentIndex + 1];
-        renderOrders();
-    }
-}
+        // Move order to the next stage
+        function moveOrderToNextStage(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            const stages = ["new", "preparing", "scheduled", "completed"];
+            const currentIndex = stages.indexOf(order.status);
+            
+            // Show loading spinner
+            document.querySelector('.loading-spinner').style.display = 'block';
+            
+            // Call API
+            try {
+                MoveOrderToNextStageAPI(`${order.id}`);
+                
+                if (currentIndex < stages.length - 1) {
+                    order.status = stages[currentIndex + 1];
+                    renderOrders();
+                }
+            } catch (error) {
+                console.error("Error moving order:", error);
+                // Display error message to user
+                displayMessage("Error moving order to next stage. Please try again.", "error");
+            } finally {
+                // Hide loading spinner
+                document.querySelector('.loading-spinner').style.display = 'none';
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
+            }
+        }
 
-// Cancel an order
-function cancelOrder(orderId) {
-    const order = orders.find(o => o.id === orderId);
-    order.status = "canceled";
-    renderOrders();
-}
+        // Cancel order
+        function cancelOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            
+            // Show loading spinner
+            document.querySelector('.loading-spinner').style.display = 'block';
+            
+            // Call API
+            try {
+                CancelOrderAPI(`${order.id}`);
+                order.status = "canceled";
+                renderOrders();
+            } catch (error) {
+                console.error("Error canceling order:", error);
+                // Display error message to user
+                displayMessage("Error canceling order. Please try again.", "error");
+            } finally {
+                // Hide loading spinner
+                document.querySelector('.loading-spinner').style.display = 'none';
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
+            }
+        }
 
-// Event listeners
-document.querySelectorAll(".nav-link").forEach(link => {
-    link.addEventListener("click", () => {
-        document.querySelector(".nav-link.active").classList.remove("active");
-        link.classList.add("active");
-        activeStage = link.getAttribute("data-stage");
-        renderOrders();
-    });
-});
+        // Toggle orders enabled/disabled
+        function toggleOrdersEnabled() {
+            const toggleBtn = document.getElementById("toggleOrders");
+            
+            // Show loading spinner
+            document.querySelector('.loading-spinner').style.display = 'block';
+            
+            // Call API
+            try {
+                ToggleOrdersEnabledAPI(!ordersEnabled);
+                ordersEnabled = !ordersEnabled;
+                
+                if (ordersEnabled) {
+                    toggleBtn.innerHTML = '<i class="bi bi-pause-circle"></i> <span>Stop Orders</span>';
+                    toggleBtn.classList.remove("disabled");
+                } else {
+                    toggleBtn.innerHTML = '<i class="bi bi-play-circle"></i> <span>Start Orders</span>';
+                    toggleBtn.classList.add("disabled");
+                }
+                
+                displayMessage(`Orders ${ordersEnabled ? 'started' : 'stopped'} successfully.`, "success");
+            } catch (error) {
+                console.error("Error toggling orders:", error);
+                displayMessage("Error toggling orders. Please try again.", "error");
+            } finally {
+                // Hide loading spinner
+                document.querySelector('.loading-spinner').style.display = 'none';
+            }
+        }
 
-document.getElementById("toggleOrders").addEventListener("click", () => {
-    ordersEnabled = !ordersEnabled;
-    document.getElementById("toggleOrders").innerHTML = ordersEnabled ? "<i class='bi bi-pause-circle'></i> Stop Orders" : "<i class='bi bi-play-circle'></i> Enable Orders";
-    // You can add additional logic here to handle the enabling/disabling of orders
-});
+        // Search orders
+        function searchOrders(query) {
+            if (!query || query.trim() === '') {
+                renderOrders();
+                return;
+            }
+            
+            query = query.toLowerCase().trim();
+            const filteredOrders = orders.filter(order => 
+                order.id.toLowerCase().includes(query) || 
+                (order.user && order.user.toLowerCase().includes(query))
+            );
+            
+            renderOrders(filteredOrders);
+        }
 
-document.getElementById("searchOrder").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredOrders = orders.filter(order => order.id.toString().includes(searchTerm));
-    renderOrders(filteredOrders);
-});
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial render
+            renderOrders();
+            
+            // Tab switching
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    activeStage = this.getAttribute('data-stage');
+                    renderOrders();
+                });
+            });
+            
+            // Toggle orders enabled/disabled
+            document.getElementById('toggleOrders').addEventListener('click', function() {
+                toggleOrdersEnabled();
+            });
+            
+            // Move order to next stage
+            document.getElementById('moveOrder').addEventListener('click', function() {
+                moveOrderToNextStage(selectedOrderId);
+            });
+            
+            // Cancel order
+            document.getElementById('cancelOrder').addEventListener('click', function() {
+                cancelOrder(selectedOrderId);
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchOrder');
+            searchInput.addEventListener('input', function() {
+                searchOrders(this.value);
+            });
+            
+            // Enable tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Check for new orders periodically (polling)
+            setInterval(function() {
+                if (ordersEnabled) {
+                    checkForNewOrders();
+                }
+            }, 30000); // Check every 30 seconds
+        });
 
-document.getElementById("moveOrder").addEventListener("click", () => {
-    moveOrderToNextStage(selectedOrderId);
-    bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
-});
+        // Check for new orders
+        function checkForNewOrders() {
+            // This would normally be an API call to get new orders
+            // For demonstration, we'll simulate it
+            FetchOrdersAPI()
+                .then(newOrders => {
+                    if (newOrders && newOrders.length > 0) {
+                        // Update orders array with new data
+                        orders = newOrders;
+                        
+                        // Play notification sound if there are new orders
+                        const newOrdersCount = newOrders.filter(order => order.status === 'new').length;
+                        if (newOrdersCount > document.getElementById('count-new').innerText) {
+                            playNotificationSound();
+                        }
+                        
+                        renderOrders();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching orders:", error);
+                });
+        }
 
-document.getElementById("cancelOrder").addEventListener("click", () => {
-    if (confirm("Are you sure you want to cancel this order?")) {
-        cancelOrder(selectedOrderId);
-        bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
-    }
-});
+        // Play notification sound
+        function playNotificationSound() {
+            const audio = new Audio('/static/sounds/notification.mp3');
+            audio.play().catch(error => {
+                console.warn("Could not play notification sound:", error);
+            });
+        }
 
-// Initial render
-renderOrders();
+        // API Functions (These would typically call backend APIs)
+        function FetchOrdersAPI() {
+            // Placeholder for real API call
+            return new Promise((resolve, reject) => {
+                // In a real application, this would be a fetch to your backend
+                setTimeout(() => resolve(orders), 500);
+            });
+        }
+
+        function MoveOrderToNextStageAPI(orderId) {
+            // Placeholder for real API call
+            return true;
+        }
+
+        function CancelOrderAPI(orderId) {
+            // Placeholder for real API call
+            return true;
+        }
+
+        function ToggleOrdersEnabledAPI(enabled) {
+            // Placeholder for real API call
+            return true;
+        }
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
