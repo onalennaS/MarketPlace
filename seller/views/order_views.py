@@ -28,8 +28,10 @@ def move_order_next_stage(request):
             order.status = "On route"
             send_email_order_traking_update(order)
         elif order.status == "On route":
-            order.status = "Delivered"
-            send_email_order_delivered(order)
+            # order.status = "Delivered"
+            # send_email_order_delivered(order)
+            return JsonResponse({'message':'action not allowed ', 'status':'error'},status=400)
+
         else:
             return JsonResponse({'message':'Something went wrong ', 'status':'error'},status=400)
         order.save()
@@ -90,4 +92,4 @@ def stop_order(request):
 
     business.open_orders = False 
     business.save()
-    return JsonResponse({"message": f"Store is now open for orders",'status':'success'}, status=201)
+    return JsonResponse({"message": f"Store is now closed",'status':'success'}, status=201)

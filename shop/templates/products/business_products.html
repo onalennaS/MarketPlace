@@ -497,14 +497,20 @@ body {
         <div class="business-hero-overlay">
             <div class="business-data">
                 <h1 class="business-name">{{business.name}}</h1>
-                
+                 
                 <div class="business-meta">
                     <span class="business-meta-item">
                         <i class="bi bi-geo-alt"></i> {{address.address_line_1}} {{address.address_line_2}}, {{address.suburb}}, {{address.postal_code}}
                     </span>
-                    <span class="business-meta-item">
+                    {% if business.open_orders %}
+                    <span class="business-meta-item badge bg-success rounded-pill">
                         <i class="bi bi-clock"></i> Open until {{business.close_time}}
                     </span>
+                    {% else %}
+                    <span class="business-meta-item badge bg-danger rounded-pill">
+                        <i class="bi bi-clock"></i> We are closed 
+                    </span>
+                    {% endif %}
                     <span class="business-meta-item">
                         <i class="bi bi-truck"></i> Delivery available
                     </span>

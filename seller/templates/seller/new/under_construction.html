@@ -1,0 +1,90 @@
+
+{% extends 'seller/base.html' %}
+{% block styles %}
+    body {
+      background: inherit;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .message-box {
+      background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+      color: #0d47a1;
+      padding: 3rem 4rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      transition: transform 0.3s ease;
+    }
+    .message-box:hover {
+      transform: scale(1.03);
+    }
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #0d47a1;
+    }
+    p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .message-box-cont{
+    	display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+{% endblock %}
+{% block nav %}
+        <div class="nav-items">
+            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'manage_product' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="{% url 'orders' business.id  %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-cart"></i>
+                <span>Orders</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Sales & Transactions</span>
+                <span class="badge bg-primary ms-auto">3</span>
+            </a>
+            <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+                <i class="bi bi-people"></i>
+                <span>Customers</span>
+            </a>
+            <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+            <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+                <i class="bi bi-building"></i>
+                <span>Business information</span>
+            </a>
+            <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+{% endblock %}
+{% block content %}
+<div class="message-box-cont">
+  <div class="message-box">
+    <div class="logo">🔧</div>
+    <h1>Page Under Development</h1>
+    <p>We are working hard to bring this page to life.<br>Please check back soon.</p>
+  </div>
+</div>
+ {% endblock %}
+

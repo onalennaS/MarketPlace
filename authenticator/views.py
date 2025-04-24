@@ -18,6 +18,7 @@ User = get_user_model()
 def register(request):
     if request.user.is_authenticated:
         return redirect('home')
+        
     if request.method == "POST":
         data = {
         'username' : request.POST.get('username').strip(),
@@ -171,4 +172,4 @@ def verify_user(request):
     return redirect(verify_role(request.user))
 
 def not_allowed(request):
-    return render(request,'user/home/errors/not_allowed.html')
+    return render(request,'authentication/errors/not_allowed.html')

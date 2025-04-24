@@ -37,7 +37,7 @@ urlpatterns = [
     path('register_business_form/', register_business_form, name='register_business_form'),
     path('business_status/<int:business_id>', business_status, name='business_status'),
     path('appeal_registration_view/<int:business_id>', appeal_registration_view, name='appeal_registration_view'),
-    path('business_info/', business_info, name='business_info'),
+    path('business_info/<int:business_id>', business_info, name='business_info'),
     path('view_stats/', view_stats, name='view_stats'),
     
     path('edit_products/<int:business_id>/<int:product_id>', edit_products, name='edit_products'),
@@ -49,10 +49,10 @@ urlpatterns = [
     path('pay_for_premium/', pay_for_premium, name='pay_for_premium'),
     path('manage_product/<int:business_id>', manage_product, name='manage_product'),
     path('reviews/', reviews, name='reviews'),
-    path('settings/', settings, name='settings'),
+    path('settings/<int:business_id>', settings, name='settings'),
     path('customer/<int:business_id>', customer, name='customer'),
     path('invoice/', invoice, name='invoice'),
-    path('report/', report, name='report'),
+    path('report/<int:bussiness_id>', report, name='report'),
     path('add_products/<int:business_id>', add_products, name='add_products'),
     
     path('api/add_extra/', add_extras, name='api_add_extras'),

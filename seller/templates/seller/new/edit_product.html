@@ -429,15 +429,15 @@
                 <i class="bi bi-people"></i>
                 <span>Customers</span>
             </a>
-            <a href="{% url 'report' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
                 <i class="bi bi-bar-chart"></i>
                 <span>Reports</span>
             </a>
-            <a href="{% url 'business_info' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
                 <i class="bi bi-building"></i>
                 <span>Business information</span>
             </a>
-            <a href="{% url 'settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>

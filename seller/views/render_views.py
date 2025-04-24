@@ -107,9 +107,9 @@ def business_status(request, business_id):
 
 @login_required_custom
 @verify_role('business')
-def business_info(request):
-
-    return render(request, 'seller/new/business_info.html')
+def business_info(request,business_id):
+    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    return render(request, 'seller/new/business_info.html',{'business':business})
 
 @login_required_custom
 @verify_role('business')
@@ -248,7 +248,7 @@ def customer(request, business_id):
         customer_ids = [item['user'] for item in user_orders]
         total_customers = len(customer_ids)
 
-        returning_customers = len([item for item in user_orders if item['order_count'] > 1])
+        returning_customers = len([item for item in user_orders if item['order_count'] > 2])
         new_customers = total_customers - returning_customers
 
         # Get full user objects
@@ -272,20 +272,26 @@ def customer(request, business_id):
         })
 
     return render(request, 'seller/new/customer.html')
+
+
 @login_required_custom
 @verify_role('business')
-def settings(request):
-    return render(request, 'seller/new/settings.html')
+def settings(request,business_id):
+    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    return render(request, 'seller/new/settings.html',{'business':business})
 
 @login_required_custom
 @verify_role('business')
 def invoice(request):
     return render(request, 'seller/new/invoice.html')
 
+
 @login_required_custom
 @verify_role('business')
-def report(request):
-    return render(request, 'seller/new/report.html')
+def report(request,bussiness_id):
+    business = BusinessInformation.objects.filter(id=bussiness_id).first()
+    print(business)
+    return render(request, 'seller/new/under_construction.html',{'business':business})
 
 
 

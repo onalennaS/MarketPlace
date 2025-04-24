@@ -142,6 +142,15 @@
                         <div class="card-body">
                             <h1 class="product-title mb-1">{{product.name}}</h1>
                             <p class="product-brand mb-2">by {{product.business}}</p>
+                            {% if product.business.open_orders %}
+                                <span class="business-meta-item badge bg-success rounded-pill">
+                                    <i class="bi bi-clock"></i> Open until {{product.business.close_time}}
+                                </span>
+                                {% else %}
+                                <span class="business-meta-item badge bg-danger rounded-pill">
+                                    <i class="bi bi-clock"></i> We are closed 
+                                </span>
+                                {% endif %}
                             
                             <div class="d-flex align-items-center mb-3">
                                 <div class="rating-stars me-2">
