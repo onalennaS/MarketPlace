@@ -305,6 +305,108 @@ function MoveOrderToNextStageAPI(order_id) {
     });
 }
 
+function stop_order(business_id) {
+    event.preventDefault();
+
+    // Show loading
+    document.getElementById("stop_order").style.display = "none";
+    document.getElementById("loading_button").style.display = "flex";
+
+    const formData = {
+        business_id: business_id,
+        status: "stop"
+    };
+
+    fetch('/seller/api/stop_order/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayMessagesapi(data);
+        if (data.status !== "error") {
+            document.getElementById("loading_button").style.display = "none";
+
+            // Insert Start Orders button
+            const startBtn = `
+            <button id="loading_button" class="control-btn btn-toggle" style="display: none;">
+                    <i class="fa fa-spinner fa-spin text-dark"></i> 
+                    <span>Loading</span>
+                </button>
+
+                <button onclick="start_order(${business_id})" id="start_order" class="control-btn btn-toggle">
+                    <i class="bi bi-play-circle"></i> 
+                    <span>Start Orders</span>
+                </button>
+            `;
+            document.getElementById("ordertogglecontainer").innerHTML = startBtn;
+        } else {
+            document.getElementById("loading_button").style.display = "none";
+            document.getElementById("stop_order").style.display = "flex";
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+        document.getElementById("loading_button").style.display = "none";
+        document.getElementById("stop_order").style.display = "flex";
+    });
+}
+function start_order(business_id) {
+    event.preventDefault();
+
+    // Show loading button
+    document.getElementById("start_order").style.display = "none";
+    document.getElementById("loading_button").style.display = "flex";
+
+    const formData = {
+        business_id: business_id,
+        status: "start"
+    };
+
+    fetch('/seller/api/start_order/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayMessagesapi(data);
+        if (data.status !== "error") {
+            // Swap buttons
+            document.getElementById("loading_button").style.display = "none";
+
+            // Create stop button dynamically
+            const stopBtn = `
+            <button id="loading_button" class="control-btn btn-toggle" style="display: none;">
+                    <i class="fa fa-spinner fa-spin text-dark"></i> 
+                    <span>Loading</span>
+                </button>
+                <button onclick="stop_order(${business_id})" id="stop_order" class="control-btn btn-toggle">
+                    <i class="bi bi-pause-circle"></i> 
+                    <span>Stop Orders</span>
+                </button>
+            `;
+            document.getElementById("ordertogglecontainer").innerHTML = stopBtn;
+        } else {
+            // If error, show original button
+            document.getElementById("loading_button").style.display = "none";
+            document.getElementById("start_order").style.display = "flex";
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+        document.getElementById("loading_button").style.display = "none";
+        document.getElementById("start_order").style.display = "flex";
+    });
+}
+
 
 // Function to get CSRF token 
 function getCookie(name) {

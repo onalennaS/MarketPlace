@@ -81,33 +81,55 @@
         transform: translateY(-50%);
         color: var(--text-muted);
     }
+#loading_button {
+    background-color: var(--warning-light);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
 
-    .control-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        border-radius: var(--border-radius);
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        transition: all 0.2s;
-    }
 
-    .btn-toggle {
-        background-color: var(--info-light);
-        color: var(--info-color);
-        border: 1px solid var(--info-color);
-    }
+   .control-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
 
-    .btn-toggle:hover {
-        background-color: var(--info-color);
-        color: white;
-    }
+/* Start Orders button */
+#start_order {
+    background-color: var(--info-light);
+    color: var(--info-color);
+    border: 1px solid var(--info-color);
+}
+
+#start_order:hover {
+    background-color: var(--info-color);
+    color: white;
+}
+
+/* Stop Orders button */
+#stop_order {
+    background-color: var(--danger-light);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+}
+
+#stop_order:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
 
     .btn-toggle.disabled {
         background-color: var(--danger-light);
         color: var(--danger-color);
         border: 1px solid var(--danger-color);
     }
+
 
     .btn-toggle.disabled:hover {
         background-color: var(--danger-color);
@@ -587,10 +609,24 @@
                 <i class="bi bi-search"></i>
                 <input type="text" id="searchOrder" class="form-control" placeholder="Search order #" style="background-color:inherit; color: inherit;">
             </div>
-            <button id="toggleOrders" class="control-btn btn-toggle">
-                <i class="bi bi-pause-circle"></i> 
-                <span>Stop Orders</span>
-            </button>
+            <div id="ordertogglecontainer">
+                <button id="loading_button" class="control-btn btn-toggle" style="display: none;">
+                    <div class="spinner-grow text-danger"></div>
+                    <span>Loading</span>
+                </button>
+                {% if orders_open %}
+                <button onclick="stop_order({{business.id}})" id="stop_order" class="control-btn btn-toggle">
+                    <i class="bi bi-pause-circle"></i> 
+                    <span>Stop Orders</span>
+                </button>
+                {% else %}
+                <button onclick="start_order({{business.id}})" id="start_order" class="control-btn btn-toggle">
+                    <i class="bi bi-play-circle"></i> 
+                    <span>Start Orders</span>
+                </button>
+                {% endif %}
+            </div>
+
         </div>
     </div>
 
@@ -653,18 +689,26 @@
                                 <div class="detail-value" id="modalTimestamp"></div>
                             </div>
                             <div class="detail-item">
+                                <div class="detail-label">Delivery Method</div>
+                                <div class="detail-value" id="modalDeliveryMethod"></div>
+                            </div>
+                            <div class="detail-item">
                                 <div class="detail-label">Payment Status</div>
                                 <div class="detail-value">
                                     <span id="modalPaymentStatus" class="payment-status payment-paid"></span>
                                 </div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Delivery Method</div>
-                                <div class="detail-value" id="modalDeliveryMethod"></div>
-                            </div>
-                            <div class="detail-item">
                                 <div class="detail-label">Total Amount</div>
                                 <div class="detail-value" id="modalTotal"></div>
+                            </div>
+                             <div class="detail-item">
+                                <div class="detail-label">Delivery Amount</div>
+                                <div class="detail-value" id="modalDelivery"></div>
+                            </div>
+                             <div class="detail-item">
+                                <div class="detail-label">Net Amount <small class="small">(fees deducted)</small></div>
+                                <div class="detail-value" id="modalRecieved"></div>
                             </div>
                         </div>
                     </div>
@@ -808,6 +852,8 @@
             
             document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
             document.getElementById("modalTotal").innerText = `R${order.total}`;
+             document.getElementById("modalDelivery").innerText = `R${order.delivery}`;
+              document.getElementById("modalRecieved").innerText = `R${order.recieved}`;
             
             // Order items
             document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
@@ -898,35 +944,8 @@
             }
         }
 
-        // Toggle orders enabled/disabled
-        function toggleOrdersEnabled() {
-            const toggleBtn = document.getElementById("toggleOrders");
-            
-            // Show loading spinner
-            document.querySelector('.loading-spinner').style.display = 'block';
-            
-            // Call API
-            try {
-                ToggleOrdersEnabledAPI(!ordersEnabled);
-                ordersEnabled = !ordersEnabled;
-                
-                if (ordersEnabled) {
-                    toggleBtn.innerHTML = '<i class="bi bi-pause-circle"></i> <span>Stop Orders</span>';
-                    toggleBtn.classList.remove("disabled");
-                } else {
-                    toggleBtn.innerHTML = '<i class="bi bi-play-circle"></i> <span>Start Orders</span>';
-                    toggleBtn.classList.add("disabled");
-                }
-                
-                displayMessage(`Orders ${ordersEnabled ? 'started' : 'stopped'} successfully.`, "success");
-            } catch (error) {
-                console.error("Error toggling orders:", error);
-                displayMessage("Error toggling orders. Please try again.", "error");
-            } finally {
-                // Hide loading spinner
-                document.querySelector('.loading-spinner').style.display = 'none';
-            }
-        }
+
+        // Toggle orders enabled/disable
 
         // Search orders
         function searchOrders(query) {

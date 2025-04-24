@@ -25,6 +25,7 @@ class BusinessInformation(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, default="pending")
     account_code = models.CharField(max_length=200,default="",null=True)
+    open_orders = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 

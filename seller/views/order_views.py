@@ -4,7 +4,7 @@ from ..utils.authentication_utils import login_required_custom, verify_role
 import json 
 from ..wrap_models.orders_model import Order
 from ..utils.send_emails import send_email_order_traking_update, send_email_order_delivered
-
+from ..wrap_models.business_model import BusinessInformation
 
 @login_required_custom
 @verify_role('business')
@@ -35,3 +35,59 @@ def move_order_next_stage(request):
         order.save()
         
     return JsonResponse({"message": f"Order #{order.order_id} moved to {order.status} stage",'status':'success'}, status=201)
+
+@login_required_custom
+@verify_role('business')
+def start_order(request):
+
+    if not request.method == "POST":
+        return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+
+    try:
+            data = json.loads(request.body)  # Parse JSON request body
+    except json.JSONDecodeError:
+        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+
+
+    business = BusinessInformation.objects.filter(id=data.get('business_id')).first()
+    status = data.get('status')
+    if not business:
+        return JsonResponse({'message':'business not found', "status":"error"}, status=400)     
+        
+    if status != "start":
+        return JsonResponse({'message':'Invalid action ', "status":"error"}, status=400)     
+    print(business)
+    print(status)
+    print(business.open_orders)
+    print("***************************")
+    business.open_orders = True 
+    business.save()
+    print(business.open_orders)
+
+    return JsonResponse({"message": f"Store is now open for orders",'status':'success'}, status=201)
+
+
+@login_required_custom
+@verify_role('business')
+def stop_order(request):
+
+    if not request.method == "POST":
+        return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+
+    try:
+            data = json.loads(request.body)  # Parse JSON request body
+    except json.JSONDecodeError:
+        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+
+
+    business = BusinessInformation.objects.filter(id=data.get('business_id')).first()
+    status = data.get('status')
+    if not business:
+        return JsonResponse({'message':'business not found', "status":"error"}, status=400)     
+        
+    if status != "stop":
+        return JsonResponse({'message':'Invalid action ', "status":"error"}, status=400)     
+
+    business.open_orders = False 
+    business.save()
+    return JsonResponse({"message": f"Store is now open for orders",'status':'success'}, status=201)

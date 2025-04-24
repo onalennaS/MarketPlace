@@ -26,7 +26,7 @@ from .views.render_views import (user_profile,
 
 from .views.business_views import register_business, appeal_registration, delete_business
 from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras, delete_extras, add_addons, delete_addon
-from .views.order_views import move_order_next_stage
+from .views.order_views import move_order_next_stage, stop_order, start_order
 
 
 urlpatterns = [
@@ -64,6 +64,8 @@ urlpatterns = [
     path('api/register_business/', register_business, name='register_business'),
     path('api/add_addons/', add_addons, name='add_addons'),
     path('api/delete_addon/', delete_addon, name='delete_addon'),
+    path('api/stop_order/', stop_order, name='stop_order'),
+    path('api/start_order/', start_order, name='start_order'),
     path('api/move_order_next_stage/', move_order_next_stage, name='move_order_next_stage'),
     
     # Fixed URL pattern for delete_business

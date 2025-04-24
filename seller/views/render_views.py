@@ -12,6 +12,7 @@ from django.db.models import Avg
 from django.db.models.functions import TruncDay, TruncWeek, TruncMonth
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
+from datetime import datetime
 # Create your views here.
 # Create your views here.
 def get_sales_data(trunc_func):
@@ -38,6 +39,7 @@ def dashboard(request,business_id):
         average_paid_order_amount = round(orders.filter(paid=True).aggregate(avg_amount=Avg('total_amount'))['avg_amount'])
     except Exception as e:
         average_paid_order_amount = 0
+        
     paid_order_count = orders.filter(paid=True).count()
 
     daily_sales = get_sales_data(TruncDay)
@@ -153,8 +155,10 @@ def orders(request, business_id):
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
     orders = Order.objects.filter(business=business).all()
     all_orders = []
-    
-
+    open_hour = datetime.strptime(business.open_time, "%H:%M").time()  # 8:00 AM
+    close_hour = datetime.strptime(business.open_time, "%H:%M").time() 
+    orders_open =  business.open_orders
+    print(orders_open)
     for order in orders:
         if order.paid == True:
             delivery_method = CartDeliveryMethod.objects.filter(user=order.user).first()
@@ -206,7 +210,7 @@ def orders(request, business_id):
             all_orders.append(json_orders)
         
 
-    return render(request, 'seller/new/orders.html',{'business':business,'all_orders':all_orders})
+    return render(request, 'seller/new/orders.html',{'business':business,'all_orders':all_orders,'open_hour':open_hour,'close_hour':close_hour,'orders_open':orders_open})
 
 @login_required_custom
 @verify_role('business')
