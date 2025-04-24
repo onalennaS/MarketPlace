@@ -2037,6 +2037,11 @@ document.addEventListener('DOMContentLoaded', function() {
    
   
 });
+      window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      document.getElementById("pageSpinner").style.display = "none";
+    }
+  });
 window.addEventListener("load", function () {
         const spinner = document.getElementById("pageSpinner");
         if (spinner) {

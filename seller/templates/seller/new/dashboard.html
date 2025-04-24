@@ -36,7 +36,7 @@
             <span>Sales & Transactions</span>
             <span class="badge bg-primary ms-auto">3</span>
         </a>
-        <a href="{% url 'customer' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+        <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
             <i class="bi bi-people"></i>
             <span>Customers</span>
         </a>
@@ -393,7 +393,7 @@
                     intersect: false,
                     callbacks: {
                         label: function(context) {
-                            return `Sales: $${context.raw.toLocaleString()}`;
+                            return `Sales: R${context.raw.toLocaleString()}`;
                         }
                     }
                 }
@@ -405,7 +405,7 @@
                     ticks: {
                         color: '#6c757d',
                         callback: function(value) {
-                            return '$' + value.toLocaleString();
+                            return 'R' + value.toLocaleString();
                         }
                     },
                     grid: { color: 'rgba(0, 0, 0, 0.05)' }
@@ -533,7 +533,7 @@
                               const value = context.raw || 0;
                               const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                               const percentage = Math.round((value / total) * 100);
-                              return `${label}: $${value} (${percentage}%)`;
+                              return `${label}: R${value} (${percentage}%)`;
                           }
                       }
                   }

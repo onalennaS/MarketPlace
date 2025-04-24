@@ -2512,6 +2512,11 @@ html {
     window.addEventListener('beforeunload', () => {
     document.getElementById("pageSpinner").style.display = "flex";
 });
+         window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      document.getElementById("pageSpinner").style.display = "none";
+    }
+  });
 window.addEventListener("load", function () {
         const spinner = document.getElementById("pageSpinner");
         if (spinner) {

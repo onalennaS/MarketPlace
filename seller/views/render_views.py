@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from functools import wraps
 from ..utils.authentication_utils import login_required_custom, has_password, verify_role
 from ..wrap_models.business_model import BusinessInformation, Moderation,Address
@@ -236,9 +237,41 @@ def transaction(request,business_id):
 
 @login_required_custom
 @verify_role('business')
-def customer(request):
-    return render(request, 'seller/new/customer.html')
+def customer(request, business_id):
+    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    if business:
+        orders = Order.objects.filter(business=business).all()
+        
+        # Get all users who ordered
+        user_orders = orders.values('user').annotate(order_count=Count('id'))
+        
+        customer_ids = [item['user'] for item in user_orders]
+        total_customers = len(customer_ids)
 
+        returning_customers = len([item for item in user_orders if item['order_count'] > 1])
+        new_customers = total_customers - returning_customers
+
+        # Get full user objects
+        customers = User.objects.filter(id__in=customer_ids)
+        customer_order_counts = {item['user']: item['order_count'] for item in user_orders}
+
+        # Combine customer info + order count
+        customers_with_orders = []
+        for customer in customers:
+            customers_with_orders.append({
+                'user': customer,
+                'order_count': customer_order_counts.get(customer.id, 0)
+            })
+
+        return render(request, 'seller/new/customer.html', {
+            'business': business,
+            'customers': customers_with_orders,
+            'total_customers': total_customers,
+            'returning_customers': returning_customers,
+            'new_customers': new_customers
+        })
+
+    return render(request, 'seller/new/customer.html')
 @login_required_custom
 @verify_role('business')
 def settings(request):

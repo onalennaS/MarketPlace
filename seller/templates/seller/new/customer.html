@@ -73,25 +73,25 @@
   {% endblock %}
 {% block nav %}
         <div class="nav-items">
-            <a href="{% url 'seller_dashboard' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
                 <i class="bi bi-house"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{% url 'manage_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <a href="{% url 'manage_product' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
                 <i class="bi bi-box"></i>
                 <span>Products</span>
             </a>
-            <a href="{% url 'orders' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+            <a href="{% url 'orders' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-cart"></i>
                 <span>Orders</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-             <a href="{% url 'transaction' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
                 <i class="bi bi-currency-exchange"></i>
                 <span>Sales & Transactions</span>
                 <span class="badge bg-primary ms-auto">3</span>
             </a>
-            <a href="{% url 'customer' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+            <a href="{% url 'customer' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
                 <i class="bi bi-people"></i>
                 <span>Customers</span>
             </a>
@@ -125,7 +125,10 @@
                     </div>
                     <div>
                         <h6 class="text-muted mb-1">Total Customers</h6>
-                        <h3 class="mb-0">1,234</h3>
+                        <h3 class="mb-0">{{total_customers}}</h3>
+                        
+
+
                     </div>
                 </div>
             </div>
@@ -138,7 +141,7 @@
                     </div>
                     <div>
                         <h6 class="text-muted mb-1">New Customers</h6>
-                        <h3 class="mb-0">56</h3>
+                        <h3 class="mb-0">{{new_customers}}</h3>
                     </div>
                 </div>
             </div>
@@ -151,7 +154,7 @@
                     </div>
                     <div>
                         <h6 class="text-muted mb-1">Returning</h6>
-                        <h3 class="mb-0">892</h3>
+                        <h3 class="mb-0">{{returning_customers}}</h3>
                     </div>
                 </div>
             </div>
@@ -187,21 +190,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample Data - Replace with dynamic data -->
+                    {% for customer in customers %}
                     <tr>
                         <td><input type="checkbox" class="customerCheckbox"></td>
-                        <td>001</td>
-                        <td><a href="#" class="text-decoration-none" onclick="viewCustomerDetails('001')">John Doe</a></td>
-                        <td>john@example.com</td>
-                        <td>(555) 123-4567</td>
-                        <td>15</td>
-                        <td><span class="status-badge badge-outline-success">Active</span></td>
+                        <td>{{customer.user.id}}</td>
+                        <td><a href="#" class="text-decoration-none" onclick="viewCustomerDetails('001')">{{customer.user.username}}</a></td>
+                        <td>{{customer.user.email}}</td>
+                        <td>8888888888</td>
+                        <td>{{customer.order_count}}</td>
+                        <td><span class="status-badge badge-outline-success">{% if customer.user.is_active %} Active{% else %} Inactive{% endif %}</span></td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary" title="View Details" onclick="viewCustomerDetails('001')">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
                     </tr>
+                    {% endfor %}
                     <!-- Add more rows as needed -->
                 </tbody>
             </table>
