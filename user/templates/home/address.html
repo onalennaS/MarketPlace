@@ -37,7 +37,7 @@
         border: 1px solid #eaecef;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         transition: all 0.3s ease;
     }
     
@@ -228,6 +228,180 @@
         color: #6c757d;
         margin-top: 5px;
     }
+    
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+    
+    /* Mobile responsiveness */
+    /* iPads (portrait and landscape) */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1024px) {
+        .container {
+            max-width: 95%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .address-type-selector {
+            gap: 12px;
+        }
+        
+        .card-body {
+            padding: 16px;
+        }
+        
+        .address-card {
+            margin-bottom: 18px;
+        }
+        
+        .form-floating .form-control {
+            font-size: 15px;
+        }
+        
+        .form-floating label {
+            font-size: 15px;
+        }
+        
+        .btn-save, .btn-cancel {
+            padding: 8px 14px;
+        }
+    }
+    
+    /* iPad Mini and smaller iPads */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1024px)
+    and (max-device-height: 1024px) 
+    and (-webkit-min-device-pixel-ratio: 1) {
+        .container {
+            max-width: 98%;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        
+        .card-header h5 {
+            font-size: 15px;
+        }
+        
+        .card-body .d-flex {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        
+        .form-group-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .form-group-buttons .btn {
+            margin-left: 0;
+        }
+    }
+    
+    /* iPad in portrait */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1024px) 
+    and (orientation: portrait) {
+        .action-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+        }
+        
+        .action-buttons .btn {
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+        
+        .card-body .d-flex {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+    }
+    
+    /* iPhone and smaller mobile devices */
+    @media (max-width: 767px) {
+        .container {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        .address-type-selector {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-save, .btn-cancel {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .action-buttons .btn {
+            width: 100%;
+            margin-right: 0;
+            text-align: center;
+        }
+        
+        .address-info {
+            margin-left: 0;
+        }
+        
+        .card-body .d-flex {
+            flex-direction: column;
+        }
+        
+        .card-body .d-flex .card-text {
+            margin-bottom: 10px;
+        }
+        
+        .form-group-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-group-buttons .btn {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+    
+    @media (max-width: 575px) {
+        .breadcrumb {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .card-header h5 {
+            font-size: 15px;
+        }
+        
+        .card-body {
+            padding: 12px;
+        }
+        
+        .form-floating .form-control {
+            font-size: 14px;
+        }
+        
+        .form-floating label {
+            font-size: 14px;
+        }
+    }
 </style>
 
 <div class="container">
@@ -262,11 +436,11 @@
                     <div class="col-12">
                         <div class="address-type-selector">
                             <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio1" value="residential">
                                 <label class="form-check-label" for="inlineRadio1">Residential</label>
                             </div>
                             <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio2" value="business">
                                 <label class="form-check-label" for="inlineRadio2">Business</label>
                             </div>
                         </div>
@@ -274,14 +448,14 @@
                     
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="recipient-name" placeholder="" name="recipient-name" value="">
+                            <input type="text" class="form-control" id="recipient-name" placeholder="" name="recipient_name" value="">
                             <label for="recipient-name">Recipient Name</label>
                         </div>
                     </div>
                     
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="recipient-phone" placeholder="" name="recipient-phone" value="">
+                            <input type="text" class="form-control" id="recipient-phone" placeholder="" name="recipient_phone" value="">
                             <label for="recipient-phone">Recipient Phone</label>
                         </div>
                     </div>
@@ -328,7 +502,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-12 text-end">
+                    <div class="col-12 text-end form-group-buttons">
                         <button type="submit" class="btn btn-save">
                             <i class="fas fa-check me-1"></i> Save
                         </button>
@@ -341,121 +515,134 @@
         </div>
     </div>
 
-    <!-- Existing Address Card -->
-    <div class="address-card">
-        <div class="card-header">
-            <i class="fas fa-map-marker-alt"></i>
-            <h5>Delivery Address</h5>
-        </div>
-        <div class="card-body" id="password-disp" style="display:block;">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <span class="address-badge">Residential</span>
-                    <div class="address-info">
-                        <div class="address-line">Next to Kwena</div>
-                        <div class="address-line">34 Fortuna Ave</div>
-                        <div class="address-line">Bedworth park, Vereeniging, 1939</div>
-                        <div class="address-contact">
-                            Jeff - 0645569327
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-edit me-2" onclick="edit_button('password')">
-                        <i class="fas fa-pencil-alt me-1"></i> Edit
-                    </button>
-                    <button type="button" class="btn btn-delete">
-                        <i class="fas fa-trash-alt me-1"></i> Delete
-                    </button>
-                </div>
+    <!-- Existing Address Cards - Dynamic rendering -->
+    {% if addresses %}
+        {% for address in addresses %}
+        <div class="address-card">
+            <div class="card-header">
+                <i class="fas fa-map-marker-alt"></i>
+                <h5>Delivery Address</h5>
             </div>
-        </div> 
-
-        <div class="card-body" id="password-form" style="display:none;">
-            <form method="POST" class="auth-form">
-            {% csrf_token %}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="address-type-selector">
-                            <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="edit-radio1" value="option1" checked>
-                                <label class="form-check-label" for="edit-radio1">Residential</label>
+            <div class="card-body" id="address-disp-{{ address.id }}" style="display:block;">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <span class="address-badge {% if address.address_type == 'business' %}business{% endif %}">
+                            {{ address.address_type|title }}
+                        </span>
+                        <div class="address-info">
+                            {% if address.complex %}
+                            <div class="address-line">{{ address.complex }}</div>
+                            {% endif %}
+                            <div class="address-line">{{ address.street }}</div>
+                            <div class="address-line">{{ address.suburb }}, {{ address.city }}, {{ address.postal }}</div>
+                            <div class="address-contact">
+                                {{ address.recipient_name }} - {{ address.recipient_phone }}
                             </div>
-                            <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="edit-radio2" value="option2">
-                                <label class="form-check-label" for="edit-radio2">Business</label>
-                            </div>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="erecipient-name" placeholder="" name="erecipient-name" value="Jeff">
-                            <label for="erecipient-name">Recipient Name</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="erecipient-phone" placeholder="" name="erecipient-phone" value="0645569327">
-                            <label for="erecipient-phone">Recipient Phone</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="estreet" placeholder="" name="estreet" value="34 Fortuna Ave">
-                            <label for="estreet">Street Address</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="ecomplex" placeholder="" name="ecomplex" value="Next to Kwena">
-                            <label for="ecomplex">Complex / Building <span class="small text-muted">(optional)</span></label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="esuburb" placeholder="" name="esuburb" value="Bedworth park">
-                            <label for="esuburb">Suburb</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="ecity" placeholder="" name="ecity" value="Vereeniging">
-                            <label for="ecity">City / Town</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="eprovince" placeholder="" name="eprovince" value="Gauteng">
-                            <label for="eprovince">Province</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="epostal" placeholder="" name="epostal" value="1939">
-                            <label for="epostal">Postal Code</label>
-                        </div>
-                    </div>
-                    
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-edit" onclick="edit_button('address-{{ address.id }}')">
+                            <i class="fas fa-pencil-alt me-1"></i> Edit
                         </button>
-                        <button type="button" class="btn btn-cancel" onclick="cancel_button('password')">
-                            <i class="fas fa-times me-1"></i> Cancel
-                        </button>    
+                        <button type="button" class="btn btn-delete" onclick="delete_address('{{ address.id }}')">
+                            <i class="fas fa-trash-alt me-1"></i> Delete
+                        </button>
                     </div>
                 </div>
-            </form>   
+            </div> 
+
+            <div class="card-body" id="address-form-{{ address.id }}" style="display:none;">
+                <form method="POST" class="auth-form">
+                {% csrf_token %}
+                <input type="hidden" name="address_id" value="{{ address.id }}">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="address-type-selector">
+                                <div class="address-type-option">
+                                    <input class="form-check-input" type="radio" name="address_type" id="edit-radio1-{{ address.id }}" value="residential" {% if address.address_type == 'residential' %}checked{% endif %}>
+                                    <label class="form-check-label" for="edit-radio1-{{ address.id }}">Residential</label>
+                                </div>
+                                <div class="address-type-option">
+                                    <input class="form-check-input" type="radio" name="address_type" id="edit-radio2-{{ address.id }}" value="business" {% if address.address_type == 'business' %}checked{% endif %}>
+                                    <label class="form-check-label" for="edit-radio2-{{ address.id }}">Business</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="erecipient-name-{{ address.id }}" placeholder="" name="recipient_name" value="{{ address.recipient_name }}">
+                                <label for="erecipient-name-{{ address.id }}">Recipient Name</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="erecipient-phone-{{ address.id }}" placeholder="" name="recipient_phone" value="{{ address.recipient_phone }}">
+                                <label for="erecipient-phone-{{ address.id }}">Recipient Phone</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="estreet-{{ address.id }}" placeholder="" name="street" value="{{ address.street }}">
+                                <label for="estreet-{{ address.id }}">Street Address</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="ecomplex-{{ address.id }}" placeholder="" name="complex" value="{{ address.complex }}">
+                                <label for="ecomplex-{{ address.id }}">Complex / Building <span class="small text-muted">(optional)</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="esuburb-{{ address.id }}" placeholder="" name="suburb" value="{{ address.suburb }}">
+                                <label for="esuburb-{{ address.id }}">Suburb</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="ecity-{{ address.id }}" placeholder="" name="city" value="{{ address.city }}">
+                                <label for="ecity-{{ address.id }}">City / Town</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="eprovince-{{ address.id }}" placeholder="" name="province" value="{{ address.province }}">
+                                <label for="eprovince-{{ address.id }}">Province</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="epostal-{{ address.id }}" placeholder="" name="postal" value="{{ address.postal }}">
+                                <label for="epostal-{{ address.id }}">Postal Code</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 text-end form-group-buttons">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-check me-1"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-cancel" onclick="cancel_button('address-{{ address.id }}')">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </button>    
+                        </div>
+                    </div>
+                </form>   
+            </div>
         </div>
-    </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> You don't have any saved addresses yet. Add your first address above.
+        </div>
+    {% endif %}
 </div>
 
 <script type="text/javascript">
@@ -466,6 +653,7 @@
         displays.style.display = 'none';
         forms.style.display = 'block';
     }
+    
     function cancel_button(name){
         var displays = document.getElementById(name+'-disp');
         var forms = document.getElementById(name+'-form');
@@ -473,5 +661,719 @@
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
+    
+    function delete_address(addressId) {
+        if (confirm('Are you sure you want to delete this address?')) {
+            // Create form and submit to delete the address
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.style.display = 'none';
+            
+            let csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            let actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = 'delete';
+            
+            let idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'address_id';
+            idInput.value = addressId;
+            
+            form.appendChild(csrfInput);
+            form.appendChild(actionInput);
+            form.appendChild(idInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+    
+    // Add touch device detection for better handling on iPads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if device is touch-enabled
+        if ('ontouchstart' in window || navigator.maxTouchPoints) {
+            document.body.classList.add('touch-device');
+            
+            // Make buttons larger on touch devices for better tappability
+            var buttons = document.querySelectorAll('.btn');
+            buttons.forEach(function(button) {
+                button.classList.add('touch-friendly');
+            });
+        }
+    });
 </script>
+
+<style>
+    /* Additional styles for touch devices specifically for iPad */
+    .touch-device .btn.touch-friendly {
+        min-height: 44px; /* Apple's recommended minimum touch target size */
+    }
+    
+    /* Fix for iPad Mini */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1024px)
+    and (max-device-height: 1024px) {
+        .touch-device .form-floating .form-control {
+            font-size: 16px; /* Prevent zoom on iOS when focusing inputs */
+            height: calc(3.2rem + 2px); /* Slightly larger for better touch */
+        }
+        
+        .touch-device .address-type-option {
+            padding: 16px;
+        }
+        
+        .touch-device .address-type-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    
+    /* iPad Pro */
+    @media only screen 
+    and (min-device-width: 1024px) 
+    and (max-device-width: 1366px) {
+        .container {
+            max-width: 92%;
+        }
+        
+        .action-buttons {
+            flex-direction: row;
+        }
+        
+        .form-group-buttons {
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+        
+        .form-group-buttons .btn {
+            width: auto;
+        }
+    }
+    
+    /* Landscape orientation for all iPads */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1366px) 
+    and (orientation: landscape) {
+        .row {
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+        
+        .col-md-6 {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        
+        .address-type-selector {
+            flex-direction: row;
+        }
+    }
+    
+    /* Portrait orientation for all iPads */
+    @media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1366px) 
+    and (orientation: portrait) {
+        .card-body .d-flex {
+            align-items: center;
+        }
+    }
+    /* Base variables for consistent theming */
+:root {
+        --primary-color: #3498db;
+        --primary-hover: #2980b9;
+        --danger-color: #e74c3c;
+        --danger-hover: #c0392b;
+        --success-color: #2ecc71;
+        --text-primary: #2c3e50;
+        --text-secondary: #6c757d;
+        --border-color: #eaecef;
+        --bg-light: #f8f9fa;
+        --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 5px 15px rgba(52, 152, 219, 0.1);
+        --transition: all 0.3s ease;
+    }
+
+    /* Navbar responsive styling */
+    .navbar {
+        padding: 8px 16px;
+        transition: var(--transition);
+    }
+
+    .navbar-brand {
+        font-size: 1.25rem;
+        transition: var(--transition);
+    }
+
+    .navbar-toggler {
+        padding: 6px 10px;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 8px 15px;
+        transition: var(--transition);
+    }
+
+    /* Breadcrumb styling */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: var(--primary-hover);
+    }
+    
+    .breadcrumb-item.active {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    
+    /* Card styling to match sidebar */
+    .profile-card {
+        background-color: var(--bg-light);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-color);
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        background-color: rgba(52, 152, 219, 0.05);
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .card-header i {
+        color: var(--primary-color);
+        font-size: 18px;
+        margin-right: 12px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    /* Content styling */
+    .card-text {
+        color: var(--text-primary);
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .status-icon {
+        margin-left: 8px;
+        font-size: 14px;
+    }
+    
+  /* Form styling */
+  .form-floating .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 12px;
+        height: calc(3rem + 2px);
+        transition: var(--transition);
+        font-size: 15px;
+    }
+    
+    .form-floating .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .form-floating label {
+        padding: 12px;
+        color: var(--text-secondary);
+    }
+    
+    /* Button styling */
+    .btn {
+        font-weight: 500;
+        border-radius: 6px;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .btn-edit {
+        background-color: transparent;
+        color: var(--text-primary);
+        border: 1px solid #ced4da;
+        padding: 8px 16px;
+    }
+    
+    .btn-edit:hover {
+        background-color: rgba(52, 152, 219, 0.08);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        transform: translateX(2px);
+    }
+    
+    .btn-save {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+    }
+    
+    .btn-save:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+    }
+    
+    .btn-cancel {
+        background-color: transparent;
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
+        padding: 8px 16px;
+        margin-left: 8px;
+    }
+    
+    .btn-cancel:hover {
+        background-color: rgba(231, 76, 60, 0.08);
+        color: var(--danger-hover);
+        transform: translateY(-2px);
+    }
+    
+    /* Verification icons */
+    .verified {
+        color: var(--success-color);
+    }
+    
+    .unverified {
+        color: var(--danger-color);
+    }
+
+    
+    /* Base responsive container adjustments */
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Responsive adjustments for all screen sizes */
+@media (max-width: 991px) {
+    .card-header h5 {
+        font-size: 15px;
+    }
+    
+    .card-text {
+        font-size: 14px;
+    }
+    
+    .btn-edit, .btn-cancel, .btn-save {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+    
+    /* Ensure menu toggle is visible on tablets and smaller devices */
+    .navbar-toggler {
+        display: block !important;
+        margin-right: 10px;
+    }
+    
+    /* Fix for navbar collapse on tablets */
+    .navbar-collapse {
+        display: none;
+    }
+    
+    .navbar-collapse.show {
+        display: block;
+    }
+}
+
+/* iPad Mini and other tablet specific fixes */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) {
+    /* Ensure navbar toggle is visible */
+    .navbar-toggler {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Adjust navbar container for tablets */
+    .navbar > .container,
+    .navbar > .container-fluid {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    /* Ensure collapsed navbar displays properly */
+    .navbar-collapse {
+        flex-basis: 100%;
+    }
+    
+    /* Improve visibility of toggle button */
+    .navbar-toggler {
+        padding: 0.5rem;
+        font-size: 1.25rem;
+        border: 1px solid rgba(0,0,0,.1);
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    /* Fix for potential hidden toggle icon */
+    .navbar-toggler-icon {
+        display: inline-block !important;
+        visibility: visible !important;
+    }
+}
+
+/* Tablet adjustments */
+@media (max-width: 768px) {
+    .profile-card {
+        margin-bottom: 15px;
+    }
+    
+    .card-header {
+        padding: 12px 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .form-floating .form-control {
+        height: calc(2.8rem + 2px);
+    }
+    
+    /* Adjust button alignment for small screens */
+    .col-md-4.text-md-end {
+        text-align: right !important;
+        margin-top: 10px;
+    }
+}
+
+/* Mobile phone adjustments */
+@media (max-width: 576px) {
+    /* Adjust breadcrumb */
+    .breadcrumb {
+        padding: 10px 0;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+    
+    /* Card adjustments */
+    .profile-card {
+        margin-bottom: 12px;
+    }
+    
+    .card-header {
+        padding: 10px 12px;
+    }
+    
+    .card-header i {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    /* Text adjustments */
+    .card-header h5 {
+        font-size: 14px;
+    }
+    
+    .card-text {
+        font-size: 13px;
+    }
+    
+    /* Button adjustments */
+    .btn-edit, .btn-cancel, .btn-save {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+    
+    /* Stack buttons vertically on smallest screens */
+    .btn-cancel {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+    
+    /* Form layout adjustments */
+    #fullname-form .row .col-md-6:last-child {
+        margin-top: 10px;
+    }
+    
+    /* Fix form button display */
+    #fullname-form .col-12.text-end,
+    #email-form .col-md-4.text-md-end,
+    #phone-form .col-md-4.text-md-end,
+    #username-form .col-md-4.text-md-end {
+        text-align: center !important;
+        margin-top: 15px;
+    }
+    
+    /* Make all form inputs full width */
+    .col-md-8, .col-md-6, .col-md-4 {
+        width: 100%;
+    }
+    
+    /* Fix display of name/value pairs */
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .d-flex.justify-content-between.align-items-center .btn-edit {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+    
+    /* Fix form displays */
+    #username-form .row,
+    #email-form .row,
+    #phone-form .row {
+        margin: 0;
+    }
+    
+    /* Improve form usability on small screens */
+    .form-floating {
+        margin-bottom: 10px;
+    }
+    
+    .form-floating .form-control {
+        height: calc(2.5rem + 2px);
+        font-size: 14px;
+    }
+    
+    .form-floating label {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Extra small devices adjustments */
+@media (max-width: 320px) {
+    .breadcrumb {
+        font-size: 13px;
+    }
+    
+    .card-header h5 {
+        font-size: 13px;
+    }
+    
+    .card-text {
+        font-size: 12px;
+    }
+    
+    .btn-edit, .btn-cancel, .btn-save {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* Fix for form buttons on all mobile screens */
+@media (max-width: 768px) {
+    .btn-save, .btn-cancel {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .btn-cancel {
+        margin-left: 0;
+    }
+}
+/* Force the navbar-toggler to be visible on all tablet devices */
+@media (max-width: 1024px) {
+    /* Important overrides to ensure menu toggle is visible */
+    .navbar-toggler {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1000 !important;
+        margin-right: 15px !important;
+    }
+    
+    /* Make sure the toggle icon is showing */
+    .navbar-toggler-icon {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Ensure navbar container is using flexbox */
+    .navbar, 
+    .navbar > .container,
+    .navbar > .container-fluid {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        position: relative !important;
+    }
+    
+    /* Additional styling to make toggle button more noticeable */
+    .navbar-toggler {
+        padding: 8px 12px !important;
+        font-size: 1.25rem !important;
+        background-color: rgba(52, 152, 219, 0.1) !important;
+        border: 1px solid rgba(52, 152, 219, 0.2) !important;
+        border-radius: 4px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+/* Specific iPad Mini targeting */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 1) {
+    /* Additional iPad-specific fixes */
+    body .navbar-toggler {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        right: 15px !important;
+        top: 15px !important;
+    }
+    
+    /* Make the toggle button stand out visually */
+    body .navbar-toggler {
+        padding: 10px !important;
+        background-color: rgba(52, 152, 219, 0.15) !important;
+        border: 2px solid rgba(52, 152, 219, 0.3) !important;
+    }
+    
+    /* Force visibility on containers */
+    body .navbar > .container,
+    body .navbar > .container-fluid {
+        position: relative !important;
+        padding-right: 50px !important; /* Make room for toggle button */
+    }
+}
+
+/* Even more specific targeting for iPad Mini */
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px)
+and (orientation: portrait) {
+    body header .navbar-toggler,
+    body nav .navbar-toggler {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* If navbar is fixed-top, adjust positioning */
+    body .navbar.fixed-top .navbar-toggler {
+        right: 15px !important;
+        top: 10px !important;
+    }
+}
+
+/* Super aggressive approach for iPad Mini */
+@supports (-webkit-overflow-scrolling: touch) {
+    /* Target all iOS devices */
+    .navbar-toggler {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* More visible iOS-specific styling */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .navbar-toggler {
+            position: absolute !important;
+            right: 15px !important;
+            top: 15px !important;
+            background-color: rgba(52, 152, 219, 0.2) !important;
+            border: 2px solid #3498db !important;
+        }
+    }
+}
+
+/* Fix for Bootstrap's default hiding of navbar-toggler */
+@media (min-width: 768px) {
+    .navbar-expand-md .navbar-toggler,
+    .navbar-expand-lg .navbar-toggler {
+        display: block !important;
+    }
+    
+    .navbar-expand-md .navbar-collapse,
+    .navbar-expand-lg .navbar-collapse {
+        display: none !important;
+    }
+    
+    .navbar-expand-md .navbar-collapse.show,
+    .navbar-expand-lg .navbar-collapse.show {
+        display: block !important;
+    }
+}
+
+/* Fixed positioning as a last resort if nothing else works */
+@media (min-width: 768px) and (max-width: 1024px) {
+    body::before {
+        content: '';
+        display: block;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        z-index: 10000;
+        pointer-events: none;
+    }
+    
+    .navbar-toggler {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        z-index: 10001 !important;
+    }
+}
+</style>
 {% endblock content %}
