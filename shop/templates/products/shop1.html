@@ -1312,9 +1312,15 @@ hr.border-secondary {
                         
                         <!-- Status Badge -->
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge {% if business.is_open %}bg-success{% else %}bg-danger{% endif %} px-3 py-2 rounded-pill small shadow-sm">
-                                {% if business.is_open %}Open Now{% else %}Closed{% endif %}
+                            {% if business.open_orders %}
+                            <span class="badge bg-success px-3 py-2 rounded-pill small shadow-sm">
+                                <i class="bi bi-clock"></i> Open until {{ business.close_time|time:"g:i A" }}
                             </span>
+                            {% else %}
+                            <span class="badge bg-danger px-3 py-2 rounded-pill small shadow-sm">
+                                <i class="bi bi-clock"></i> We are closed
+                            </span>
+                            {% endif %}
                         </div>
 
                         <!-- Image Section -->
