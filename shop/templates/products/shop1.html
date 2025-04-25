@@ -1314,7 +1314,7 @@ hr.border-secondary {
                         <div class="position-absolute top-0 end-0 m-3">
                             {% if business.open_orders %}
                             <span class="badge bg-success px-3 py-2 rounded-pill small shadow-sm">
-                                <i class="bi bi-clock"></i> Open until {{ business.close_time|time:"g:i A" }}
+                                <i class="bi bi-clock"></i> Open until {{business.close_time}}
                             </span>
                             {% else %}
                             <span class="badge bg-danger px-3 py-2 rounded-pill small shadow-sm">
