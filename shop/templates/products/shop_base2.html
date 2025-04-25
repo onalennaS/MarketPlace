@@ -1577,87 +1577,98 @@ img {
 </div>
 
 <!-- Navbar -->
+<!-- Navbar -->
 <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
-    <!-- Replace this section in your navbar -->
-  <div class="container-fluid">
-      <!-- Mobile menu toggle -->
-      <button class="navbar-toggler me-2" type="button" 
-      data-bs-toggle="offcanvas" 
-      data-bs-target="#staticBackdrop">
-  <span class="navbar-toggler-icon"></span>
-  </button>
-  
-  
-      <!-- Logo -->
-      <img class="nav-logo" src="{% static '/images/Finds.png' %}" alt="Logo">
-  
-      <!-- Desktop Navigation Items - Horizontal Layout -->
-      <div class="desktop-elements d-flex align-items-center">
-          <!-- Desktop Search Form -->
-          <form method="POST" class="forms desktop-search-form">
-              {% csrf_token %}
-              <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search products..." aria-label="Search" aria-describedby="search-addon">
-                  <span class="input-group-text bg-primary" id="search-addon">
-                      <i class="fa fa-search text-white"></i>
-                  </span>
-              </div>
-          </form>
-          
-          <!-- Navigation Icons - ONLY SHOW ON DESKTOP -->
-          <div class="nav-icon-container d-none d-lg-flex">
-              <a class="nav-icon position-relative me-2" href="{% url 'wish_lists' %}">                
-                  <i class="fas fa-heart text-danger"></i>
-              </a>
-  
-              <a class="nav-icon position-relative" href="{% url 'cart' %}">                
-                  <i class="fas fa-shopping-cart"></i>
-                  {% if cart_items_count > 0 %}
-                      <span class="badge bg-danger badge-cart">
-                          {{ cart_items_count }}
-                      </span>
-                  {% endif %}
-              </a>
-          </div>
-  
-          <!-- User account dropdown - ONLY SHOW ON DESKTOP -->
-          <div class="user-profile d-none d-lg-flex">
-              <div class="me-2">
-                  <div class="fw-bold">{{user.username}}</div>
-              </div>
-              
-              <div class="dropdown">
-                  <a class="dropdown-toggle" href="#" role="button" id="profileDropdown" 
-                     data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle">
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                      <li><a class="dropdown-item" href="{% url 'home' %}"><i class="fas fa-home me-2"></i>Home</a></li>
-                      <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user-circle me-2"></i>My Account</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-  
-      <!-- Mobile navigation elements - ONLY SHOW ON MOBILE -->
-      <div class="mobile-elements d-flex d-lg-none ms-auto">
-          <a class="nav-icon position-relative mx-1" href="{% url 'wish_lists' %}">                
-              <i class="fas fa-heart text-danger"></i>
-          </a>
-  
-          <a class="nav-icon position-relative mx-1" href="{% url 'cart' %}">                
-              <i class="fas fa-shopping-cart"></i>
-              {% if cart_items_count > 0 %}
-                  <span class="badge bg-danger badge-cart">
-                      {{ cart_items_count }}
-                  </span>
-              {% endif %}
-          </a>
-      </div>
-  </div>
-  </nav>
+    <div class="container-fluid">
+        <!-- Mobile menu toggle -->
+        <button class="btn border-0 off-nav d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Logo -->
+        <img class="nav-logo" src="{% static '/images/Finds.png' %}" alt="Logo">
+
+        <!-- Desktop Navigation Items - Horizontal Layout (hidden on mobile) -->
+        <div class="desktop-elements d-none d-lg-flex align-items-center">
+            <!-- Desktop Search Form -->
+            <form method="POST" class="forms desktop-search-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search" aria-describedby="search-addon">
+                    <span class="input-group-text bg-primary" id="search-addon">
+                        <i class="fa fa-search text-white"></i>
+                    </span>
+                </div>
+            </form>
+            
+            <!-- Sell on VersityFinds Button -->
+            <a href="{% url 'seller_landing_page' %}" class="btn sell-button me-3">
+                <i class="fas fa-store me-1"></i> Sell on VersityFinds
+            </a>
+
+            <!-- Navigation Icons -->
+            <div class="nav-icon-container">
+                <a class="nav-icon position-relative me-2" href="{% url 'wish_lists' %}">                
+                    <i class="fas fa-heart text-danger"></i>
+                    {% if wishlist_items_count > 0 %}
+                        <span class="badge bg-danger badge-wishlist">
+                            {{ wishlist_items_count }}
+                        </span>
+                    {% endif %}
+                </a>
+
+                <a class="nav-icon position-relative" href="{% url 'cart' %}">                
+                    <i class="fas fa-shopping-cart"></i>
+                    {% if cart_items_count > 0 %}
+                        <span class="badge bg-danger badge-cart">
+                            {{ cart_items_count }}
+                        </span>
+                    {% endif %}
+                </a>
+            </div>
+
+    <!-- User account dropdown -->
+    <div class="user-profile">
+        <div class="me-2">
+           
+            <div class="fw-bold">{{user.username}}</div>
+        </div>
+        
+        <div class="dropdown">
+            <a class="dropdown-toggle d-flex align-items-center" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle">
+            </a>
+            
+            <ul class="dropdown-menu dropdown-menu-end border rounded-0 shadow-lg">
+                <li><a class="dropdown-item" href="{% url 'home' %}"><i class="fas fa-home me-2"></i>Home</a></li>
+                <li><a class="dropdown-item" href="{% url 'dash' %}"><i class="fas fa-user-circle me-2"></i>My Account</a></li>
+                <li><a class="dropdown-item logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile navigation elements (only visible on mobile) -->
+<div class="mobile-elements d-flex d-lg-none">
+    <a class="nav-icon position-relative mx-1" href="{% url 'wish_lists' %}">                
+        <i class="fas fa-heart text-danger"></i>
+        {% if wishlist_items_count > 0 %}
+            <span class="badge bg-danger badge-wishlist">
+                {{ wishlist_items_count }}
+            </span>
+        {% endif %}
+    </a>
+
+    <a class="nav-icon position-relative mx-1" href="{% url 'cart' %}">                
+        <i class="fas fa-shopping-cart"></i>
+        {% if cart_items_count > 0 %}
+            <span class="badge bg-danger badge-cart">
+                {{ cart_items_count }}
+            </span>
+        {% endif %}
+    </a>
+</div>
+</nav>
 {% block secend_nav %}
 <div class="on-nav">
     

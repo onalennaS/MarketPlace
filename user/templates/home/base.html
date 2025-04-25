@@ -2234,6 +2234,7 @@ img {
     }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div id="pageSpinner">
   <div class="spinner-border"></div>
@@ -2252,38 +2253,43 @@ img {
         <img class="nav-logo" src="{% static '/images/Finds.png' %}" alt="Logo">
 
         <!-- Desktop Navigation Items - Horizontal Layout (hidden on mobile) -->
-<div class="desktop-elements d-none d-lg-flex align-items-center">
-    <!-- Desktop Search Form -->
-    <form method="POST" class="forms desktop-search-form">
-        {% csrf_token %}
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search products..." aria-label="Search" aria-describedby="search-addon">
-            <span class="input-group-text bg-primary" id="search-addon">
-                <i class="fa fa-search text-white"></i>
-            </span>
-        </div>
-    </form>
-    
-    <!-- Sell on VersityFinds Button -->
-    <a href="{% url 'seller_landing_page' %}" class="btn sell-button me-3">
-        <i class="fas fa-store me-1"></i> Sell on VersityFinds
-    </a>
+        <div class="desktop-elements d-none d-lg-flex align-items-center">
+            <!-- Desktop Search Form -->
+            <form method="POST" class="forms desktop-search-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search" aria-describedby="search-addon">
+                    <span class="input-group-text bg-primary" id="search-addon">
+                        <i class="fa fa-search text-white"></i>
+                    </span>
+                </div>
+            </form>
+            
+            <!-- Sell on VersityFinds Button -->
+            <a href="{% url 'seller_landing_page' %}" class="btn sell-button me-3">
+                <i class="fas fa-store me-1"></i> Sell on VersityFinds
+            </a>
 
-    <!-- Navigation Icons -->
-    <div class="nav-icon-container">
-        <a class="nav-icon position-relative me-2" href="{% url 'wish_lists' %}">                
-            <i class="fas fa-heart text-danger"></i>
-        </a>
+            <!-- Navigation Icons -->
+            <div class="nav-icon-container">
+                <a class="nav-icon position-relative me-2" href="{% url 'wish_lists' %}">                
+                    <i class="fas fa-heart text-danger"></i>
+                    {% if wishlist_items_count > 0 %}
+                        <span class="badge bg-danger badge-wishlist">
+                            {{ wishlist_items_count }}
+                        </span>
+                    {% endif %}
+                </a>
 
-        <a class="nav-icon position-relative" href="{% url 'cart' %}">                
-            <i class="fas fa-shopping-cart"></i>
-            {% if cart_items_count > 0 %}
-                <span class="badge bg-danger badge-cart">
-                    {{ cart_items_count }}
-                </span>
-            {% endif %}
-        </a>
-    </div>
+                <a class="nav-icon position-relative" href="{% url 'cart' %}">                
+                    <i class="fas fa-shopping-cart"></i>
+                    {% if cart_items_count > 0 %}
+                        <span class="badge bg-danger badge-cart">
+                            {{ cart_items_count }}
+                        </span>
+                    {% endif %}
+                </a>
+            </div>
 
     <!-- User account dropdown -->
     <div class="user-profile">
@@ -2310,6 +2316,11 @@ img {
 <div class="mobile-elements d-flex d-lg-none">
     <a class="nav-icon position-relative mx-1" href="{% url 'wish_lists' %}">                
         <i class="fas fa-heart text-danger"></i>
+        {% if wishlist_items_count > 0 %}
+            <span class="badge bg-danger badge-wishlist">
+                {{ wishlist_items_count }}
+            </span>
+        {% endif %}
     </a>
 
     <a class="nav-icon position-relative mx-1" href="{% url 'cart' %}">                
