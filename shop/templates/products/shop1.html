@@ -1262,15 +1262,14 @@ hr.border-secondary {
     }
 }
 .card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 .business-rating i {
-    color: #ffc107;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 
@@ -1297,47 +1296,58 @@ hr.border-secondary {
 <!-- Featured Categories -->
 <section class="container mb-5">
     <div class="section-header d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title m-0">Popular Businesses</h2>
-        <a href="#" class="view-all btn btn-outline-primary btn-sm">View All</a>
+        <h2 class="section-title m-0 fs-2 fw-bold">Popular Businesses</h2>
+        <a href="#" class="view-all btn btn-outline-primary btn-sm px-3 py-2 rounded-pill">
+            View All <i class="bi bi-arrow-right ms-1"></i>
+        </a>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
         {% for businesses in business_list %}
             {% for business in businesses %}
             {% if business.status == "approved" %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="{% url 'view_business_products' business.id %}" class="text-decoration-none">
-                    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="col-md-6 col-lg-4">
+                <a href="{% url 'view_business_products' business.id %}" class="text-decoration-none text-dark hover-scale">
+                    <div class="card h-100 shadow-sm border-1 rounded-4 overflow-hidden position-relative">
                         
-                        <!-- Header -->
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center p-2 border-bottom">
-                            <span class="text-muted small fw-semibold">{{ business.category }}</span>
-                            <span class="badge {% if business.is_open %}bg-success{% else %}bg-danger{% endif %} px-2 py-1 rounded-pill text-white small">
+                        <!-- Status Badge -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge {% if business.is_open %}bg-success{% else %}bg-danger{% endif %} px-3 py-2 rounded-pill small shadow-sm">
                                 {% if business.is_open %}Open Now{% else %}Closed{% endif %}
                             </span>
                         </div>
-                        
-                        <!-- Centered Image -->
-                        <div class="text-center bg-light py-2">
+
+                        <!-- Image Section -->
+                        <div class="text-center p-4 bg-light-subtle">
                             <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
                                  alt="{{business.name}}" 
-                                 class="img-fluid rounded-3" style="max-width: 200px; height: auto;">
+                                 class="img-fluid rounded-3 hover-scale-inner"
+                                 style="max-height: 180px; width: auto; object-fit: contain; transition: transform 0.3s ease;">
                         </div>
-                        
+
                         <!-- Card Body -->
-                        <div class="card-body py-2 px-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h6 class="card-title fw-semibold text-dark mb-0">{{ business.name }}</h6>
-                                <div class="business-rating text-warning small">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="card-title fw-bold mb-0 fs-5 text-truncate">{{ business.name }}</h6>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted text-uppercase small fw-semibold">
+                                    <i class="bi bi-tag-fill me-2"></i>{{ business.category }}
+                                </span>
+                                <div class="business-rating text-warning">
                                     <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <span class="text-muted small">(4.0)</span>
+                                    <span class="text-dark small ms-1">4.0</span>
                                 </div>
                             </div>
-                            <p class="card-text text-muted small mb-0">Explore more</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary small fw-semibold hover-arrow">
+                                    Explore Products
+                                    <i class="bi bi-arrow-right-short ms-1 transition-all"></i>
+                                </span>
+                                <span class="text-muted small">50+ items</span>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -1347,6 +1357,32 @@ hr.border-secondary {
         {% endfor %}
     </div>
 </section>
+
+<style>
+    .hover-scale {
+        transition: transform 0.3s ease;
+        display: block;
+    }
+    .hover-scale:hover {
+        transform: translateY(-5px);
+    }
+    .hover-scale:hover .hover-scale-inner {
+        transform: scale(1.05);
+    }
+    .hover-arrow .bi {
+        transition: transform 0.3s ease;
+    }
+    .hover-scale:hover .hover-arrow .bi {
+        transform: translateX(3px);
+    }
+    .card {
+        border-color: rgba(0,0,0,0.1) !important;
+        transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+    }
+</style>
 
 
 
