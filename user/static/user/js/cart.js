@@ -1,28 +1,64 @@
-// Update the addCart function to show a smaller spinner
 function addCart(product_id) {
-    event.preventDefault();
+    // Prevent default form submission behavior if this is in a form
+    if (event) {
+        event.preventDefault();
+    }
     
     // Get the button that was clicked
     const button = event.currentTarget;
+    
+    // Get product information - using selectors that match your HTML structure
+    const productTitle = document.querySelector('.product-title');
+    const productName = productTitle ? productTitle.textContent.trim() : 'Product';
+    
+    // Find the product image from the carousel's active item
+    const activeCarouselItem = document.querySelector('.carousel-item.active img');
+    const productImage = activeCarouselItem ? activeCarouselItem.src : 'https://via.placeholder.com/500';
+    
+    // Log that we're starting the process
+    console.log("Adding product to cart:", product_id);
     
     // Disable the button and show spinner
     button.disabled = true;
     const originalButtonText = button.innerHTML;
     button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Adding...';
-
-    // Get data from form
+    
+    // Get selected extras/add-ons
+    function storeSelectedCheckboxes() {
+        const checkboxes = document.querySelectorAll('.extra:checked');
+        return Array.from(checkboxes).map(checkbox => checkbox.value);
+    }
+    
+    // Prepare form data
     const formData = {
         product_id: product_id,
         extras: storeSelectedCheckboxes(),
     };
-
-    console.log(formData);
-    // Fetch API POST request
+    
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+    
+    // Make the API request
     fetch('/account/api/user/add_cart/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+            'X-CSRFToken': csrftoken
         },
         body: JSON.stringify(formData)
     })
@@ -32,13 +68,32 @@ function addCart(product_id) {
         button.disabled = false;
         button.innerHTML = originalButtonText;
         
-        if(data.status == "error"){
-            showSweetAlert(data.message, 'error');
+        if(data.status === "error") {
+            // Show error message
+            Swal.fire({
+                title: 'Error',
+                text: data.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
         } else {
-            showSweetAlert(data.message, 'success');
-            setTimeout(() => {
-                location.reload(); // Replace with actual redirect URL
-            }, 2000);
+            // Show success message with product details and only continue shopping option
+            Swal.fire({
+                title: 'Added to Cart!',
+                html: `
+                    <div>
+                        <img src="${productImage}" alt="${productName}" style="max-height: 150px; margin-bottom: 15px;">
+                        <p><strong>${productName}</strong> has been added to your cart</p>
+                        <p>${data.message || ''}</p>
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonColor: '#808080',
+                confirmButtonText: 'Continue Shopping'
+            }).then(() => {
+                // Reload the page when "Continue Shopping" is clicked
+                window.location.reload();
+            });
         }
     })
     .catch(error => {
@@ -46,11 +101,15 @@ function addCart(product_id) {
         button.disabled = false;
         button.innerHTML = originalButtonText;
         
-        console.error('Error submitting form:', error);
-        showSweetAlert('An error occurred while processing your request', 'error');
+        console.error('Error adding to cart:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while processing your request',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     });
 }
-
 function addExtraToCart() {
     event.preventDefault();
 
