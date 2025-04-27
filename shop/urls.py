@@ -9,4 +9,5 @@ urlpatterns = [
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('app.py/', views.app_py, name='app.py'),
     path('templates/home.html', views.home_html),
+    path('templates/login.html', views.login_html),
 ]

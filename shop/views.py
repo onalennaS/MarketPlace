@@ -16,11 +16,16 @@ def app_py(request):
     return HttpResponse(file_content, content_type='text/plain')
 
 def home_html(request):
-    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'home.txt')
+    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'home.html')
     with open(file_path, 'r') as file:
         file_content = file.read()
     return HttpResponse(file_content, content_type='text/plain')
 
+def login_html(request):
+    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'login.html')
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+    return HttpResponse(file_content, content_type='text/plain')
 
 
 
