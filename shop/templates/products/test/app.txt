@@ -1,9 +1,25 @@
 from flask import Flask, render_template
+import sqlite3
+import os
 
 app = Flask(__name__)
 
+
+def db_init():
+    db_name = "maydatabase.db"
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS user ( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT UNIQUE, age INTEGER UNIQUE)')
+    conn.commit()
+    conn.close()
+    print(f"Database '{db_name}' and table 'user' are ready.")
+
+
+
+
 @app.route('/')
 def home():
+	db_init()
 	return render_template("home.html")
 
 @app.route('/login')
