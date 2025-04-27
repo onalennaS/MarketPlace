@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'administrator',
     'moderator',
     'transactions',
+    'courier',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

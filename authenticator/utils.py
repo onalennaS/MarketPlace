@@ -104,7 +104,7 @@ def verify_role(user):
 
 
     if user.groups.filter(name="courier").exists():
-        return 'moderator'
+        return 'courier_orders'
 
 
     if user.groups.filter(name="customer").exists():

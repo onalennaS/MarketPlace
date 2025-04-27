@@ -3,7 +3,7 @@ from ..utils import login_required_custom
 from seller.wrap_models.business_model import Moderation,BusinessInformation, Address
 from seller.wrap_models.product_model import ProductModeration, Product
 from seller.utils.authentication_utils import verify_role
-
+from courier.models import Courier
 
 @login_required_custom
 @verify_role(['admin','moderator'])
@@ -65,3 +65,17 @@ def view_product_moderator(request,product_id):
         return render(request, 'moderator/view_product.html',{'product':product})
 
     return render(request, 'moderator/view_product.html')
+
+@login_required_custom
+@verify_role(['admin','moderator'])
+def courier(request):
+	all_courier = Courier.objects.all()
+	return render(request, 'moderator/courier.html',{'all_courier':all_courier,'count_courier':len(all_courier)})
+
+@login_required_custom
+@verify_role(['admin','moderator'])
+def view_courier(request,courier_id):
+	courier = Courier.objects.filter(id=int(courier_id)).first()
+	return render(request, 'moderator/view_courier.html', {'courier' : courier})
+
+	

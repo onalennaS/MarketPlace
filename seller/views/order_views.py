@@ -2,9 +2,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from ..utils.authentication_utils import login_required_custom, verify_role
 import json 
-from ..wrap_models.orders_model import Order
+from ..wrap_models.orders_model import Order, OrderAddress
 from ..utils.send_emails import send_email_order_traking_update, send_email_order_delivered
 from ..wrap_models.business_model import BusinessInformation
+from courier.models import OrderDelivery
 
 @login_required_custom
 @verify_role('business')
@@ -23,6 +24,12 @@ def move_order_next_stage(request):
     if order:
         if order.status == "Pending":
             order.status = "Processing"
+            if order.delivery_method == "delivery":
+                maddress = OrderAddress.objects.filter(order=order).first()
+                address = f'{maddress.address_line_1} {maddress.address_line_2} {maddress.address_line_3} {maddress.address_line_4} '
+                order_to_deliver = OrderDelivery.objects.create(order=order,address=address,note=maddress.notes,amount=15,reciever=order.user)
+                order_to_deliver.save()
+                print(order,"order set for delivery ===================")
             send_email_order_traking_update(order)
         elif order.status == "Processing":
             order.status = "On route"

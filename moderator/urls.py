@@ -11,8 +11,15 @@ urlpatterns = [
     path('notificatons', views.notificatons, name='moderator_notifications'),
     path('settings', views.settings, name='moderator_settings'),
     path('product', views.product, name='moderator_product'),
-    path('view_product_moderator/<int:product_id>', views.view_product_moderator, name='moderator_view_product'),
+    path('courier', views.courier, name='moderator_courier'),
+    path('view_courier/<int:courier_id>', views.view_courier, name='view_courier'),
+    
+    path('courier/approve/', mod_views.approve_courier, name='moderator_approve_courier'),
+    path('courier/reject/', mod_views.reject_courier, name='moderator_reject_courier'),
 
+
+
+    path('view_product_moderator/<int:product_id>', views.view_product_moderator, name='moderator_view_product'), 
 path('business/approve/', mod_views.approve_business, name='moderator_approve_business'),
 path('business/reject/', mod_views.reject_business, name='moderator_reject_business'),
 path('business/ban/', mod_views.ban_business, name='moderator_ban_business'),

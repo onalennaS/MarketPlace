@@ -484,7 +484,7 @@
                                         </div>
                                         <div>
                                             <h6 class="product-title">{{cart_item.product.name}}</h6>
-                                            <p class="product-seller">{{cart_item.product.business.name}}</p>
+                                            <p class="product-seller"><a href="{% url 'view_business_products' cart_item.product.business.id %}" class="text-decoration-none">{{cart_item.product.business.name}}</a></p>
                                             <div class="product-rating">
                                                 <i class="fas fa-star"></i>
                                                 <span>4.6</span>

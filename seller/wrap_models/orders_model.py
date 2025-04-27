@@ -20,7 +20,7 @@ class Order(models.Model):
         default="Pending"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-
+ 
     def total_price(self):
         amount = 0
         for item in self.order_items.all():

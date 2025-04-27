@@ -5,13 +5,15 @@ from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .validator import validate_password
+from .validator import validate_password, validate_south_african_phone
 from django.contrib.auth.hashers import make_password, check_password
 from functools import wraps
 from django.shortcuts import redirect
 from .utils import send_email_reset_link, login_required_custom,generate_reset_token, verify_reset_token,send_verify_email, verify_role
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, User
+from courier.models import Courier
 
 User = get_user_model()
 
@@ -53,6 +55,64 @@ def register(request):
         return redirect('activate_account', email=user.email)
 
     return render(request, 'authentication/signup.html')
+
+
+def register_delivery(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+        
+    if request.method == "POST":
+        data = {
+        'username' : request.POST.get('username').strip(),
+        'email' : request.POST.get('email').strip(),
+        'phone_number' : request.POST.get('phone_number').strip(),
+        'vehicle_type' : request.POST.get('vehicle_type').strip(),
+        'password' : request.POST.get('password').strip(),
+        'confirm_password' : request.POST.get('confirm_password').strip()
+        }
+        for key, value in data.items():
+            if not value:
+                messages.error(request, f'{key} is a required field')
+                return render(request, 'authentication/signup_courier.html', {'data':data})
+
+        email_exists = User.objects.filter(username=data['email']).first()
+        if email_exists:
+            messages.error(request,f"email {data['email']} is already taken , /n note: if this mail belongs to you please log in then click become driver button on menu")
+            return render(request, 'authentication/signup_courier.html', {'data':data})
+
+        email_exists = User.objects.filter(email=data['email']).first()
+        if email_exists:
+            messages.error(request,f"email {data['email']} is already taken , /n note: if this mail belongs to you please log in then click become driver button on menu")
+            return render(request, 'authentication/signup_courier.html', {'data':data})
+        
+        username_exists = User.objects.filter(username=data['username'])
+        if username_exists:
+            messages.error(request,f"username {data['username']} is already taken , /n note: if this mail belongs to you please log in then click become driver button on menu")
+            return render(request, 'authentication/signup_courier.html', {'data':data})
+
+        is_password_valid = validate_password(data['password'], data['confirm_password'])
+        if  is_password_valid != True:
+            messages.error(request,f'{is_password_valid}')
+            return render(request, 'authentication/signup_courier.html', {'data':data})
+
+        is_phone_number_valid = validate_south_african_phone(data['phone_number'])
+        if  is_phone_number_valid != True:
+            messages.error(request,f'{is_phone_number_valid}')
+            return render(request, 'authentication/signup_courier.html', {'data':data})
+
+        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
+        user.save()
+        courier = Courier.objects.create(user=user,phone_number=data['phone_number'],vehicle_type=data['vehicle_type'])
+        courier.save()
+        group = Group.objects.filter(name="courier").first()
+        if group and user:
+            user.groups.add(group)
+            user.save()
+        messages.success(request,f'Account created successfully proceed')
+        send_verify_email(user.email)
+        return redirect('activate_account', email=user.email)
+
+    return render(request, 'authentication/signup_courier.html')
 
 def signin(request):
     if request.user.is_authenticated:

@@ -200,3 +200,79 @@ function rejectproduct(product_id) {
         console.error('Error submitting form:', error);
     });
 }
+
+
+
+function approveCourier(courier_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        courier_id: courier_id,
+        
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/moderator/courier/approve/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
+function rejectCourier(courier_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        courier_id: courier_id,
+        
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/moderator/courier/reject/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}

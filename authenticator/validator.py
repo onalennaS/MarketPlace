@@ -29,3 +29,16 @@ def validate_password(password, confirm_password):
 		return "Password does not match"
 
 	return True
+
+def validate_south_african_phone(phone):
+    # Normalize: remove spaces, dashes, and brackets
+    phone = re.sub(r'[^\d+]', '', phone)
+    
+    # Handle +27 format
+    if phone.startswith('+27'):
+        phone = '0' + phone[3:]
+    
+    # Check if it's now 10 digits and starts with valid prefixes
+    if re.fullmatch(r'0[1-8][0-9]{8}', phone):
+        return True
+    return "Invalid South African phone number. Format should be 10 digits, starting with 0."

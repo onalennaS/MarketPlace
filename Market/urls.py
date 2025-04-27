@@ -43,6 +43,7 @@ urlpatterns = [
     path('god_level/', admin.site.urls),
     path('',include('shop.urls')),
     path('seller/',include('seller.urls')),
+    path('courier/',include('courier.urls')),
     path('auth/', include('authenticator.urls')),
     path('account/', include('user.urls')),
     path('accounts/', include('allauth.urls')),
