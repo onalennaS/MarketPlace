@@ -206,9 +206,7 @@
                     </div>
                     
                     <div class="d-grid gap-2 mb-3">
-                        <button class="btn btn-success btn-lg" onclick="addCart({{product.id}})">
-                            <i class="fas fa-shopping-cart me-2"></i> Add to Cart
-                        </button>
+                        <button onclick="addCart({{ product.id }})" class="add-to-cart-btn btn btn-primary">Add to Cart</button>
                         <button class="btn btn-outline-danger" onclick="addWishlist({{product.id}})">
                             <i class="far fa-heart me-2"></i> Add to Wishlist
                         </button>
