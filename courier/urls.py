@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import render_views as views 
+from .views import courier_views,render_views as views 
 
 
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('courier_register/', views.courier_register, name='courier_register'),
     path('courier_status/', views.courier_status, name='courier_status'),
     path('courier/rejected/', views.courier_rejected, name='courier_rejected'),
+    path('courier/move_delivery_next_stage/', courier_views.move_delivery_next_stage, name='move_delivery_next_stage'),
   	
 
   

@@ -1,7 +1,9 @@
 {% extends 'courier/base.html' %}
+{% load static %}
   {% block links %}
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'css/message.css' %}">
   {% endblock %}
 
   {% block styles %}
@@ -59,6 +61,7 @@
     {% endblock %}
 
 {% block content %}
+ <div class="message-container" id="message-container"></div>
 <div class="container py-4">
 
   <!-- Header -->
@@ -90,7 +93,7 @@
       {% for order in available_orders %}
       <div class="card order-card p-4 mb-3">
         <div class="d-flex justify-content-between">
-          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class="badge bg-info"> {{order.order.status}}</span></h5>
+          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
           <span class="badge bg-secondary badge-status">New</span>
         </div>
         <p><strong>Name :</strong> {{order.reciever.username}}</p>
@@ -98,7 +101,7 @@
         <p><strong>Drop-off:</strong> {{order.address}}</p>
         <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-success" onclick="moveOrder(this, 'available')">✅ Accept Order</button>
+          <button class="btn btn-success" onclick="moveOrder(this, 'available',{{order.id}})">✅ Accept Order</button>
         </div>
       </div>
     {% endfor %}
@@ -107,22 +110,75 @@
     </div>
 
     <!-- Tab 2: Waiting to Start -->
-    <div class="tab-pane fade" id="waiting" role="tabpanel"></div>
+    <div class="tab-pane fade" id="waiting" role="tabpanel">
+       {% for order in waiting_orders %}
+      <div class="card order-card p-4 mb-3">
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class="btn btn-warning p-0"> {{order.order.status}}</span></h5>
+          <span class="badge bg-info badge-status">Waiting</span>
+        </div>
+        <p><strong>Name :</strong> {{order.reciever.username}}</p>
+        <p><strong>Pickup:</strong> {{order.order.business.name}}</p>
+        <p><strong>Drop-off:</strong> {{order.address}}</p>
+        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
+        <div class="d-flex justify-content-end">
+          {% if order.order.status == "Processing" %}
+              <span class="btn btn-info" disabled>Order not Ready...</span>
+          {% else %}
+          <button class="btn btn-success" onclick="moveOrder(this, 'waiting',{{order.id}})">🚀 Start Delivery</button>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+
+    </div>
 
     <!-- Tab 3: In Progress -->
-    <div class="tab-pane fade" id="inprogress" role="tabpanel"></div>
+    <div class="tab-pane fade" id="inprogress" role="tabpanel">
+      {% for order in inprogress_orders %}
+      <div class="card order-card p-4 mb-3">
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
+          <span class="badge bg-warning badge-status">In progress</span>
+        </div>
+        <p><strong>Name :</strong> {{order.reciever.username}}</p>
+        <p><strong>Pickup:</strong> Sunny Café, 21 Oak St</p>
+        <p><strong>Drop-off:</strong> {{order.address}}</p>
+        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-success" onclick="moveOrder(this, 'inprogress',{{order.id}})">✅ Complete Delivery</button>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
 
     <!-- Tab 4: Completed -->
-    <div class="tab-pane fade" id="completed" role="tabpanel"></div>
+    <div class="tab-pane fade" id="completed" role="tabpanel">
+       {% for order in delivered_orders %}
+      <div class="card order-card p-4 mb-3">
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
+          <span class="badge bg-secondary badge-status">New</span>
+        </div>
+        <p><strong>Name :</strong> {{order.reciever.username}}</p>
+        <p><strong>Pickup:</strong> Sunny Café, 21 Oak St</p>
+        <p><strong>Drop-off:</strong> {{order.address}}</p>
+        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
+        <div class="d-flex justify-content-end">
+          
+        </div>
+      </div>
+    {% endfor %}
+    </div>
 
   </div>
 </div>
-
+<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  function moveOrder(button, currentStage) {
+  function moveOrder(button, currentStage,orderId) {
     const card = button.closest('.order-card');
-    const orderId = card.querySelector('h5')?.textContent.match(/#(\d+)/)?.[1];
+    
 
     let nextStage, badgeText, badgeClass, buttonText, buttonClass;
 
@@ -150,7 +206,28 @@
         return;
     }
 
-    const newCard = card.cloneNode(true);
+   
+
+    // Send API request (SEND order_id too!)
+    fetch(`/courier/courier/move_delivery_next_stage/`, {
+      method: 'POST',
+      headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken') // if CSRF is required
+      },
+      body: JSON.stringify({ 
+          order_id: orderId,  // <--- send order_id
+          new_status: nextStage 
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+        
+      }else{
+        displayMessagesapi(data);
+        const newCard = card.cloneNode(true);
     const badge = newCard.querySelector('.badge');
     if (badge) {
       badge.className = badgeClass;
@@ -168,18 +245,35 @@
 
     document.getElementById(nextStage).appendChild(newCard);
     card.remove();
+       
+      }
+    })
 
-    // Send API request
-    fetch(`/api/update-order/${orderId}/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ new_status: nextStage })
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to update order');
-    }).catch(err => {
-      console.error('Fetch error:', err);
-      alert('There was an error updating the order. Please try again.');
+    .catch(error => {
+      
+        console.error('Error submitting form:', error);
     });
-  }
+
+    
+
+    
+}
+
+// Function to get CSRF token 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 </script>
 {% endblock %}

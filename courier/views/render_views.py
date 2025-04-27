@@ -89,9 +89,12 @@ def courier_dash(request):
 @login_required_custom
 @verify_role('courier')
 def courier_orders(request):
-    available_order = OrderDelivery.objects.filter(is_taken=False).all()
-    my_orders = OrderDelivery.objects.filter(user=request.user).all()
-    return render(request, 'courier/orders.html',{'available_orders':available_order,'my_orders':my_orders})
+    all_orders = OrderDelivery.objects.all()
+    available_order = all_orders.filter(is_taken=False).all()
+    waiting_orders = all_orders.filter(user=request.user,status="waiting").all()
+    inprogress_orders = all_orders.filter(user=request.user,status="inprogress").all()
+    delivered_orders = all_orders.filter(user=request.user,status="delivered").all()
+    return render(request, 'courier/orders.html',{'available_orders':available_order,'waiting_orders':waiting_orders,'inprogress_orders':inprogress_orders,'delivered_orders':delivered_orders})
 
 @login_required_custom
 @verify_role('courier')
