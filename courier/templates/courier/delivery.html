@@ -67,30 +67,19 @@
         <thead>
           <tr>
             <th scope="col">Date</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Items</th>
             <th scope="col">Address</th>
-            <th scope="col">Fee</th>
             <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
+          {% for delivery in all_deliveries %}
           <tr>
-            <td>2025-04-20</td>
-            <td>R250.00</td>
-            <td>3</td>
-            <td>123 Main Street</td>
-            <td>R50.00</td>
-            <td>Completed</td>
+            <td>{{delivery.created_at}}</td>
+            <td>{{delivery.address}}</td>
+            <td>{{delivery.status}}</td>
           </tr>
-          <tr>
-            <td>2025-04-21</td>
-            <td>R400.00</td>
-            <td>5</td>
-            <td>456 Oak Avenue</td>
-            <td>R60.00</td>
-            <td>Pending</td>
-          </tr>
+          {% endfor %}
+         
           <!-- Additional rows go here -->
         </tbody>
       </table>

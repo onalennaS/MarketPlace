@@ -8,6 +8,8 @@ from seller.utils.authentication_utils import login_required_custom, verify_role
 from ..utils import validate_full_name, validate_dob,validate_phone,validate_email, validate_address, validate_file_uploaded, validate_sa_id, validate_file_uploaded, validate_transport, validate_agreements
 from ..models import Courier, OrderDelivery
 from django.contrib.auth.models import Group
+from django.utils import timezone
+
 
 @login_required_custom 
 def courier_home(request):
@@ -109,7 +111,7 @@ def courier_delivery(request):
     total_count = all_deliveries.count()
     pending_count = all_deliveries.filter(status="inprogress").all().count()
     today_counts = all_deliveries.filter(created_at__date=today).all().count()
-    return render(request, 'courier/delivery.html',{'total_count':total_count,'pending_count':pending_count,"today_counts":today_counts})
+    return render(request, 'courier/delivery.html',{'total_count':total_count,'pending_count':pending_count,"today_counts":today_counts,'all_deliveries':all_deliveries})
 
 
 
