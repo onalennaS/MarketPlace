@@ -10,11 +10,12 @@ app.secret_key = 'some_random_secret_key'
 
 DB_NAME = "mydatabase"
 
+
 def db_init(db_name):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
-
+    # Create Profile table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Profile (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -26,7 +27,7 @@ def db_init(db_name):
         )
     ''')
 
-
+    # Create Appointment table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Appointment (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -42,6 +43,8 @@ def db_init(db_name):
     conn.commit()
     conn.close()
 
+# Example usage
+
 
 def get_ref_number():
     random_numbers = [str(random.randint(1, 100)) for _ in range(6)]
@@ -53,7 +56,7 @@ def home():
 	db_init(DB_NAME)
 	return render_template("home.html")
 
-@app.route('/login')
+@app.route('/login', methods=['POST','GET'])
 def login():
     if 'user' in session:
         return redirect('book')
@@ -76,8 +79,10 @@ def login():
         session['user'] = email
 	return render_template("login.html")
 
-@app.route('/signup')
+@app.route('/signup', methods=['POST','GET'])
 def signup():
+	if 'user' in session:
+        return redirect('book')
     if request.method == "POST"
         name = requests.form['name']
         lastname = request.form['lastname']
@@ -98,7 +103,7 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/book')
+@app.route('/book',methods=['POST','GET'])
 def book():
     if request.method == "POST":
         name = request.form['name']
