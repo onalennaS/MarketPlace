@@ -104,7 +104,12 @@ def courier_earnings(request):
 @login_required_custom
 @verify_role('courier')
 def courier_delivery(request):
-    return render(request, 'courier/delivery.html')
+    today = timezone.now().date()  # Get today's date (only the date part, no time)
+    all_deliveries = OrderDelivery.objects.filter(user=request.user).all()
+    total_count = all_deliveries.count()
+    pending_count = all_deliveries.filter(status="inprogress").all().count()
+    today_counts = all_deliveries.filter(created_at__date=today).all().count()
+    return render(request, 'courier/delivery.html',{'total_count':total_count,'pending_count':pending_count,"today_counts":today_counts})
 
 
 

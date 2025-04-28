@@ -7,8 +7,6 @@ from django.http import HttpResponse
 
 
 
-
-
 def get_cart_items(user):
     return Cart.objects.filter(user=user).all().count()
 def get_wishlist_items(user):
