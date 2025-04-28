@@ -63,16 +63,20 @@ class DeliveryTransaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     timestamp = models.DateTimeField(default=now)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Pending")
-    fees = models.DecimalField(max_digits=10, decimal_places=2,null=True,default=0.00)
+    order_id = models.CharField(max_length=60,null=True)
     def __str__(self):
         return f"{self.sender} -> {self.receiver}: {self.amount} ({self.status})"
 
-@receiver(pre_save, sender=BusinessTransaction)
+@receiver(pre_save, sender=DeliveryTransaction)
 def set_ref_id(sender, instance, **kwargs):
     if not instance.ref and instance.transaction_type == "Withdrawal":  
         last_ref = BusinessTransaction.objects.order_by("-id").first()
         next_ref = last_ref.id + 1 if last_ref else 1
         instance.ref = f"Withdrawal-{next_ref:03d}"
+    if not instance.ref and instance.transaction_type == "Payment":  
+        last_ref = BusinessTransaction.objects.order_by("-id").first()
+        next_ref = last_ref.id + 1 if last_ref else 1
+        instance.ref = f"Payment-{next_ref:03d}"
 # class Transaction(models.Model):
 #     STATUS_CHOICES = [("Success", "Success"), ("Failed", "Failed"), ("Pending", "Pending")]
     

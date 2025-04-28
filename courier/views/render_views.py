@@ -9,6 +9,7 @@ from ..utils import validate_full_name, validate_dob,validate_phone,validate_ema
 from ..models import Courier, OrderDelivery
 from django.contrib.auth.models import Group
 from django.utils import timezone
+from transactions.models import DeliveryWallet, DeliveryTransaction
 
 
 @login_required_custom 
@@ -101,7 +102,18 @@ def courier_orders(request):
 @login_required_custom
 @verify_role('courier')
 def courier_earnings(request):
-    return render(request, 'courier/earnings.html')
+    wallet = DeliveryWallet.objects.filter(user=request.user).first()
+    total = 0.00
+    balance = 0.00
+    if wallet :
+        total = wallet.total
+        balance = wallet.balance
+    all_trans = DeliveryTransaction.objects.filter(user=request.user).all()
+    pending_trans = all_trans.filter(status="Pending").all()
+    amount_pending = 0.00
+    for pending_tran in pending_trans:
+        amount_pending += pending_trans.amount
+    return render(request, 'courier/earnings.html',{'total':total,'balance':balance,'pending':amount_pending,"delivery_transactions":all_trans})
 
 @login_required_custom
 @verify_role('courier')

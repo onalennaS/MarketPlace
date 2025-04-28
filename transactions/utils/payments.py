@@ -56,7 +56,7 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
     product_total = (total_amount - delivery_amount) 
     product_total_kobo = float(product_total * 100)
     delivery_kobo = float((delivery_amount) * 100)
-    grand_total_kobo = float(total_amount * 100)
+    grand_total_kobo = round(float(total_amount * 100),2)
 
     # --- Fixed platform cut ---
     #platform_cut_kobo = (items_count * 0.60 )* 100# R0.60 in kobo
@@ -66,7 +66,7 @@ def initiate_split_payment(email, total_amount, seller_subaccount, delivery_amou
         platform_cut_kobo = 0  # fallback, no split if value is too small
 
     seller_cut_kobo = product_total_kobo  - platform_cut_kobo - extra_fee_kobo
-
+   
     # --- Split by amount ---
     split_data = {
         "type": "flat",

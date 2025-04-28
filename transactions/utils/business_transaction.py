@@ -112,6 +112,7 @@ def clean_cart(user,ref,order):
     price_total = get_cart_total(cart_items)
     extra_total = get_extra_total(cart_extras)
     checkout_total = round(price_total + extra_total + delivery_total,2)
+  
     discount = get_discount(cart_items)
     total_to_pay = Decimal(checkout_total)  - Decimal(discount)
     send_email_order_confirmation(order,cart_extras,cart_items,total_to_pay,discount )

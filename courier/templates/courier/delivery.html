@@ -66,16 +66,18 @@
       <table class="table table-dark table-striped table-hover">
         <thead>
           <tr>
-            <th scope="col">Date</th>
+             <th scope="col">Order no.</th>
             <th scope="col">Address</th>
+            <th scope="col">Date</th>
             <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
           {% for delivery in all_deliveries %}
           <tr>
-            <td>{{delivery.created_at}}</td>
+            <td>#{{delivery.order.order_id}}</td>
             <td>{{delivery.address}}</td>
+            <td>{{delivery.created_at}}</td>
             <td>{{delivery.status}}</td>
           </tr>
           {% endfor %}

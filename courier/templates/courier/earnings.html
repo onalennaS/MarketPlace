@@ -53,30 +53,30 @@
 <div class="container py-4">
   <h2 class="mb-4">Earnings Summary</h2>
   <div class="row g-3">
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card text-center p-3">
         <h6>Total Earnings</h6>
-        <h4>$2,340</h4>
+        <h4>R{{total}}</h4>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card text-center p-3">
         <h6>Withdrawable</h6>
-        <h4>$1,200</h4>
+        <h4>R{{balance}}</h4>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card text-center p-3">
         <h6>Pending Withdrawals</h6>
-        <h4>$140</h4>
+        <h4>R{{pending}}</h4>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <!-- <div class="col-6 col-md-3">
       <div class="card text-center p-3">
         <h6>Last Withdrawal</h6>
         <h4>$300</h4>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- Request Withdrawal Form -->
@@ -124,31 +124,26 @@
     <table class="table table-dark table-hover">
       <thead>
         <tr>
-          <th>Date</th>
+          <th>Transaction Type</th>
+          <th>Order no.</th>
           <th>Amount</th>
-          <th>Status</th>
           <th>Reference</th>
+          <th>Status</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
+        {% for trans in delivery_transactions %}
         <tr>
-          <td>2025-04-01</td>
-          <td>$150</td>
-          <td>Completed</td>
-          <td>REF-3245</td>
+          <td>{{trans.transaction_type}}</td>
+          <td>#{{trans.order_id}}</td>
+          <td>R{{trans.amount}}</td>
+          <td>{{trans.ref}}</td>
+          <td>{{trans.status}}</td>
+          <td>{{trans.timestamp}}</td>
         </tr>
-        <tr>
-          <td>2025-03-25</td>
-          <td>$200</td>
-          <td>Pending</td>
-          <td>REF-3189</td>
-        </tr>
-        <tr>
-          <td>2025-03-10</td>
-          <td>$300</td>
-          <td>Completed</td>
-          <td>REF-3101</td>
-        </tr>
+        {% endfor %}
+        
       </tbody>
     </table>
   </div>

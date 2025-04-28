@@ -5,6 +5,7 @@ import json
 from seller.wrap_models.orders_model import Order
 from seller.utils.send_emails import send_email_order_traking_update, send_email_order_delivered
 from ..models import Courier, OrderDelivery
+from transactions.utils.delivery_transactions import transfer_money_to_courier
 
 # @login_required_custom
 # @verify_role('business')
@@ -81,6 +82,7 @@ def move_delivery_next_stage(request):
                 order.status = "Delivered"
                 order.save()
                 send_email_order_delivered(order)
+                transfer_money_to_courier(request.user,15,order.order_id)
         else:
             return JsonResponse({'message': 'Invalid status change', 'status': 'error'}, status=400)
 
