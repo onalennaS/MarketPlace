@@ -5,7 +5,8 @@ import json
 from seller.wrap_models.orders_model import Order
 from seller.utils.send_emails import send_email_order_traking_update, send_email_order_delivered
 from ..models import Courier, OrderDelivery
-from transactions.utils.delivery_transactions import transfer_money_to_courier
+from transactions.utils.delivery_transactions import transfer_money_to_courier,withdraw_courier_funds
+from transactions.models import DeliveryWallet, DeliveryTransaction
 
 # @login_required_custom
 # @verify_role('business')
@@ -94,3 +95,36 @@ def move_delivery_next_stage(request):
     }, status=201)
 
 
+
+
+@login_required_custom
+@verify_role('courier')
+def rquest_withdraw(request):
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Request method not allowed'}, status=403)
+
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'message': 'Invalid JSON Data', 'status': 'error'}, status=400)
+
+    amount = data.get('amount')
+    try:
+    	amount=float(amount)
+    	if amount < 10:
+        	return JsonResponse({'message': 'amount withdrawable must be greater than R10', 'status': 'error'}, status=400)
+    except Exception as e :
+        return JsonResponse({'message': 'Invalid Request please contact help@versityfinds.co.za', 'status': 'error'}, status=400)
+
+    user = request.user
+
+    trnsaction = withdraw_courier_funds(user,str(round(amount,2)))
+    if trnsaction == None:
+        return JsonResponse({'message': 'Amount requested is more than the available balance ', 'status': 'error'}, status=400)
+
+    
+
+    return JsonResponse({
+        "message": f"withdrawal request sent successfully, you should revieve you amont in 2-3 business working days",
+        'status': 'success'
+    }, status=201)

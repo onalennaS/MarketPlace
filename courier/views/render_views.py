@@ -112,7 +112,7 @@ def courier_earnings(request):
     pending_trans = all_trans.filter(status="Pending").all()
     amount_pending = 0.00
     for pending_tran in pending_trans:
-        amount_pending += pending_trans.amount
+        amount_pending += float(pending_tran.amount)
     return render(request, 'courier/earnings.html',{'total':total,'balance':balance,'pending':amount_pending,"delivery_transactions":all_trans})
 
 @login_required_custom

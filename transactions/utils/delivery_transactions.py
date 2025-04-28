@@ -24,10 +24,10 @@ def transfer_money_to_courier(user=None,amount=0.00,order_id=None):
         transaction.save()
     return True
 
-def withdraw_courier_funds(user,amount,order_id):
+def withdraw_courier_funds(user,amount):
    
     receiver = user
-    amount = amount
+    amount = Decimal(amount)
     transaction_type = "Withdrawal"
 
     receiver_wallet = DeliveryWallet.objects.filter(user=receiver).first()
@@ -37,9 +37,9 @@ def withdraw_courier_funds(user,amount,order_id):
 
      # Prevents race conditions
 
-    receiver_wallet.balance -= Decimal(amount)
+    receiver_wallet.balance -= amount
     receiver_wallet.save()
 
-    transaction = DeliveryTransaction.objects.create(user=receiver,order_id=order_id, amount=amount, status="Pending", transaction_type=transaction_type)
+    transaction = DeliveryTransaction.objects.create(user=receiver,order_id=None, amount=amount, status="Pending", transaction_type=transaction_type)
     transaction.save()
     return True

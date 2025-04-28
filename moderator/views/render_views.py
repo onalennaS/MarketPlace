@@ -4,6 +4,7 @@ from seller.wrap_models.business_model import Moderation,BusinessInformation, Ad
 from seller.wrap_models.product_model import ProductModeration, Product
 from seller.utils.authentication_utils import verify_role
 from courier.models import Courier
+from transactions.models import DeliveryTransaction
 
 @login_required_custom
 @verify_role(['admin','moderator'])
@@ -79,3 +80,10 @@ def view_courier(request,courier_id):
 	return render(request, 'moderator/view_courier.html', {'courier' : courier})
 
 	
+
+@login_required_custom
+@verify_role(['admin','moderator'])
+def payout(request):
+	delivery_transactions = DeliveryTransaction.objects.filter(transaction_type="Withdrawal").all()
+	return render(request, 'moderator/courier_payment.html', {'delivery_transactions' : delivery_transactions})
+

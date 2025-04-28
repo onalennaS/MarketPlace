@@ -12,6 +12,7 @@ urlpatterns = [
     path('courier_status/', views.courier_status, name='courier_status'),
     path('courier/rejected/', views.courier_rejected, name='courier_rejected'),
     path('courier/move_delivery_next_stage/', courier_views.move_delivery_next_stage, name='move_delivery_next_stage'),
+    path('courier/rquest_withdraw/', courier_views.rquest_withdraw, name='rquest_withdraw'),
   	
 
   

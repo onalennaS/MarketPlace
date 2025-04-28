@@ -17,6 +17,7 @@ urlpatterns = [
     path('courier/approve/', mod_views.approve_courier, name='moderator_approve_courier'),
     path('courier/reject/', mod_views.reject_courier, name='moderator_reject_courier'),
 
+     path('courier/payout', views.payout, name='moderator_courier_payout'),
 
 
     path('view_product_moderator/<int:product_id>', views.view_product_moderator, name='moderator_view_product'), 
