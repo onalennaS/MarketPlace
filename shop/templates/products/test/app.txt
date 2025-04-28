@@ -50,8 +50,8 @@ def get_ref_number():
 
 @app.route('/')
 def home():
-	db_init(DB_NAME)
-	return render_template("home.html")
+    db_init(DB_NAME)
+    return render_template("home.html")
 
 @app.route('/login')
 def login():
@@ -74,11 +74,11 @@ def login():
             return render_template('login.html',message=message)
 
         session['user'] = email
-	return render_template("login.html")
+    return render_template("login.html")
 
 @app.route('/signup')
 def signup():
-    if request.method == "POST"
+    if request.method == "POST":
         name = requests.form['name']
         lastname = request.form['lastname']
         email = request.form['email']
