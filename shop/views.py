@@ -5,27 +5,7 @@ from seller.wrap_models.business_model import BusinessInformation, Address
 from user.wrap_models.cart_models import Cart, Wishlist
 from django.http import HttpResponse
 
-import os
-from django.conf import settings
-from django.http import HttpResponse
 
-def app_py(request):
-    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'app.txt')
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-    return HttpResponse(file_content, content_type='text/plain')
-
-def home_html(request):
-    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'home.html')
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-    return HttpResponse(file_content, content_type='text/plain')
-
-def login_html(request):
-    file_path = os.path.join(settings.BASE_DIR, 'shop','templates', 'products', 'test', 'login.html')
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-    return HttpResponse(file_content, content_type='text/plain')
 
 
 
