@@ -56,7 +56,7 @@ def home():
 	db_init(DB_NAME)
 	return render_template("home.html")
 
-@app.route('/login')
+@app.route('/login', methods=['POST','GET'])
 def login():
     if 'user' in session:
         return redirect('book')
@@ -79,8 +79,10 @@ def login():
         session['user'] = email
 	return render_template("login.html")
 
-@app.route('/signup')
+@app.route('/signup', methods=['POST','GET'])
 def signup():
+	if 'user' in session:
+        return redirect('book')
     if request.method == "POST"
         name = requests.form['name']
         lastname = request.form['lastname']
@@ -101,7 +103,7 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/book')
+@app.route('/book',methods=['POST','GET'])
 def book():
     if request.method == "POST":
         name = request.form['name']
