@@ -115,7 +115,7 @@
 					          <td>{{trans.ref}}</td>
 					          <td>{{trans.status}}</td>
 					          <td>{{trans.timestamp}}</td>
-					          <td>{% if trans.status == "Pending" %}<button class="btn btn-success">approve</button><button class="btn btn-danger">reject</button>{% else %}<button class="btn btn-secondary">reviewed</button>{% endif %}</td>
+					          <td>{% if trans.status == "Pending" %}<button class="btn btn-success" onclick="approveCourierP({{trans.id}})">approve</button><button class="btn btn-danger" onclick="rejectCourierP({{trans.id}})">reject</button>{% else %}<button class="btn btn-secondary">reviewed</button>{% endif %}</td>
 					        </tr>
 					        {% endfor %}
                     </tbody>
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-    
+        <script src="{% static 'moderator/moderator.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>

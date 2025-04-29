@@ -276,3 +276,82 @@ function rejectCourier(courier_id) {
         console.error('Error submitting form:', error);
     });
 }
+
+
+
+
+function approveCourierP(transaction_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        transaction_id: transaction_id,
+        
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/moderator/courier/payout/approve_payout/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
+
+
+function rejectCourierP(transaction_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        transaction_id: transaction_id,
+        
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/moderator/courier/payout/reject_payout/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}

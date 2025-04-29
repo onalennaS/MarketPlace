@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import Group, User
 from seller.utils.authentication_utils import verify_role
 from courier.models import Courier
+from transactions.models import DeliveryWallet, DeliveryTransaction
+
 
 @login_required_custom
 @verify_role(['admin','moderator'])
@@ -174,3 +176,58 @@ def reject_courier(request):
 	# 	user.save()
 	# send_email_approve(business)
 	return JsonResponse({"message": "Courier reviewed successfully ",'status':'success'}, status=201)
+
+@login_required_custom
+@verify_role(['admin','moderator'])
+def approve_payout(request):
+
+	if not request.method == "POST":
+		return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+	try:
+		data = json.loads(request.body)  # Parse JSON request body
+	except json.JSONDecodeError:
+		return JsonResponse({'status':'error', 'message':'Invalid json data'}, status=400)     
+
+	transaction_id = data.get('transaction_id')
+
+	transaction = DeliveryTransaction.objects.filter(id=int(transaction_id)).first()
+	if not DeliveryTransaction:
+		return JsonResponse({'status':'error', 'message':'transaction not found'}, status=400)     
+
+
+	if transaction.status !="Pending":
+		return JsonResponse({'status':'error', 'message':'transaction already reviewd'}, status=400)     
+	transaction.status = "Success"
+	transaction.save()
+	
+	return JsonResponse({"message": "Transaction approved successfully ",'status':'success'}, status=201)
+
+@login_required_custom
+@verify_role(['admin','moderator'])
+def reject_payout(request):
+
+	if not request.method == "POST":
+		return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+	try:
+		data = json.loads(request.body)  # Parse JSON request body
+	except json.JSONDecodeError:
+		return JsonResponse({'status':'error', 'message':'Invalid json data'}, status=400)     
+
+	transaction_id = data.get('transaction_id')
+
+	transaction = DeliveryTransaction.objects.filter(id=int(transaction_id)).first()
+	if not DeliveryTransaction:
+		return JsonResponse({'status':'error', 'message':'transaction not found'}, status=400)     
+
+
+	if transaction.status !="Pending":
+		return JsonResponse({'status':'error', 'message':'transaction already reviewd'}, status=400)     
+	transaction.status = "Failed"
+	transaction.save()
+	wallet = DeliveryWallet.objects.filter(user=transaction.user).first()
+	if wallet:
+		wallet.balance += transaction.amount
+	else:
+		return JsonResponse({'status':'error', 'message':'User have no wallet '}, status=400)  
+	wallet.save()
+	return JsonResponse({"message": "Transaction rejected successfully ",'status':'success'}, status=201)
