@@ -7,6 +7,9 @@ from django.contrib.auth import get_user_model
 import logging
 from itsdangerous import URLSafeTimedSerializer
 from django.conf import settings
+
+from django.contrib.auth.models import User, Group
+
 User = get_user_model()
 
 def email_pending(recipient_email,link ):
@@ -192,3 +195,32 @@ def send_email_order_delivered(order):
     emails = [order.user.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
     email_order_delivered(emails, page_link, order)
+
+
+def email_new_order(recipient_email,link,order):# Return failure if user doesn't exist
+   
+    email_content = render_to_string("seller/new/email/new_order.html", {'order':order, 'link': link})
+    text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
+
+    email = EmailMultiAlternatives(
+        subject=f"New Order",
+        body=text_content,
+        from_email=settings.EMAIL_HOST_USER,
+        to=recipient_email,
+    )
+    email.attach_alternative(email_content, "text/html")  # Attach HTML version
+    email.send()
+
+    #logger.info(f"Your Business Registration is Under Review email sent to {recipient_email[0]} and {recipient_email[1]}")
+    return True
+
+
+def send_email_new_order(order):
+    courier_group = Group.objects.get(name="courier")
+    users = courier_group.user_set.all()
+    emails = [user.email for user in users if user.email]
+
+    if emails:
+        page_link = f"{settings.SITE_URL}/courier/courier_orders/"
+        email_new_order(emails, page_link, order)
+    return True

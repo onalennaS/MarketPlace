@@ -42,4 +42,4 @@ def withdraw_courier_funds(user,amount):
 
     transaction = DeliveryTransaction.objects.create(user=receiver,order_id=None, amount=amount, status="Pending", transaction_type=transaction_type)
     transaction.save()
-    return True
+    return transaction.ref

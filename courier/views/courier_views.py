@@ -7,7 +7,7 @@ from seller.utils.send_emails import send_email_order_traking_update, send_email
 from ..models import Courier, OrderDelivery
 from transactions.utils.delivery_transactions import transfer_money_to_courier,withdraw_courier_funds
 from transactions.models import DeliveryWallet, DeliveryTransaction
-
+from ..utils import send_email_withdrawal
 # @login_required_custom
 # @verify_role('business')
 # def move_order_next_stage(request):
@@ -122,7 +122,7 @@ def rquest_withdraw(request):
     if trnsaction == None:
         return JsonResponse({'message': 'Amount requested is more than the available balance ', 'status': 'error'}, status=400)
 
-    
+    send_email_withdrawal(user,trnsaction)
 
     return JsonResponse({
         "message": f"withdrawal request sent successfully, you should revieve you amont in 2-3 business working days",

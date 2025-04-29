@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Request Update</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #007bff;
+            font-size: 24px;
+        }
+        .sub-header {
+            font-size: 16px;
+            margin-top: 5px;
+            color: #555;
+        }
+        .content {
+            padding: 20px 0;
+            line-height: 1.6;
+        }
+        .order-status {
+            background-color: #e9f5ff;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            font-size: 13px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 30px;
+        }
+        a {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <div class="header">
+        <h1>Withdrawal Request Processing</h1>
+        <p class="sub-header">Reference No.: <strong>{{ ref }}</strong></p>
+    </div>
+
+    <div class="content">
+        <p>Dear {{ user.username }},</p>
+        <p>We would like to inform you that your withdrawal request with reference number <strong>{{ ref }}</strong> is currently being processed.</p>
+
+        <div class="order-status">
+            <strong>Status:</strong> <span style="color: #007bff;">Processing</span>
+        </div>
+
+        <p>You can view your transaction history and track the status using the link below:</p>
+
+        <a href="{{ link }}" class="btn">View My Transactions</a>
+    </div>
+
+    <div class="footer">
+        <p>If you have any questions, feel free to reach out to our support team at 
+            <a href="mailto:versityfinds@gmail.com">versityfinds@gmail.com</a>.
+        </p>
+        <p>Thank you for choosing <strong>VersityFinds</strong>!</p>
+    </div>
+</div>
+
+</body>
+</html>

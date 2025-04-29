@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Failed</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #ffc107;
+            font-size: 24px;
+        }
+        .sub-header {
+            font-size: 16px;
+            margin-top: 5px;
+            color: #555;
+        }
+        .content {
+            padding: 20px 0;
+            line-height: 1.6;
+        }
+        .order-status {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #856404;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            background-color: #ffc107;
+            color: #ffffff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            font-size: 13px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 30px;
+        }
+        a {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <div class="header">
+        <h1>Withdrawal Failed</h1>
+        <p class="sub-header">Reference No.: <strong>{{ ref }}</strong></p>
+    </div>
+
+    <div class="content">
+        <p>Dear {{ user.username }},</p>
+        <p>Unfortunately, your recent withdrawal request with reference number <strong>{{ ref }}</strong> could not be completed due to an error.</p>
+
+        <div class="order-status">
+            <strong>Status:</strong> <span>Failed</span><br>
+            <strong>Reason:</strong>Your bank details could not be verified. Please ensure your information is correct, if you recently created an account or changed your banking details it might take a while for changes to be verified.
+        </div>
+
+        <p>You may try again in a few minutes. If the issue persists, please contact our support team for assistance.</p>
+
+        <a href="{{ link }}" class="btn">Try Again / Contact Support</a>
+    </div>
+
+    <div class="footer">
+        <p>Need help? Reach out at 
+            <a href="mailto:versityfinds@gmail.com">versityfinds@gmail.com</a>.
+        </p>
+        <p>Thank you for using <strong>VersityFinds</strong>.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group, User
 from seller.utils.authentication_utils import verify_role
 from courier.models import Courier
 from transactions.models import DeliveryWallet, DeliveryTransaction
-
+from courier.utils import send_email_withdrawal_failed,send_email_withdrawal_success
 
 @login_required_custom
 @verify_role(['admin','moderator'])
@@ -199,7 +199,7 @@ def approve_payout(request):
 		return JsonResponse({'status':'error', 'message':'transaction already reviewd'}, status=400)     
 	transaction.status = "Success"
 	transaction.save()
-	
+	send_email_withdrawal_success(transaction.user,transaction.ref)
 	return JsonResponse({"message": "Transaction approved successfully ",'status':'success'}, status=201)
 
 @login_required_custom
@@ -230,4 +230,5 @@ def reject_payout(request):
 	else:
 		return JsonResponse({'status':'error', 'message':'User have no wallet '}, status=400)  
 	wallet.save()
+	send_email_withdrawal_failed(transaction.user,transaction.ref)
 	return JsonResponse({"message": "Transaction rejected successfully ",'status':'success'}, status=201)
