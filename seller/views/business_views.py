@@ -170,11 +170,15 @@ def rate_business(request):
     business = BusinessInformation.objects.filter(id=int(data.get('business_id'))).first()
     stars = int(data.get('stars'))
 
+    is_rated = BusinessRating.objects.filter(user=request.user,business=business).first()
+    if is_rated:
+        return JsonResponse({'message':'You have already rated....thank you', "status":"error"}, status=400)     
+
     if business and stars >= 0 and stars <=5:
         rating = BusinessRating.objects.create(user=request.user,business=business,stars=stars)
         rating.save()
     else:
-        return JsonResponse({'message':'SOmething went wrong please contact support ', "status":"error"}, status=400)     
+        return JsonResponse({'message':'Something went wrong please contact support ', "status":"error"}, status=400)     
     return JsonResponse({"message": "Thank you for rating ",'status':'success'}, status=201)
 
 
