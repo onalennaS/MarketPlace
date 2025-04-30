@@ -144,7 +144,7 @@ def checkout(request):
 @login_required_custom
 def payment_successful(request,order_id):
     order = Order.objects.filter(id=int(order_id)).first()
-    business_ratings = BusinessRating.objects.filter(user=user,business=business).first()
+    business_ratings = BusinessRating.objects.filter(user=request.user,business=business).first()
     rated = False
     if business_ratings:
         rated = True 
