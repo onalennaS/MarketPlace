@@ -115,12 +115,13 @@
 
 
 
-function submitrating(starts) {
+function submitrating(stars) {
     event.preventDefault();
 
     // Get data from form
     const formData = {
         business_id:businessId,
+        starts:stars
       }
 
     console.log(formData);
