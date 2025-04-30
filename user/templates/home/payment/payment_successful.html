@@ -108,23 +108,63 @@
         alert('Please select a rating before submitting.');
         return;
       }
-
-      try {
-        const res = await fetch('/seller/api/rate_business/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rating: currentRating,business_id:businessId })
-        });
-
-        if (res.ok) {
-          responseMsg.classList.remove('d-none');
-        } else {
-          alert('Something went wrong.');
-        }
-      } catch (err) {
-        alert('Failed to send request.');
-      }
+      submitrating(currentRating)
+        
     });
+
+
+
+
+function submitrating(starts) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        business_id:businessId,
+      }
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/seller/api/rate_business/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+      /*  displayMessagesapi(data);*/
+        alert('Something went wrong.');
+      }else{
+        responseMsg.classList.remove('d-none');
+       
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
   </script>
 </body>
 </html>
