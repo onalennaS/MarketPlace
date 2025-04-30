@@ -94,20 +94,20 @@
     <h2 class="text-success mt-3">Payment Successful!</h2>
     <p class="text-muted mb-2">Your order has been placed successfully.</p>
     <p class="text-secondary">To track your order, please rate your experience first.</p>
+    <div id="ratecont" class="">
+        <h4 class="fw-bold mt-4 text-primary">Rate Your Experience</h4>
+        <p class="text-muted mb-3">We value your feedback. Please select a star rating below.</p>
 
-    <h4 class="fw-bold mt-4 text-primary">Rate Your Experience</h4>
-    <p class="text-muted mb-3">We value your feedback. Please select a star rating below.</p>
+        <div class="rating-stars mb-4">
+          <i class="fa-regular fa-star" data-value="1"></i>
+          <i class="fa-regular fa-star" data-value="2"></i>
+          <i class="fa-regular fa-star" data-value="3"></i>
+          <i class="fa-regular fa-star" data-value="4"></i>
+          <i class="fa-regular fa-star" data-value="5"></i>
+        </div>
 
-    <div class="rating-stars mb-4">
-      <i class="fa-regular fa-star" data-value="1"></i>
-      <i class="fa-regular fa-star" data-value="2"></i>
-      <i class="fa-regular fa-star" data-value="3"></i>
-      <i class="fa-regular fa-star" data-value="4"></i>
-      <i class="fa-regular fa-star" data-value="5"></i>
+        <button id="rateBtn" data-business-id="{{ order.business.id }}" class="btn btn-primary fw-semibold w-100">Submit Rating</button>
     </div>
-
-    <button id="rateBtn" data-business-id="{{ order.business.id }}" class="btn btn-primary fw-semibold w-100">Submit Rating</button>
-
     <div id="responseMsg" class="text-success mt-4 d-none">
       <p class="mb-3">Thank you for your rating!</p>
       <a href="{% url 'track_orders' order.id %}" class="btn btn-outline-primary w-100">Track Order</a>
@@ -123,7 +123,7 @@
   let currentRating = 0;
   const button = document.getElementById('rateBtn');
   const businessId = button.getAttribute('data-business-id');
-
+    const ratecont = document.getElementById('ratecont');
   stars.forEach(star => {
     star.addEventListener('mouseover', () => {
       const value = parseInt(star.getAttribute('data-value'));
@@ -180,6 +180,7 @@
         alert('Something went wrong.');
       } else {
         responseMsg.classList.remove('d-none');
+        responseMsg.classList.add('d-none');
         responseMsg.classList.add('animate__animated', 'animate__fadeIn');
 
       }
