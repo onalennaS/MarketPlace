@@ -143,7 +143,11 @@ def checkout(request):
 @login_required_custom
 def payment_successful(request,order_id):
     order = Order.objects.filter(id=int(order_id)).first()
-    return render(request, 'home/payment/payment_successful.html',{'order':order})
+    business_ratings = BusinessRating.objects.filter(user=user,business=business).first()
+    rated = False
+    if business_ratings:
+        rated = True 
+    return render(request, 'home/payment/payment_successful.html',{'order':order,'rated':rated})
 
 @login_required_custom
 def payment_failed(request):
