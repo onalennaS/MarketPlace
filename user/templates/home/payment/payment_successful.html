@@ -1,171 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Successful</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f8f9fa;
-        }
-        .card {
-             border: none;
-              border-radius: 1rem;
-              box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-        }
-        .icon {
-            font-size: 50px;
-            color: green;
-        }
-        .rating-stars i {
-          font-size: 2rem;
-          color: #ccc;
-          cursor: pointer;
-          transition: color 0.2s ease;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Successful</title>
 
-        .rating-stars i.hovered,
-        .rating-stars i.selected {
-          color: #f4c150;
-        }
-    </style>
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    body {
+      background-color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card {
+      border: none;
+      border-radius: 1.2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 460px;
+      padding: 2rem;
+      background-color: #ffffff;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .icon {
+      font-size: 60px;
+      color: #28a745;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      to { transform: translateY(-5px); }
+    }
+
+    h2 {
+      font-weight: 700;
+    }
+
+    .rating-stars i {
+      font-size: 2rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: transform 0.2s, color 0.2s ease;
+    }
+
+    .rating-stars i.hovered,
+    .rating-stars i.selected {
+      color: #ffc107;
+      transform: scale(1.2);
+    }
+
+    #rateBtn {
+      transition: background-color 0.3s ease;
+    }
+
+    #rateBtn:hover {
+      background-color: #0069d9;
+    }
+
+   
+    #responseMsg {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+  </style>
 </head>
 <body>
 
-   
-       
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card text-center w-100">
+    <div class="icon">✅</div>
+    <h2 class="text-success mt-3">Payment Successful!</h2>
+    <p class="text-muted mb-2">Your order has been placed successfully.</p>
+    <p class="text-secondary">To track your order, please rate your experience first.</p>
 
+    <h4 class="fw-bold mt-4 text-primary">Rate Your Experience</h4>
+    <p class="text-muted mb-3">We value your feedback. Please select a star rating below.</p>
 
-      <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card p-4 text-center w-100" style="max-width: 450px;">
-            <div class="icon">✅</div>
-            <h2 class="text-success mt-3">Payment Successful!</h2>
-            <p>Your order has been placed successfully.</p>
-            <p>To track your order.... after rating a track order button will appear</p>
-              <h3 class="fw-bold mb-3 text-primary">Rate Your Experience</h3>
-              <p class="text-muted mb-4">We value your feedback. Please let us know how we did by selecting a star rating below.</p>
+    <div class="rating-stars mb-4">
+      <i class="fa-regular fa-star" data-value="1"></i>
+      <i class="fa-regular fa-star" data-value="2"></i>
+      <i class="fa-regular fa-star" data-value="3"></i>
+      <i class="fa-regular fa-star" data-value="4"></i>
+      <i class="fa-regular fa-star" data-value="5"></i>
+    </div>
 
-          <div class="rating-stars mb-4">
-            <i class="fa-regular fa-star" data-value="1"></i>
-            <i class="fa-regular fa-star" data-value="2"></i>
-            <i class="fa-regular fa-star" data-value="3"></i>
-            <i class="fa-regular fa-star" data-value="4"></i>
-            <i class="fa-regular fa-star" data-value="5"></i>
-          </div>
+    <button id="rateBtn" data-business-id="{{ order.business.id }}" class="btn btn-primary fw-semibold w-100">Submit Rating</button>
 
-          <button id="rateBtn"  data-business-id="{{ order.business.id }}" class="btn btn-primary w-100 fw-semibold">Submit Rating</button>
+    <div id="responseMsg" class="text-success mt-4 d-none">
+      <p class="mb-3">Thank you for your rating!</p>
+      <a href="{% url 'track_orders' order.id %}" class="btn btn-outline-primary w-100">Track Order</a>
+    </div>
+  </div>
+</div>
 
-          <div id="responseMsg" class="text-success mt-3 d-none">Thank you for your rating!<br>
-             <a href="{% url 'track_orders' order.id %}" class="btn btn-primary w-100">Track Order</a>
-          </div>
-        </div>
-      </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    const stars = document.querySelectorAll('.rating-stars i');
-    const responseMsg = document.getElementById('responseMsg');
-    let currentRating = 0;
-    const button = document.getElementById('rateBtn');
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const stars = document.querySelectorAll('.rating-stars i');
+  const responseMsg = document.getElementById('responseMsg');
+  let currentRating = 0;
+  const button = document.getElementById('rateBtn');
   const businessId = button.getAttribute('data-business-id');
 
+  stars.forEach(star => {
+    star.addEventListener('mouseover', () => {
+      const value = parseInt(star.getAttribute('data-value'));
+      highlightStars(value);
+    });
+
+    star.addEventListener('mouseout', () => {
+      highlightStars(currentRating);
+    });
+
+    star.addEventListener('click', () => {
+      currentRating = parseInt(star.getAttribute('data-value'));
+      highlightStars(currentRating);
+    });
+  });
+
+  function highlightStars(rating) {
     stars.forEach(star => {
-      star.addEventListener('mouseover', () => {
-        const value = parseInt(star.getAttribute('data-value'));
-        highlightStars(value);
-      });
-
-      star.addEventListener('mouseout', () => {
-        highlightStars(currentRating);
-      });
-
-      star.addEventListener('click', () => {
-        currentRating = parseInt(star.getAttribute('data-value'));
-        highlightStars(currentRating);
-      });
-    });
-
-    function highlightStars(rating) {
-      stars.forEach(star => {
-        const value = parseInt(star.getAttribute('data-value'));
-        star.classList.remove('hovered', 'selected');
-        if (value <= rating) {
-          star.classList.add('selected');
-        }
-      });
-    }
-
-    document.getElementById('rateBtn').addEventListener('click', async () => {
-      if (currentRating === 0) {
-        alert('Please select a rating before submitting.');
-        return;
+      const value = parseInt(star.getAttribute('data-value'));
+      star.classList.remove('hovered', 'selected');
+      if (value <= rating) {
+        star.classList.add('selected');
       }
-      submitrating(currentRating)
-        
     });
+  }
 
-
-
-
-function submitrating(stars) {
+  document.getElementById('rateBtn').addEventListener('click', async (event) => {
     event.preventDefault();
+    if (currentRating === 0) {
+      alert('Please select a rating before submitting.');
+      return;
+    }
+    submitrating(currentRating);
+  });
 
-    // Get data from form
+  function submitrating(stars) {
+    button.disabled = true;
     const formData = {
-        business_id:businessId,
-        stars:stars
-      }
+      business_id: businessId,
+      stars: stars
+    };
 
-    console.log(formData);
-    // Fetch API POST request
     fetch('/seller/api/rate_business/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
-        },
-        body: JSON.stringify(formData)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify(formData)
     })
     .then(response => response.json())
     .then(data => {
-      if(data.status == "error"){
-      /*  displayMessagesapi(data);*/
+      if (data.status === "error") {
         alert('Something went wrong.');
-      }else{
+      } else {
         responseMsg.classList.remove('d-none');
-       
+        responseMsg.classList.add('animate__animated', 'animate__fadeIn');
+
       }
     })
-
     .catch(error => {
-        console.error('Error submitting form:', error);
+      console.error('Error submitting rating:', error);
     });
-}
+  }
 
-
-
-function getCookie(name) {
+  function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-}
-  </script>
+  }
+</script>
 </body>
 </html>
