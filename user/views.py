@@ -3,6 +3,7 @@ from .utils import login_required_custom, has_password
 from allauth.socialaccount.models import SocialAccount
 from .wrap_models.cart_models import Cart , Wishlist,CartDeliveryMethod, CartDeliveryAddress, CartExtra
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddress
+from seller.wrap_models.business_model import BusinessRating
 from decimal import Decimal
 from django.http import HttpResponse
 def is_google_linked(user):
