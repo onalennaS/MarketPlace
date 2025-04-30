@@ -86,3 +86,11 @@ class Moderation(models.Model):
     is_rejected = models.BooleanField(default=False)
     status = models.CharField(max_length=20,default="pending")
     reason = models.CharField(max_length=225, null=True)
+
+
+class BusinessRating(models.Model):
+    business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    stars = models.IntegerField(null=False,default=0)
+    

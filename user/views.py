@@ -96,7 +96,12 @@ def cart(request):
     extras = CartExtra.objects.filter(user=request.user).all()
     item_total = get_cart_total(cart_items)
     extra_total = get_extra_total(extras)
-    return render(request, 'home/cart.html',{'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'cart_total':item_total,'cart_items':cart_items,'cart_items_count':items})
+    has_out_of_stock_item = False 
+    for item in cart_items:
+        if item.product.quantity < 1 :
+            has_out_of_stock_item = True
+            break
+    return render(request, 'home/cart.html',{'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'cart_total':item_total,'cart_items':cart_items,'cart_items_count':items,'has_out_of_stock_item':has_out_of_stock_item})
 
 @login_required_custom
 def wish_lists(request):

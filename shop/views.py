@@ -64,6 +64,7 @@ def view_business_products(request,business_id):
 def view_product(request, product_id):
     product = Product.objects.filter(id=int(product_id)).first()
     items= 0
+   
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
     if product:

@@ -6,7 +6,7 @@ from ..utils.authentication_utils import login_required_custom, has_password, ve
 from ..utils.user_data_validation import validate_business_data
 from ..utils.send_emails import send_email_pending, send_email_appeal
 import json 
-from ..wrap_models.business_model import BusinessInformation, Address, Moderation
+from ..wrap_models.business_model import BusinessInformation, Address, Moderation, BusinessRating
 from django.contrib import messages
 
 # Create your views here.
@@ -154,6 +154,30 @@ def appeal_registration(request):
     moderation.save()
 
     return JsonResponse({"message": "Business appeal requested successfully",'status':'success'}, status=201)
+
+
+@login_required_custom
+def rate_business(request):
+
+    if not request.method == "POST":
+        return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
+    try:
+            data = json.loads(request.body)  # Parse JSON request body
+    except json.JSONDecodeError:
+        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+
+
+    business = BusinessInformation.objects.filter(id=int(data.get('business_id'))).first()
+    stars = int(data.get('stars'))
+
+    if business and stars >= 0 and stars <=5:
+        rating = BusinessRating.objects.create(user=request.user,business=business,stars=stars)
+        rating.save()
+    else:
+        return JsonResponse({'message':'SOmething went wrong please contact support ', "status":"error"}, status=400)     
+    return JsonResponse({"message": "Thank you for rating ",'status':'success'}, status=201)
+
+
 
 from django.views.decorators.http import require_POST
 

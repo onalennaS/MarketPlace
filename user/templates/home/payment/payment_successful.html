@@ -15,15 +15,24 @@
             background-color: #f8f9fa;
         }
         .card {
-            max-width: 400px;
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+             border: none;
+              border-radius: 1rem;
+              box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
         }
         .icon {
             font-size: 50px;
             color: green;
+        }
+        .rating-stars i {
+          font-size: 2rem;
+          color: #ccc;
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+
+        .rating-stars i.hovered,
+        .rating-stars i.selected {
+          color: #f4c150;
         }
     </style>
 </head>
@@ -33,10 +42,89 @@
         <div class="icon">✅</div>
         <h2 class="text-success mt-3">Payment Successful!</h2>
         <p>Your order has been placed successfully.</p>
-        <a href="{% url 'track_orders' order.id %}" class="btn btn-primary w-100">Track Order</a>
+        <p>To track your order, Rate us</p>
+
+       
     </div>
+
+      <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4 text-center w-100" style="max-width: 450px;">
+          <h3 class="fw-bold mb-3 text-primary">Rate Your Experience</h3>
+          <p class="text-muted mb-4">We value your feedback. Please let us know how we did by selecting a star rating below.</p>
+
+          <div class="rating-stars mb-4">
+            <i class="fa-regular fa-star" data-value="1"></i>
+            <i class="fa-regular fa-star" data-value="2"></i>
+            <i class="fa-regular fa-star" data-value="3"></i>
+            <i class="fa-regular fa-star" data-value="4"></i>
+            <i class="fa-regular fa-star" data-value="5"></i>
+          </div>
+
+          <button id="rateBtn"  data-business-id="{{ order.business.id }}" class="btn btn-primary w-100 fw-semibold">Submit Rating</button>
+
+          <div id="responseMsg" class="text-success mt-3 d-none">Thank you for your rating!<br>
+             <a href="{% url 'track_orders' order.id %}" class="btn btn-primary w-100">Track Order</a>
+          </div>
+        </div>
+      </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const stars = document.querySelectorAll('.rating-stars i');
+    const responseMsg = document.getElementById('responseMsg');
+    let currentRating = 0;
+    const button = document.getElementById('rateBtn');
+  const businessId = button.getAttribute('data-business-id');
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => {
+        const value = parseInt(star.getAttribute('data-value'));
+        highlightStars(value);
+      });
+
+      star.addEventListener('mouseout', () => {
+        highlightStars(currentRating);
+      });
+
+      star.addEventListener('click', () => {
+        currentRating = parseInt(star.getAttribute('data-value'));
+        highlightStars(currentRating);
+      });
+    });
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        const value = parseInt(star.getAttribute('data-value'));
+        star.classList.remove('hovered', 'selected');
+        if (value <= rating) {
+          star.classList.add('selected');
+        }
+      });
+    }
+
+    document.getElementById('rateBtn').addEventListener('click', async () => {
+      if (currentRating === 0) {
+        alert('Please select a rating before submitting.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/seller/api/rate_business/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rating: currentRating,business_id:businessId })
+        });
+
+        if (res.ok) {
+          responseMsg.classList.remove('d-none');
+        } else {
+          alert('Something went wrong.');
+        }
+      } catch (err) {
+        alert('Failed to send request.');
+      }
+    });
+  </script>
 </body>
 </html>

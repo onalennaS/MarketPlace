@@ -36,6 +36,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def is_instock(self):
+        if self.quantity < 1:
+            return False
+        return True
+    
 class ProductModeration(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_moderation")
     moderator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="product_moderator") 

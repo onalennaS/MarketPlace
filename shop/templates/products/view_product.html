@@ -151,7 +151,15 @@
                                     <i class="bi bi-clock"></i> We are closed 
                                 </span>
                                 {% endif %}
-                            
+                            {% if product.is_instock %}
+                                <span class="business-meta-item badge bg-success rounded-pill">
+                                    <i class="bi bi-stock"></i> Available 
+                                </span>
+                            {% else %}
+                            <span class="business-meta-item badge bg-danger rounded-pill">
+                                    <i class="bi bi-stock"></i> out of stock
+                                </span>
+                            {% endif %}
                             <div class="d-flex align-items-center mb-3">
                                 <div class="rating-stars me-2">
                                     <i class="fas fa-star"></i>
@@ -206,7 +214,11 @@
                     </div>
                     
                     <div class="d-grid gap-2 mb-3">
+                        {% if product.is_instock %}
                         <button onclick="addCart({{ product.id }})" class="add-to-cart-btn btn btn-primary">Add to Cart</button>
+                        {% else %}
+                           <button  class="add-to-cart-btn btn btn-danger" disabled>Out of stock</button>
+                        {% endif %}
                         <button class="btn btn-outline-danger" onclick="addWishlist({{product.id}})">
                             <i class="far fa-heart me-2"></i> Add to Wishlist
                         </button>
@@ -437,9 +449,11 @@
                     </div>
                     
                     <div class="d-grid gap-2 mb-3">
-                        <button class="btn btn-success btn-lg" onclick="addCart({{product.id}})">
-                            <i class="fas fa-shopping-cart me-2"></i> Add to Cart
-                        </button>
+                        {% if product.is_instock %}
+                        <button onclick="addCart({{ product.id }})" class="add-to-cart-btn btn btn-success">Add to Cart</button>
+                        {% else %}
+                           <button  class="add-to-cart-btn btn btn-danger fw-bold" disabled>Out of stock</button>
+                        {% endif %}
                         <button class="btn btn-outline-danger" onclick="addWishlist({{product.id}})">
                             <i class="far fa-heart me-2"></i> Add to Wishlist
                         </button>
