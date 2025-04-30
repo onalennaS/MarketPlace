@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from functools import wraps
 from seller.wrap_models.product_model import Product, Extras
-from seller.wrap_models.business_model import BusinessInformation, Address
+from seller.wrap_models.business_model import BusinessInformation, Address, BusinessRating
 from user.wrap_models.cart_models import Cart, Wishlist
 from django.http import HttpResponse
 
@@ -56,8 +56,15 @@ def view_business_products(request,business_id):
         if category not in categories:
             categories[category] = []
         categories[category].append(product)
+    all_ratings = BusinessRating.objects.filter(business=business)
+    stars_list = [rating.stars for rating in all_ratings]
 
-    return render(request,'products/business_products.html',{'business':business,'categories':categories, 'address':address}) 
+    if stars_list:
+        average_rating = round(sum(stars_list) / len(stars_list), 1)
+    else:
+        average_rating = 0.0 
+    total_rating = len(stars_list)
+    return render(request,'products/business_products.html',{'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating}) 
 
 
 @login_required_custom
@@ -68,7 +75,15 @@ def view_product(request, product_id):
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
     if product:
-        return render(request,'products/view_product.html',{'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user)})
+        all_ratings = BusinessRating.objects.filter(business=product.business)
+        stars_list = [rating.stars for rating in all_ratings]
+
+        if stars_list:
+            average_rating = round(sum(stars_list) / len(stars_list), 1)
+        else:
+            average_rating = 0.0 
+        total_rating = len(stars_list)
+        return render(request,'products/view_product.html',{'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user),'average_rating':average_rating,'total_rating':total_rating})
     return render(request,'products/view_product.html')
 
 

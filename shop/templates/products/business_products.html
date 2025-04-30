@@ -499,9 +499,7 @@ body {
                 <h1 class="business-name">{{business.name}}</h1>
                  
                 <div class="business-meta">
-                    <span class="business-meta-item">
-                        <i class="bi bi-geo-alt"></i> {{address.address_line_1}} {{address.address_line_2}}, {{address.suburb}}, {{address.postal_code}}
-                    </span>
+                  
                     {% if business.open_orders %}
                     <span class="business-meta-item badge bg-success rounded-pill">
                         <i class="bi bi-clock"></i> Open until {{business.close_time}}
@@ -516,16 +514,13 @@ body {
                     </span>
                 </div>
                 
-                <div class="business-rating">
-                    <i class="bi bi-star-fill"></i> 4.8 (124 reviews)
-                </div>
                 
                 <div class="business-actions">
                     <button class="btn btn-light">
                         <i class="bi bi-share"></i> Share
                     </button>
-                    <button class="btn btn-outline-light">
-                        <i class="bi bi-heart"></i> Favorite
+                    <button class="btn btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#ratingOffcanvas">
+                         <i class="bi bi-star-fill text-warning"></i> {{average_rating}} ({{total_rating}} reviews)
                     </button>
                 </div>
             </div>
@@ -614,12 +609,7 @@ body {
                     <div class="product-body">
                         <h5 class="product-title">{{product.name}}</h5>
                         <div class="product-price">R {{product.price}}</div>
-                        <div class="product-rating">
-                            <span>
-                                <i class="bi bi-star-fill"></i> 4.3
-                            </span>
-                            <span class="text-muted">(42)</span>
-                        </div>
+                        
                        <!--  <div class="product-actions">
                             <button class="btn btn-add-cart" onclick="addToCart({{product.id}})">
                                 <i class="bi bi-cart-plus"></i> Add to Cart
@@ -643,6 +633,44 @@ body {
     {% endfor %}
 </div>
 
+<div class="offcanvas offcanvas-end w-100 w-md-50" tabindex="-1" id="ratingOffcanvas" style="z-index:9999">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">User Ratings</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body d-flex flex-column p-3 pt-0 bg-white">
+
+    <!-- Average Rating -->
+    <div class="text-center p-3 rounded bg-light-blue mb-3">
+      <h2 id="averageRating" class="fw-bold text-primary">{{average_rating}}</h2>
+      <small class="text-muted">Average Rating</small>
+    </div>
+
+    <!-- Ratings List -->
+    <div id="ratingsList" class="flex-grow-1 overflow-auto mb-3">
+      <!-- Ratings will appear here -->
+      {% for rating in all_ratings %}
+          <div class="d-flex justify-content-between align-items-center border p-2 rounded mb-2 bg-light-blue">
+                <strong>{{rating.user}}</strong>
+                <span>
+                    <i class="fa-star {% if rating.stars > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
+                    <i class="fa-star {% if rating.stars > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
+                    <i class="fa-star {% if rating.stars > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
+                    <i class="fa-star {% if rating.stars > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
+                    <i class="fa-star {% if rating.stars > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
+
+                </span>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- Sticky Add Rating -->
+   
+
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Toggle wishlist button

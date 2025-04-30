@@ -142,6 +142,16 @@
                         <div class="card-body">
                             <h1 class="product-title mb-1">{{product.name}}</h1>
                             <p class="product-brand mb-2">by {{product.business}}</p>
+                             <div class="d-flex align-items-center mb-2">
+                                <div class="rating-stars me-2">
+                                   <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                </div>
+                                <span class="text-muted small">{{average_rating}} ({{total_rating}} reviews)</span>
+                            </div>
                             {% if product.business.open_orders %}
                                 <span class="business-meta-item badge bg-success rounded-pill">
                                     <i class="bi bi-clock"></i> Open until {{product.business.close_time}}
@@ -160,16 +170,7 @@
                                     <i class="bi bi-stock"></i> out of stock
                                 </span>
                             {% endif %}
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="rating-stars me-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="text-muted small">4.6 (12 reviews)</span>
-                            </div>
+                           
                             
                             <hr>
                             
@@ -241,12 +242,13 @@
                         <div>
                             <h6 class="mb-0">{{product.business}}</h6>
                             <div class="rating-stars small">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="text-muted ms-1">(128)</span>
+                                 <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
+
+                                <span class="text-muted ms-1">({{average_rating}})</span>
                             </div>
                         </div>
                     </div>
@@ -261,13 +263,13 @@
         </div>
             
             <!-- Product Description -->
-            <div class="card mb-4 shadow-sm">
+           <!--  <div class="card mb-4 shadow-sm">
                 <div class="card-body description-section">
                     <h5 class="fw-bold mb-4">Description</h5>
                     <div id="ProductDescription"></div>
                     <input type="hidden" value="{{product.description}}" id="tester" hidden>
                 </div>
-            </div>
+            </div> -->
             
             <!-- Product Specifications -->
             <div class="card mb-4 shadow-sm">
@@ -288,10 +290,7 @@
                                     <th scope="row" class="table-secondary">What's in the box</th>
                                     <td>1 x {{product.name}}</td>
                                 </tr>
-                                <tr>
-                                    <th scope="row" class="table-secondary">Color</th>
-                                    <td>None</td>
-                                </tr>
+                               
                             </tbody>
                         </table>
                     </div>
@@ -299,7 +298,7 @@
             </div>
             
             <!-- Reviews Section -->
-            <div class="card mb-4 shadow-sm">
+            <!-- <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <h5 class="fw-bold mb-4">Customer Reviews</h5>
                     <div class="row">
@@ -374,7 +373,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Review 1 -->
+                            
                             <div class="mb-4 pb-3 border-bottom">
                                 <h5>Great Product!</h5>
                                 <div class="d-flex align-items-center mb-2">
@@ -398,7 +397,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Review 2 -->
+                            
                             <div class="mb-4 pb-3">
                                 <h5>Flexing Skateboard!</h5>
                                 <div class="d-flex align-items-center mb-2">
@@ -426,7 +425,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         
         <!-- Price and Action Section -->
@@ -476,12 +475,13 @@
                         <div>
                             <h6 class="mb-0">{{product.business}}</h6>
                             <div class="rating-stars small">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="text-muted ms-1">(128)</span>
+                                 <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
+
+                                <span class="text-muted ms-1">({{average_rating}})</span>
                             </div>
                         </div>
                     </div>

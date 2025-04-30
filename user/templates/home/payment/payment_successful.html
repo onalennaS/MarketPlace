@@ -186,8 +186,8 @@
       if (data.status === "error") {
         alert('Something went wrong.');
       } else {
+        ratecont.classList.add('d-none');
         responseMsg.classList.remove('d-none');
-        responseMsg.classList.add('d-none');
         responseMsg.classList.add('animate__animated', 'animate__fadeIn');
 
       }
