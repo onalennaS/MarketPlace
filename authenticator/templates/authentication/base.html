@@ -1,31 +1,336 @@
-<!-- authentication/templates/authentication/base.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <meta name="description" content="Versity Finds is your go-to student marketplace. Sell or Buy FastFood,  textbooks, electronics, and essentials — all for the student budget.">
-
+    <meta name="description" content="Versity Finds is your go-to student marketplace. Sell or Buy FastFood, textbooks, electronics, and essentials — all for the student budget.">
     <meta name="keywords" content="Versity Finds, student marketplace, buy and sell textbooks, cheap student deals, campus marketplace, student classifieds, college essentials, affordable books">
-
     <meta name="robots" content="index, follow">
-
     <meta property="og:title" content="Sign in/register | Versity Finds">
     <meta property="og:description" content="Sign in or register an account to start buying">
     <meta property="og:image" content="{% static '/images/Finds.png' %}">
     <meta property="og:url" content="https://versityfinds.co.za">
     <meta property="og:type" content="website">
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sign in/register | Versity Finds ">
     <meta name="twitter:description" content="Sign in or register an account to start buying | Buy, sell, and discover campus deals that fit your student lifestyle. | Student Deals Made Easy ">
     <meta name="twitter:image" content="{% static '/images/Finds.png' %}">
     <link rel="icon" type="image/png" href="{% static '/images/Finds.png' %}">
     <title>{% block title %}Authentication{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/message.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0070f3;
+            --primary-hover: #0060df;
+            --dark: #111827;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --transition: all 0.2s ease;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: var(--dark);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        main {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        
+        .content {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), #6d28d9);
+        }
+        
+        .logo-box {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            max-width: 100px;
+            height: auto;
+        }
+        
+        h2 {
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+        
+        .description {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        
+        hr {
+            margin: 1.5rem 0;
+            border-color: var(--border);
+            opacity: 0.5;
+        }
+        
+        .auth-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background-color: var(--light);
+            transition: var(--transition);
+            height: 50px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+        }
+        
+        .form-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            padding: 0 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            background-color: white;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus + .form-label,
+        .form-control:not(:placeholder-shown) + .form-label {
+            color: var(--primary);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.85rem;
+            font-weight: 500;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            height: 50px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 112, 243, 0.15);
+        }
+        
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            margin: 0 auto;
+            max-width: 100%;
+            height: 50px;
+        }
+        
+        .google-btn:hover {
+            background-color: var(--light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .auth-links {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            list-style-type: none;
+        }
+        
+        .message.error, .message.danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .message.success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .message.warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .message.info {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            font-size: 0.9rem;
+            border: none;
+        }
+        
+        .alert-dismissible .btn-close {
+            padding: 1rem;
+        }
+        
+        .email-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .verification-container {
+            text-align: center;
+        }
+        
+        .verification-container ul {
+            text-align: left;
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .verification-container li {
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border);
+        }
+        
+        .divider-text {
+            padding: 0 1rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .auth-container {
+                padding: 2rem 1.5rem;
+                border-radius: 12px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn, .google-btn {
+                padding: 0.7rem;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
     <script src="{% static 'css/bootstrap.bundle.min.js' %}"></script>
 </head>
 <body>
@@ -34,5 +339,19 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+    <script>
+        // Auto-dismiss alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    if (bootstrap && bootstrap.Alert) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                });
+            }, 5000);
+        });
+    </script>
 </body>
 </html>
