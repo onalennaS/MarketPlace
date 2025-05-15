@@ -2706,8 +2706,8 @@ img {
         {% endif %}
 
         <!-- Content Area with dynamic columns -->
-        <div class="{% if request.path == dash_url %}col-12{% else %}col-md-9 col-lg-10{% endif %} content-area m-0 p-0">
-            <div class="content-inner">
+        <div class="{% if request.path == dash_url %}col-12{% else %}col-md-9 col-lg-10{% endif %} m-0 p-0">
+            <div class="m-0 p-0">
                 {% block content %}
                 <!-- Main content will be rendered here -->
                 {% endblock content %}
