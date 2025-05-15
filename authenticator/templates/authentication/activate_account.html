@@ -1,102 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'authentication/base.html' %}
+
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Email address</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/message.css' %}">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #2ecc71;
-        }
-        p {
-            font-size: 1.2rem;
-            color: #555;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        .icon {
-            font-size: 50px;
-            color: #2ecc71;
-        }
-         .email-icon {
-            font-size: 50px;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
+{% block title %}Verify Email | Versity Finds{% endblock %}
 
-<div class="container">
-    
-            {% if messages %}
-        <div class="message-container">
-            {% for message in messages %}
-                
-            {% if 'error' in message.tags %}
-                   <div class="alert alert-danger alert-dismissible fade show slider" role="alert">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-            {% else %}
-               <div class="alert alert-{{message.tags}} alert-dismissible fade show slider" role="alert">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-            {% endif %}
-               
-            {% endfor %}
-            
-        </div>
+{% block content %}
+    <div class="auth-container verification-container">
+        {% if messages %}
+            <div class="mb-3">
+                {% for message in messages %}
+                    <div class="alert alert-{% if 'error' in message.tags %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
-     <div class="email-icon">📧</div>
-    <h1>An Email Has Been Sent</h1>
-    <p>Please click on the link sent to your email. to activate your account</p>
-    <p>if you did not recieve an email from us</p>
-    <ul>
-        <li>Please look in spam folder</li>
-        <li>please click the button bellow to resend the activation link!</li>
-    </ul> 
-    <form method="POST" action="{% url 'activate_account' email %}">
-    {% csrf_token %}
-    <button class="btn" type="submit">Resend link</button>
-</form>
-</div>
-
-</body>
-</html>
+        
+        <div class="email-icon">📬</div>
+        <h2>Check Your Email</h2>
+        <p class="description">We've sent a verification link to your email address</p>
+        
+        <div class="text-start">
+            <p>If you don't see the email in your inbox:</p>
+            <ul>
+                <li>Check your spam or junk folder</li>
+                <li>Make sure you entered the correct email address</li>
+                <li>Click the button below if you need a new verification link</li>
+            </ul>
+        </div>
+        
+        <form method="POST" action="{% url 'activate_account' email %}">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">Resend Verification</button>
+        </form>
+        
+        <div class="auth-links">
+            <span>Need help? <a href="#">Contact Support</a></span>
+        </div>
+    </div>
+{% endblock %}

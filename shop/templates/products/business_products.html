@@ -15,7 +15,8 @@
     --dark: #1e293b;
     --light: #f8fafc;
     --gray: #94a3b8;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --card-hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -24,7 +25,7 @@ body {
     background-color: #f9fafb;
 }
 
-/* Business Hero Section */
+/* Business Hero Section - Minimalist Design */
 .business-hero {
     height: 360px;
     position: relative;
@@ -45,7 +46,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
     padding: 1.5rem;
     color: white;
 }
@@ -78,30 +79,23 @@ body {
     font-size: 0.9rem;
 }
 
-.business-rating {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    font-weight: 500;
-}
-
-.business-rating i {
-    color: var(--secondary);
-}
-
 .business-actions {
     display: flex;
     gap: 0.75rem;
 }
 
-/* Business Info Card */
+/* Business Info Card - Minimalist Design */
 .info-card {
     border: none;
     border-radius: 12px;
     box-shadow: var(--card-shadow);
     margin-bottom: 2rem;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    box-shadow: var(--card-hover-shadow);
 }
 
 .info-card-title {
@@ -148,7 +142,7 @@ body {
     color: #10b981;
 }
 
-/* Menu Section */
+/* Menu Section - Minimalist Design */
 .section-title {
     font-weight: 700;
     font-size: 1.5rem;
@@ -156,20 +150,15 @@ body {
     position: relative;
     padding-bottom: 0.5rem;
     color: var(--dark);
+    border-bottom: 1px solid #e5e7eb;
 }
 
+/* Removed the blue underline for minimalist design */
 .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 3rem;
-    height: 3px;
-    background: var(--primary);
-    border-radius: 3px;
+    display: none;
 }
 
-/* Category Tabs */
+/* Category Tabs - Minimalist Design */
 .category-tabs {
     display: flex;
     gap: 0.75rem;
@@ -195,7 +184,7 @@ body {
 
 .category-tab {
     padding: 0.75rem 1.25rem;
-    border-radius: 50px;
+    border-radius: 8px;
     background: #f1f5f9;
     color: var(--dark);
     font-weight: 500;
@@ -213,13 +202,13 @@ body {
 .category-tab.active {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
-/* Product Cards */
+/* Product Cards - Improved for full-width/height images */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1.25rem;
 }
 
@@ -232,24 +221,29 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    border: 1px solid #f1f5f9;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-hover-shadow);
 }
 
 .product-image-container {
-    height: 180px;
     position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect ratio */
     background: #f8f9fa;
+    overflow: hidden;
 }
 
 .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    padding: 1rem;
+    object-fit: cover; /* Changed from contain to cover for full image */
     transition: transform 0.3s;
 }
 
@@ -285,11 +279,14 @@ body {
     transition: all 0.2s;
     border: none;
     z-index: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wishlist-btn:hover, .wishlist-btn.active {
     background: #ef4444;
     color: white;
+    transform: scale(1.1);
 }
 
 .product-body {
@@ -308,11 +305,12 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 2.8rem;
+    color: var(--dark);
 }
 
 .product-price {
     font-weight: 700;
-    color: var(--primary);
+    color: var(--dark);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
 }
@@ -338,24 +336,26 @@ body {
     border-radius: 8px;
     padding: 0.5rem;
     font-weight: 500;
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: white;
+    background-color: var(--light);
+    border: 1px solid #e5e7eb;
+    color: var(--dark);
     transition: all 0.2s;
 }
 
 .btn-add-cart:hover {
-    background-color: var(--primary-dark);
-    border-color: var(--primary-dark);
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
 }
 
-/* Empty State */
+/* Empty State - Minimalist Design */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
     background: white;
     border-radius: 12px;
     box-shadow: var(--card-shadow);
+    border: 1px solid #f1f5f9;
 }
 
 .empty-state-icon {
@@ -379,7 +379,26 @@ body {
     margin-right: auto;
 }
 
-/* Responsive Adjustments */
+/* Offcanvas Styling - Minimalist Design */
+.offcanvas {
+    border-radius: 0;
+    border: none;
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.offcanvas-title {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.bg-light-blue {
+    background-color: #f0f7ff;
+}
+
+/* Responsive Adjustments - Improved */
 @media (max-width: 991.98px) {
     .business-hero {
         height: 320px;
@@ -391,6 +410,10 @@ body {
     
     .business-name {
         font-size: 1.75rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
 
@@ -418,17 +441,9 @@ body {
         font-size: 0.8rem;
     }
     
-    .business-rating {
-        margin-bottom: 0.75rem;
-    }
-    
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 1rem;
-    }
-    
-    .product-image-container {
-        height: 150px;
     }
     
     .section-title {
@@ -467,10 +482,6 @@ body {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
     
-    .product-image-container {
-        height: 130px;
-    }
-    
     .product-title {
         font-size: 0.85rem;
         height: 2.5rem;
@@ -482,6 +493,15 @@ body {
     
     .product-rating {
         font-size: 0.75rem;
+    }
+    
+    /* Improved mobile layout */
+    .info-card .row {
+        flex-direction: column;
+    }
+    
+    .category-tabs {
+        padding-bottom: 0.75rem;
     }
 }
 {% endblock %}
@@ -610,11 +630,11 @@ body {
                         <h5 class="product-title">{{product.name}}</h5>
                         <div class="product-price">R {{product.price}}</div>
                         
-                       <!--  <div class="product-actions">
+                        <div class="product-actions">
                             <button class="btn btn-add-cart" onclick="addToCart({{product.id}})">
                                 <i class="bi bi-cart-plus"></i> Add to Cart
                             </button>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -633,6 +653,7 @@ body {
     {% endfor %}
 </div>
 
+<!-- Ratings Offcanvas -->
 <div class="offcanvas offcanvas-end w-100 w-md-50" tabindex="-1" id="ratingOffcanvas" style="z-index:9999">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">User Ratings</h5>
@@ -640,7 +661,6 @@ body {
   </div>
 
   <div class="offcanvas-body d-flex flex-column p-3 pt-0 bg-white">
-
     <!-- Average Rating -->
     <div class="text-center p-3 rounded bg-light-blue mb-3">
       <h2 id="averageRating" class="fw-bold text-primary">{{average_rating}}</h2>
@@ -659,18 +679,13 @@ body {
                     <i class="fa-star {% if rating.stars > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
                     <i class="fa-star {% if rating.stars > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
                     <i class="fa-star {% if rating.stars > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
-
                 </span>
             </div>
         {% endfor %}
-
     </div>
-
-    <!-- Sticky Add Rating -->
-   
-
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Toggle wishlist button
@@ -702,7 +717,7 @@ body {
         toast.innerHTML = `
             <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="me-auto">SixSkies</strong>
+                    <strong class="me-auto">{{business.name}}</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
