@@ -83,7 +83,8 @@ def view_product(request, product_id):
         else:
             average_rating = 0.0 
         total_rating = len(stars_list)
-        return render(request,'products/view_product.html',{'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user),'average_rating':average_rating,'total_rating':total_rating})
+        markup_price = float(f'{product.price}') + (float(f'{product.price}') * 0.20)
+        return render(request,'products/view_product.html',{'markup_price':markup_price,'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user),'average_rating':average_rating,'total_rating':total_rating})
     return render(request,'products/view_product.html')
 
 

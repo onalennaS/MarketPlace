@@ -111,48 +111,23 @@
                 <div class="row g-0">
                     <!-- Product Images -->
                     <div class="col-md-6">
-                        <div class="product-image-container p-3">
+                        <div class="product-image-container ">
                             <span class="discount-badge bg-primary text-white fw-bold">20% OFF</span>
-                            <div id="productCarousel" class="carousel slide">
-                                <div class="carousel-inner rounded">
-                                    <div class="carousel-item active">
-                                        <img src="{{product.image.url}}" class="d-block w-100" alt="{{product.name}}" style="object-fit: contain; height: 300px;">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="{{product.image.url}}" class="d-block w-100" alt="{{product.name}}" style="object-fit: contain; height: 300px;">
-                                    </div>
-                                    <div class="carousel-item">
-                                        <img src="{{product.image.url}}" class="d-block w-100" alt="{{product.name}}" style="object-fit: contain; height: 300px;">
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
+                            <img src="{{product.image.url}}" 
+                                 class="img-fluid w-100 rounded" 
+                                 alt="versityfinds - {{product.name}}" 
+                                 style="object-fit: contain; height: 100%; max-height: 100vh;">
                         </div>
                     </div>
+
                     
                     <!-- Product Info -->
                     <div class="col-md-6">
                         <div class="card-body">
                             <h1 class="product-title mb-1">{{product.name}}</h1>
+                             <p class="mb-1">{{product.small_description}}</p>
                             <p class="product-brand mb-2">by {{product.business}}</p>
-                             <div class="d-flex align-items-center mb-2">
-                                <div class="rating-stars me-2">
-                                   <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                </div>
-                                <span class="text-muted small">{{average_rating}} ({{total_rating}} reviews)</span>
-                            </div>
-                            {% if product.business.open_orders %}
+                             {% if product.business.open_orders %}
                                 <span class="business-meta-item badge bg-success rounded-pill">
                                     <i class="bi bi-clock"></i> Open until {{product.business.close_time}}
                                 </span>
@@ -170,11 +145,26 @@
                                     <i class="bi bi-stock"></i> out of stock
                                 </span>
                             {% endif %}
+
+                             <!-- <div class="d-flex align-items-center mb-0 mt-3">
+                                <div class="rating-stars me-2">
+                                   <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
+                                </div>
+                                <span class="text-muted small">{{average_rating}} ({{total_rating}} reviews)</span>
+                            </div> -->
                            
+                           <div class="d-flex justify-content-between mt-2 mb-0 pb-0">
+                               <p class="mb-0 pb-0"><strong>Size :</strong> Quater Loaf</p>
+                                <p class="mb-0 pb-0"><strong>Serves :</strong> 1 Person</p>
+                           </div>
                             
                             <hr>
                             
-                            <p class="mb-3">{{product.small_description}}</p>
+                           
                             
                             <h6 class="mb-2">Add-Ons <i class="fas fa-plus-circle text-primary"></i></h6>
                             <div class="mb-3">
@@ -195,72 +185,7 @@
                 </div>
             </div>
 
-             <!-- Price and Action Section -->
-        <div class="col-lg-4 col-md-5 d-sm-block d-md-none d-lg-none">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body price-container">
-                    <div class="d-flex align-items-center mb-3">
-                        <h2 class="mb-0 me-2">R {{product.price}}</h2>
-                        <span class="original-price">R 1650</span>
-                    </div>
-                    
-                    <div class="delivery-info mb-3">
-                        <p class="mb-1"><i class="fas fa-truck me-2"></i> Estimated Delivery</p>
-                        <p class="fw-bold mb-0">Today - 10 December</p>
-                        <small><a href="#" class="text-decoration-none">T&Cs Apply</a></small>
-                    </div>
-                    
-                    <div class="alert alert-info mb-3 py-2 text-center">
-                        Free delivery with <a href="#" class="alert-link fw-bold">subscription</a>
-                    </div>
-                    
-                    <div class="d-grid gap-2 mb-3">
-                        {% if product.is_instock %}
-                        <button onclick="addCart({{ product.id }})" class="add-to-cart-btn btn btn-primary">Add to Cart</button>
-                        {% else %}
-                           <button  class="add-to-cart-btn btn btn-danger" disabled>Out of stock</button>
-                        {% endif %}
-                        <button class="btn btn-outline-danger" onclick="addWishlist({{product.id}})">
-                            <i class="far fa-heart me-2"></i> Add to Wishlist
-                        </button>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between small text-muted">
-                        <span><i class="fas fa-shield-alt me-1"></i> 1 Year Warranty</span>
-                        <span><i class="fas fa-exchange-alt me-1"></i> 7-Day Returns</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h6 class="fw-bold mb-3">Seller Information</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="me-3">
-                            <img src="{% static 'products/image/default-store.png' %}" class="rounded-circle" width="50" height="50" alt="Seller">
-                        </div>
-                        <div>
-                            <h6 class="mb-0">{{product.business}}</h6>
-                            <div class="rating-stars small">
-                                 <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
-
-                                <span class="text-muted ms-1">({{average_rating}})</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between small">
-                        <span><i class="fas fa-map-marker-alt me-1"></i> Gaborone</span>
-                        <span><i class="fas fa-clock me-1"></i> 94% On Time</span>
-                    </div>
-                    <hr>
-                    <button class="btn btn-outline-primary w-100">Visit Store</button>
-                </div>
-            </div>
-        </div>
+      
             
             <!-- Product Description -->
            <!--  <div class="card mb-4 shadow-sm">
@@ -434,17 +359,17 @@
                 <div class="card-body price-container">
                     <div class="d-flex align-items-center mb-3">
                         <h2 class="mb-0 me-2">R {{product.price}}</h2>
-                        <span class="original-price">R 1650</span>
+                        <span class="original-price">R {{markup_price}}</span>
                     </div>
                     
                     <div class="delivery-info mb-3">
                         <p class="mb-1"><i class="fas fa-truck me-2"></i> Estimated Delivery</p>
-                        <p class="fw-bold mb-0">Today - 10 December</p>
+                        <p class="fw-bold mb-0">Today in 20 - 45 mins</p>
                         <small><a href="#" class="text-decoration-none">T&Cs Apply</a></small>
                     </div>
                     
                     <div class="alert alert-info mb-3 py-2 text-center">
-                        Free delivery with <a href="#" class="alert-link fw-bold">subscription</a>
+                        Free delivery <a href="#" class="alert-link fw-bold">after 3 different orders</a>   <small><a href="#" class="text-decoration-none">T&Cs Apply</a></small>
                     </div>
                     
                     <div class="d-grid gap-2 mb-3">
@@ -459,8 +384,8 @@
                     </div>
                     
                     <div class="d-flex justify-content-between small text-muted">
-                        <span><i class="fas fa-shield-alt me-1"></i> 1 Year Warranty</span>
-                        <span><i class="fas fa-exchange-alt me-1"></i> 7-Day Returns</span>
+                        <span><i class="fas fa-shield-alt me-1"></i> 1 Fast Delivery</span>
+                        <span><i class="fas fa-exchange-alt me-1"></i> No Returns</span>
                     </div>
                 </div>
             </div>
@@ -486,11 +411,11 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between small">
-                        <span><i class="fas fa-map-marker-alt me-1"></i> Gaborone</span>
+                        <span><i class="fas fa-map-marker-alt me-1"></i> {{product.business.address.address_line_1}} {{product.business.address.address_line_2}}, {{product.business.address.suburb}}, {{product.business.address.postal_code}}</span>
                         <span><i class="fas fa-clock me-1"></i> 94% On Time</span>
                     </div>
                     <hr>
-                    <button class="btn btn-outline-primary w-100">Visit Store</button>
+                    <a href="{% url 'view_business_products' product.business.id %}" class="btn btn-outline-primary w-100">Visit Store</a>
                 </div>
             </div>
         </div>

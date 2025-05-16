@@ -1,0 +1,207 @@
+{% extends 'products/shop_base2.html' %}
+
+  {% block title %}Business | Menu{% endblock %}</title>
+ 
+{% block styles %}
+.menu-item-card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.menu-item-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.menu-img {
+  height: 100px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.tab-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--color-bg);
+  border-bottom: 1px solid #e0e0e0;
+}
+.tab-scroll .nav-tabs {
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  border-bottom: none;
+}
+.tab-scroll .nav-link {
+  margin-right: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease-in-out;
+}
+.tab-scroll .nav-link.active {
+  border: none;
+  background-color: #e9f0ff;
+  color: #0d6efd;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #0d6efd;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  margin-top: 2rem;
+}
+.empty-state-icon {
+  font-size: 3rem;
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+.empty-state-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+.empty-state-text {
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-body h6 {
+  font-size: 1rem;
+}
+.card-body p {
+  font-size: 0.85rem;
+}
+.btn-outline-danger i {
+  color: #dc3545;
+}
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-outline-primary {
+  font-size: 0.85rem;
+}
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+@media (max-width: 576px) {
+  .menu-img {
+    height: 80px;
+  }
+  .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+{% endblock %}
+{% block content %}
+
+<!-- Business Header -->
+<section class="bg-white py-5 border-bottom position-relative text-white" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80'); background-size: cover; background-position: center;">
+  <div style="background-color: rgba(0, 0, 0, 0.5); padding: 2rem 0;">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+      <div>
+        <h2 class="fw-bold display-6">{{business.name}}</h2>
+        <p class="mb-1">Local Township Fast Food • Halal Friendly</p>
+        <p class="mb-0 small"><i class="bi bi-geo-alt"></i> {{address.address_line_1}} {{address.address_line_2}}, {{address.suburb}}, {{address.postal_code}}</p>
+      </div>
+      <div class="mt-3 mt-md-0 text-md-end">
+        <span class="text-warning me-3"><i class="bi bi-star-fill"></i> {{average_rating}} ({{total_rating}} reviews)</span>
+        <div class="mt-1">
+          <span class="badge bg-light text-dark border me-2"><i class="bi bi-clock"></i> 20–30 min</span>
+          {% if business.open_orders %}
+            <span class="badge bg-success rounded-pill"><i class="bi bi-clock"></i> Open until {{business.close_time}}</span>
+          {% else %}
+            <span class="badge bg-danger rounded-pill"><i class="bi bi-clock"></i> We are closed</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tabs -->
+<section class="bg-light sticky-top shadow-sm">
+  <div class="container-fluid px-3 py-2 tab-scroll">
+    <ul class="nav nav-tabs" id="menuTabs" role="tablist">
+      {% for key, value in categories.items %}
+        <li class="nav-item" role="presentation">
+          <button class="nav-link {% if forloop.first %}active{% endif %}" id="{{ key }}-tab" data-bs-toggle="tab" data-bs-target="#{{ key }}" type="button" role="tab">{{ key }}</button>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- Menu Section -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="tab-content" id="menuTabsContent">
+
+      {% for key, value in categories.items %}
+      <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{key}}" role="tabpanel">
+        {% if value %}
+          <div class="row g-4">
+            {% for product in value %}
+              {% if product.status == "active" %}
+              <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm menu-item-card card-theme rounded-4">
+                  <div class="row g-0">
+                    <div class="col-4">
+                      <a href="{% url 'view_product' product.id %}">
+                        <img src="{{ product.image.url|default:'https://via.placeholder.com/300' }}" class="img-fluid menu-img" alt="{{ product.name }} from {{ business.name }}" loading="lazy" />
+                      </a>
+                    </div>
+                    <div class="col-8">
+                      <div class="card-body d-flex flex-column justify-content-between py-3 h-100">
+                        <div>
+                          <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+                          <p class="text-muted-theme small mb-2">{{ product.small_description|default:"No description available" }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="fw-bold text-primary fs-6">R{{ product.price }}</span>
+                          <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-danger" onclick="toggleWishlist(this, {{ product.id }})" title="Add to wishlist">
+                              <i class="bi bi-heart"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary btn-theme" title="Add to cart">
+                              <i class="bi bi-cart-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state mt-5">
+            <div class="empty-state-icon"><i class="bi bi-basket"></i></div>
+            <div class="empty-state-title">No items available in {{ key }}</div>
+            <div class="empty-state-text">Please check back later as we're updating our menu.</div>
+          </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

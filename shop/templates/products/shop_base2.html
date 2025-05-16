@@ -491,21 +491,17 @@
             </a>
 
             <!-- Desktop Elements (hidden on mobile) -->
-            <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4">
+            <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4 justify-content-end">
                 <!-- Search Form -->
-                <form method="POST" class="search-form me-auto">
-                    {% csrf_token %}
-                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search">
-                    <button type="submit" aria-label="Search">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-
+                
                 <!-- Sell Button -->
-                <a href="{% url 'seller_landing_page' %}" class="sell-button ms-3 me-3">
+                <a href="{% url 'seller_landing_page' %}" class="text-decoration-none text-primary">
                     <i class="fas fa-store"></i>
                     <span>Sell on VersityFinds</span>
                 </a>
+                <span class="p-3 fw-bold">
+                    |
+                </span>
 
                 <!-- Navigation Icons -->
                 <div class="d-flex align-items-center me-3">
@@ -584,7 +580,7 @@
     <!-- Mobile Menu Offcanvas -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
         <div class="offcanvas-header">
-            <img class="nav-logo" src="{% static '/images/Finds.png' %}" alt="Versity Finds Logo" id="menu">
+            <img class="nav-logo" src="{% static '/images/Finds.png' %}" alt="versityfinds - Logo" id="menu">
             
             <!-- Category Header (Hidden by default) -->
             <span id="category" style="display: none;">

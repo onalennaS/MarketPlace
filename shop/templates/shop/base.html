@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Versityfinds{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+{% block links %}
+{% endblock %}
+<style>
+  :root {
+    /* Light Mode */
+    --color-bg: #ffffff;
+    --color-surface: #f9fafb;
+    --color-border: #e5e7eb;
+    --color-text: #111827;
+    --color-muted: #6b7280;
+    --color-primary: #2563eb;
+    --color-link: #2563eb;
+    --color-accent: #2563eb;
+  }
+
+  body.dark {
+    /* Dark Mode */
+    --color-bg: #121212;
+    --color-surface: #1e1e1e;
+    --color-border: #333;
+    --color-text: #e5e7eb;
+    --color-muted: #e5e7eb;
+    --color-primary: #3b82f6;
+    --color-link: #60a5fa;
+    --color-accent: #3b82f6;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Urbanist', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .card-theme {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .nav-theme,
+  .tab-theme,
+  .offcanvas-theme,
+  .modal-theme {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .table-theme {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .link-theme {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .link-theme:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  .text-muted-theme,
+  small {
+    color: var(--color-muted);
+  }
+
+  .btn-theme {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
+  }
+
+  .btn-theme:hover {
+    background-color: #1d4ed8;
+  }
+
+  .badge-theme {
+    background-color: var(--color-accent);
+    color: #ffffff;
+  }
+
+  {% block styles %}
+  {% endblock%}
+</style>
+
+
+  {% block head %}{% endblock %}
+</head>
+<body class="">
+
+   <!-- Navbar -->
+  <nav class="navbar navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">Versityfinds Eats</a>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="bg-white border-top py-3 text-center card-theme ">
+    <p class="mb-0 text-muted">&copy; 2025 Versityfinds Eats</p>
+  </footer>
+
+  <script>
+    // Simple toggle theme script
+    const toggleTheme = () => {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

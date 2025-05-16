@@ -513,7 +513,7 @@ body {
 <div class="container py-4">
     <!-- Business Hero Section -->
     <div class="business-hero">
-        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" class="business-hero-image" alt="{{business.name}}">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" class="business-hero-image" alt="versityfinds - {{business.name}}">
         <div class="business-hero-overlay">
             <div class="business-data">
                 <h1 class="business-name">{{business.name}}</h1>
@@ -612,10 +612,10 @@ body {
                     <div class="product-image-container">
                         {% if product.image %}
                             <a href="{% url 'view_product' product.id %}">
-                                <img src="{{product.image.url}}" class="product-image" alt="{{product.name}}">
+                                <img src="{{product.image.url}}" class="product-image" alt="versityfinds - {{product.name}}">
                             </a>
                         {% else %}
-                            <img src="https://via.placeholder.com/300" class="product-image" alt="{{product.name}}">
+                            <img src="https://via.placeholder.com/300" class="product-image" alt="versityfinds - {{product.name}}">
                         {% endif %}
                         
                         {% if product.discount %}
