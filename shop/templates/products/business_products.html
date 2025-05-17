@@ -539,11 +539,11 @@ body {
                 
                 
                 <div class="business-actions">
-                    <div class="dropdown">
+                    <div class="dropdown dropup">
                         <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-share"></i> Share
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu ">
                             <!-- WhatsApp -->
                             <li>
                                 <a class="dropdown-item d-flex align-items-center gap-2 text-success" target="_blank"
@@ -587,7 +587,7 @@ body {
     <div class="card-body p-4">
         <h3 class="info-card-title d-flex justify-content-between align-items-center">
             About {{ business.name }}
-           <button class="btn btn-sm btn-outline-primary rounded d-flex align-items-center gap-2" 
+           <button class="btn btn-sm btn-dark rounded-circle d-flex align-items-center" 
                     type="button" 
                     data-bs-toggle="collapse" 
                     data-bs-target="#businessInfoCollapse" 
@@ -595,7 +595,7 @@ body {
                     aria-controls="businessInfoCollapse"
                     id="toggleInfoBtn">
                 <i class="bi bi-chevron-down" id="toggleIcon"></i>
-                <span id="toggleText">Show Info</span>
+                <span id="toggleText"></span>
             </button>
 
         </h3>
@@ -678,8 +678,8 @@ body {
                         </button>
                     </div>
                     <div class="product-body">
-                        <h5 class="fw-bold ">{{product.name}}</h5>
-                        <p class="small">{{ product.small_description|default:"No Description" }}</p>
+                        <h6 class="fw-bold ">{{product.name}}</h6>
+                        <i class="small" style="max-height:25px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ product.small_description|default:"No Description" }}</i>
                         <p class=" text-success fw-bold mb-0 p-0">R {{product.price}}</p>
                         
                         <!-- <div class="product-actions">
@@ -793,13 +793,13 @@ body {
         const toggleIcon = document.getElementById('toggleIcon');
 
         collapseElement.addEventListener('hide.bs.collapse', function () {
-            toggleText.textContent = 'Show Info';
+           
             toggleIcon.classList.remove('bi-chevron-up');
             toggleIcon.classList.add('bi-chevron-down');
         });
 
         collapseElement.addEventListener('show.bs.collapse', function () {
-            toggleText.textContent = 'Hide Info';
+            
             toggleIcon.classList.remove('bi-chevron-down');
             toggleIcon.classList.add('bi-chevron-up');
         });
