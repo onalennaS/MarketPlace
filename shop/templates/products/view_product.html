@@ -5,7 +5,7 @@
 
 {% block meta %}
     <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
-<meta property="og:title" content="{{ product.name }} | VersityFinds">
+<meta property="og:title" content="{{ product.name }} from {{product.business.name}} - R{{product.price}}| VersityFinds">
 <meta property="og:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
@@ -14,7 +14,7 @@
 
 <!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ product.name }} | VersityFinds">
+<meta name="twitter:title" content="{{ product.name }} from {{product.business.name}} | VersityFinds">
 <meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
 <meta name="twitter:image" content="{{ absolute_image_url }}">
 {% endblock %}
