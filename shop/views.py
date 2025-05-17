@@ -83,8 +83,8 @@ def view_business_products(request,slug):
 
 
 @login_required_custom
-def view_product(request, bSlug, slug):
-    product = Product.objects.filter(slug=slug).first()
+def view_product(request, bSlug, pSlug):
+    product = Product.objects.filter(slug=pSlug).first()
     items= 0
     whishlist = 0
     if request.user.is_authenticated:

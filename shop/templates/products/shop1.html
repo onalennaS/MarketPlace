@@ -1130,7 +1130,7 @@ hr.border-secondary {
             {% for business in businesses %}
             {% if business.status == "approved" %}
             <div class="col-md-6 col-lg-4">
-                <a href="{% url  business.slug %}" class="text-decoration-none">
+                <a href="{% url 'view_business_products' business.slug %}" class="text-decoration-none">
                     <div class="business-card h-100">
                         <div class="business-img-container">
                             {% if business.open_orders %}
@@ -1263,7 +1263,7 @@ hr.border-secondary {
            <div class="product-card">
                     <div class="product-image-container">
                         {% if product.image %}
-                            <a href="{% url  product.business.slug product.slug %}">
+                            <a href="{% url 'view_product' product.business.slug product.slug %}">
                                 <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds ">
                             </a>
                         {% else %}

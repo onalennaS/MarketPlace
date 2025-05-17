@@ -663,7 +663,7 @@ body {
                 <div class="product-card">
                     <div class="product-image-container">
                         {% if product.image %}
-                            <a href="{% url product.business.slug product.slug %}">
+                            <a href="{% url 'view_product' product.business.slug product.slug %}">
                                 <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds ">
                             </a>
                         {% else %}
