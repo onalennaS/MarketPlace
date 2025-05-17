@@ -5,10 +5,10 @@ from .business_model import BusinessInformation
 
 class Product(models.Model):
     CATEGORIES = [
-        ('dropship', 'Dropship'),
-        ('food', 'Food & Beverages'),
-        ('clothing', 'Clothing'),
-        ('technology', 'Technology'),
+        ('plate', 'Plate'),
+        ('kota', 'Kota'),
+        ('dagwood', 'Dagwood'),
+        ('drinks', 'Drinks'),
         ('other', 'Other'),
     ]
   

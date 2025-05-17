@@ -39,7 +39,8 @@ def shop_base(request):
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
-    return render(request,'products/shop1.html',{'products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list}) 
+    most_bought = Product.objects.filter(sales__gt=8)
+    return render(request,'products/shop1.html',{'most_bought':most_bought,'products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list}) 
 
 
 def view_business_products(request,business_id):
