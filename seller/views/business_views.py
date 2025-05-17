@@ -42,6 +42,12 @@ def register_business(request):
     address_type = data.get("address_type")
     open_time = data.get("open_time")
     close_time = data.get("close_time")
+    image = request.FILES.get('image')  # Image from the request
+
+        # Validate image file
+    if image and not image.content_type.startswith('image/'):
+        return JsonResponse({'status': 'error', 'message': 'Invalid file type. Only images allowed'}, status=400)
+
 
     # Save business to the database
     business = BusinessInformation.objects.create(
@@ -54,7 +60,8 @@ def register_business(request):
         phone=phone,
         email=email,
         open_time=open_time,
-        close_time=close_time
+        close_time=close_time,
+        image=image
     )
     
     address = Address.objects.create(

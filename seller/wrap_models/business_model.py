@@ -26,8 +26,25 @@ class BusinessInformation(models.Model):
     status = models.CharField(max_length=50, default="pending")
     account_code = models.CharField(max_length=200,default="",null=True)
     open_orders = models.BooleanField(default=False)
+    
+    image = models.ImageField(upload_to='uploads/business_images/', default='default_business.png')
     def __str__(self):
         return self.name
+
+    def get_rating(self):
+        all_ratings = BusinessRating.objects.filter(business=self)
+        stars_list = [rating.stars for rating in all_ratings]
+
+        if stars_list:
+            average_rating = round(sum(stars_list) / len(stars_list), 1)
+        else:
+            average_rating = 0.0 
+        return average_rating
+
+    def get_item_count(self):
+        products = self.products.all().count()
+        return products
+
 
     class Meta:
         verbose_name_plural = "Businesses"

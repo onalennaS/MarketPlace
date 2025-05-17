@@ -2,8 +2,26 @@
 
 {% block title %}View Product - {{product.name}}{% endblock %}
 {% load static %}
+
+{% block meta %}
+    <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
+<meta property="og:title" content="{{ product.name }} | VersityFinds">
+<meta property="og:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
+<meta property="og:image" content="{{ absolute_image_url }}">
+<meta property="og:url" content="{{ absolute_page_url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VersityFinds">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ product.name }} | VersityFinds">
+<meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
+<meta name="twitter:image" content="{{ absolute_image_url }}">
+{% endblock %}
+
 {% block secend_nav %}
 {% endblock %}
+
 
 {% block styles %}
 <style>
@@ -115,7 +133,7 @@
                             <span class="discount-badge bg-primary text-white fw-bold">20% OFF</span>
                             <img src="{{product.image.url}}" 
                                  class="img-fluid w-100 rounded" 
-                                 alt="versityfinds - {{product.name}}" 
+                                 alt="Product - {{product.name}} from {{product.business.name}} | versityfinds" 
                                  style="object-fit: contain; height: 100%; max-height: 100vh;">
                         </div>
                     </div>

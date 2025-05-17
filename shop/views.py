@@ -35,9 +35,11 @@ def shop_base(request):
     businesse_list = [businesses[i:i+2] for i in range(0, len(businesses), 2)]
 
     items= 0
+    wishlist_items_count = 0
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
-    return render(request,'products/shop1.html',{'products':products,'cart_items_count':items,'business_list':businesse_list}) 
+        wishlist_items_count = get_wishlist_items(request.user)
+    return render(request,'products/shop1.html',{'products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list}) 
 
 
 def view_business_products(request,business_id):
@@ -56,6 +58,7 @@ def view_business_products(request,business_id):
         if category not in categories:
             categories[category] = []
         categories[category].append(product)
+    
     all_ratings = BusinessRating.objects.filter(business=business)
     stars_list = [rating.stars for rating in all_ratings]
 
@@ -64,16 +67,28 @@ def view_business_products(request,business_id):
     else:
         average_rating = 0.0 
     total_rating = len(stars_list)
-    return render(request,'products/business_products.html',{'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating}) 
+
+    absolute_page_url = request.build_absolute_uri()
+    absolute_image_url = None
+    if business.image:
+        absolute_image_url = request.build_absolute_uri(business.image.url)
+
+    items= 0
+    wishlist_items_count = 0
+    if request.user.is_authenticated:
+        items = get_cart_items(request.user)
+        wishlist_items_count = get_wishlist_items(request.user)
+    return render(request,'products/business_products.html',{'cart_items_count':items,"wishlist_items_count":wishlist_items_count,'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating}) 
 
 
 @login_required_custom
 def view_product(request, product_id):
     product = Product.objects.filter(id=int(product_id)).first()
     items= 0
-   
+    whishlist = 0
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
+        whishlist = get_wishlist_items(request.user)
     if product:
         all_ratings = BusinessRating.objects.filter(business=product.business)
         stars_list = [rating.stars for rating in all_ratings]
@@ -84,7 +99,9 @@ def view_product(request, product_id):
             average_rating = 0.0 
         total_rating = len(stars_list)
         markup_price = float(f'{product.price}') + (float(f'{product.price}') * 0.20)
-        return render(request,'products/view_product.html',{'markup_price':markup_price,'product':product,'cart_items_count':items,"wishlist_items_count":get_wishlist_items(request.user),'average_rating':average_rating,'total_rating':total_rating})
+        absolute_image_url = request.build_absolute_uri(product.image.url)
+        absolute_page_url = request.build_absolute_uri()
+        return render(request,'products/view_product.html',{'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'markup_price':markup_price,'product':product,'cart_items_count':items,"wishlist_items_count":whishlist,'average_rating':average_rating,'total_rating':total_rating})
     return render(request,'products/view_product.html')
 
 
