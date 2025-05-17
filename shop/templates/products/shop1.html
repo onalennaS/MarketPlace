@@ -1084,8 +1084,8 @@ hr.border-secondary {
                             </span>
                             {% endif %}
                             
-                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                                 alt="{{business.name}}" 
+                            <img src="{{busness.image.url}}" 
+                                 alt="{{business.name}} | versityfinds" 
                                  class="business-img">
                         </div>
 
@@ -1098,7 +1098,7 @@ hr.border-secondary {
                                 </span>
                                 <div class="business-rating">
                                     <i class="bi bi-star-fill"></i>
-                                    <span class="business-rating-count">4.0</span>
+                                    <span class="business-rating-count">{{business.get_rating}}</span>
                                 </div>
                             </div>
 
@@ -1107,7 +1107,7 @@ hr.border-secondary {
                                     Explore Products
                                     <i class="bi bi-arrow-right"></i>
                                 </span>
-                                <span class="business-items">50+ items</span>
+                                <span class="business-items">{{business.get_item_count}}+ items</span>
                             </div>
                         </div>
                     </div>

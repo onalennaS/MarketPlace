@@ -5,6 +5,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
+<meta property="og:title" content="{{ business.name }} | VersityFinds">
+<meta property="og:description" content="{{ business.description|default:'Check out this product on VersityFinds.' }}">
+<meta property="og:image" content="{{ absolute_image_url }}">
+<meta property="og:url" content="{{ absolute_page_url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VersityFinds">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ business.name }} | VersityFinds">
+<meta name="twitter:description" content="{{ bsuiness.description|default:'Check out this product on VersityFinds.' }}">
+<meta name="twitter:image" content="{{ absolute_image_url }}">
+
 {% endblock %}
 
 {% block styles %}
@@ -39,6 +54,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .business-hero-overlay {
@@ -53,7 +69,7 @@ body {
 
 .business-data {
     background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
     padding: 1.25rem;
     border-radius: 12px;
     max-width: 800px;
@@ -296,17 +312,7 @@ body {
     flex-grow: 1;
 }
 
-.product-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 2.8rem;
-    color: var(--dark);
-}
+
 
 .product-price {
     font-weight: 700;
@@ -482,10 +488,7 @@ body {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
     
-    .product-title {
-        font-size: 0.85rem;
-        height: 2.5rem;
-    }
+  
     
     .product-price {
         font-size: 1rem;
@@ -513,7 +516,7 @@ body {
 <div class="container py-4">
     <!-- Business Hero Section -->
     <div class="business-hero">
-        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" class="business-hero-image" alt="versityfinds - {{business.name}}">
+        <img src="{{business.image.url}}" alt="{{business.name}} | versityfinds" class="business-hero-image">
         <div class="business-hero-overlay">
             <div class="business-data">
                 <h1 class="business-name">{{business.name}}</h1>
@@ -529,16 +532,48 @@ body {
                         <i class="bi bi-clock"></i> We are closed 
                     </span>
                     {% endif %}
-                    <span class="business-meta-item">
+                    <span class="business-meta-item badge bg-dark rounded-pill">
                         <i class="bi bi-truck"></i> Delivery available
                     </span>
                 </div>
                 
                 
                 <div class="business-actions">
-                    <button class="btn btn-light">
-                        <i class="bi bi-share"></i> Share
-                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-share"></i> Share
+                        </button>
+                        <ul class="dropdown-menu">
+                            <!-- WhatsApp -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 text-success" target="_blank"
+                                   href="https://api.whatsapp.com/send?text={{business.description}}: {{ request.build_absolute_uri }}">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                </a>
+                            </li>
+                            <!-- Facebook -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 text-primary" target="_blank"
+                                   href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </a>
+                            </li>
+                            <!-- Twitter / X -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 text-info" target="_blank"
+                                   href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{business.description}}">
+                                    <i class="bi bi-twitter-x"></i> X (Twitter)
+                                </a>
+                            </li>
+                            <!-- Copy Link -->
+                            <li>
+                                <button class="dropdown-item d-flex align-items-center gap-2" onclick="copyProductLink()">
+                                    <i class="bi bi-clipboard"></i> Copy Link
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
                     <button class="btn btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#ratingOffcanvas">
                          <i class="bi bi-star-fill text-warning"></i> {{average_rating}} ({{total_rating}} reviews)
                     </button>
@@ -546,22 +581,36 @@ body {
             </div>
         </div>
     </div>
-    
+
     <!-- Business Info Section -->
-    <div class="card info-card mb-4">
-        <div class="card-body p-4">
-            <h3 class="info-card-title">About {{business.name}}</h3>
-            
-            <div class="row">
+<div class="card info-card mb-4">
+    <div class="card-body p-4">
+        <h3 class="info-card-title d-flex justify-content-between align-items-center">
+            About {{ business.name }}
+           <button class="btn btn-sm btn-outline-primary rounded d-flex align-items-center gap-2" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#businessInfoCollapse" 
+                    aria-expanded="true" 
+                    aria-controls="businessInfoCollapse"
+                    id="toggleInfoBtn">
+                <i class="bi bi-chevron-down" id="toggleIcon"></i>
+                <span id="toggleText">Show Info</span>
+            </button>
+
+        </h3>
+
+        <div class="collapse " id="businessInfoCollapse">
+            <div class="row mt-3">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h5 class="info-section-title">
                         <i class="bi bi-info-circle"></i> Business Details
                     </h5>
                     <ul class="info-list">
-                        <li><strong>Category:</strong> {{business.category}}</li>
-                        <li><strong>Location:</strong> {{address.address_line_1}} {{address.address_line_2}}, {{address.suburb}}, {{address.postal_code}}</li>
-                        <li><strong>Hours:</strong> {{business.open_time}} - {{business.close_time}} (Mon-Sun)</li>
-                        <li><strong>Contact:</strong> {{business.phone}}</li>
+                        <li><strong>Category:</strong> {{ business.category }}</li>
+                        <li><strong>Location:</strong> {{ address.address_line_1 }} {{ address.address_line_2 }}, {{ address.suburb }}, {{ address.postal_code }}</li>
+                        <li><strong>Hours:</strong> {{ business.open_time }} - {{ business.close_time }} (Mon-Sun)</li>
+                        <li><strong>Contact:</strong> {{ business.phone }}</li>
                     </ul>
                 </div>
                 <div class="col-md-6">
@@ -590,6 +639,8 @@ body {
             </div>
         </div>
     </div>
+</div>
+
     
     <!-- Menu Section -->
     <h2 class="section-title">Our Menu</h2>
@@ -612,10 +663,10 @@ body {
                     <div class="product-image-container">
                         {% if product.image %}
                             <a href="{% url 'view_product' product.id %}">
-                                <img src="{{product.image.url}}" class="product-image" alt="versityfinds - {{product.name}}">
+                                <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds ">
                             </a>
                         {% else %}
-                            <img src="https://via.placeholder.com/300" class="product-image" alt="versityfinds - {{product.name}}">
+                            <img src="https://via.placeholder.com/300" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds">
                         {% endif %}
                         
                         {% if product.discount %}
@@ -627,14 +678,15 @@ body {
                         </button>
                     </div>
                     <div class="product-body">
-                        <h5 class="product-title">{{product.name}}</h5>
-                        <div class="product-price">R {{product.price}}</div>
+                        <h5 class="fw-bold ">{{product.name}}</h5>
+                        <p class="small">{{ product.small_description|default:"No Description" }}</p>
+                        <p class=" text-success fw-bold mb-0 p-0">R {{product.price}}</p>
                         
-                        <div class="product-actions">
+                        <!-- <div class="product-actions">
                             <button class="btn btn-add-cart" onclick="addToCart({{product.id}})">
                                 <i class="bi bi-cart-plus"></i> Add to Cart
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 {% endif %}
@@ -706,31 +758,7 @@ body {
         }
     }
 
-    // Add to cart function
-    function addToCart(productId) {
-        // Add to cart API call
-        console.log(`Added product ${productId} to cart`);
-        // Show success message
-        const toast = document.createElement('div');
-        toast.className = 'position-fixed bottom-0 end-0 p-3';
-        toast.style.zIndex = '11';
-        toast.innerHTML = `
-            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <strong class="me-auto">{{business.name}}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Product added to cart!
-                </div>
-            </div>
-        `;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
+
 
     // Show selected category and hide others
     function showCategory(categoryId) {
@@ -757,4 +785,25 @@ body {
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const collapseElement = document.getElementById('businessInfoCollapse');
+        const toggleBtn = document.getElementById('toggleInfoBtn');
+        const toggleText = document.getElementById('toggleText');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        collapseElement.addEventListener('hide.bs.collapse', function () {
+            toggleText.textContent = 'Show Info';
+            toggleIcon.classList.remove('bi-chevron-up');
+            toggleIcon.classList.add('bi-chevron-down');
+        });
+
+        collapseElement.addEventListener('show.bs.collapse', function () {
+            toggleText.textContent = 'Hide Info';
+            toggleIcon.classList.remove('bi-chevron-down');
+            toggleIcon.classList.add('bi-chevron-up');
+        });
+    });
+</script>
+
 {% endblock %}

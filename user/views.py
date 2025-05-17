@@ -6,6 +6,7 @@ from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderA
 from seller.wrap_models.business_model import BusinessRating
 from decimal import Decimal
 from django.http import HttpResponse
+
 def is_google_linked(user):
     try:
         social_account = SocialAccount.objects.get(user=user)
@@ -31,6 +32,14 @@ def home(request):
     return redirect('shop_base')
     return render(request, 'home/index.html')
 
+from user.wrap_models.cart_models import Cart, Wishlist
+from django.http import HttpResponse
+
+
+
+
+def get_wishlist_items(user):
+    return Wishlist.objects.filter(user=user).all().count()
 
 def get_cart_items(user):
     cart_count = Cart.objects.filter(user=user).all().count() 
@@ -92,6 +101,7 @@ def profile(request):
 @login_required_custom
 def cart(request):
     items = get_cart_items(request.user)
+    wishlist_items_count = get_wishlist_items(request.user)
     extra_items = get_extra_count(request.user)
     cart_items = Cart.objects.filter(user=request.user).all()
     extras = CartExtra.objects.filter(user=request.user).all()
@@ -102,19 +112,22 @@ def cart(request):
         if item.product.quantity < 1 :
             has_out_of_stock_item = True
             break
-    return render(request, 'home/cart.html',{'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'cart_total':item_total,'cart_items':cart_items,'cart_items_count':items,'has_out_of_stock_item':has_out_of_stock_item})
+    return render(request, 'home/cart.html',{'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'cart_total':item_total,'cart_items':cart_items,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'has_out_of_stock_item':has_out_of_stock_item})
 
 @login_required_custom
 def wish_lists(request):
     items = get_cart_items(request.user)
+    wishlist_items_count = get_wishlist_items(request.user)
     wishlist_items = Wishlist.objects.filter(user=request.user).all()
     price_total = get_cart_total(wishlist_items)
-    return render(request, 'home/wish_lists.html',{'wishlist_total':price_total,'wishlist_items':wishlist_items,'wishlist_items_count':items,"cart_items_count":get_cart_items(request.user)})
+    return render(request, 'home/wish_lists.html',{'wishlist_total':price_total,'wishlist_items':wishlist_items,'wishlist_items_count':wishlist_items_count,"cart_items_count":items})
 
 @login_required_custom
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user).all()
     items = get_cart_items(request.user)
+    wishlist_items_count = get_wishlist_items(request.user)
+    
     method = None
     delivery_total = 0
     extras = CartExtra.objects.filter(user=request.user).all()
