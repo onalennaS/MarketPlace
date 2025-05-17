@@ -82,7 +82,7 @@ def view_business_products(request,slug):
     return render(request,'products/business_products.html',{'cart_items_count':items,"wishlist_items_count":wishlist_items_count,'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating}) 
 
 
-@login_required_custom
+
 def view_product(request, bSlug, pSlug):
     product = Product.objects.filter(slug=pSlug).first()
     items= 0
