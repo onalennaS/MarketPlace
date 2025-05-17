@@ -1,18 +1,18 @@
 {% extends 'products/shop_base2.html' %}
 
-{% block title %}View Product - {{product.name}}{% endblock %}
+{% block title %} {{product.name}} | {product.business.name}}| versityfinds{% endblock %}
 {% load static %}
 
 {% block meta %}
-    <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
-<meta property="og:title" content="{{ product.name }} from {{product.business.name}} - R{{product.price}}| VersityFinds">
+<meta name="description" content="{{ product.name }} from {{product.business.name}} on VersityFinds">
+ 
+<meta property="og:title" content="{{ product.name }} from {{product.business.name}} @ R{{product.price}}| VersityFinds">
 <meta property="og:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VersityFinds">
 
-<!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ product.name }} from {{product.business.name}} | VersityFinds">
 <meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
