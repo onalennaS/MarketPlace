@@ -7,8 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
+
+{% endblock %}
+{% block meta %}
 <meta property="og:title" content="{{ business.name }} | VersityFinds">
-<meta property="og:description" content="{{ business.description|default:'Check out this product on VersityFinds.' }}">
+<meta property="og:description" content="{{ business.description|default:'Check out this Business on VersityFinds.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
 <meta property="og:type" content="website">
@@ -17,11 +20,9 @@
 <!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ business.name }} | VersityFinds">
-<meta name="twitter:description" content="{{ bsuiness.description|default:'Check out this product on VersityFinds.' }}">
+<meta name="twitter:description" content="{{ bsuiness.description|default:'Check out this business on VersityFinds.' }}">
 <meta name="twitter:image" content="{{ absolute_image_url }}">
-
 {% endblock %}
-
 {% block styles %}
 :root {
     --primary: #2563eb;
@@ -662,7 +663,7 @@ body {
                 <div class="product-card">
                     <div class="product-image-container">
                         {% if product.image %}
-                            <a href="{% url 'view_product' product.id %}">
+                            <a href="{% url product.business.slug product.slug %}">
                                 <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds ">
                             </a>
                         {% else %}

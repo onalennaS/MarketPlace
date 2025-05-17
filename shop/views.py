@@ -43,9 +43,9 @@ def shop_base(request):
     return render(request,'products/shop1.html',{'most_bought':most_bought,'products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list}) 
 
 
-def view_business_products(request,business_id):
+def view_business_products(request,slug):
     products = Product.objects.filter(status="active").all()
-    business = BusinessInformation.objects.filter(id=int(business_id)).first()  # Get the first business object
+    business = BusinessInformation.objects.filter(slug=slug).first()  # Get the first business object
     products = Product.objects.filter(business=business).all()  # Get all products for the business
     address = Address.objects.filter(business=business).first()  # Get the first address for the business
 
@@ -83,8 +83,8 @@ def view_business_products(request,business_id):
 
 
 @login_required_custom
-def view_product(request, product_id):
-    product = Product.objects.filter(id=int(product_id)).first()
+def view_product(request, bSlug, slug):
+    product = Product.objects.filter(slug=slug).first()
     items= 0
     whishlist = 0
     if request.user.is_authenticated:

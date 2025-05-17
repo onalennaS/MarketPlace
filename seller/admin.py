@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .wrap_models.business_model import BusinessInformation, Address, Moderation
+from .wrap_models.business_model import BusinessInformation, Address, Moderation, BusinessRating
 # Register your models here.
 from .wrap_models.orders_model import  Order, OrderItem, OrderExtra, OrderAddons, OrderAddress
 from .wrap_models.product_model import Product, ProductModeration, RecentActivity, Extras, Addon
@@ -18,3 +18,4 @@ admin.site.register(ProductModeration)
 admin.site.register(RecentActivity)
 admin.site.register(Extras)
 admin.site.register(Addon)
+admin.site.register(BusinessRating)

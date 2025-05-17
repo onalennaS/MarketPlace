@@ -4,6 +4,7 @@ from .product_model import Product, Extras, Addon
 from seller.wrap_models.business_model import BusinessInformation
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+import uuid
  
 class Order(models.Model):
     id = models.AutoField(primary_key=True)  # Auto-incrementing ID
@@ -20,6 +21,7 @@ class Order(models.Model):
         default="Pending"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
  
     def total_price(self):
         amount = 0
@@ -48,6 +50,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
+   
 
     def total_price(self):
         product_price = self.quantity * self.product.price
@@ -61,6 +64,7 @@ class OrderExtra(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="extras")
     extra = models.ForeignKey(Extras, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+   
 
     def __str__(self):
         return f"{self.order.user.username} - {self.extra.name} ({self.quantity})"
@@ -80,6 +84,7 @@ class OrderAddress(models.Model):
     address_line_3 = models.CharField(max_length=100,null=True)
     address_line_4 = models.CharField(max_length=100,null=True)
     notes = models.CharField(max_length=200,null=True)
+    
     
 
     def __str__(self):

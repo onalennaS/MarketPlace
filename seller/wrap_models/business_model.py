@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.text import slugify
+import uuid
 
 class BusinessInformation(models.Model):
     BUSINESS_CATEGORIES = [
@@ -26,10 +28,27 @@ class BusinessInformation(models.Model):
     status = models.CharField(max_length=50, default="pending")
     account_code = models.CharField(max_length=200,default="",null=True)
     open_orders = models.BooleanField(default=False)
-    
     image = models.ImageField(upload_to='uploads/business_images/', default='default_business.png')
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
+    slug = models.SlugField( blank=True)  # <--- This
+    
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            num = 1
+
+            while BusinessInformation.objects.filter(slug=slug).exists():
+                if BusinessInformation.objects.filter(slug=slug).first():
+                    slug = f"{base_slug}-{num}"
+                    num += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
     def get_rating(self):
         all_ratings = BusinessRating.objects.filter(business=self)
@@ -86,6 +105,7 @@ class Address(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     def __str__(self):
         return f"{self.address_line_1}, {self.suburb}, {self.city}, {self.province}, {self.postal_code}"
 
@@ -103,6 +123,7 @@ class Moderation(models.Model):
     is_rejected = models.BooleanField(default=False)
     status = models.CharField(max_length=20,default="pending")
     reason = models.CharField(max_length=225, null=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
 
 
 class BusinessRating(models.Model):
@@ -110,4 +131,5 @@ class BusinessRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     stars = models.IntegerField(null=False,default=0)
+
     

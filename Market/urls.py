@@ -23,6 +23,8 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
 from shop.sitemaps import ShopSitemap
+from shop.productSitemap import ProductSitemap
+from shop.productSitemap import BusinessSitemap
 
 
 from authenticator.sitemaps import AuthSitemap
@@ -32,7 +34,8 @@ from seller.sitemaps import SellerSitemap
 
 
 sitemaps_dict = {
-    'products': ShopSitemap,
+    'business': BusinessSitemap,
+    'products': ProductSitemap,
     'auth': AuthSitemap,
     'user': UserSitemap,
      'shop': ShopSitemap,
@@ -49,7 +52,7 @@ urlpatterns = [
     path('auth/', include('authenticator.urls')),
     path('account/', include('user.urls')),
     path('accounts/', include('allauth.urls')),
-    path('shop/',include('shop.urls')),
+   
      path('moderator/',include('moderator.urls')),
     path('administrator/',include('administrator.urls')),
     path('transactions/', include('transactions.urls')),
