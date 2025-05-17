@@ -1,4 +1,4 @@
-{% extends 'home/base.html' %}
+{% extends 'products/shop_base2.html' %}
 
 {% block title %}Cart{% endblock %}
 {% load static %}
@@ -626,7 +626,7 @@
                                         <div class="d-flex flex-column h-100">
                                             <div class="product-price mb-3">
                                                 <h5>R {{cart_item.product.price}}</h5>
-                                                <del>R 450</del>
+                                                <del>R {{cart_item.product.markup_price}}</del>
                                             </div>
                                             <div class="action-buttons mt-auto">
                                                 <button class="btn btn-action btn-delete me-2" onclick="deleteCart({{cart_item.id}})">

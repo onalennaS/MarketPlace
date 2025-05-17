@@ -40,6 +40,8 @@ class Product(models.Model):
         if self.quantity < 1:
             return False
         return True
+    def markup_price(self):
+        return float(f'{self.price}') + (float(f'{self.price}') * 0.20)
     
 class ProductModeration(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_moderation")

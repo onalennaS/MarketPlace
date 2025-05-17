@@ -112,6 +112,7 @@ def cart(request):
         if item.product.quantity < 1 :
             has_out_of_stock_item = True
             break
+    
     return render(request, 'home/cart.html',{'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'cart_total':item_total,'cart_items':cart_items,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'has_out_of_stock_item':has_out_of_stock_item})
 
 @login_required_custom
