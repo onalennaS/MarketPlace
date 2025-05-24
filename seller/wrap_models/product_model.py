@@ -34,7 +34,7 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     image = models.ImageField(upload_to="uploads/")
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
-    slug = models.SlugField(unique=True, blank=True)  # <--- This
+    slug = models.SlugField(unique=False, blank=True)  # <--- This
     
 
     def save(self, *args, **kwargs):
