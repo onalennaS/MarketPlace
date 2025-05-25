@@ -71,9 +71,11 @@ def view_business_products(request,slug):
 
     absolute_page_url = request.build_absolute_uri()
     absolute_image_url = None
-    if business.image:
-        absolute_image_url = request.build_absolute_uri(business.image.url)
-
+    try:
+        if business.image:
+            absolute_image_url = request.build_absolute_uri(business.image.url)
+    except Exception as e:
+        pass
     items= 0
     wishlist_items_count = 0
     if request.user.is_authenticated:
