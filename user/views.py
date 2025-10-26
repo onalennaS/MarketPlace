@@ -6,7 +6,6 @@ from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderA
 from seller.wrap_models.business_model import BusinessRating
 from decimal import Decimal
 from django.http import HttpResponse
-from user.utils import send_email_order_confirmatio
 
 def is_google_linked(user):
     try:
