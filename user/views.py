@@ -40,7 +40,7 @@ from django.http import HttpResponse
 
 
 def get_wishlist_items(user):
-    send_email_order_confirmatio()
+    
     return Wishlist.objects.filter(user=user).all().count()
 
 def get_cart_items(user):
@@ -123,6 +123,20 @@ def wish_lists(request):
     wishlist_items_count = get_wishlist_items(request.user)
     wishlist_items = Wishlist.objects.filter(user=request.user).all()
     price_total = get_cart_total(wishlist_items)
+    import pickle
+    from google_auth_oauthlib.flow import InstalledAppFlow
+
+    SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+
+    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+    creds = flow.run_local_server(port=0)
+
+    # Save the credentials for later use
+    with open('token.pkl', 'wb') as token:
+        pickle.dump(creds, token)
+
+    print("Token saved as token.pkl")
+
     return render(request, 'home/wish_lists.html',{'wishlist_total':price_total,'wishlist_items':wishlist_items,'wishlist_items_count':wishlist_items_count,"cart_items_count":items})
 
 @login_required_custom
