@@ -6,6 +6,7 @@ from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderA
 from seller.wrap_models.business_model import BusinessRating
 from decimal import Decimal
 from django.http import HttpResponse
+from user.utils import send_email_order_confirmatio
 
 def is_google_linked(user):
     try:
@@ -39,6 +40,7 @@ from django.http import HttpResponse
 
 
 def get_wishlist_items(user):
+    send_email_order_confirmatio()
     return Wishlist.objects.filter(user=user).all().count()
 
 def get_cart_items(user):
