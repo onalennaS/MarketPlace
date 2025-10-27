@@ -68,7 +68,7 @@ urlpatterns = [
     path('api/delete_addon/', delete_addon, name='delete_addon'),
     path('api/stop_order/', stop_order, name='stop_order'),
     path('api/start_order/', start_order, name='start_order'),
-    path('move_order_next_stage/', move_order_next_stage, name='move_order_next_stage'),
+    path('api/move_order_next_stage/', move_order_next_stage, name='move_order_next_stage'),
      path('api/rate_business/', rate_business, name='rate_business'),
     # Fixed URL pattern for delete_business
     path('delete_business/<int:business_id>/', delete_business, name='delete_business'),
