@@ -228,7 +228,10 @@ def activate_account(request, email):
 
 def verify_user(request):
     if not request.user.is_authenticated:
-        return redirec('signin')
+        return redirect('signin')
+    role = verify_role(request.user)
+    print(role)
+    return redirect(role)
     return redirect(verify_role(request.user))
 
 def not_allowed(request):

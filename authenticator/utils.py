@@ -116,3 +116,5 @@ def verify_role(user):
         user.groups.add(group)
         user.save()
         return 'shop_base'
+    else:
+        return 'shop_base'
