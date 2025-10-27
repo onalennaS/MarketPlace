@@ -540,7 +540,12 @@
                         <li><a class="dropdown-item" href="{% url 'wish_lists' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
                         <li><a class="dropdown-item" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
                         <li><hr class="dropdown-divider"></li>
+                          {% if user.is_authanticated %}
                         <li><a class="dropdown-item logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item " href="{% url 'signin' %}"><i class="fas fa-sign-out-alt"></i> login/register</a></li>
+
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -573,7 +578,12 @@
                         <li><a class="dropdown-item" href="{% url 'dash' %}"><i class="fas fa-user-circle"></i> My Account</a></li>
                         <li><a class="dropdown-item" href="{% url 'order_history' %}"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
                         <li><hr class="dropdown-divider"></li>
+                        {% if user.is_authenticated %}
                         <li><a class="dropdown-item logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item " href="{% url 'signin' %}"><i class="fas fa-sign-out-alt"></i> login/register</a></li>
+
+                        {% endif %}
                     </ul>
                 </div>
             </div>
