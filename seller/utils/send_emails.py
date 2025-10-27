@@ -158,7 +158,7 @@ def email_order_tracking_update(recipient_email, link, order):
     return True
 
 
-def send_email_order_tracking_update(order):
+def send_email_order_traking_update(order):
     emails = [order.user.email]
     page_link = f"{settings.SITE_URL}/account/dashboard/track_orders/{order.id}"
     email_order_tracking_update(emails, page_link, order)
