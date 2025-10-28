@@ -457,7 +457,7 @@ function add_cart_delivery_address_resident() {
 
     // Get the button that was clicked
     const button = event.currentTarget;
-    
+
     // Disable the button and show spinner
     button.disabled = true;
     const originalButtonText = button.innerHTML;
@@ -471,6 +471,8 @@ function add_cart_delivery_address_resident() {
         complex_name: document.getElementById('complex_name').value,
         area: document.getElementById('area').value,
         notes: document.getElementById('rnotes').value,
+        latitude: document.getElementById('latitude').value,
+        longitude: document.getElementById('longitude').value,
     };
 
     console.log(formData);
@@ -488,7 +490,7 @@ function add_cart_delivery_address_resident() {
         // Re-enable the button and restore original text
         button.disabled = false;
         button.innerHTML = originalButtonText;
-        
+
         if(data.status == "error"){
             showSweetAlert(data.message, 'error');
         } else {
@@ -502,7 +504,7 @@ function add_cart_delivery_address_resident() {
         // Re-enable the button and restore original text even in case of error
         button.disabled = false;
         button.innerHTML = originalButtonText;
-        
+
         console.error('Error submitting form:', error);
         showSweetAlert('An error occurred while processing your request', 'error');
     });

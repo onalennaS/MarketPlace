@@ -214,6 +214,22 @@ def add_cart_delivery_method(request):
 
 	return JsonResponse({"message": "Delivery method Updated successfully",'status':'success'}, status=201)
 
+def is_point_in_bbox(lat, lon):
+	bbox_coords = {
+	'sw': (-26.71513, 27.86318),  # Southwest corner
+	'ne': (-26.70253, 27.89338)   # Northeast corner
+	}
+	sw_lat, sw_lon = bbox_coords['sw']
+	ne_lat, ne_lon = bbox_coords['ne']
+
+	in_lat = sw_lat <= lat <= ne_lat
+	in_lon = sw_lon <= lon <= ne_lon
+
+	return in_lat and in_lon
+
+
+
+
 @login_required_custom
 def add_cart_delivery_address(request):
 	if not request.method == "POST":
@@ -223,6 +239,9 @@ def add_cart_delivery_address(request):
 		data = json.loads(request.body)  # Parse JSON request body
 	except json.JSONDecodeError:
 		return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+
+	if not is_point_in_bbox(float(data.get('latitude')),float(data.get('longitude'))):
+			return JsonResponse({'message':'Deleivery is not avialable at your area!!!, choose pick up option','status':'error'},status=404)
 
 	address_type = data.get('address_type')
 	if address_type == 'residential':
@@ -267,6 +286,8 @@ def add_cart_delivery_address(request):
 			address_exists.complex_name = complex_name
 			address_exists.area = area
 			address_exists.notes = notes
+			address_exists.latitude = float(data.get('latitude'))
+			address_exists.longitude = float(data.get('longitude'))
 			address_exists.save()
 		else:
 			address = CartDeliveryAddress.objects.create(user=request.user,address_type=address_type, house_no=house_no, street=street,complex_name=complex_name,area=area, notes=notes)

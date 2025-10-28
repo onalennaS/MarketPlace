@@ -67,6 +67,10 @@ class CartDeliveryAddress(models.Model):
     area = models.CharField(max_length=50, null=True)
     notes = models.CharField(max_length=200, null=True)
 
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    
+
     instutition = models.CharField(max_length=50, null=True)
     block = models.CharField(max_length=50, null=True)
     venue = models.CharField(max_length=50, null=True)

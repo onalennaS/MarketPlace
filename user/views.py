@@ -3,7 +3,7 @@ from .utils import login_required_custom, has_password
 from allauth.socialaccount.models import SocialAccount
 from .wrap_models.cart_models import Cart , Wishlist,CartDeliveryMethod, CartDeliveryAddress, CartExtra
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddress
-from seller.wrap_models.business_model import BusinessRating
+from seller.wrap_models.business_model import BusinessRating, BusinessInformation, Address
 from decimal import Decimal
 from django.http import HttpResponse
 
@@ -130,12 +130,12 @@ def checkout(request):
     cart_items = Cart.objects.filter(user=request.user).all()
     items = get_cart_items(request.user)
     wishlist_items_count = get_wishlist_items(request.user)
-    
+
     method = None
     delivery_total = 0
     extras = CartExtra.objects.filter(user=request.user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=request.user).first()
-    
+
     if delivery_method:
         if delivery_method.method == "pickup":
             method = "pickup"
@@ -155,7 +155,33 @@ def checkout(request):
     checkout_total = round(price_total + extra_total + delivery_total,2)
     discount = get_discount(cart_items)
     total_to_pay = Decimal(checkout_total)  - Decimal(discount)
-    return render(request, 'home/checkout.html', {'discount':round(discount,2),'total_to_pay':total_to_pay,'extra_total':extra_total,'extra_items':extra_items,'extras':extras,'delivery_address':delivery_address,'cart_items':cart_items,"cart_total":price_total,"items_count":items,"method":method,"checkout_total":checkout_total})
+
+    # Get list of business names with longitude and latitude coordinates
+    businesses_with_coords = []
+    for cart_item in cart_items:
+        business = cart_item.product.business
+        address = Address.objects.filter(business=business).first()
+        if address and address.latitude and address.longitude:
+            businesses_with_coords.append({
+                'name': business.name,
+                'longitude': address.longitude,
+                'latitude': address.latitude
+            })
+
+    return render(request, 'home/checkout.html', {
+        'discount':round(discount,2),
+        'total_to_pay':total_to_pay,
+        'extra_total':extra_total,
+        'extra_items':extra_items,
+        'extras':extras,
+        'delivery_address':delivery_address,
+        'cart_items':cart_items,
+        "cart_total":price_total,
+        "items_count":items,
+        "method":method,
+        "checkout_total":checkout_total,
+        'businesses_with_coords': businesses_with_coords
+    })
 
 @login_required_custom
 def payment_successful(request,order_id):

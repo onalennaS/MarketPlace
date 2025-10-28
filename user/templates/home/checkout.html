@@ -84,7 +84,7 @@
        <div class="col-12 col-md-8">
         <div>
         <div class="card w-100 mb-3 bg-light rounded-0 p-0">
-              <div class="card-body  p-0" id="username-disp" style="display:block; background: white;">
+            <div class="card-body  p-0" id="username-disp" style="display:block; background: white;">
                <div class="d-flex justify-content-between w-100">
                     <div class=" p-3" style="background-color:white; width: 80%;">
 
@@ -125,7 +125,7 @@
         
         </div>
     </div>
-    <div>
+    <div class="del-meth">
         {% if method == "delivery" %}
         <div class="card w-100 mb-3 bg-light rounded-0">
             <div class="card-body  p-0" id="password-disp" style="display:block; background: white">
@@ -188,7 +188,7 @@
                               </div>
                                 <div id="residence_section" class="hidden mb-2">
                                     <br>
-                                    <input type="rext" id="address_type" name="" value="residential" hidden>
+                                    <input type="text" id="address_type" name="" value="residential" hidden>
                                     <h4>Residential Delivery</h4>
                                    <div class="form-floating mb-3 w-75">
                                         <input type="text" class="form-control border border-dark border-top-0 border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="house_no" placeholder="Enter house/bulding number (e.g , 17)" name='erecipient-name' value="">
@@ -218,17 +218,39 @@
                                           <textarea type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="rnotes" placeholder="enter notes (e.g. ring door bell)" name='ecity' value=""></textarea>
                                           <label for="notes">Notes <span class="muted small"> (e.g. ring door bell)</span></label>
                                     </div>
-                                     <!-- <div class="form-floating mb-3 w-75">
-                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='eprovince' value="">
-                                          <label for="floatingInput">Province</label>
+
+                                    <!-- Location Coordinates Section -->
+                                    <div class="mb-3">
+                                        <h5>Location Coordinates</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="latitude" placeholder="-26.2041" name='latitude' value="">
+                                                    <label for="latitude">Latitude</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="longitude" placeholder="28.0473" name='longitude' value="">
+                                                    <label for="longitude">Longitude</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div id="location-map" style="height: 250px; width: 100%; border: 1px solid #ddd; border-radius: 5px; position: relative; min-height: 250px; overflow: hidden;"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" onclick="getCurrentLocation()" class="btn btn-primary rounded-0">
+                                                <i class="fa fa-crosshairs"></i> Get My Location
+                                            </button>
+                                            <button type="button" onclick="clearLocation()" class="btn btn-outline-secondary rounded-0">
+                                                <i class="fa fa-times"></i> Clear
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="form-floating mb-3 w-75">
-                                          <input type="text" class="form-control border border-dark border-top-0 border-end-0 border-start-0 border-bottom-2 rounded-0" id="floatingInput" placeholder="" name='epostal' value="">
-                                          <label for="floatingInput">Postal Code</label>
-                                    </div> -->
-                                    
+
                                      <button type="button" onclick="add_cart_delivery_address_resident()" class="btn btn-success rounded-0 mb-2 w-100">Save Address</button>
-                                     <button type="button" class="btn btn-outline-dark rounded-0 w-100" onclick="cancel_button('password')" >Cancel</button>    
+                                     <button type="button" class="btn btn-outline-dark rounded-0 w-100" onclick="cancel_button('password')" >Cancel</button>
                                 </div>
                                 <div id="campus_section" class="hidden mb-5">
                                     <form>
@@ -291,6 +313,17 @@
                 </form>   
             </div>
         </div>
+        {% else %}
+        <!-- Pickup Map Section -->
+        <div class="card w-100 mb-3 bg-light rounded-0">
+            <div class="card-header bg-white">
+                <h6 class="card-title text-muted mb-0"><i class="fa fa-map-marker"></i> <b>Pickup Locations</b></h6>
+                <small class="text-muted">Find your nearest pickup points on the map</small>
+            </div>
+            <div class="card-body p-0">
+                <div id="pickup-map" style="height: 400px; width: 100%; border-radius: 0 0 5px 5px;"></div>
+            </div>
+        </div>
         {% endif %}
     </div>
     {% if method == "delivery" %}
@@ -301,7 +334,7 @@
                     <h6 class="card-title mb-4 text-muted"><i class="fa fa-clock"></i><b> Deliver by</b></h6>
                         <div class="form-check form-check-inline w-100 bg-light p-4 align-items-center rounded-2">
                                       <input class="form-check-input mx-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" selected>
-                                      <label class="form-check-label d-flex justify-content-between" for="inlineRadio1"> <span>Tuesday, 17 December <br>
+                                      <label class="form-check-label d-flex justify-content-between" for="inlineRadio1"> <span id="delivery-date-time" class="d-date">Tuesday, 17 December <br>
                                             <span class="text-muted small">Standard Delivery</span>
                                         </span>
                                         <span class="fw-bold">
@@ -324,9 +357,7 @@
                     <div class=" p-3" style="background-color:white; width: 80%;">
 
                     <h5 class="card-title mb-3 text-muted"><i class="fa fa-credit-card"></i><b> Payment Method</b></h5>
-                        <p class="card-text pt-0 pb-0 px-3 fw-bold ">Credit & Debit Card
-    }
-</p>
+                        <p class="card-text pt-0 pb-0 px-3 fw-bold ">Credit & Debit Card</p>
     <i class="fa-brands fa-cc-mastercard fa-4x text-warning px-3 "></i>
     <i class="fa-brands fa-cc-visa fa-4x text-primary"></i>
                        
@@ -496,6 +527,13 @@
 
         displays.style.display = 'none';
         forms.style.display = 'block';
+
+        // Re-initialize location map when address form is shown
+        if (name === 'password') {
+            setTimeout(function() {
+                reinitializeLocationMap();
+            }, 200);
+        }
     }
     function cancel_button(name){
         var displays = document.getElementById(name+'-disp');
@@ -516,5 +554,210 @@
 </script>
 <script src="{% static 'user/js/cart.js' %}"></script>
 
+<!-- OpenStreetMap and Leaflet JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update delivery date and time
+    updateDeliveryDateTime();
+
+    // Check if pickup method is selected and map container exists
+    if (document.getElementById('pickup-map')) {
+        // Initialize the map
+        var map = L.map('pickup-map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg area
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Get business coordinates from Django context
+        var businesses = {{ businesses_with_coords|safe }};
+
+        // Add markers for each business
+        businesses.forEach(function(business) {
+            var marker = L.marker([business.latitude, business.longitude]).addTo(map);
+
+            // Create popup content
+            var popupContent = `
+                <div style="text-align: center;">
+                    <h6 style="margin: 0 0 5px 0; color: #333;">${business.name}</h6>
+                    <p style="margin: 0; font-size: 12px; color: #666;">Pickup Location</p>
+                    <button onclick="selectPickupLocation('${business.name}')" style="margin-top: 5px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Select This Location</button>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent);
+        });
+
+        // Fit map to show all markers
+        if (businesses.length > 0) {
+            var group = new L.featureGroup(businesses.map(function(business) {
+                return L.marker([business.latitude, business.longitude]);
+            }));
+            map.fitBounds(group.getBounds().pad(0.1));
+        }
+    }
+
+    // Do not initialize location map on DOM load if form is hidden
+});
+
+function updateDeliveryDateTime() {
+    const now = new Date();
+    const deliveryTime = new Date(now.getTime() + 45 * 60000); // Add 45 minutes
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const dayName = days[deliveryTime.getDay()];
+    const day = deliveryTime.getDate();
+    const monthName = months[deliveryTime.getMonth()];
+    const hours = deliveryTime.getHours();
+    const minutes = deliveryTime.getMinutes().toString().padStart(2, '0');
+
+    const formattedDateTime = `${dayName}, ${day} ${monthName} ${hours}:${minutes}`;
+
+    const deliveryElement = document.getElementById('delivery-date-time');
+    if (deliveryElement) {
+        deliveryElement.innerHTML = `${formattedDateTime}<br><span class="text-muted small">Standard Delivery</span>`;
+    }
+}
+
+function selectPickupLocation(businessName) {
+    // You can add logic here to handle pickup location selection
+    // For example, store the selected business or show a confirmation
+    alert('Selected pickup location: ' + businessName);
+    // You might want to update some hidden field or trigger other actions
+}
+
+function initializeLocationMap() {
+    // Small delay to ensure container is visible and properly sized
+    setTimeout(function() {
+        var mapContainer = document.getElementById('location-map');
+        if (!mapContainer) return;
+
+        // Clear any existing content
+        mapContainer.innerHTML = '';
+
+        // Ensure container has proper dimensions and positioning
+        mapContainer.style.height = 'auto';
+        mapContainer.style.width = '100%';
+        mapContainer.style.position = 'relative';
+        mapContainer.style.overflow = 'hidden';
+
+        // Force layout recalculation
+        mapContainer.offsetHeight;
+
+        var locationMap = L.map('location-map', {
+            center: [-26.2041, 28.0473],
+            zoom: 13,
+            zoomControl: true,
+            scrollWheelZoom: true,
+            fadeAnimation: false,
+            zoomAnimation: false,
+            attributionControl: true
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18,
+            errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+        }).addTo(locationMap);
+
+        var marker;
+
+        // Add click event to place marker
+        locationMap.on('click', function(e) {
+            if (marker) {
+                locationMap.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(locationMap);
+            document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+            document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+        });
+
+        // Multiple invalidateSize calls with increasing delays
+        setTimeout(function() {
+            locationMap.invalidateSize();
+        }, 50);
+
+        setTimeout(function() {
+            locationMap.invalidateSize();
+        }, 150);
+
+        setTimeout(function() {
+            locationMap.invalidateSize();
+        }, 300);
+
+        // Store map reference for other functions
+        window.locationMap = locationMap;
+        window.locationMarker = marker;
+    }, 300);
+}
+
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            document.getElementById('latitude').value = lat.toFixed(6);
+            document.getElementById('longitude').value = lng.toFixed(6);
+
+            // Update map and marker
+            if (window.locationMap) {
+                window.locationMap.setView([lat, lng], 15);
+                if (window.locationMarker) {
+                    window.locationMap.removeLayer(window.locationMarker);
+                }
+                window.locationMarker = L.marker([lat, lng]).addTo(window.locationMap);
+            }
+        }, function(error) {
+            alert('Error getting location: ' + error.message);
+        });
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+
+function clearLocation() {
+    document.getElementById('latitude').value = '';
+    document.getElementById('longitude').value = '';
+    if (window.locationMarker && window.locationMap) {
+        window.locationMap.removeLayer(window.locationMarker);
+        window.locationMarker = null;
+    }
+}
+
+// Location map is only initialized when address form is opened
+
+// Re-initialize map when address form becomes visible (for dynamic content)
+function reinitializeLocationMap() {
+    if (document.getElementById('location-map')) {
+        // Clear any existing map instance
+        if (window.locationMap) {
+            try {
+                window.locationMap.remove();
+            } catch (e) {
+                // Ignore errors if map is already removed
+            }
+            window.locationMap = null;
+        }
+        // Clear the container
+        var container = document.getElementById('location-map');
+        container.innerHTML = '';
+
+        // Reset container styles
+        container.style.height = '250px';
+        container.style.width = '100%';
+        container.style.position = 'relative';
+        container.style.overflow = 'hidden';
+
+        initializeLocationMap();
+    }
+}
+</script>
 
 {% endblock content %}
