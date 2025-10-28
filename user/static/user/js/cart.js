@@ -143,7 +143,10 @@ function addExtraToCart() {
         button.innerHTML = originalButtonText;
         
         if(data.status == "error"){
+        button.innerHTML = '<button class="btn btn-warning" ><i class="fa fa-check"> </i> extras added </button>'
             showSweetAlert(data.message, 'error');
+        button.innerHTML = originalButtonText;
+        
         } else {
             showSweetAlert(data.message, 'success');
         }
@@ -654,7 +657,8 @@ function showSweetAlert(message, icon) {
         text: message,
         timer: icon === 'success' ? 2000 : undefined,
         timerProgressBar: icon === 'success',
-        showConfirmButton: icon !== 'success'
+        showConfirmButton: icon !== 'success',
+        
     });
 }
 

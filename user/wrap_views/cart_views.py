@@ -300,7 +300,7 @@ def palce_order(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)   
 
-
+    
     cart_items = Cart.objects.filter(user=request.user).all()
     cart_extras = CartExtra.objects.filter(user=request.user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=request.user).first()
@@ -308,11 +308,9 @@ def palce_order(request):
         return JsonResponse({'status':'error', 'message':'please choose a Delivery method'}, status=403)
     
     address = CartDeliveryAddress.objects.filter(user=request.user).first()
-    if not address:
+    if not address and delivery_method.method == "delivery" and not address.address_type :
         return JsonResponse({'status':'error', 'message':'Please add delivery address'}, status=403)
-    if not address.address_type:
-        return JsonResponse({'status':'error', 'message':'Please add delivery address'}, status=403)
-
+ 
     business = cart_items[0].product.business
     product_amount = 0
     extra_amount = 0 

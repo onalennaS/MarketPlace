@@ -4,6 +4,7 @@ from seller.wrap_models.product_model import Product, Extras
 from seller.wrap_models.business_model import BusinessInformation, Address, BusinessRating
 from user.wrap_models.cart_models import Cart, Wishlist
 from django.http import HttpResponse
+import random
 
 
 
@@ -30,7 +31,9 @@ def has_password(view_func):
 
 
 def shop_base(request):
-    products = Product.objects.filter(status="active").all()
+    products = list(Product.objects.filter(status="active").all())
+    random.shuffle(products)
+    products = products[:6]
     businesses = list(BusinessInformation.objects.all())  # Convert QuerySet to a list for efficient slicing
     businesse_list = [businesses[i:i+2] for i in range(0, len(businesses), 2)]
 
@@ -39,8 +42,8 @@ def shop_base(request):
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
-    most_bought = Product.objects.filter(sales__gt=8)
-    return render(request,'products/shop1.html',{'most_bought':most_bought,'products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list}) 
+    most_bought = Product.objects.filter(sales__gt=8).order_by('-sales')[:10]
+    return render(request,'products/shop1.html',{'most_bought':most_bought,'flash_deal_products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list})
 
 
 def view_business_products(request,slug):

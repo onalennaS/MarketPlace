@@ -74,7 +74,52 @@
       <p>Hi <strong>{{ user.username }}</strong>,</p>
       <p>We’re happy to let you know that your order <strong>#{{ order.order_id }}</strong> has been successfully delivered.</p>
 
-      <p>We hope you love your purchase. Thank you again for choosing <strong>VersityFinds</strong>—we look forward to serving you again!</p>
+      <!-- Order Summary -->
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #333;">Order Summary</h4>
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #ddd;">
+              <th style="text-align: left; padding: 8px;">Item</th>
+              <th style="text-align: center; padding: 8px;">Qty</th>
+              <th style="text-align: right; padding: 8px;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.order_items.all %}
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px;">{{ item.product.name }}</td>
+              <td style="text-align: center; padding: 8px;">{{ item.quantity }}</td>
+              <td style="text-align: right; padding: 8px;">R{{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+            {% if order.extras.all %}
+              {% for extra in order.extras.all %}
+              <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px;">{{ extra.extra.name }}</td>
+                <td style="text-align: center; padding: 8px;">{{ extra.quantity }}</td>
+                <td style="text-align: right; padding: 8px;">R{{ extra.extra.price }}</td>
+              </tr>
+              {% endfor %}
+            {% endif %}
+            {% if order.delivery_method == 'delivery' %}
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px;">Delivery Fee</td>
+              <td style="text-align: center; padding: 8px;">1</td>
+              <td style="text-align: right; padding: 8px;">R15.00</td>
+            </tr>
+            {% endif %}
+          </tbody>
+          <tfoot>
+            <tr style="border-top: 2px solid #333;">
+              <td colspan="2" style="padding: 8px; font-weight: bold;">Total</td>
+              <td style="text-align: right; padding: 8px; font-weight: bold;">R{{ order.total_price }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <p>We hope you love your purchase. Thank you again for choosing <strong>{{ order.business.name }}</strong>—we look forward to serving you again!</p>
 
       <p>We’d really appreciate your feedback. Please take a moment to leave a review and let us know about your experience.</p>
 
