@@ -24,7 +24,7 @@
         {% endif %}
         
         {% load socialaccount %}
-        <a href="{% provider_login_url 'google' next='/auth/verify_user' %}" class="google-btn">
+        <a href="{% provider_login_url 'google' next='/auth/verify_user/' %}" class="google-btn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
             Continue with Google
         </a>
