@@ -171,7 +171,7 @@ def rate_business(request):
     try:
             data = json.loads(request.body)  # Parse JSON request body
     except json.JSONDecodeError:
-        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)     
+        return JsonResponse({'message':'Invalid Json Data', "status":"error"}, status=400)
 
 
     business = BusinessInformation.objects.filter(id=int(data.get('business_id'))).first()
@@ -179,14 +179,66 @@ def rate_business(request):
 
     is_rated = BusinessRating.objects.filter(user=request.user,business=business).first()
     if is_rated:
-        return JsonResponse({'message':'You have already rated....thank you', "status":"error"}, status=400)     
+        return JsonResponse({'message':'You have already rated....thank you', "status":"error"}, status=400)
 
     if business and stars >= 0 and stars <=5:
         rating = BusinessRating.objects.create(user=request.user,business=business,stars=stars)
         rating.save()
     else:
-        return JsonResponse({'message':'Something went wrong please contact support ', "status":"error"}, status=400)     
+        return JsonResponse({'message':'Something went wrong please contact support ', "status":"error"}, status=400)
     return JsonResponse({"message": "Thank you for rating ",'status':'success'}, status=201)
+
+@login_required_custom
+@verify_role('business')
+def edit_business(request, business_id):
+    business = get_object_or_404(BusinessInformation, id=business_id, owner=request.user)
+    address = Address.objects.filter(business=business).first()
+
+    if request.method == 'POST':
+        # Update business information
+        business.name = request.POST.get('name')
+        business.business_type = request.POST.get('business_type')
+        business.description = request.POST.get('description')
+        business.registration_number = request.POST.get('registration_number')
+        business.category = request.POST.get('category')
+        business.phone = request.POST.get('phone')
+        business.email = request.POST.get('email')
+        business.open_time = request.POST.get('open_time')
+        business.close_time = request.POST.get('close_time')
+
+        if request.FILES.get('image'):
+            business.image = request.FILES.get('image')
+
+        business.save()
+
+        # Update address information
+        if address:
+            address.address_line_1 = request.POST.get('address_line_1')
+            address.address_line_2 = request.POST.get('address_line_2')
+            address.suburb = request.POST.get('suburb')
+            address.city = request.POST.get('city')
+            address.postal_code = request.POST.get('postal_code')
+            address.latitude = request.POST.get('latitude')
+            address.longitude = request.POST.get('longitude')
+            address.save()
+        else:
+            # Create new address if it doesn't exist
+            Address.objects.create(
+                business=business,
+                address_line_1=request.POST.get('address_line_1'),
+                address_line_2=request.POST.get('address_line_2'),
+                suburb=request.POST.get('suburb'),
+                city=request.POST.get('city'),
+                postal_code=request.POST.get('postal_code'),
+                latitude=request.POST.get('latitude'),
+                longitude=request.POST.get('longitude'),
+                province='GP'  # Default to Gauteng
+            )
+
+        messages.success(request, 'Business information updated successfully.')
+        return redirect('seller_dashboard', business_id=business.id)
+
+    return render(request, 'seller/new/business_info.html', {'business': business})
 
 
 

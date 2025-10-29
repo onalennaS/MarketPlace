@@ -157,17 +157,17 @@ def checkout(request):
     total_to_pay = Decimal(checkout_total)  - Decimal(discount)
 
     # Get list of business names with longitude and latitude coordinates
-    businesses_with_coords = []
+    businesses_with_coords = {}
     for cart_item in cart_items:
         business = cart_item.product.business
         address = Address.objects.filter(business=business).first()
         if address and address.latitude and address.longitude:
-            businesses_with_coords.append({
+            businesses_with_coords = {
                 'name': business.name,
-                'longitude': address.longitude,
-                'latitude': address.latitude
-            })
-
+                'longitude': float(address.longitude),
+                'latitude': float(address.latitude)
+            }
+    print(businesses_with_coords)
     return render(request, 'home/checkout.html', {
         'discount':round(discount,2),
         'total_to_pay':total_to_pay,

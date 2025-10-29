@@ -1,23 +1,67 @@
 {% extends 'seller/base.html' %}
 
+{% load static %}
 
 {% block styles %}
- .add-business-container {
-            max-width: 700px;
-            background: none;
-            padding: 30px;
-            border-radius: 10px;
-            
-            
-        }
-        .logo-preview {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #007bff;
-            display: none;
-        }
+<style>
+    .add-business-container {
+        max-width: 900px;
+        background: #f8f9fa;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        margin: 20px auto;
+    }
+    .logo-preview {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #007bff;
+        display: block;
+    }
+    .form-section {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .section-title {
+        color: #495057;
+        font-weight: 600;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+    .map-container {
+        height: 400px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+    .coordinate-inputs {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .coordinate-inputs input {
+        flex: 1;
+    }
+    .btn-custom {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+    }
+</style>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% endblock %}
 
 {% block nav %}
@@ -49,7 +93,7 @@
                 <i class="bi bi-bar-chart"></i>
                 <span>Reports</span>
             </a>
-            <a href="{% url 'business_info' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+            <a href="{% url 'edit_business' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Edit Business">
                <i class="bi bi-building"></i>
                 <span>Business information</span>
             </a>
@@ -68,146 +112,250 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="add-business-container">
-        <h2 class="text-center">View/Edit Business details</h2>
-        <p class="text-center text-muted">Provide accurate details your business on SixSkies.</p>
+        <h2 class="text-center mb-4">Update Business Details</h2>
+        <p class="text-center text-muted mb-4">Update your business information on SixSkies.</p>
 
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="{% url 'edit_business' business.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
             <!-- Business Logo -->
-            <div class="mb-3 text-center">
-                <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
-                <input type="file" class="form-control" id="businessLogo" accept="image/*" required style="background-color:inherit; color: inherit;">
-                <div class="mt-3">
-                    <img id="logoPreview" class="logo-preview" alt="Business Logo Preview">
+            <div class="form-section">
+                <h5 class="section-title">Business Logo</h5>
+                <div class="mb-3 text-center">
+                    <input type="file" class="form-control" id="businessLogo" name="image" accept="image/*" style="background-color:inherit; color: inherit;">
+                    <div class="mt-3">
+                        {% if business.image %}
+                            <img id="logoPreview" class="logo-preview" src="{{ business.image.url }}" alt="Business Logo Preview">
+                        {% else %}
+                            <img id="logoPreview" class="logo-preview" src="{% static 'images/default_business.png' %}" alt="Business Logo Preview">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
-            <!-- Business Name -->
-            <div class="mb-3">
-                <label for="businessName" class="form-label fw-bold">Business Name</label>
-                <input type="text" class="form-control" id="businessName" placeholder="Enter your business name" required style="background-color:inherit; color: inherit;">
-            </div>
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h5 class="section-title">Basic Information</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="businessName" class="form-label fw-bold">Business Name</label>
+                        <input type="text" class="form-control" id="businessName" name="name" value="{{ business.name }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="businessType" class="form-label fw-bold">Business Type</label>
+                        <select class="form-control" id="businessType" name="business_type" required style="background-color:inherit; color: inherit;">
+                            <option value="">Select Type</option>
+                            <option value="sole_proprietorship" {% if business.business_type == 'sole_proprietorship' %}selected{% endif %}>Sole Proprietorship</option>
+                            <option value="partnership" {% if business.business_type == 'partnership' %}selected{% endif %}>Partnership</option>
+                            <option value="corporation" {% if business.business_type == 'corporation' %}selected{% endif %}>Corporation</option>
+                            <option value="limited_liability" {% if business.business_type == 'limited_liability' %}selected{% endif %}>Limited Liability Company (LLC)</option>
+                        </select>
+                    </div>
+                </div>
 
-            <!-- Business Type -->
-            <div class="mb-3">
-                <label for="businessType" class="form-label fw-bold">Business Type</label>
-                <select class="form-control" id="businessType" required style="background-color:inherit; color: inherit;">
-                    <option value="">Select Type</option>
-                    <option value="sole_proprietorship">Sole Proprietorship</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="corporation">Corporation</option>
-                    <option value="limited_liability">Limited Liability Company (LLC)</option>
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label for="businessDescription" class="form-label fw-bold">Business Description</label>
+                    <textarea class="form-control" id="businessDescription" name="description" rows="4" required style="background-color:inherit; color: inherit;">{{ business.description }}</textarea>
+                </div>
 
-
-            <!-- Business Description -->
-            <div class="mb-3">
-                <label for="businessDescription" class="form-label fw-bold">Business Description</label>
-                <textarea class="form-control" id="businessDescription" rows="4" placeholder="Describe your business" required style="background-color:inherit; color: inherit;"></textarea>
-            </div>
-
-            <!-- Business Registration Number -->
-            <div class="mb-3">
-                <label for="registrationNumber" class="form-label fw-bold">Business Registration Number</label>
-                <input type="text" class="form-control" id="registrationNumber" placeholder="Enter registration number (if available)" style="background-color:inherit; color: inherit;">
-            </div>
-
-            <!-- Business Category -->
-            <div class="mb-3">
-                <label for="businessCategory" class="form-label fw-bold">Business Category</label>
-                <select class="form-control" id="businessCategory" required style="background-color:inherit; color: inherit;">
-                    <option value="">Select Category</option>
-                    <option value="retail">Retail</option>
-                    <option value="services">Services</option>
-                    <option value="food">Food & Beverage</option>
-                    <option value="technology">Technology</option>
-                    <option value="health">Health & Wellness</option>
-                    <option value="education">Education</option>
-                </select>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="registrationNumber" class="form-label fw-bold">Registration Number</label>
+                        <input type="text" class="form-control" id="registrationNumber" name="registration_number" value="{{ business.registration_number }}" style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="businessCategory" class="form-label fw-bold">Business Category</label>
+                        <select class="form-control" id="businessCategory" name="category" required style="background-color:inherit; color: inherit;">
+                            <option value="">Select Category</option>
+                            <option value="dropship" {% if business.category == 'dropship' %}selected{% endif %}>Dropship</option>
+                            <option value="food" {% if business.category == 'food' %}selected{% endif %}>Food & Beverages</option>
+                            <option value="clothing" {% if business.category == 'clothing' %}selected{% endif %}>Clothing</option>
+                            <option value="technology" {% if business.category == 'technology' %}selected{% endif %}>Technology</option>
+                            <option value="other" {% if business.category == 'other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <!-- Contact Information -->
-            <h4 class="mt-4">Contact Information</h4>
-
-            <div class="mb-3">
-                <label for="businessPhone" class="form-label fw-bold">Phone Number</label>
-                <input type="tel" class="form-control" id="businessPhone" placeholder="Enter phone number" required style="background-color:inherit; color: inherit;">
-            </div>
-
-            <div class="mb-3">
-                <label for="businessEmail" class="form-label fw-bold">Business Email</label>
-                <input type="email" class="form-control" id="businessEmail" placeholder="Enter business email" required style="background-color:inherit; color: inherit;">
-            </div>
-
-            <div class="mb-3">
-                <label for="businessWebsite" class="form-label fw-bold">Website (Optional)</label>
-                <input type="url" class="form-control" id="businessWebsite" placeholder="Enter business website URL" style="background-color:inherit; color: inherit;">
-            </div>
-
-            <div class="mb-3">
-                <label for="businessAddress" class="form-label fw-bold">Business Address</label>
-                <textarea class="form-control" id="businessAddress" rows="2" placeholder="Enter business location" required style="background-color:inherit; color: inherit;"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="operatingHours" class="form-label fw-bold">Operating Hours</label>
+            <div class="form-section">
+                <h5 class="section-title">Contact Information</h5>
                 <div class="row">
-                    <div class="col-md-6">
-                        <input type="time" class="form-control" id="openingHour" name="openingHour" required style="background-color:inherit; color: inherit;">
-                        <small class="text-muted">Opening Hour</small>
+                    <div class="col-md-6 mb-3">
+                        <label for="businessPhone" class="form-label fw-bold">Phone Number</label>
+                        <input type="tel" class="form-control" id="businessPhone" name="phone" value="{{ business.phone }}" required style="background-color:inherit; color: inherit;">
                     </div>
-                    <div class="col-md-6">
-                        <input type="time" class="form-control" id="closingHour" name="closingHour" required style="background-color:inherit; color: inherit;">
-                        <small class="text-muted">Closing Hour</small>
+                    <div class="col-md-6 mb-3">
+                        <label for="businessEmail" class="form-label fw-bold">Business Email</label>
+                        <input type="email" class="form-control" id="businessEmail" name="email" value="{{ business.email }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="businessWebsite" class="form-label fw-bold">Website (Optional)</label>
+                    <input type="url" class="form-control" id="businessWebsite" name="website" placeholder="Enter business website URL" style="background-color:inherit; color: inherit;">
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="form-section">
+                <h5 class="section-title">Address Information</h5>
+                {% for address in business.addresses.all %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="addressLine1" class="form-label fw-bold">Address Line 1</label>
+                        <input type="text" class="form-control" id="addressLine1" name="address_line_1" value="{{ address.address_line_1 }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="addressLine2" class="form-label fw-bold">Address Line 2</label>
+                        <input type="text" class="form-control" id="addressLine2" name="address_line_2" value="{{ address.address_line_2 }}" style="background-color:inherit; color: inherit;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="suburb" class="form-label fw-bold">Suburb</label>
+                        <input type="text" class="form-control" id="suburb" name="suburb" value="{{ address.suburb }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="city" class="form-label fw-bold">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="postalCode" class="form-label fw-bold">Postal Code</label>
+                        <input type="text" class="form-control" id="postalCode" name="postal_code" value="{{ address.postal_code }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Coordinates and Map -->
+            <div class="form-section">
+                <h5 class="section-title">Location Coordinates</h5>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline-primary mb-3" id="getLocationBtn">Get Current Location</button>
+                    <div id="map" class="map-container"></div>
+                    <div class="coordinate-inputs">
+                        <input type="number" step="any" class="form-control" id="latitude" name="latitude" placeholder="Latitude" {% if business.addresses.first.latitude %}value="{{ business.addresses.first.latitude }}"{% endif %} required>
+                        <input type="number" step="any" class="form-control" id="longitude" name="longitude" placeholder="Longitude" {% if business.addresses.first.longitude %}value="{{ business.addresses.first.longitude }}"{% endif %} required>
                     </div>
                 </div>
             </div>
 
-
-            <!-- Owner Details -->
-           <!--  <h4 class="mt-4">Owner Details</h4>
-
-            <div class="mb-3">
-                <label for="ownerName" class="form-label fw-bold">Full Name</label>
-                <input type="text" class="form-control" id="ownerName" placeholder="Enter full name" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="ownerPhone" class="form-label fw-bold">Owner's Phone Number</label>
-                <input type="tel" class="form-control" id="ownerPhone" placeholder="Enter phone number" required>
-            </div> -->
-
-            <!-- Terms and Conditions -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="termsAgreement" required style="background-color:inherit; color: inherit;">
-                <label for="termsAgreement" class="form-check-label">I agree to the <a href="#">Terms & Conditions</a>.</label>
+            <!-- Operating Hours -->
+            <div class="form-section">
+                <h5 class="section-title">Operating Hours</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="openingHour" class="form-label fw-bold">Opening Hour</label>
+                        <input type="time" class="form-control" id="openingHour" name="open_time" value="{{ business.open_time }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="closingHour" class="form-label fw-bold">Closing Hour</label>
+                        <input type="time" class="form-control" id="closingHour" name="close_time" value="{{ business.close_time }}" required style="background-color:inherit; color: inherit;">
+                    </div>
+                </div>
             </div>
 
             <!-- Submit Button -->
-            <a href="{% url 'business_status' business.id %}" type="button" class="btn btn-primary w-100">Submit Registration</a>
-
+            <div class="text-center">
+                <button type="submit" class="btn btn-custom">Update Business</button>
+            </div>
         </form>
     </div>
 </div>
-<script>
-    document.getElementById('businessLogo').addEventListener('change', function(event) {
-        let file = event.target.files[0];
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let preview = document.getElementById('logoPreview');
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
+// Leaflet JS
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ... (keep existing JavaScript code the same) ...
-  
-        // Add Logout Confirmation Function
+        // Initialize map
+        var map = L.map('map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var marker;
+
+        // Set initial marker if coordinates exist
+        var latInput = document.getElementById('latitude');
+        var lngInput = document.getElementById('longitude');
+        if (latInput.value && lngInput.value) {
+            var lat = parseFloat(latInput.value);
+            var lng = parseFloat(lngInput.value);
+            marker = L.marker([lat, lng]).addTo(map);
+            map.setView([lat, lng], 15);
+        }
+
+        // Update coordinates when clicking on map
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            if (marker) {
+                marker.setLatLng([lat, lng]);
+            } else {
+                marker = L.marker([lat, lng]).addTo(map);
+            }
+
+            latInput.value = lat.toFixed(6);
+            lngInput.value = lng.toFixed(6);
+        });
+
+        // Get current location
+        document.getElementById('getLocationBtn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng]).addTo(map);
+                    }
+
+                    map.setView([lat, lng], 15);
+                    latInput.value = lat.toFixed(6);
+                    lngInput.value = lng.toFixed(6);
+                }, function(error) {
+                    alert('Error getting location: ' + error.message);
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+        // Update marker when coordinates are manually entered
+        latInput.addEventListener('input', updateMarkerFromInputs);
+        lngInput.addEventListener('input', updateMarkerFromInputs);
+
+        function updateMarkerFromInputs() {
+            var lat = parseFloat(latInput.value);
+            var lng = parseFloat(lngInput.value);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                if (marker) {
+                    marker.setLatLng([lat, lng]);
+                } else {
+                    marker = L.marker([lat, lng]).addTo(map);
+                }
+                map.setView([lat, lng], 15);
+            }
+        }
+
+        // Logo preview
+        document.getElementById('businessLogo').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let preview = document.getElementById('logoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Logout confirmation
         function confirmLogout(event) {
             event.preventDefault();
             Swal.fire({
@@ -225,6 +373,6 @@
             });
         }
     });
-  </script>
+</script>
 
 {% endblock %}

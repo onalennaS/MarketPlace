@@ -24,7 +24,7 @@ from .views.render_views import (user_profile,
                                   view_product
                                   )
 
-from .views.business_views import register_business, appeal_registration, delete_business,rate_business
+from .views.business_views import register_business, appeal_registration, delete_business, rate_business, edit_business
 from .views.product_views import add_product as api_add_product, delete_product, edit_product as ep, add_extras, delete_extras, add_addons, delete_addon
 from .views.order_views import move_order_next_stage, stop_order, start_order
 
@@ -38,6 +38,7 @@ urlpatterns = [
     path('business_status/<int:business_id>', business_status, name='business_status'),
     path('appeal_registration_view/<int:business_id>', appeal_registration_view, name='appeal_registration_view'),
     path('business_info/<int:business_id>', business_info, name='business_info'),
+    path('edit_business/<int:business_id>', edit_business, name='edit_business'),
     path('view_stats/', view_stats, name='view_stats'),
    
     

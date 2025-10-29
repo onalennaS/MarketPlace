@@ -566,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if pickup method is selected and map container exists
     if (document.getElementById('pickup-map')) {
         // Initialize the map
-        var map = L.map('pickup-map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg area
+        var map = L.map('pickup-map').setView([-26.710038, 27.874303], 10); // Default to Johannesburg area
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -574,31 +574,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }).addTo(map);
 
         // Get business coordinates from Django context
-        var businesses = {{ businesses_with_coords|safe }};
-
+        var business = {{ businesses_with_coords|safe }};
+        console.log(business);
         // Add markers for each business
-        businesses.forEach(function(business) {
-            var marker = L.marker([business.latitude, business.longitude]).addTo(map);
+        var businessMarkers = [];
 
-            // Create popup content
-            var popupContent = `
-                <div style="text-align: center;">
-                    <h6 style="margin: 0 0 5px 0; color: #333;">${business.name}</h6>
-                    <p style="margin: 0; font-size: 12px; color: #666;">Pickup Location</p>
-                    <button onclick="selectPickupLocation('${business.name}')" style="margin-top: 5px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Select This Location</button>
-                </div>
-            `;
+        var marker = L.marker([business.latitude, business.longitude]).addTo(map);
+        businessMarkers.push(marker);
 
-            marker.bindPopup(popupContent);
-        });
+        // Create popup content
+        var popupContent = `
+            <div style="text-align: center;">
+                <h6 style="margin: 0 0 5px 0; color: #333;">${business.name}</h6>
+                <p style="margin: 0; font-size: 12px; color: #666;">Pickup Location</p>
+                <button onclick="selectPickupLocation('${business.name}')" style="margin-top: 5px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">Select This Location</button>
+            </div>
+        `;
+
+        marker.bindPopup(popupContent);
+
+        // Add current location marker
+        addCurrentLocationMarker(map);
 
         // Fit map to show all markers
-        if (businesses.length > 0) {
-            var group = new L.featureGroup(businesses.map(function(business) {
-                return L.marker([business.latitude, business.longitude]);
-            }));
-            map.fitBounds(group.getBounds().pad(0.1));
-        }
+        var group = new L.featureGroup(businessMarkers);
+        map.fitBounds(group.getBounds().pad(0.1));
+        
     }
 
     // Do not initialize location map on DOM load if form is hidden
@@ -630,6 +631,33 @@ function selectPickupLocation(businessName) {
     // For example, store the selected business or show a confirmation
     alert('Selected pickup location: ' + businessName);
     // You might want to update some hidden field or trigger other actions
+}
+
+function addCurrentLocationMarker(map) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            // Create a green marker for current location
+            var currentLocationIcon = L.divIcon({
+                className: 'current-location-marker',
+                html: '<div style="background-color: #28a745; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            var currentLocationMarker = L.marker([lat, lng], {icon: currentLocationIcon}).addTo(map);
+
+            // Add popup to current location marker
+            currentLocationMarker.bindPopup('<div style="text-align: center;"><strong>You are here</strong></div>');
+
+        }, function(error) {
+            console.log('Error getting current location: ' + error.message);
+        });
+    } else {
+        console.log('Geolocation is not supported by this browser.');
+    }
 }
 
 function initializeLocationMap() {
