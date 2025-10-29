@@ -6,7 +6,7 @@
    <link rel="stylesheet" href="{% static 'css/message.css' %}">
   {% endblock %}
 
-  {% block styles %}
+{% block styles %}
     body {
       background-color: #121212;
       font-family: 'Segoe UI', sans-serif;
@@ -41,6 +41,52 @@
     .btn-outline-danger:hover {
       background-color: #dc3545;
       color: white;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .order-card {
+        padding: 15px;
+      }
+      .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+      }
+      .d-flex.justify-content-end {
+        justify-content: center !important;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .nav-tabs {
+        flex-wrap: wrap;
+      }
+      .nav-tabs .nav-link {
+        flex: 1 1 auto;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .order-card {
+        padding: 10px;
+      }
+      h3 {
+        font-size: 1.5rem;
+      }
+      h5 {
+        font-size: 1.1rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+      .btn {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+      }
     }
   {% endblock %}
 
@@ -147,7 +193,7 @@
         <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
         <div class="d-flex justify-content-end">
           <a href="{% url 'deliver_order' order.id %}" class="btn btn-primary me-2">🚚 Deliver</a>
-          <button class="btn btn-success" onclick="moveOrder(this, 'inprogress',{{order.id}})">✅ Complete Delivery</button>
+          
         </div>
       </div>
     {% endfor %}
@@ -219,7 +265,7 @@
       body: JSON.stringify({ 
           order_id: orderId,  // <--- send order_id
           new_status: nextStage,
-          codes: codes, 
+          codes: 11111, 
       })
     })
     .then(response => response.json())

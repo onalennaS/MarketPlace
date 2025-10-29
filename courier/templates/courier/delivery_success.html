@@ -1,0 +1,49 @@
+{% extends 'courier/base.html' %}
+{% load static %}
+
+{% block styles %}
+body {
+  background-color: #121212;
+  font-family: 'Segoe UI', sans-serif;
+  color: #f8f9fa;
+}
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+.success-card {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+{% endblock %}
+
+{% block nav %}
+<div class="nav-items">
+    <a href="{% url 'courier_orders' %}" class="nav-link" data-bs-toggle="tooltip" title="Dashboard">
+        <i class="bi bi-house"></i>
+    </a>
+    <a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-toggle="tooltip" title="Earnings & withdrawals">
+        <i class="bi bi-receipt"></i>
+    </a>
+    <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-toggle="tooltip" title="Deliveries">
+        <i class="bi bi-truck"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+  <div class="success-card">
+    <h2 class="text-success mb-4">✅ Delivery Completed Successfully!</h2>
+    <p class="mb-4">The order has been marked as delivered. Thank you for your service.</p>
+    <a href="{% url 'courier_orders' %}" class="btn btn-primary">Back to Orders</a>
+  </div>
+</div>
+{% endblock %}

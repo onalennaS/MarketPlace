@@ -226,7 +226,7 @@ def view_order_details(request,order_id):
     if order.delivery_method == "delivery":
         delivery_total = 15
     total = price_total + extra_total + delivery_total 
-    address = OrderAddress.objects.filter(order=order).first()
+    address = CartDeliveryAddress.objects.filter(user=request.user).first()
     return render(request, 'home/view_order_details.html',{"price_total":price_total,'extra_total':extra_total,'extras_count':extra_count,'items_count':items_count,'address':address,'extras':extras,'total':total,'order':order,'order_items':order_items})
 
 @login_required_custom

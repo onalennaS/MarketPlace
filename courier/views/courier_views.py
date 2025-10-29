@@ -148,8 +148,29 @@ def deliver_order(request, order_id):
     if not delivery_address or not delivery_address.latitude or not delivery_address.longitude:
         return render(request, 'courier/error.html', {'message': 'Delivery address coordinates not available.'})
 
+    if request.method == 'POST':
+        drop_code = request.POST.get('drop_code')
+        if drop_code and len(drop_code) == 5 and drop_code.isdigit():
+            if order_delivery.order.drop_codes == drop_code:
+                # Mark as delivered
+                order_delivery.status = 'Delivered'
+                order_delivery.save()
+                order_delivery.order.status = 'Delivered'
+                order_delivery.order.save()
+                return redirect('delivery_success')
+            else:
+                return JsonResponse({'message': 'Invalid drop code.', 'status': 'error'})
+        else:
+            return JsonResponse({'message': 'Please enter a valid 5-digit code.', 'status': 'error'})
+
     context = {
         'order_delivery': order_delivery,
         'delivery_address': delivery_address,
     }
     return render(request, 'courier/deliver.html', context)
+
+
+@login_required_custom
+@verify_role('courier')
+def delivery_success(request):
+    return render(request, 'courier/delivery_success.html')

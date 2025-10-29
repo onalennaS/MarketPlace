@@ -1,48 +1,75 @@
- function displayMessages(messages) {
-            const messageContainer = document.getElementById("message-container");
+function displayMessages(messages) {
+    const messageContainer = document.getElementById("message-container");
 
-            messages.forEach(msg => {
-                const alertDiv = document.createElement('div');
-                alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'slider');
-                
-                // Check message tags
-                if (msg.status === 'error') {
-                    alertDiv.classList.add('alert-danger');
-                } else {
-                    alertDiv.classList.add(`alert-success`);
-                }
+    messages.forEach(msg => {
+        const toastDiv = document.createElement('div');
+        toastDiv.className = `toast ${msg.status === 'error' ? 'error' : 'success'}`;
 
-                // Set the content of the alert
-                alertDiv.innerHTML = `${msg.message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+        toastDiv.innerHTML = `
+            <div class="toast-header">
+                <strong class="me-auto">${msg.status === 'error' ? 'Error' : 'Success'}</strong>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">${msg.message}</div>
+        `;
 
-                // Append the alert div to the message container
-                messageContainer.appendChild(alertDiv);
-            });
-        }
+        // Append the toast to the message container
+        messageContainer.appendChild(toastDiv);
+
+        // Show the toast with animation
+        setTimeout(() => toastDiv.classList.add('show'), 100);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            toastDiv.classList.remove('show');
+            setTimeout(() => toastDiv.remove(), 300);
+        }, 5000);
+
+        // Close button functionality
+        const closeBtn = toastDiv.querySelector('.btn-close');
+        closeBtn.addEventListener('click', () => {
+            toastDiv.classList.remove('show');
+            setTimeout(() => toastDiv.remove(), 300);
+        });
+    });
+}
 
 
 function displayMessagesapi(response) {
     const messageContainer = document.getElementById("message-container");
 
-
-
     // Convert response into an array if it's a single object
     const messages = Array.isArray(response) ? response : [response];
 
     messages.forEach(msg => {
-        const alertDiv = document.createElement('div');
-        alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'slider');
-        
-        // Determine message type
-        alertDiv.classList.add(msg.status === 'error' ? 'alert-danger' : 'alert-success');
+        const toastDiv = document.createElement('div');
+        toastDiv.className = `toast ${msg.status === 'error' ? 'error' : 'success'}`;
 
-        // Set the content of the alert
-        alertDiv.innerHTML = `
-            ${msg.message} 
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        toastDiv.innerHTML = `
+            <div class="toast-header">
+                <strong class="me-auto">${msg.status === 'error' ? '❌ Error ' : '✅ Success'}</strong>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"> <b>${msg.message}</b></div>
         `;
 
-        // Append the alert to the message container
-        messageContainer.appendChild(alertDiv);
+        // Append the toast to the message container
+        messageContainer.appendChild(toastDiv);
+
+        // Show the toast with animation
+        setTimeout(() => toastDiv.classList.add('show'), 100);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            toastDiv.classList.remove('show');
+            setTimeout(() => toastDiv.remove(), 300);
+        }, 8000);
+
+        // Close button functionality
+        const closeBtn = toastDiv.querySelector('.btn-close');
+        closeBtn.addEventListener('click', () => {
+            toastDiv.classList.remove('show');
+            setTimeout(() => toastDiv.remove(), 300);
+        });
     });
 }

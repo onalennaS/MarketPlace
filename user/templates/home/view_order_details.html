@@ -151,30 +151,27 @@
            <div class="row d-flex  mx-0 justify-content-between w-100 p-4 border p-0  shadow " style="background-color:white;">
                <div class="col-12 col-md-4">
 
-                    <h6 class="fw-bold"><i class="fa fa-shopping-cart"></i> Delivery address</h6><br>
-                   <span class="text-muted small">{{user.username}}</span><br>
-                   {% if order.delivery_address == "delivery" %}
-                   <span class="text-muted small">{{address.notes}}</span><br>
-                   <span class="text-muted small">{{address.address_line_1}}</span><br>
-                   <span class="text-muted small">{{address.address_line_2}}</span><br>
-                   <span class="text-muted small">{{address.address_line_3}}</span><br>
-                   <span class="text-muted small">{{address.address_line_4}}</span>
-                   {% else %}
+                    <h6 class="fw-bold"><i class="fa fa-shopping-cart"></i> Delivery address</h6>
+                   <span class="text-muted small">name : {{user.username}}</span><br>
+                   
+                   <span class="text-muted small">{{address.house_no}} {{address.street}},{{address.area}}, {{address.complex_name}} </span><br>
 
-                   {% endif %}
+                   <span class="text-muted small">{{address.notes}}</span><br>
+                  
+                   
                </div>
                
 
                <div class="col-12 col-md-4">
                    <div>
                         
-                        <h6 class="fw-bold"><i class="fa fa-car"></i> Delivery Method</h6><br>
+                        <h6 class="fw-bold"><i class="fa fa-car"></i> Delivery Method</h6>
                         <span class="text-muted small">{{order.delivery_method}}</span><br>
                    </div>
                    <div class="mt-4">
                     
-                        <h6 class="fw-bold"><i class="fa fa-credit-card"></i> Payment Method</h6><br>
-                        <span class="text-muted small">Credit / debit card</span><br>
+                        <h6 class="fw-bold"><i class="fa fa-credit-card"></i> Payment Method</h6>
+                        <span class="text-muted small">Credit / debit card</span><br><br>
                     </div>
                </div>
 
@@ -324,7 +321,7 @@
   <div class="offcanvas-body bg-light shadow border p-4">
     <div class="  w-100 mb-3" >
         <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-            <h6 class="fw-bold">Deliverd Tue ,21 November 2024</h6>
+            <h6 class="fw-bold"></h6>
              <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
         </div>
        
