@@ -332,7 +332,7 @@
             <h6 class="text-muted">Invoice items</h6>
             <br>
             {% for item in order_items %}
-                <a href="{% url 'view_product' item.product.id %}">
+                <a href="{% url 'view_product' item.product.business.id item.product.id %}">
                    <div class="d-flex justify-content-start mb-2">
                        <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
                             <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">

@@ -765,6 +765,13 @@
 
             const ordersToRender = filteredOrders || orders;
 
+            // Sort orders by order.id (numerically, handling leading zeros)
+            ordersToRender.sort((a, b) => {
+                const aId = a.id.toString();
+                const bId = b.id.toString();
+                return aId.localeCompare(bId, undefined, {numeric: true, sensitivity: 'base'});
+            });
+
             ordersToRender.forEach(order => {
                 statusCounts[order.status]++;
                 if (order.status === activeStage) {

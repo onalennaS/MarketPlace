@@ -13,7 +13,7 @@ class Courier(models.Model):
 	total_earned = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 	status = models.CharField(max_length=200,default="pending ")
 	is_reviewed = models.BooleanField(default=False)
-	created_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField(default=timezone.now)
 
 class OrderDelivery(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="delivery", null=True)
@@ -24,6 +24,6 @@ class OrderDelivery(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_taken = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="available")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
 

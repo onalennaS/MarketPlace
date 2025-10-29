@@ -1,0 +1,113 @@
+{% extends 'courier/base.html' %}
+{% load static %}
+{% block links %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block styles %}
+body {
+  background-color: #121212;
+  font-family: 'Segoe UI', sans-serif;
+  color: #f8f9fa;
+}
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.order-details {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #444;
+}
+{% endblock %}
+
+{% block nav %}
+<div class="nav-items">
+    <a href="{% url 'courier_orders' %}" class="nav-link" data-bs-toggle="tooltip" title="Dashboard">
+        <i class="bi bi-house"></i>
+    </a>
+    <a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-toggle="tooltip" title="Earnings & withdrawals">
+        <i class="bi bi-receipt"></i>
+    </a>
+    <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-toggle="tooltip" title="Deliveries">
+        <i class="bi bi-truck"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">🚚 Deliver Order #{{ order_delivery.order.order_id }}</h2>
+
+  <!-- Map Section -->
+  <div id="map"></div>
+
+  <!-- Order Details -->
+  <div class="order-details">
+    <h4>Order Details</h4>
+    <p><strong>Receiver:</strong> {{ order_delivery.reciever.username }}</p>
+    <p><strong>Pickup:</strong> {{ order_delivery.order.business.name }}</p>
+    <p><strong>Drop-off:</strong> {{ order_delivery.address }}</p>
+    <p><strong>Note:</strong> {{ order_delivery.note }}</p>
+    <p><strong>Fee:</strong> R{{ order_delivery.amount }}</p>
+    <p><strong>Status:</strong> {{ order_delivery.status }}</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize map
+  var map = L.map('map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg
+
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Delivery address coordinates
+  var deliveryLat = {{ delivery_address.latitude }};
+  var deliveryLng = {{ delivery_address.longitude }};
+
+  // Add marker for delivery address
+  var deliveryMarker = L.marker([deliveryLat, deliveryLng]).addTo(map)
+    .bindPopup('Delivery Address: {{ delivery_address.area }}')
+    .openPopup();
+
+  // Center map on delivery address
+  map.setView([deliveryLat, deliveryLng], 15);
+
+  // Get courier's current location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var courierLat = position.coords.latitude;
+      var courierLng = position.coords.longitude;
+
+      // Add marker for courier location
+      var courierMarker = L.marker([courierLat, courierLng], {
+        icon: L.icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        })
+      }).addTo(map)
+        .bindPopup('Your Location');
+
+      // Fit map to show both markers
+      var group = new L.featureGroup([deliveryMarker, courierMarker]);
+      map.fitBounds(group.getBounds().pad(0.1));
+    }, function(error) {
+      console.log('Error getting location: ' + error.message);
+    });
+  } else {
+    alert('Geolocation is not supported by this browser.');
+  }
+});
+</script>
+{% endblock %}

@@ -5,11 +5,12 @@ from seller.wrap_models.business_model import BusinessInformation
 from seller.wrap_models.orders_model import Order
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class UserWallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user.username} - Balance: {self.balance}"
@@ -18,7 +19,7 @@ class DeliveryWallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user.username} - Balance: {self.balance}"
@@ -27,7 +28,7 @@ class BusinessWallet(models.Model):
     business = models.OneToOneField(BusinessInformation, on_delete=models.CASCADE, related_name="business_wallet")
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user.username} - Balance: {self.balance}"

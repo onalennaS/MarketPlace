@@ -102,8 +102,8 @@ class Address(models.Model):
     
     address_type = models.CharField(max_length=20, choices=ADDRESS_TYPES, default='business', verbose_name="Address Type")
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
 
     def __str__(self):
@@ -116,7 +116,7 @@ class Moderation(models.Model):
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="moderation")
     is_reviewed = models.BooleanField(default=False)
     moderator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="moderator") 
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
@@ -129,7 +129,7 @@ class Moderation(models.Model):
 class BusinessRating(models.Model):
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     stars = models.IntegerField(null=False,default=0)
 
     

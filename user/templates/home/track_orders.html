@@ -218,13 +218,13 @@
                   
                 </div>
                 <div>
-                    <span class="px-3 sm-text-sm">Ordered 16 May 2024 </span>
+                    <span class="px-3 sm-text-sm">Ordered {{order.created_at}} </span>
 
                     
                 </div>
                 <div>
                     
-                    <span class="px-3"> Paid 16 May 2024 </span>
+                    <span class="px-3"> Paid {{order.created_at}} </span>
                 </div>
                 </div>
 
@@ -292,12 +292,14 @@
                         </div>
                     </div>
                     
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <h6 class="text-sm"> Courier: FastShip Logistics</h6>
-                            <h6 class="text-sm"> Estimated Delivery: March 25, 2025</h6>
+                    <div class="row mt-4 d-flex justify-content-between">
+                        <div class="col-9">
+                            <h6 class="text-sm"> Courier: Versityfinds</h6>
+                            <h6 class="text-sm"> Estimated Delivery: {{order.estimated_delivery}}</h6>
                         </div>
-                    
+                        <div class="col-3 " >
+                            <button class="btn btn-dark rounded-2"><b>{{order.drop_codes}}</b></button>
+                        </div>
                     </div>
 
                 

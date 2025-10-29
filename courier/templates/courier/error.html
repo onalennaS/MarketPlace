@@ -1,0 +1,49 @@
+{% extends 'courier/base.html' %}
+{% load static %}
+
+{% block styles %}
+body {
+  background-color: #121212;
+  font-family: 'Segoe UI', sans-serif;
+  color: #f8f9fa;
+}
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+.error-card {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+{% endblock %}
+
+{% block nav %}
+<div class="nav-items">
+    <a href="{% url 'courier_orders' %}" class="nav-link" data-bs-toggle="tooltip" title="Dashboard">
+        <i class="bi bi-house"></i>
+    </a>
+    <a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-toggle="tooltip" title="Earnings & withdrawals">
+        <i class="bi bi-receipt"></i>
+    </a>
+    <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-toggle="tooltip" title="Deliveries">
+        <i class="bi bi-truck"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+  <div class="error-card">
+    <h2 class="text-danger mb-4">⚠️ Error</h2>
+    <p class="mb-4">{{ message }}</p>
+    <a href="{% url 'courier_orders' %}" class="btn btn-primary">Back to Orders</a>
+  </div>
+</div>
+{% endblock %}

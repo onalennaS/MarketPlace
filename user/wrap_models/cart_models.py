@@ -8,7 +8,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    added_at = models.DateTimeField(auto_now_add=True)
+    added_at = models.DateTimeField(default=timezone.now)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
 
     
@@ -42,7 +42,7 @@ class CartAddons(models.Model):
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    added_at = models.DateTimeField(auto_now_add=True)
+    added_at = models.DateTimeField(default=timezone.now)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class Wishlist(models.Model):
 class CartDeliveryMethod(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     method = models.CharField(max_length=50, null=True)
-    added_at = models.DateTimeField(auto_now_add=True)
+    added_at = models.DateTimeField(default=timezone.now)
     
 
     def __str__(self):
@@ -74,7 +74,7 @@ class CartDeliveryAddress(models.Model):
     instutition = models.CharField(max_length=50, null=True)
     block = models.CharField(max_length=50, null=True)
     venue = models.CharField(max_length=50, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
    
 
     def __str__(self):

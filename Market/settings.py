@@ -159,7 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Johannesburg'
 
 USE_I18N = True
 
@@ -219,11 +219,11 @@ LOGOUT_REDIRECT_URL = "/"
 
 # settings.py
 
-EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_HOST_USER = 'versityfinds@gmail.com'  # Replace with your Gmail address
-EMAIL_HOST_PASSWORD = 'cuvg vzvp gbqi upkm'  # Replace with the App Password you generated
+# EMAIL_BACKEND = config('EMAIL_BACKEND')
+# EMAIL_HOST = config('EMAIL_HOST')
+# EMAIL_PORT = config('EMAIL_PORT')
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+# EMAIL_HOST_USER = 'versityfinds@gmail.com'  # Replace with your Gmail address
+# EMAIL_HOST_PASSWORD = 'cuvg vzvp gbqi upkm'  # Replace with the App Password you generated
 
 

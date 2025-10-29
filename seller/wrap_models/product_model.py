@@ -31,7 +31,7 @@ class Product(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="pending")
     is_flagged = models.BooleanField(default=False)
     sales = models.PositiveIntegerField(default=0)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     image = models.ImageField(upload_to="uploads/")
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
     slug = models.SlugField(unique=False, blank=True)  # <--- This
@@ -60,7 +60,7 @@ class Product(models.Model):
 class ProductModeration(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_moderation")
     moderator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="product_moderator") 
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     is_reviewed = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -73,7 +73,7 @@ class ProductModeration(models.Model):
 class RecentActivity(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_activity")
     activity = models.CharField(max_length=225, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="bp_activity")
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
 
@@ -81,11 +81,11 @@ class Extras(models.Model):
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="extras")
     name = models.CharField(max_length=225, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
    
 
 class Addon(models.Model):
     business = models.ForeignKey(BusinessInformation, on_delete=models.CASCADE, related_name="addons")
     name = models.CharField(max_length=225, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, null=True)
     

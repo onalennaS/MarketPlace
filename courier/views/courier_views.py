@@ -1,13 +1,15 @@
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from seller.utils.authentication_utils import login_required_custom, verify_role
-import json 
+import json
 from seller.wrap_models.orders_model import Order
 from seller.utils.send_emails import send_email_order_traking_update, send_email_order_delivered
 from ..models import Courier, OrderDelivery
 from transactions.utils.delivery_transactions import transfer_money_to_courier,withdraw_courier_funds
 from transactions.models import DeliveryWallet, DeliveryTransaction
 from ..utils import send_email_withdrawal
+from user.wrap_models.cart_models import CartDeliveryAddress
 # @login_required_custom
 # @verify_role('business')
 # def move_order_next_stage(request):
@@ -54,6 +56,7 @@ def move_delivery_next_stage(request):
 
     order_id = data.get('order_id')
     new_status = data.get('new_status')
+    codes = data.get('codes')
 
     if not order_id or not new_status:
         return JsonResponse({'message': 'Missing order_id or new_status', 'status': 'error'}, status=400)
@@ -75,7 +78,10 @@ def move_delivery_next_stage(request):
                 return JsonResponse({'message': 'Package  is not ready for delivery', 'status': 'error'}, status=400)
 
             order_to_deliver.status = "inprogress"
-        elif new_status == "completed":
+        elif new_status == "completed" :
+            if order_to_deliver.order.drop_codes != codes:
+                return JsonResponse({'message': 'Invalid code provide, ask customer for correct code', 'status': 'error'}, status=400)
+
             order_to_deliver.status = "delivered"
             # Update main Order model as well
             if order_to_deliver.order:
@@ -128,3 +134,22 @@ def rquest_withdraw(request):
         "message": f"withdrawal request sent successfully, you should revieve you amont in 2-3 business working days",
         'status': 'success'
     }, status=201)
+
+
+@login_required_custom
+@verify_role('courier')
+def deliver_order(request, order_id):
+    order_delivery = OrderDelivery.objects.filter(id=order_id, user=request.user).first()
+    if not order_delivery:
+        return render(request, 'courier/error.html', {'message': 'Order not found or not assigned to you.'})
+
+    # Get delivery address coordinates
+    delivery_address = CartDeliveryAddress.objects.filter(user=order_delivery.reciever).first()
+    if not delivery_address or not delivery_address.latitude or not delivery_address.longitude:
+        return render(request, 'courier/error.html', {'message': 'Delivery address coordinates not available.'})
+
+    context = {
+        'order_delivery': order_delivery,
+        'delivery_address': delivery_address,
+    }
+    return render(request, 'courier/deliver.html', context)

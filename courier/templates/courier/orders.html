@@ -146,6 +146,7 @@
         <p><strong>Drop-off:</strong> {{order.address}}</p>
         <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
         <div class="d-flex justify-content-end">
+          <a href="{% url 'deliver_order' order.id %}" class="btn btn-primary me-2">🚚 Deliver</a>
           <button class="btn btn-success" onclick="moveOrder(this, 'inprogress',{{order.id}})">✅ Complete Delivery</button>
         </div>
       </div>
@@ -217,7 +218,8 @@
       },
       body: JSON.stringify({ 
           order_id: orderId,  // <--- send order_id
-          new_status: nextStage 
+          new_status: nextStage,
+          codes: codes, 
       })
     })
     .then(response => response.json())

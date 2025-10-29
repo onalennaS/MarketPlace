@@ -338,7 +338,7 @@
                                             <span class="text-muted small">Standard Delivery</span>
                                         </span>
                                         <span class="fw-bold">
-                                            R 15
+                                            R 10
                                         </span>
                                     </label>
 
@@ -593,12 +593,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         marker.bindPopup(popupContent);
 
-        // Add current location marker
-        addCurrentLocationMarker(map);
-
-        // Fit map to show all markers
-        var group = new L.featureGroup(businessMarkers);
-        map.fitBounds(group.getBounds().pad(0.1));
+        // Add current location marker and adjust bounds
+        addCurrentLocationMarker(map, businessMarkers);
         
     }
 
@@ -633,7 +629,7 @@ function selectPickupLocation(businessName) {
     // You might want to update some hidden field or trigger other actions
 }
 
-function addCurrentLocationMarker(map) {
+function addCurrentLocationMarker(map, businessMarkers) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
@@ -652,11 +648,24 @@ function addCurrentLocationMarker(map) {
             // Add popup to current location marker
             currentLocationMarker.bindPopup('<div style="text-align: center;"><strong>You are here</strong></div>');
 
+            // Add current location marker to the markers array for bounds calculation
+            businessMarkers.push(currentLocationMarker);
+
+            // Fit map to show all markers (business + current location)
+            var group = new L.featureGroup(businessMarkers);
+            map.fitBounds(group.getBounds().pad(0.2)); // Increased padding for better visibility
+
         }, function(error) {
             console.log('Error getting current location: ' + error.message);
+            // If geolocation fails, still fit bounds to business markers
+            var group = new L.featureGroup(businessMarkers);
+            map.fitBounds(group.getBounds().pad(0.1));
         });
     } else {
         console.log('Geolocation is not supported by this browser.');
+        // If geolocation not supported, fit bounds to business markers
+        var group = new L.featureGroup(businessMarkers);
+        map.fitBounds(group.getBounds().pad(0.1));
     }
 }
 
