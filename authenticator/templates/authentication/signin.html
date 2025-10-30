@@ -37,16 +37,16 @@
             {% csrf_token %}
             
             <div class="form-group">
-                <input type="text" class="form-control" id="username" name="username" value="{{data.username}}" placeholder=" " required disabled>
+                <input type="text" class="form-control" id="username" name="username" value="{{data.username}}" placeholder=" " required >
                 <label for="username" class="form-label">Username</label>
             </div>
             
             <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder=" " required disabled>
+                <input type="password" class="form-control" id="password" name="password" placeholder=" " required >
                 <label for="password" class="form-label">Password</label>
             </div>
             
-            <button type="submit" class="btn btn-primary" disabled>Sign In</button>
+            <button type="submit" class="btn btn-primary" >Sign In</button>
         </form>
         
         <div class="auth-links">

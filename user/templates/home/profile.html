@@ -670,13 +670,13 @@ and (orientation: portrait) {
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="firstname-input" placeholder="" name='first_name' value="Jeff">
+                            <input type="text" class="form-control" id="firstname-input" placeholder="" name='first_name' value="{{ user.first_name }}">
                             <label for="firstname-input">First Name</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="lastname-input" placeholder="" name='last_name' value="Nengovhela">
+                            <input type="text" class="form-control" id="lastname-input" placeholder="" name='last_name' value="{{ user.last_name }}">
                             <label for="lastname-input">Last Name</label>
                         </div>
                     </div>
@@ -746,10 +746,10 @@ and (orientation: portrait) {
         <div class="card-body" id="phone-disp" style="display:block;">
             <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text">
-                    (+27) 64 548 9327
+                    Not Available
                     <i class="fas fa-check-circle verified status-icon" title="Verified"></i>
                 </p>
-                <button type="button" class="btn btn-edit" onclick="edit_button('phone')">
+                <button type="button" class="btn btn-edit" onclick="edit_button('phone')" disabled>
                     <i class="fas fa-pencil-alt me-1"></i> Edit
                 </button>
             </div>
@@ -793,5 +793,107 @@ and (orientation: portrait) {
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
+
+    // Form validation functions
+    function validateUsername(username) {
+        if (!username || username.trim().length === 0) {
+            return "Username cannot be empty.";
+        }
+        if (username.length < 3) {
+            return "Username must be at least 3 characters long.";
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            return "Username can only contain letters, numbers, and underscores.";
+        }
+        return null;
+    }
+
+    function validateName(name, fieldName) {
+        if (!name || name.trim().length === 0) {
+            return fieldName + " cannot be empty.";
+        }
+        if (name.length < 2) {
+            return fieldName + " must be at least 2 characters long.";
+        }
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            return fieldName + " can only contain letters and spaces.";
+        }
+        return null;
+    }
+
+    function validateEmail(email) {
+        if (!email || email.trim().length === 0) {
+            return "Email cannot be empty.";
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return "Please enter a valid email address.";
+        }
+        return null;
+    }
+
+    // Add form validation on submit
+    document.addEventListener('DOMContentLoaded', function() {
+        // Username form validation
+        const usernameForm = document.querySelector('#username-form form');
+        if (usernameForm) {
+            usernameForm.addEventListener('submit', function(e) {
+                const username = document.getElementById('username-input').value;
+                const error = validateUsername(username);
+                if (error) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: error,
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+            });
+        }
+
+        // Fullname form validation
+        const fullnameForm = document.querySelector('#fullname-form form');
+        if (fullnameForm) {
+            fullnameForm.addEventListener('submit', function(e) {
+                const firstName = document.getElementById('firstname-input').value;
+                const lastName = document.getElementById('lastname-input').value;
+
+                const firstNameError = validateName(firstName, "First name");
+                const lastNameError = validateName(lastName, "Last name");
+
+                if (firstNameError || lastNameError) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: firstNameError || lastNameError,
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+            });
+        }
+
+        // Email form validation
+        const emailForm = document.querySelector('#email-form form');
+        if (emailForm) {
+            emailForm.addEventListener('submit', function(e) {
+                const email = document.getElementById('email-input').value;
+                const error = validateEmail(email);
+                if (error) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: error,
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+            });
+        }
+    });
 </script>
 {% endblock content %}
