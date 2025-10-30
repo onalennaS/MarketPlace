@@ -1,272 +1,569 @@
 {% extends 'products/shop_base2.html' %}
 {% load static %}
 {% block links %}
-    <title>VersityFinds - Student Marketplace</title>
+    <title>VersityFinds - Your Campus Marketplace & Delivery Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    {% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+{% endblock %}
     {% block styles %}
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #dbeafe;
-            --secondary: #f59e0b;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #94a3b8;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --primary: #00A8A8;
+            --primary-dark: #008888;
+            --primary-light: #E0F5F5;
+            --accent: #2ECC71;
+            --accent-dark: #27AE60;
+            --base: #1A3D7C;
+            --base-dark: #152F5F;
+            --background: #F9F9F9;
+            --text: #333333;
+            --light: #FFFFFF;
+            --gray: #666666;
+            --gray-light: #E5E5E5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background-color: #f9fafb;
+            color: var(--text);
+            background-color: var(--background);
+            overflow-x: hidden;
         }
-        .navbar-scrolled {
-    padding: 0.5rem 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
         /* Hero Section */
         .hero-section {
             position: relative;
-            padding: 8rem 0 6rem;
-            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            padding: 2rem 0 1rem;
+            background: linear-gradient(135deg, var(--base) 0%, var(--primary) 100%);
             overflow: hidden;
+            min-height: 300px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
         }
 
         .hero-title {
-            font-weight: 800;
-            font-size: 3.5rem;
-            line-height: 1.2;
+            font-weight: 900;
+            font-size: 3rem;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
+            color: white;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .hero-title .highlight {
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            animation: shimmer 2s infinite;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 400;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            opacity: 0.95;
+            color: white;
+            animation: slideInLeft 0.8s ease-out 0.2s both;
         }
 
-        .hero-feature {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-        }
-
-        .hero-feature span {
-            display: inline-block;
-            margin: 0 0.75rem;
-            opacity: 0.8;
-        }
-
-        .hero-card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero-card h3 {
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .hero-card-item {
-            display: flex;
-            color: black;
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 1.25rem;
-            font-size: 1.1rem;
+            gap: 0.5rem;
+            background: rgba(46, 204, 113, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--accent);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero-card-item i {
+        .hero-badge i {
+            font-size: 1.2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero-split {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card-wrapper {
+            animation: slideInRight 0.8s ease-out 0.3s both;
+        }
+
+        .hero-buyers, .hero-sellers {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            height: 100%;
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-buyers::before, .hero-sellers::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .hero-buyers:hover::before, .hero-sellers:hover::before {
+            left: 100%;
+        }
+
+        .hero-buyers:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(0, 168, 168, 0.3);
+        }
+
+        .hero-sellers:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 25px 50px rgba(46, 204, 113, 0.3);
+        }
+
+        .hero-buyers h3, .hero-sellers h3 {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--base);
+        }
+
+        .hero-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .hero-benefits li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .hero-benefits li i {
             color: var(--primary);
             font-size: 1.25rem;
             margin-right: 0.75rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero-sellers .hero-benefits li i {
+            color: var(--accent);
         }
 
         .btn-hero {
-            padding: 0.75rem 2rem;
-            font-weight: 600;
+            padding: 0.85rem 2rem;
+            font-weight: 700;
             border-radius: 8px;
             transition: all 0.3s;
-        }
-
-        .btn-hero-primary {
-            background: white;
-            color: var(--primary);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
             border: none;
         }
 
+        .btn-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-hero:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-hero span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-hero-primary {
+            background: var(--primary);
+            color: white;
+        }
+
         .btn-hero-primary:hover {
-            background: #f8fafc;
-            color: var(--primary-dark);
-            transform: translateY(-2px);
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 168, 168, 0.4);
         }
 
         .btn-hero-secondary {
-            background: transparent;
+            background: var(--accent);
             color: white;
-            border: 2px solid white;
         }
 
         .btn-hero-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            transform: translateY(-2px);
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
         }
 
-        /* Section Styling */
-        .section {
+        /* Two Services Section */
+        .services-section {
             padding: 5rem 0;
-        }
-
-        .section-light {
-            background-color: #f9fafb;
+            background: linear-gradient(180deg, var(--background) 0%, white 100%);
         }
 
         .section-title {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 2.5rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             text-align: center;
+            color: var(--base);
         }
 
         .section-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--gray);
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Feature Cards */
-        .feature-card {
+        .service-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
+            padding: 3rem;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card.marketplace:hover {
+            border-color: var(--primary);
+        }
+
+        .service-card.delivery:hover {
+            border-color: var(--accent);
+        }
+
+        .service-icon {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card.delivery .service-icon {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+        }
+
+        .service-title {
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--base);
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-description {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .service-features li i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+
+        .service-card.delivery .service-features li i {
+            color: var(--accent);
+        }
+
+        /* Why Choose Section */
+        .why-choose-section {
+            padding: 5rem 0;
+            background: var(--base);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-choose-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%);
+        }
+
+        .why-choose-section .section-title,
+        .why-choose-section .section-subtitle {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
             padding: 2rem;
             height: 100%;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 168, 168, 0.3);
         }
 
         .feature-icon {
-            width: 64px;
-            height: 64px;
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--primary-light);
-            color: var(--primary);
-            border-radius: 12px;
-            font-size: 1.75rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border-radius: 15px;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
         }
 
         .feature-title {
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
-        }
-
-        .feature-list {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 1.25rem;
-        }
-
-        .feature-list li {
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .feature-list li::before {
-            content: "✓";
-            color: var(--primary);
-            font-weight: bold;
-            margin-right: 0.75rem;
-        }
-
-        .delivery-badge {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Category Buttons */
-        .category-btn {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            text-decoration: none;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            background: white;
-            color: var(--dark);
-            font-weight: 500;
-            transition: all 0.2s;
-            height: 100%;
-        }
-
-        .category-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .category-btn i {
-            font-size: 1.25rem;
-            margin-right: 0.75rem;
-            color: var(--primary);
-        }
-
-        /* USP Section */
-        .usp-icon-container {
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--primary);
             color: white;
-            border-radius: 50%;
-            font-size: 1.75rem;
-            margin: 0 auto 1.5rem;
         }
 
-        .usp-title {
-            font-weight: 700;
-            font-size: 1.5rem;
+        .feature-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-weight: 900;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            text-align: center;
+            color: white;
         }
 
-        .usp-text {
-            color: var(--gray);
-            text-align: center;
-            max-width: 300px;
-            margin: 0 auto;
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .btn-cta {
+            padding: 1rem 3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         /* Footer */
         .footer {
-            background: var(--dark);
+            background: var(--base);
             color: white;
             padding: 4rem 0 2rem;
         }
@@ -280,6 +577,7 @@
         .footer-text {
             color: #cbd5e1;
             margin-bottom: 1.5rem;
+            line-height: 1.7;
         }
 
         .footer-links-title {
@@ -304,7 +602,7 @@
         }
 
         .footer-links a:hover {
-            color: white;
+            color: var(--primary);
         }
 
         .social-links {
@@ -316,147 +614,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 168, 168, 0.2);
             color: white;
             border-radius: 50%;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            text-decoration: none;
         }
 
         .social-link:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
-        .btn-footer {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s;
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        .btn-footer:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Responsive Adjustments */
+        /* Responsive */
         @media (max-width: 991.98px) {
-            .hero-section {
-                padding: 6rem 0 4rem;
-            }
-            
-            .hero-title {
-                font-size: 2.75rem;
-            }
-            
-            .hero-card {
-                margin-top: 3rem;
-            }
-            
-            .section {
-                padding: 4rem 0;
-            }
-            
-            .section-title {
-                font-size: 2.25rem;
-            }
+            .hero-title { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .service-title { font-size: 1.75rem; }
+            .cta-title { font-size: 2rem; }
         }
 
         @media (max-width: 767.98px) {
-            .hero-section {
-                padding: 5rem 0 3rem;
-            }
-            
-            .hero-title {
-                font-size: 2.25rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .hero-feature {
-                font-size: 1rem;
-            }
-            
-            .hero-feature span {
-                margin: 0 0.5rem;
-            }
-            
-            .btn-hero {
-                padding: 0.6rem 1.5rem;
-            }
-            
-            .section {
-                padding: 3rem 0;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .feature-card {
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .usp-icon-container {
-                width: 70px;
-                height: 70px;
-                font-size: 1.5rem;
-            }
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .section-title { font-size: 1.75rem; }
+            .service-card { padding: 2rem; margin-bottom: 2rem; }
+            .service-icon { width: 80px; height: 80px; font-size: 2.5rem; }
+            .stat-number { font-size: 2rem; }
+            .cta-title { font-size: 1.75rem; }
         }
 
         @media (max-width: 575.98px) {
-            .hero-section {
-                padding: 4rem 0 2rem;
-            }
-            
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-            
-            .hero-feature {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-            
-            .hero-feature span {
-                margin: 0;
-            }
-            
-            .btn-hero {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-            
-            .section-title {
-                font-size: 1.75rem;
-            }
-            
-            .section-subtitle {
-                font-size: 1rem;
-            }
-            
-            .feature-title {
-                font-size: 1.25rem;
-            }
-            
-            .usp-title {
-                font-size: 1.25rem;
-            }
+            .hero-section { padding: 4rem 0 3rem; }
+            .hero-title { font-size: 1.75rem; }
+            .btn-hero { width: 100%; margin-bottom: 1rem; }
+            .section-title { font-size: 1.5rem; }
+            .service-icon { width: 70px; height: 70px; font-size: 2rem; }
         }
     {% endblock %}
 
@@ -465,68 +673,50 @@
 
 {% block home %}
 
-<!-- Navbar -->
-<!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-clouds"></i> VersityFinds
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#features">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#categories">Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#usp">Why Us</a>
-                </li>
-                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                    <a class="btn btn-light" href="#">Get Started</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav> -->
-
-
 <!-- Hero Section -->
-<section class="hero-section text-white">
+<section class="hero-section">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-7">
-                <h1 class="hero-title">The Student Marketplace Revolution</h1>
-                <p class="hero-subtitle">Buy & sell affordably within your campus community.</p>
-                <div class="hero-feature">
-                    <span><i class="bi bi-check2-circle me-2"></i>0% commission</span>
-                    <span><i class="bi bi-check2-circle me-2"></i>Verified products</span>
-                    <span><i class="bi bi-check2-circle me-2"></i>Flexible delivery</span>
-                </div>
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="{% url 'shop_base' %}" class="btn btn-hero btn-hero-primary">Start Buying</a>
-                    <a href="{% url 'seller_landing_page' %}" class="btn btn-hero btn-hero-secondary">Start Selling</a>
-                    <a href="{% url 'courier_home' %}" class="btn btn-hero btn-hero-primary">become a driver</a>
-
-                </div>
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                
+                <h1 class="hero-title">
+                    Welcome to <span class="highlight">VersityFinds</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Your campus marketplace & delivery hub. Buy, sell, and deliver within your student community. Zero commission. Zero hassle. 100% student-powered.
+                </p>
             </div>
-            <div class="col-lg-5">
-                <div class="hero-card ">
-                    <h3>Why students love VersityFinds:</h3>
-                    <div class="hero-card-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>No hidden fees</span>
-                    </div>
-                    <div class="hero-card-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Campus delivery</span>
-                    </div>
-                    <div class="hero-card-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Secure payments</span>
+            <div class="col-lg-6">
+                <div class="hero-split">
+                    <div class="row g-4">
+                        <div class="col-md-6 hero-card-wrapper">
+                            <div class="hero-buyers">
+                                <h3><i class="bi bi-bag-check"></i> Shop Smart</h3>
+                                <ul class="hero-benefits">
+                                    <li><i class="bi bi-lightning-charge-fill"></i> Instant campus delivery</li>
+                                    <li><i class="bi bi-shield-fill-check"></i> Verified student sellers</li>
+                                    <li><i class="bi bi-tag-fill"></i> Unbeatable prices</li>
+                                    <li><i class="bi bi-people-fill"></i> Student community</li>
+                                </ul>
+                                <a href="{% url 'shop_base' %}" class="btn-hero btn-hero-primary">
+                                    <span>Start Shopping <i class="bi bi-arrow-right"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 hero-card-wrapper">
+                            <div class="hero-sellers">
+                                <h3><i class="bi bi-cash-coin"></i> Sell Easy</h3>
+                                <ul class="hero-benefits">
+                                    <li><i class="bi bi-percent"></i> 0% commission fees</li>
+                                    <li><i class="bi bi-graph-up-arrow"></i> Reach 1000s of students</li>
+                                    <li><i class="bi bi-clock-fill"></i> List in 2 minutes</li>
+                                    <li><i class="bi bi-truck"></i> Flexible delivery</li>
+                                </ul>
+                                <a href="{% url 'seller_landing_page' %}" class="btn-hero btn-hero-secondary">
+                                    <span>Start Earning <i class="bi bi-arrow-right"></i></span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -534,125 +724,121 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section id="features" class="section section-light">
+<!-- Two Services Section -->
+<section class="services-section">
     <div class="container">
-        <h2 class="section-title">Student-First Features</h2>
-        <p class="section-subtitle">Built for campus life, powered by Django</p>
-        
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="bi bi-cash-coin"></i>
+        <h2 class="section-title fade-in">Two Powerful Services, One Platform</h2>
+        <p class="section-subtitle fade-in">
+            VersityFinds is your all-in-one campus solution for buying, selling, and delivering
+        </p>
+        <div class="row g-5">
+            <div class="col-lg-6 fade-in">
+                <div class="service-card marketplace">
+                    <div class="service-icon">
+                        <i class="bi bi-shop"></i>
                     </div>
-                    <h3 class="feature-title">Affordable Trading</h3>
-                    <p>Lowest fees in the market with our simple structure:</p>
-                    <ul class="feature-list">
-                        <li>0% selling fees</li>
-                        <li>10% payment processing</li>
-                        <li>Optional delivery services</li>
+                    <h3 class="service-title">Student Marketplace</h3>
+                    <p class="service-description">
+                        Buy and sell anything within your campus community. From textbooks to electronics, fashion to furniture – all student-to-student.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="bi bi-check-circle-fill"></i> List items for FREE in minutes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Browse thousands of student listings</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Direct chat with buyers/sellers</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Safe payment options</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Student-verified accounts</li>
                     </ul>
+                    <a href="{% url 'shop_base' %}" class="btn-hero btn-hero-primary">
+                        <span>Explore Marketplace <i class="bi bi-arrow-right"></i></span>
+                    </a>
                 </div>
             </div>
-            
-            <div class="col-md-4">
+            <div class="col-lg-6 fade-in">
+                <div class="service-card delivery">
+                    <div class="service-icon">
+                        <i class="bi bi-bicycle"></i>
+                    </div>
+                    <h3 class="service-title">Campus Delivery Service</h3>
+                    <p class="service-description">
+                        Need something delivered on campus? Our student delivery network gets items to you fast – like Uber, but for campus deliveries.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Fast on-campus delivery</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Real-time delivery tracking</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Affordable student rates</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Trusted student couriers</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Flexible pickup & drop-off</li>
+                    </ul>
+                    <a href="#" class="btn-hero btn-hero-secondary">
+                        <span>Request Delivery <i class="bi bi-arrow-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Section -->
+<section class="why-choose-section">
+    <div class="container">
+        <h2 class="section-title fade-in">Why Students Choose VersityFinds</h2>
+        <p class="section-subtitle fade-in">
+            Built by students, for students. We understand what you need.
+        </p>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 fade-in">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-truck"></i>
+                        <i class="bi bi-cash-stack"></i>
                     </div>
-                    <h3 class="feature-title">Flexible Delivery</h3>
-                    <div class="mb-3">
-                        <span class="delivery-badge">Standard</span>
-                        <span class="delivery-badge">Premium</span>
-                        <span class="delivery-badge">Pick-Up</span>
-                    </div>
-                    <p>Choose on-site pickup or our student-run delivery network</p>
+                    <h4 class="feature-title">Save Money</h4>
+                    <p class="feature-text">Get better deals from fellow students. No middleman markups or commission fees.</p>
                 </div>
             </div>
-            
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-3 fade-in">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="bi bi-shield-check"></i>
                     </div>
-                    <h3 class="feature-title">Secure Platform</h3>
-                    <p>Enterprise-grade security powered by:</p>
-                    <ul class="feature-list">
-                        <li>Django framework</li>
-                        <li>SSL encryption</li>
-                        <li>Product verification</li>
-                    </ul>
+                    <h4 class="feature-title">Safe & Secure</h4>
+                    <p class="feature-text">All users are verified students. Trade within your trusted campus community.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-lightning-charge"></i>
+                    </div>
+                    <h4 class="feature-title">Lightning Fast</h4>
+                    <p class="feature-text">List items in 2 minutes. Get deliveries within hours. Everything moves at student speed.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-piggy-bank"></i>
+                    </div>
+                    <h4 class="feature-title">Earn Extra Cash</h4>
+                    <p class="feature-text">Turn unused items into money. Or become a courier and earn by delivering on campus.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Categories Section -->
-<section id="categories" class="section">
+<!-- CTA Section -->
+<section class="cta-section">
     <div class="container">
-        <h2 class="section-title">Popular Student Categories</h2>
-        <p class="section-subtitle">Find what you need, sell what you don't</p>
-        
-        <div class="row g-4">
-            <div class="col-6 col-md-3">
-                <a href="#" class="category-btn">
-                    <i class="bi bi-book"></i>
-                    <span>Textbooks</span>
+        <div class="cta-content">
+            <h2 class="cta-title fade-in">Ready to Join VersityFinds?</h2>
+            <p class="cta-subtitle fade-in">Start buying, selling, and delivering on campus today. It's completely free!</p>
+            <div class="fade-in">
+                <a href="{% url 'shop_base' %}" class="btn-cta me-3 mb-3">
+                    Browse Marketplace <i class="bi bi-arrow-right"></i>
                 </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="#" class="category-btn">
-                    <i class="bi bi-cup-hot"></i>
-                    <span>Fast Food & Meals</span>
+                <a href="{% url 'seller_landing_page' %}" class="btn-cta mb-3">
+                    List Your First Item <i class="bi bi-plus-circle"></i>
                 </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="#" class="category-btn">
-                    <i class="bi bi-laptop"></i>
-                    <span>Electronics & Gadgets</span>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="#" class="category-btn">
-                    <i class="bi bi-basket"></i>
-                    <span>Snacks and Cakes</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Why Us Section -->
-<section id="why-us" class="section section-light">
-    <div class="container">
-        <h2 class="section-title">Why VersityFinds Works</h2>
-        <p class="section-subtitle">Solving real student problems</p>
-        
-        <div class="row g-4 mt-3">
-            <div class="col-md-4">
-                <div class="usp-icon-container">
-                    <i class="bi bi-people"></i>
-                </div>
-                <h3 class="usp-title">Community First</h3>
-                <p class="usp-text">Verified student network ensures safe, relevant transactions</p>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="usp-icon-container">
-                    <i class="bi bi-clock-history"></i>
-                </div>
-                <h3 class="usp-title">Time-Saving</h3>
-                <p class="usp-text">Average transaction completed in 28 minutes</p>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="usp-icon-container">
-                    <i class="bi bi-graph-up"></i>
-                </div>
-                <h3 class="usp-title">Growing Network</h3>
-                <p class="usp-text">Join 10+ students in our beta program</p>
             </div>
         </div>
     </div>
@@ -662,57 +848,93 @@
 <footer class="footer">
     <div class="container">
         <div class="row g-4">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h4 class="footer-title">
-                    <i class="bi bi-clouds"></i> VersityFinds
-                </h4>
-                <p class="footer-text">A student marketplace built with ❤️ using Django</p>
-                <a href="#" class="btn btn-footer">
-                    Join 500 Student Challenge
-                </a>
-            </div>
-            
-            <div class="col-md-4 col-lg-3 offset-lg-1 mb-4 mb-md-0">
-                <h5 class="footer-links-title">Quick Links</h5>
-                <ul class="footer-links">
-                    <li><a href="#">Safety Guidelines</a></li>
-                    <li><a href="#">Delivery FAQ</a></li>
-                    <li><a href="#">Contact Support</a></li>
-                </ul>
-            </div>
-            
-            <div class="col-md-4 col-lg-3 offset-lg-1">
-                <h5 class="footer-links-title">Connect</h5>
+            <div class="col-lg-4">
+                <h3 class="footer-title"><i class="bi bi-mortarboard-fill"></i> VersityFinds</h3>
+                <p class="footer-text">
+                    Your trusted campus marketplace and delivery platform. Built by students, for students.
+                </p>
                 <div class="social-links">
-                    <a href="#" class="social-link">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
+                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
                 </div>
             </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Marketplace</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Browse Items</a></li>
+                    <li><a href="#">Sell an Item</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">How It Works</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Delivery</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Request Delivery</a></li>
+                    <li><a href="#">Become a Courier</a></li>
+                    <li><a href="#">Delivery Rates</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Safety Tips</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
         </div>
-        
-        <hr class="mt-5 mb-4" style="border-color: rgba(255, 255, 255, 0.1);">
-        
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0 2rem;">
         <div class="text-center">
-            <p class="mb-0" style="color: #94a3b8;">© 2025 VersityFinds. All rights reserved.</p>
+            <p class="footer-text mb-0">© 2024 VersityFinds. All rights reserved. Made with ❤️ by students, for students.</p>
         </div>
     </div>
 </footer>
 
 <script>
+    // Scroll animation observer
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 100);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all fade-in elements
+    document.addEventListener('DOMContentLoaded', () => {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach(el => observer.observe(el));
+    });
+
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('navbar-scrolled');
-        } else {
-            navbar.classList.remove('navbar-scrolled');
+        if (navbar) {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
         }
     });
 </script>

@@ -1,0 +1,441 @@
+{% extends 'products/shop_base2.html' %}
+
+{% block title %}Search Results - VersityFinds{% endblock %}
+
+{% load static %}
+
+{% block links %}
+<title>Search Results | VersityFinds</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block styles %}
+:root {
+    --primary: #00A8A8;
+    --primary-dark: #008888;
+    --primary-light: #E0F5F5;
+    --accent: #2ECC71;
+    --accent-dark: #27AE60;
+    --base: #1A3D7C;
+    --base-dark: #152F5F;
+    --background: #F9F9F9;
+    --text: #333333;
+    --light: #FFFFFF;
+    --gray: #666666;
+    --gray-light: #E5E5E5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background-color: var(--background);
+}
+
+/* Search Results Header */
+.search-results-header {
+    background: var(--primary);
+    padding: 2rem 0;
+    color: var(--light);
+    text-align: center;
+}
+
+.search-results-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.search-query-display {
+    font-size: 1.1rem;
+}
+
+/* Results Container */
+.results-container {
+    padding: 2rem 0;
+}
+
+.results-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--base);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--primary);
+}
+
+/* Product Cards */
+.product-card {
+    background: var(--light);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 168, 168, 0.2);
+}
+
+.product-img-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.1);
+}
+
+.product-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--base);
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.product-card:hover .product-title {
+    color: var(--primary);
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.product-category {
+    color: var(--gray);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.btn-view-product {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--light);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.btn-view-product:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 168, 168, 0.3);
+    color: var(--light);
+}
+
+/* Business Cards */
+.business-card {
+    background: var(--light);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    height: 100%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.business-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 168, 168, 0.2);
+}
+
+.business-img-container {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.business-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.business-card:hover .business-img {
+    transform: scale(1.15) rotate(2deg);
+}
+
+.business-body {
+    padding: 1rem;
+}
+
+.business-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--base);
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.business-card:hover .business-title {
+    color: var(--primary);
+}
+
+.business-category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.business-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.btn-view-business {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    color: var(--light);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-view-business:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
+    color: var(--light);
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.no-results-icon {
+    font-size: 3rem;
+    color: var(--gray-light);
+    margin-bottom: 1rem;
+}
+
+.no-results-title {
+    font-size: 1.5rem;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+}
+
+.no-results-text {
+    font-size: 1rem;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+}
+
+.btn-back-to-shop {
+    background: var(--primary);
+    color: var(--light);
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-results-title {
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .product-img-container,
+    .business-img-container {
+        height: 140px;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<!-- Search Results Header -->
+<section class="search-results-header">
+    <div class="container">
+        <h1 class="search-results-title">
+            <i class="bi bi-search"></i> Search Results
+        </h1>
+        {% if query %}
+            <p class="search-query-display">Results for "{{ query }}"</p>
+        {% else %}
+            <p class="search-query-display">Please enter a search term</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Results -->
+<section class="results-container">
+    <div class="container">
+        {% if query %}
+            <!-- Products Section -->
+            {% if products %}
+            <div class="results-section">
+                <h2 class="section-title">
+                    <i class="bi bi-box-seam"></i> Products ({{ products|length }})
+                </h2>
+                <div class="row g-4">
+                    {% for product in products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="product-card">
+                            <div class="product-img-container">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" alt="{{ product.name }}" class="product-img">
+                                {% endif %}
+                            </div>
+                            <div class="product-body">
+                                <h5 class="product-title">{{ product.name }}</h5>
+                                <p class="product-price">R{{ product.price }}</p>
+                                <p class="product-category">{{ product.get_category_display }}</p>
+                                <a href="{% url 'view_product' product.business.slug product.slug %}" class="btn-view-product">
+                                    <i class="bi bi-eye"></i> View Product
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Businesses Section -->
+            {% if businesses %}
+            <div class="results-section">
+                <h2 class="section-title">
+                    <i class="bi bi-building"></i> Businesses ({{ businesses|length }})
+                </h2>
+                <div class="row g-4">
+                    {% for business in businesses %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="business-card">
+                            <div class="business-img-container">
+                                {% if business.image %}
+                                    <img src="{{ business.image.url }}" alt="{{ business.name }}" class="business-img">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/400x250?text=No+Image" alt="{{ business.name }}" class="business-img">
+                                {% endif %}
+                            </div>
+                            <div class="business-body">
+                                <h3 class="business-title">{{ business.name }}</h3>
+                                <span class="business-category">
+                                    <i class="bi bi-tag"></i>{{ business.category }}
+                                </span>
+                                <div class="business-rating">
+                                    <i class="bi bi-star-fill"></i>
+                                    <span>{{ business.get_rating }}</span>
+                                </div>
+                                <a href="{% url 'view_business_products' business.slug %}" class="btn-view-business">
+                                    <i class="bi bi-shop"></i> View Business
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- No Results -->
+            {% if not products and not businesses %}
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h2 class="no-results-title">No Results Found</h2>
+                <p class="no-results-text">
+                    We couldn't find any products or businesses matching "{{ query }}".<br>
+                    Try searching with different keywords or browse our categories.
+                </p>
+                <a href="{% url 'shop_base' %}" class="btn-back-to-shop">
+                    <i class="bi bi-arrow-left"></i> Back to Shop
+                </a>
+            </div>
+            {% endif %}
+        {% else %}
+            <!-- No Query -->
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h2 class="no-results-title">Start Your Search</h2>
+                <p class="no-results-text">
+                    Enter a search term in the search bar above to find products and businesses.
+                </p>
+                <a href="{% url 'shop_base' %}" class="btn-back-to-shop">
+                    <i class="bi bi-arrow-left"></i> Back to Shop
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}

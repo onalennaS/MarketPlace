@@ -112,7 +112,12 @@ def view_product(request, bSlug, pSlug):
 
 
 def home(request):
-    return render(request,'products/landing_page.html')
+    items = 0
+    wishlist_items_count = 0
+    if request.user.is_authenticated:
+        items = get_cart_items(request.user)
+        wishlist_items_count = get_wishlist_items(request.user)
+    return render(request,'products/landing_page.html', {'cart_items_count': items, 'wishlist_items_count': wishlist_items_count})
 
 
 
@@ -120,6 +125,44 @@ def home(request):
 from django.http import HttpResponse
 from django.conf import settings
 import os
+from django.db.models import Q
+
+def search_products(request):
+    query = request.GET.get('q', '')
+    products = []
+    businesses = []
+
+    if query:
+        # Search products by name, description, or category
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query),
+            status="active"
+        ).select_related('business')[:20]  # Limit results
+
+        # Search businesses by name or category
+        businesses = BusinessInformation.objects.filter(
+            Q(name__icontains=query) |
+            Q(category__icontains=query),
+            status="approved"
+        )[:10]  # Limit results
+
+    items = 0
+    wishlist_items_count = 0
+    if request.user.is_authenticated:
+        items = get_cart_items(request.user)
+        wishlist_items_count = get_wishlist_items(request.user)
+
+    context = {
+        'query': query,
+        'products': products,
+        'businesses': businesses,
+        'cart_items_count': items,
+        'wishlist_items_count': wishlist_items_count,
+    }
+
+    return render(request, 'products/search_results.html', context)
 
 def robots_txt(request):
     file_path = os.path.join(settings.BASE_DIR, 'shop', 'static', 'robots.txt')
