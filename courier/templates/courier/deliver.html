@@ -572,10 +572,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-const voices = speechSynthesis.getVoices();
-console.log(voices)
-const utterance = new SpeechSynthesisUtterance("Voice navigation started");
-utterance.voice = voices[0]; // pick a valid voice
-speechSynthesis.speak(utterance);
+
 </script>
 {% endblock %}

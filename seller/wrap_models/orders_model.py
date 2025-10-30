@@ -35,7 +35,7 @@ class Order(models.Model):
             extras_price = sum(extra.extra.price for extra in self.extras.all()) * item.quantity
             amount += product_price + extras_price
         if self.delivery_method == "delivery":
-            amount += 15
+            amount += 10
         return amount
 
     def __str__(self):

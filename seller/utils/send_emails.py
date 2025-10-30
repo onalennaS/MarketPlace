@@ -138,11 +138,11 @@ def email_order_tracking_update(recipient_email, link, order):
 
     if order.status == "Processing":
         description = "being prepared"
-        eta = "1 hour"
+        eta = "35 mins"
         description2 = "acknowledged, our chefs are preparing it for you!"
     elif order.status == "On route":
         description = "on the way"
-        eta = "30 minutes"
+        eta = "15 minutes"
         description2 = "Completed, our courier is on the way to deliver your order!"
 
     subject = f"Order Tracking Update {order.status.upper()}"

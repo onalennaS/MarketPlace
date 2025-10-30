@@ -344,7 +344,7 @@ def palce_order(request):
 
     
     if delivery_method.method == "delivery":
-    	delivery_amount += 15
+    	delivery_amount += 12
 
     total_amount = product_amount + extra_amount +delivery_amount
     
