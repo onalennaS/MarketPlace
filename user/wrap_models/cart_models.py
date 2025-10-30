@@ -69,13 +69,13 @@ class CartDeliveryAddress(models.Model):
 
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    
+
 
     instutition = models.CharField(max_length=50, null=True)
     block = models.CharField(max_length=50, null=True)
     venue = models.CharField(max_length=50, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
-   
+
 
     def __str__(self):
         return f"{self.user.username} - {self.address_type} "

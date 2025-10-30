@@ -1,0 +1,11 @@
+DATABASE_URL="postgresql://jeff:lqI2TObHhrofUP8bf6DebeXdbdgffQah@dpg-d3v5dhripnbc739djn2g-a.oregon-postgres.render.com/versityfinds_t4bb"
+DEBUG=True
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_HOST_PASSWORD="cuvg vzvp gbqi upkm"
+EMAIL_HOST_USER=versityfinds25@gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+PAYSTACK_MAIN_ACCOUNT=ACCT_k7cwhts57us0vfp
+PAYSTACK_SECRET_KEY=sk_test_01a3cac3ccc3a8f455dac8a62ce4cf963c30e3de
+SECRET_KEY=fdgq4cgq3c3casdsadagsdfgdsfgsdvfsdvfsdgsfdgfgsdfgsagagadd546565465454
