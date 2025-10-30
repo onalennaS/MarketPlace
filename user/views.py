@@ -6,6 +6,11 @@ from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderA
 from seller.wrap_models.business_model import BusinessRating, BusinessInformation, Address
 from decimal import Decimal
 from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.utils import timezone
+from .models import LoginActivity
 
 def is_google_linked(user):
     try:
@@ -97,7 +102,29 @@ def dash(request):
 @login_required_custom
 @has_password
 def profile(request):
-    return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
+    if request.method == 'POST':
+        if 'username' in request.POST:
+            new_username = request.POST['username'].strip()
+            if new_username != request.user.username:
+                if User.objects.filter(username=new_username).exists():
+                    messages.error(request, 'Username is already taken.')
+                    return redirect('profile')
+            request.user.username = new_username
+        if 'first_name' in request.POST:
+            request.user.first_name = request.POST['first_name'].strip()
+        if 'last_name' in request.POST:
+            request.user.last_name = request.POST['last_name'].strip()
+        if 'email' in request.POST:
+            new_email = request.POST['email'].strip()
+            if new_email != request.user.email:
+                if User.objects.filter(email=new_email).exists():
+                    messages.error(request, 'Email is already taken.')
+                    return redirect('profile')
+            request.user.email = new_email
+        request.user.save()
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('profile')
+    return render(request, 'home/profile.html', {'is_google_linked': is_google_linked(request.user)})
 
 @login_required_custom
 def cart(request):
@@ -204,7 +231,122 @@ def buyer_dashboard(request):
 @login_required_custom
 @has_password
 def address(request):
-    return render(request, 'home/address.html')
+   
+    if request.method == 'POST':
+        address_type = request.POST.get('address_type')
+        action = request.POST.get('action')
+
+        if action == 'delete':
+            address_id = request.POST.get('address_id')
+            try:
+                address = CartDeliveryAddress.objects.get(id=address_id, user=request.user)
+                address.delete()
+                messages.success(request, 'Address deleted successfully.')
+            except CartDeliveryAddress.DoesNotExist:
+                messages.error(request, 'Address not found.')
+            return redirect('address')
+
+        # Validation for new address creation
+        errors = []
+
+        if not address_type or address_type not in ['residential', 'campus']:
+            errors.append('Invalid address type.')
+
+        phone = request.POST.get('phone', '').strip()
+        if not phone:
+            errors.append('Phone number is required.')
+        elif not phone.isdigit() or len(phone) < 10:
+            errors.append('Please enter a valid phone number (at least 10 digits).')
+
+        if address_type == 'residential':
+            house_no = request.POST.get('house_no', '').strip()
+            street = request.POST.get('street', '').strip()
+            area = request.POST.get('area', '').strip()
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            if not house_no:
+                errors.append('House number is required.')
+            if not street:
+                errors.append('Street is required.')
+            if not area:
+                errors.append('Area is required.')
+            if not latitude or not longitude:
+                errors.append('Location coordinates are required. Please select a location on the map.')
+
+            # Validate coordinates
+            try:
+                lat = float(latitude)
+                lng = float(longitude)
+                
+            except ValueError:
+                errors.append('Invalid coordinate format.')
+
+        elif address_type == 'campus':
+            institution = request.POST.get('institution', '').strip()
+            block = request.POST.get('block', '').strip()
+            venue = request.POST.get('venue', '').strip()
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            if not institution:
+                errors.append('Institution is required.')
+            if not block:
+                errors.append('Block is required.')
+            if not venue:
+                errors.append('Venue is required.')
+            if not latitude or not longitude:
+                errors.append('Location coordinates are required. Please select a location on the map.')
+
+            # Validate coordinates
+            try:
+                lat = float(latitude)
+                lng = float(longitude)
+            except ValueError:
+                errors.append('Invalid coordinate format.')
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return redirect('address')
+
+        # Create address if validation passes
+        if address_type == 'residential':
+            CartDeliveryAddress.objects.create(
+                user=request.user,
+                address_type='residential',
+                house_no=request.POST.get('house_no').strip(),
+                street=request.POST.get('street').strip(),
+                complex_name=request.POST.get('complex_name', '').strip() or None,
+                area=request.POST.get('area').strip(),
+                notes=request.POST.get('notes', '').strip() or None,
+                latitude=request.POST.get('latitude').strip(),
+                longitude=request.POST.get('longitude').strip(),
+                phone=phone,
+                is_default=False
+            )
+        elif address_type == 'campus':
+            CartDeliveryAddress.objects.create(
+                user=request.user,
+                address_type='campus',
+                instutition=request.POST.get('institution').strip(),
+                block=request.POST.get('block').strip(),
+                venue=request.POST.get('venue').strip(),
+                latitude=request.POST.get('latitude').strip(),
+                longitude=request.POST.get('longitude').strip(),
+                phone=phone,
+                is_default=False
+            )
+
+        messages.success(request, 'Address added successfully.')
+        next_url = request.GET.get("next")
+        if next_url and next_url != request.path:
+            return redirect(next_url)
+        return redirect('address')
+
+    # Get existing addresses for display
+    addresses = CartDeliveryAddress.objects.filter(user=request.user).order_by('-timestamp').all()
+    return render(request, 'home/address.html', {'addresses': addresses})
 
 @login_required_custom
 def order_history(request):
@@ -237,11 +379,76 @@ def track_orders(request,order_id):
     return  render(request, 'home/errors/400.html')
 @login_required_custom
 def buyer_reviews(request):
-    return render(request, 'home/buyer_reviews.html')
+    reviews = BusinessRating.objects.filter(user=request.user).order_by('-timestamp')
+    return render(request, 'home/buyer_reviews.html', {'reviews': reviews})
 
 @login_required_custom
+@has_password
 def account_settings(request):
-    return render(request, 'home/account_settings.html')
+    if request.method == 'POST':
+        if 'current_password' in request.POST and 'new_password' in request.POST and 'confirm_password' in request.POST:
+            current_password = request.POST['current_password']
+            new_password = request.POST['new_password']
+            confirm_password = request.POST['confirm_password']
+
+            if not request.user.check_password(current_password):
+                messages.error(request, 'Current password is incorrect.')
+                return redirect('account_settings')
+
+            if new_password != confirm_password:
+                messages.error(request, 'New passwords do not match.')
+                return redirect('account_settings')
+
+            if len(new_password) < 8:
+                messages.error(request, 'Password must be at least 8 characters long.')
+                return redirect('account_settings')
+
+            request.user.set_password(new_password)
+            request.user.save()
+            messages.success(request, 'Password changed successfully.')
+            return redirect('account_settings')
+
+    # Get login activity data from LoginActivity model
+    login_activity = LoginActivity.objects.filter(user=request.user).order_by('-login_time')[:10]
+
+    # Convert to list of dicts for template compatibility
+    login_activity_data = []
+    for activity in login_activity:
+        login_activity_data.append({
+            'date_time': activity.login_time,
+            'device': activity.device,
+            'location': activity.location,
+            'ip_address': activity.ip_address,
+            'status': activity.status
+        })
+
+    # If no activity found, show some dummy data for demo
+    if not login_activity_data:
+        login_activity_data = [
+            {
+                'date_time': timezone.now() - timezone.timedelta(days=1),
+                'device': 'Chrome on Windows',
+                'location': 'New York, USA',
+                'ip_address': '192.168.1.xxx',
+                'status': 'Success'
+            },
+            {
+                'date_time': timezone.now() - timezone.timedelta(days=3),
+                'device': 'Safari on iOS',
+                'location': 'New York, USA',
+                'ip_address': '172.16.254.xxx',
+                'status': 'Success'
+            },
+            {
+                'date_time': timezone.now() - timezone.timedelta(days=7),
+                'device': 'Chrome on Android',
+                'location': 'Boston, USA',
+                'ip_address': '10.0.0.xxx',
+                'status': 'Success'
+            }
+        ]
+
+    return render(request, 'home/account_settings.html', {'login_activity': login_activity_data})
 
 def buyer_support(request):
     return render(request, 'home/buyer_support.html')

@@ -140,7 +140,7 @@
                             <span class="fw-bold">{{delivery_address.house_no}} {{delivery_address.street}}</span><br>
                             <span class="fw-bold">{{delivery_address.complex_name}} {{delivery_address.area}}</span><br>
                             <span class="fw-bold text-muted">{{delivery_address.notes}}</span><br>
-                            <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> 0645569327</span>
+                            <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> {{delivery_address.phone}}</span>
                         </div>
                         {% elif delivery_address.address_type == "campus" %}
                             <button class="btn btn-success rounded-5 shadow mt-3 py-0 mx-4">{{delivery_address.address_type}}</button>
@@ -148,7 +148,7 @@
                                 <span class="fw-bold">{% if delivery_address.instutition == "vut" %} Vaal university of Technology{% endif %} </span><br>
                                 <span class="fw-bold">Block : {{delivery_address.block}} {{delivery_address.venue}}</span><br>
                                 <span class="fw-bold text-muted">{{delivery_address.notes}}</span><br>
-                                <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> 0645569327</span>
+                                <span class="small text-muted"> {{user.username}} </span> <span class="text-primary fw-bold"> - </span><span class="small text-muted"> {{delivery_address.phone}}</span>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -159,9 +159,9 @@
                         
                     <div class="p-2 d-flex justify-content-between position-absolute bottom-0 end-0">
                         {% if delivery_address %}
-                         <button type="button" class="btn btn-dark rounded-0 m-0 mx-2 " onclick="edit_button('password')" style="height: 40px;">Edit</button>
+                         <button type="button" class="btn btn-dark rounded-0 m-0 mx-2 " onclick="redirectToAddress()" style="height: 40px;">Edit</button>
                          {% else %}
-                           <button type="button" class="btn btn-success rounded-0 m-0 mx-2 " onclick="edit_button('password')" style="height: 40px;">Add</button>
+                           <a onclick="redirectToAddress()" class="btn btn-success rounded-0 m-0 mx-2 " style="height: 40px;">Add</a>
                         {% endif %}
                           
                     </div>
@@ -796,5 +796,10 @@ function reinitializeLocationMap() {
     }
 }
 </script>
-
+<script>
+function redirectToAddress() {
+    const currentUrl = encodeURIComponent(window.location.href);
+    window.location.href = `/account/dashboard/address/?next=${currentUrl}`;
+}
+</script>
 {% endblock content %}

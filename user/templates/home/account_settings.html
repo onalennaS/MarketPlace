@@ -910,7 +910,7 @@ and (orientation: portrait) {
             <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text">
                     ••••••••••••
-                    <span class="ms-2 text-muted" style="font-size: 13px;">Last changed: 3 months ago</span>
+                    <span class="ms-2 text-muted" style="font-size: 13px;"></span>
                 </p>
                 <button type="button" class="btn btn-edit" onclick="edit_button('password')">
                     <i class="fas fa-pencil-alt me-1"></i> Change
@@ -956,7 +956,7 @@ and (orientation: portrait) {
                         </div>
                     </div>
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-save">
+                        <button type="submit" class="btn btn-save" id="password-submit-btn">
                             <i class="fas fa-check me-1"></i> Save
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('password')">
@@ -978,7 +978,7 @@ and (orientation: portrait) {
             <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text">
                     View login activity details
-                    <span class="ms-2 text-muted" style="font-size: 13px;">Last login: Apr 9, 2025, 10:23 AM</span>
+                    <span class="ms-2 text-muted" style="font-size: 13px;">Last login: {{request.user.last_login}}</span>
                 </p>
                 <button type="button" class="btn btn-edit" onclick="edit_button('activity')">
                     <i class="fas fa-eye me-1"></i> View
@@ -999,27 +999,19 @@ and (orientation: portrait) {
                         </tr>
                     </thead>
                     <tbody>
+                        {% for activity in login_activity %}
                         <tr>
-                            <td>Apr 9, 2025, 10:23 AM</td>
-                            <td>Windows 11 - Chrome</td>
-                            <td>New York, USA</td>
-                            <td>192.168.1.xxx</td>
-                            <td><span class="badge badge-success">Current</span></td>
+                            <td>{{ activity.date_time|date:"M j, Y, g:i A" }}</td>
+                            <td>{{ activity.device }}</td>
+                            <td>{{ activity.location }}</td>
+                            <td>{{ activity.ip_address }}</td>
+                            <td><span class="badge badge-{% if activity.status == 'Success' %}secondary{% else %}danger{% endif %}">{{ activity.status }}</span></td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td>Apr 7, 2025, 3:45 PM</td>
-                            <td>iOS 18 - Safari</td>
-                            <td>New York, USA</td>
-                            <td>172.16.254.xxx</td>
-                            <td><span class="badge badge-secondary">Success</span></td>
+                            <td colspan="5" class="text-center text-muted">No login activity found</td>
                         </tr>
-                        <tr>
-                            <td>Apr 2, 2025, 8:12 AM</td>
-                            <td>Android 15 - Chrome</td>
-                            <td>Boston, USA</td>
-                            <td>10.0.0.xxx</td>
-                            <td><span class="badge badge-secondary">Success</span></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -1055,40 +1047,40 @@ and (orientation: portrait) {
         const password = e.target.value;
         const meter = document.getElementById('password-strength-meter');
         const text = document.getElementById('password-strength-text');
-        
+
         // Check requirements
         const hasLength = password.length >= 8;
         const hasUppercase = /[A-Z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
         const hasSpecial = /[^a-zA-Z0-9]/.test(password);
-        
+
         // Update requirement icons
-        document.getElementById('req-length').innerHTML = hasLength ? 
-            '<i class="fas fa-check-circle requirement-met"></i> At least 8 characters' : 
+        document.getElementById('req-length').innerHTML = hasLength ?
+            '<i class="fas fa-check-circle requirement-met"></i> At least 8 characters' :
             '<i class="fas fa-times-circle requirement-unmet"></i> At least 8 characters';
-            
-        document.getElementById('req-uppercase').innerHTML = hasUppercase ? 
-            '<i class="fas fa-check-circle requirement-met"></i> Include uppercase letter' : 
+
+        document.getElementById('req-uppercase').innerHTML = hasUppercase ?
+            '<i class="fas fa-check-circle requirement-met"></i> Include uppercase letter' :
             '<i class="fas fa-times-circle requirement-unmet"></i> Include uppercase letter';
-            
-        document.getElementById('req-number').innerHTML = hasNumber ? 
-            '<i class="fas fa-check-circle requirement-met"></i> Include number' : 
+
+        document.getElementById('req-number').innerHTML = hasNumber ?
+            '<i class="fas fa-check-circle requirement-met"></i> Include number' :
             '<i class="fas fa-times-circle requirement-unmet"></i> Include number';
-            
-        document.getElementById('req-special').innerHTML = hasSpecial ? 
-            '<i class="fas fa-check-circle requirement-met"></i> Include special character' : 
+
+        document.getElementById('req-special').innerHTML = hasSpecial ?
+            '<i class="fas fa-check-circle requirement-met"></i> Include special character' :
             '<i class="fas fa-times-circle requirement-unmet"></i> Include special character';
-        
+
         // Calculate strength
         let strength = 0;
         if (hasLength) strength += 25;
         if (hasUppercase) strength += 25;
         if (hasNumber) strength += 25;
         if (hasSpecial) strength += 25;
-        
+
         // Update UI
         meter.style.width = strength + '%';
-        
+
         if (strength <= 25) {
             meter.style.backgroundColor = '#e74c3c';
             text.textContent = 'Weak';
@@ -1105,6 +1097,68 @@ and (orientation: portrait) {
             meter.style.backgroundColor = '#27ae60';
             text.textContent = 'Strong';
             text.style.color = '#27ae60';
+        }
+    });
+
+    // Form validation for password change
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordForm = document.querySelector('#password-form form');
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                // Client-side validation
+                if (!currentPassword) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Please enter your current password.',
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+
+                if (!newPassword) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Please enter a new password.',
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+
+                if (newPassword.length < 8) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Password must be at least 8 characters long.',
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'New passwords do not match.',
+                        confirmButtonColor: '#3498db'
+                    });
+                    return false;
+                }
+
+                // Show loading state
+                const submitBtn = document.getElementById('password-submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Changing...';
+            });
         }
     });
 </script>

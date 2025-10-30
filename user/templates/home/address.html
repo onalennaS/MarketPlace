@@ -189,7 +189,7 @@
         gap: 16px;
         margin-bottom: 20px;
     }
-    
+
     .address-type-option {
         flex: 1;
         background-color: #f8f9fa;
@@ -199,19 +199,88 @@
         cursor: pointer;
         transition: all 0.2s ease;
     }
-    
+
     .address-type-option:hover {
         background-color: rgba(52, 152, 219, 0.05);
     }
-    
+
     .address-type-option input {
         margin-right: 8px;
     }
-    
+
     .address-type-option label {
         font-weight: 500;
         color: #495057;
         cursor: pointer;
+    }
+
+    /* Improved form styling */
+    .address-form-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+
+    .form-row {
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        min-width: 200px;
+    }
+
+    .map-container {
+        height: 300px;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .btn-get-location {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-get-location:hover {
+        background-color: #2980b9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-get-location:active {
+        transform: translateY(0);
+    }
+
+    .btn-get-location.loading {
+        background-color: #95a5a6 !important;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .btn-get-location.loading i {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
     
     .address-info {
@@ -237,37 +306,55 @@
     
     /* Mobile responsiveness */
     /* iPads (portrait and landscape) */
-    @media only screen 
-    and (min-device-width: 768px) 
+    @media only screen
+    and (min-device-width: 768px)
     and (max-device-width: 1024px) {
         .container {
             max-width: 95%;
             padding-left: 15px;
             padding-right: 15px;
         }
-        
+
         .address-type-selector {
             gap: 12px;
         }
-        
+
         .card-body {
             padding: 16px;
         }
-        
+
         .address-card {
             margin-bottom: 18px;
         }
-        
+
         .form-floating .form-control {
             font-size: 15px;
         }
-        
+
         .form-floating label {
             font-size: 15px;
         }
-        
+
         .btn-save, .btn-cancel {
             padding: 8px 14px;
+        }
+
+        /* Flex form responsiveness */
+        .form-row {
+            flex-direction: column !important;
+        }
+
+        .form-group {
+            min-width: 100% !important;
+            margin-right: 0 !important;
+        }
+
+        .address-form-container {
+            padding: 15px;
+        }
+
+        .map-container {
+            height: 250px;
         }
     }
     
@@ -333,51 +420,70 @@
             padding-left: 10px;
             padding-right: 10px;
         }
-        
+
         .address-type-selector {
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .btn-save, .btn-cancel {
             padding: 8px 12px;
             font-size: 14px;
         }
-        
+
         .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-top: 10px;
         }
-        
+
         .action-buttons .btn {
             width: 100%;
             margin-right: 0;
             text-align: center;
         }
-        
+
         .address-info {
             margin-left: 0;
         }
-        
+
         .card-body .d-flex {
             flex-direction: column;
         }
-        
+
         .card-body .d-flex .card-text {
             margin-bottom: 10px;
         }
-        
+
         .form-group-buttons {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .form-group-buttons .btn {
             width: 100%;
             margin-left: 0;
+        }
+
+        /* Mobile flex form adjustments */
+        .form-row {
+            flex-direction: column !important;
+        }
+
+        .form-group {
+            min-width: 100% !important;
+            margin-right: 0 !important;
+            margin-bottom: 15px !important;
+        }
+
+        .address-form-container {
+            padding: 15px;
+        }
+
+        .map-container {
+            height: 200px;
         }
     }
     
@@ -437,84 +543,149 @@
                     <div class="col-12">
                         <div class="address-type-selector">
                             <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio1" value="residential">
+                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio1" value="residential" onchange="toggleAddressForm()">
                                 <label class="form-check-label" for="inlineRadio1">Residential</label>
                             </div>
                             <div class="address-type-option">
-                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio2" value="business">
-                                <label class="form-check-label" for="inlineRadio2">Business</label>
+                                <input class="form-check-input" type="radio" name="address_type" id="inlineRadio2" value="campus" onchange="toggleAddressForm()">
+                                <label class="form-check-label" for="inlineRadio2">Campus</label>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="recipient-name" placeholder="" name="recipient_name" value="">
-                            <label for="recipient-name">Recipient Name</label>
+
+                    <!-- Residential Form -->
+                    <div id="residential-form" style="display:none;" class="address-form-container">
+                        <div class="form-row d-flex flex-wrap">
+                            <div class="form-group flex-fill me-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="house_no" placeholder="" name="house_no" value="">
+                                    <label for="house_no">House No</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex-fill mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="street" placeholder="" name="street" value="">
+                                    <label for="street">Street</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="recipient-phone" placeholder="" name="recipient_phone" value="">
-                            <label for="recipient-phone">Recipient Phone</label>
+
+                        <div class="form-row d-flex flex-wrap">
+                            <div class="form-group flex-fill me-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="complex_name" placeholder="" name="complex_name" value="">
+                                    <label for="complex_name">Complex Name</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex-fill mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="area" placeholder="" name="area" value="">
+                                    <label for="area">Area</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="street" placeholder="" name="street" value="">
-                            <label for="street">Street Address</label>
+
+                        <div class="form-row mb-3">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="notes" placeholder="" name="notes" style="height: 100px;"></textarea>
+                                <label for="notes">Notes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control" id="phone" placeholder="" name="phone" value="">
+                                <label for="phone">Phone Number</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row d-flex flex-wrap">
+                            <div class="form-group flex-fill me-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="latitude" placeholder="" name="latitude" value="" hidden>
+                                    <label for="latitude">Latitude</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex-fill mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="longitude" placeholder="" name="longitude" value="" hidden>
+                                    <label for="longitude">Longitude</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div id="map" class="map-container">
+                                <button type="button" class="btn-get-location" onclick="getCurrentLocation('residential', this)">
+                                    <i class="fas fa-crosshairs"></i> Get Location
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="complex" placeholder="" name="complex" value="">
-                            <label for="complex">Complex / Building <span class="small text-muted">(optional)</span></label>
+                    <!-- Campus Form -->
+                    <div id="campus-form" style="display:none;" class="address-form-container">
+                        <div class="form-row d-flex flex-wrap">
+                            <div class="form-group flex-fill me-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="institution" placeholder="" name="institution" value="">
+                                    <label for="institution">Institution</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex-fill mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="block" placeholder="" name="block" value="">
+                                    <label for="block">Block</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row d-flex flex-wrap">
+                            <div class="form-group flex-fill me-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="venue" placeholder="" name="venue" value="">
+                                    <label for="venue">Venue</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex-fill mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="campus_latitude" placeholder="" name="latitude" value="" disabled>
+                                    <label for="campus_latitude">Latitude</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="campus_longitude" placeholder="" name="longitude" value="" disabled>
+                                <label for="campus_longitude">Longitude</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div id="campus-map" class="map-container">
+                                <button type="button" class="btn-get-location" onclick="getCurrentLocation('campus', this)">
+                                    <i class="fas fa-crosshairs"></i> Get Location
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="suburb" placeholder="" name="suburb" value="">
-                            <label for="suburb">Suburb</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="city" placeholder="" name="city" value="">
-                            <label for="city">City / Town</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="province" placeholder="" name="province" value="">
-                            <label for="province">Province</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="postal" placeholder="" name="postal" value="">
-                            <label for="postal">Postal Code</label>
-                        </div>
-                    </div>
-
-
-                    
                     <div class="col-12 text-end form-group-buttons">
                         <button type="submit" class="btn btn-save">
                             <i class="fas fa-check me-1"></i> Save
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('activity')">
                             <i class="fas fa-times me-1"></i> Cancel
-                        </button>    
+                        </button>
                     </div>
                 </div>
-            </form>   
+            </form>
         </div>
     </div>
 
@@ -529,18 +700,37 @@
             <div class="card-body" id="address-disp-{{ address.id }}" style="display:block;">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <span class="address-badge {% if address.address_type == 'business' %}business{% endif %}">
+                        <span class="address-badge {% if address.address_type == 'campus' %}business{% endif %}">
                             {{ address.address_type|title }}
                         </span>
                         <div class="address-info">
-                            {% if address.complex %}
-                            <div class="address-line">{{ address.complex }}</div>
+                            {% if address.address_type == 'residential' %}
+                                {% if address.house_no %}
+                                <div class="address-line">House No: {{ address.house_no }}</div>
+                                {% endif %}
+                                {% if address.street %}
+                                <div class="address-line">{{ address.street }}</div>
+                                {% endif %}
+                                {% if address.complex_name %}
+                                <div class="address-line">{{ address.complex_name }}</div>
+                                {% endif %}
+                                {% if address.area %}
+                                <div class="address-line">{{ address.area }}</div>
+                                {% endif %}
+                                {% if address.notes %}
+                                <div class="address-line">Notes: {{ address.notes }}</div>
+                                {% endif %}
+                            {% elif address.address_type == 'campus' %}
+                                {% if address.instutition %}
+                                <div class="address-line">{{ address.instutition }}</div>
+                                {% endif %}
+                                {% if address.block %}
+                                <div class="address-line">Block: {{ address.block }}</div>
+                                {% endif %}
+                                {% if address.venue %}
+                                <div class="address-line">Venue: {{ address.venue }}</div>
+                                {% endif %}
                             {% endif %}
-                            <div class="address-line">{{ address.street }}</div>
-                            <div class="address-line">{{ address.suburb }}, {{ address.city }}, {{ address.postal }}</div>
-                            <div class="address-contact">
-                                {{ address.recipient_name }} - {{ address.recipient_phone }}
-                            </div>
                         </div>
                     </div>
                     <div class="action-buttons">
@@ -566,8 +756,8 @@
                                     <label class="form-check-label" for="edit-radio1-{{ address.id }}">Residential</label>
                                 </div>
                                 <div class="address-type-option">
-                                    <input class="form-check-input" type="radio" name="address_type" id="edit-radio2-{{ address.id }}" value="business" {% if address.address_type == 'business' %}checked{% endif %}>
-                                    <label class="form-check-label" for="edit-radio2-{{ address.id }}">Business</label>
+                                    <input class="form-check-input" type="radio" name="address_type" id="edit-radio2-{{ address.id }}" value="campus" {% if address.address_type == 'campus' %}checked{% endif %}>
+                                    <label class="form-check-label" for="edit-radio2-{{ address.id }}">Campus</label>
                                 </div>
                             </div>
                         </div>
@@ -648,7 +838,146 @@
     {% endif %}
 </div>
 
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
 <script type="text/javascript">
+    let residentialMap, campusMap;
+
+    function toggleAddressForm() {
+        const residentialRadio = document.getElementById('inlineRadio1');
+        const campusRadio = document.getElementById('inlineRadio2');
+        const residentialForm = document.getElementById('residential-form');
+        const campusForm = document.getElementById('campus-form');
+
+        if (residentialRadio.checked) {
+            residentialForm.style.display = 'block';
+            campusForm.style.display = 'none';
+            if (!residentialMap) {
+                initResidentialMap();
+            }
+        } else if (campusRadio.checked) {
+            residentialForm.style.display = 'none';
+            campusForm.style.display = 'block';
+            if (!campusMap) {
+                initCampusMap();
+            }
+        } else {
+            residentialForm.style.display = 'none';
+            campusForm.style.display = 'none';
+        }
+    }
+
+    function initResidentialMap() {
+        residentialMap = L.map('map').setView([-26.2041, 28.0473], 13); // Johannesburg coordinates
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(residentialMap);
+
+        let marker;
+
+        function onResidentialMapClick(e) {
+            if (marker) {
+                residentialMap.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(residentialMap);
+            document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+            document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+        }
+
+        residentialMap.on('click', onResidentialMapClick);
+    }
+
+    function initCampusMap() {
+        campusMap = L.map('campus-map').setView([-26.2041, 28.0473], 13); // Johannesburg coordinates
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(campusMap);
+
+        let marker;
+
+        function onCampusMapClick(e) {
+            if (marker) {
+                campusMap.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(campusMap);
+            document.getElementById('campus_latitude').value = e.latlng.lat.toFixed(6);
+            document.getElementById('campus_longitude').value = e.latlng.lng.toFixed(6);
+        }
+
+        campusMap.on('click', onCampusMapClick);
+    }
+
+    function getCurrentLocation(type, button) {
+        if (navigator.geolocation) {
+            // Change button state to loading
+            button.classList.add('loading');
+            button.innerHTML = '<i class="fas fa-spinner"></i> Getting Location...';
+            button.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    if (type === 'residential') {
+                        document.getElementById('latitude').value = lat.toFixed(6);
+                        document.getElementById('longitude').value = lng.toFixed(6);
+
+                        if (residentialMap) {
+                            residentialMap.setView([lat, lng], 15);
+                            let marker = L.marker([lat, lng]).addTo(residentialMap);
+                        }
+                    } else if (type === 'campus') {
+                        document.getElementById('campus_latitude').value = lat.toFixed(6);
+                        document.getElementById('campus_longitude').value = lng.toFixed(6);
+
+                        if (campusMap) {
+                            campusMap.setView([lat, lng], 15);
+                            let marker = L.marker([lat, lng]).addTo(campusMap);
+                        }
+                    }
+
+                    // Reset button state
+                    button.classList.remove('loading');
+                    button.innerHTML = '<i class="fas fa-crosshairs"></i> Get Location';
+                    button.disabled = false;
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+
+                    // Show SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Location Error',
+                        text: 'Unable to get your location. Please check your browser permissions and try again.',
+                        confirmButtonColor: '#3498db'
+                    });
+
+                    // Reset button state
+                    button.classList.remove('loading');
+                    button.innerHTML = '<i class="fas fa-crosshairs"></i> Get Location';
+                    button.disabled = false;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 300000
+                }
+            );
+        } else {
+            // Show SweetAlert for unsupported geolocation
+            Swal.fire({
+                icon: 'warning',
+                title: 'Geolocation Not Supported',
+                text: 'Your browser does not support geolocation. Please use manual location selection.',
+                confirmButtonColor: '#3498db'
+            });
+        }
+    }
+
     function edit_button(name){
         var displays = document.getElementById(name+'-disp');
         var forms = document.getElementById(name+'-form');
@@ -656,7 +985,7 @@
         displays.style.display = 'none';
         forms.style.display = 'block';
     }
-    
+
     function cancel_button(name){
         var displays = document.getElementById(name+'-disp');
         var forms = document.getElementById(name+'-form');
@@ -664,44 +993,44 @@
         forms.style.display = 'none';
         displays.style.display = 'block';
     }
-    
+
     function delete_address(addressId) {
         if (confirm('Are you sure you want to delete this address?')) {
             // Create form and submit to delete the address
             let form = document.createElement('form');
             form.method = 'POST';
             form.style.display = 'none';
-            
+
             let csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = 'csrfmiddlewaretoken';
             csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
+
             let actionInput = document.createElement('input');
             actionInput.type = 'hidden';
             actionInput.name = 'action';
             actionInput.value = 'delete';
-            
+
             let idInput = document.createElement('input');
             idInput.type = 'hidden';
             idInput.name = 'address_id';
             idInput.value = addressId;
-            
+
             form.appendChild(csrfInput);
             form.appendChild(actionInput);
             form.appendChild(idInput);
-            
+
             document.body.appendChild(form);
             form.submit();
         }
     }
-    
+
     // Add touch device detection for better handling on iPads
     document.addEventListener('DOMContentLoaded', function() {
         // Check if device is touch-enabled
         if ('ontouchstart' in window || navigator.maxTouchPoints) {
             document.body.classList.add('touch-device');
-            
+
             // Make buttons larger on touch devices for better tappability
             var buttons = document.querySelectorAll('.btn');
             buttons.forEach(function(button) {

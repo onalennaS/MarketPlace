@@ -1,7 +1,7 @@
 # authentication/views.py
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.backends import ModelBackend  
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -14,7 +14,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, User
 from courier.models import Courier
-
 User = get_user_model()
 
 def register(request):
@@ -133,11 +132,11 @@ def signin(request):
             if user.is_active == False :
                 return redirect('activate_account',email=user.email)
             if check_password(data['password'],user.password):
-                user.backend = 'django.contrib.auth.backends.ModelBackend'    
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
-                
+
                 messages.success(request,f'logged in successfully as {user.username}')
-                return redirect(verify_role(user))        
+                return redirect(verify_role(user))
             else:
                 messages.error(request,'Password is incorrect')
                 return render(request, 'authentication/signin.html', {'data':data})
