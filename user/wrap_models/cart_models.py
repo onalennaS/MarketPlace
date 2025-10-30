@@ -64,13 +64,13 @@ class CartDeliveryAddress(models.Model):
     house_no = models.CharField(max_length=50, null=True)
     street = models.CharField(max_length=50, null=True)
     complex_name = models.CharField(max_length=50, null=True)
-    area = models.CharField(max_length=50, null=True)
+    area = models.CharField(max_length=51, null=True)
     notes = models.CharField(max_length=200, null=True)
 
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-
-
+    phone = models.CharField(max_length=20, null=True, blank=True)
+    is_default = models.BooleanField(default=False)
     instutition = models.CharField(max_length=50, null=True)
     block = models.CharField(max_length=50, null=True)
     venue = models.CharField(max_length=50, null=True)

@@ -231,7 +231,122 @@ def buyer_dashboard(request):
 @login_required_custom
 @has_password
 def address(request):
-    return render(request, 'home/address.html')
+   
+    if request.method == 'POST':
+        address_type = request.POST.get('address_type')
+        action = request.POST.get('action')
+
+        if action == 'delete':
+            address_id = request.POST.get('address_id')
+            try:
+                address = CartDeliveryAddress.objects.get(id=address_id, user=request.user)
+                address.delete()
+                messages.success(request, 'Address deleted successfully.')
+            except CartDeliveryAddress.DoesNotExist:
+                messages.error(request, 'Address not found.')
+            return redirect('address')
+
+        # Validation for new address creation
+        errors = []
+
+        if not address_type or address_type not in ['residential', 'campus']:
+            errors.append('Invalid address type.')
+
+        phone = request.POST.get('phone', '').strip()
+        if not phone:
+            errors.append('Phone number is required.')
+        elif not phone.isdigit() or len(phone) < 10:
+            errors.append('Please enter a valid phone number (at least 10 digits).')
+
+        if address_type == 'residential':
+            house_no = request.POST.get('house_no', '').strip()
+            street = request.POST.get('street', '').strip()
+            area = request.POST.get('area', '').strip()
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            if not house_no:
+                errors.append('House number is required.')
+            if not street:
+                errors.append('Street is required.')
+            if not area:
+                errors.append('Area is required.')
+            if not latitude or not longitude:
+                errors.append('Location coordinates are required. Please select a location on the map.')
+
+            # Validate coordinates
+            try:
+                lat = float(latitude)
+                lng = float(longitude)
+                
+            except ValueError:
+                errors.append('Invalid coordinate format.')
+
+        elif address_type == 'campus':
+            institution = request.POST.get('institution', '').strip()
+            block = request.POST.get('block', '').strip()
+            venue = request.POST.get('venue', '').strip()
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            if not institution:
+                errors.append('Institution is required.')
+            if not block:
+                errors.append('Block is required.')
+            if not venue:
+                errors.append('Venue is required.')
+            if not latitude or not longitude:
+                errors.append('Location coordinates are required. Please select a location on the map.')
+
+            # Validate coordinates
+            try:
+                lat = float(latitude)
+                lng = float(longitude)
+            except ValueError:
+                errors.append('Invalid coordinate format.')
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return redirect('address')
+
+        # Create address if validation passes
+        if address_type == 'residential':
+            CartDeliveryAddress.objects.create(
+                user=request.user,
+                address_type='residential',
+                house_no=request.POST.get('house_no').strip(),
+                street=request.POST.get('street').strip(),
+                complex_name=request.POST.get('complex_name', '').strip() or None,
+                area=request.POST.get('area').strip(),
+                notes=request.POST.get('notes', '').strip() or None,
+                latitude=request.POST.get('latitude').strip(),
+                longitude=request.POST.get('longitude').strip(),
+                phone=phone,
+                is_default=False
+            )
+        elif address_type == 'campus':
+            CartDeliveryAddress.objects.create(
+                user=request.user,
+                address_type='campus',
+                instutition=request.POST.get('institution').strip(),
+                block=request.POST.get('block').strip(),
+                venue=request.POST.get('venue').strip(),
+                latitude=request.POST.get('latitude').strip(),
+                longitude=request.POST.get('longitude').strip(),
+                phone=phone,
+                is_default=False
+            )
+
+        messages.success(request, 'Address added successfully.')
+        next_url = request.GET.get("next")
+        if next_url and next_url != request.path:
+            return redirect(next_url)
+        return redirect('address')
+
+    # Get existing addresses for display
+    addresses = CartDeliveryAddress.objects.filter(user=request.user).order_by('-timestamp').all()
+    return render(request, 'home/address.html', {'addresses': addresses})
 
 @login_required_custom
 def order_history(request):
