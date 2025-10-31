@@ -144,7 +144,7 @@ def deliver_order(request, order_id):
         return render(request, 'courier/error.html', {'message': 'Order not found or not assigned to you.'})
 
     # Get delivery address coordinates
-    delivery_address = CartDeliveryAddress.objects.filter(user=order_delivery.reciever).first()
+    delivery_address = CartDeliveryAddress.objects.filter(user=order_delivery.reciever, is_default=True).first()
     if not delivery_address or not delivery_address.latitude or not delivery_address.longitude:
         return render(request, 'courier/error.html', {'message': 'Delivery address coordinates not available.'})
 

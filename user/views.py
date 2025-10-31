@@ -173,7 +173,7 @@ def checkout(request):
         else:
             method = "None"
 
-    delivery_address = CartDeliveryAddress.objects.filter(user=request.user).first()
+    delivery_address = CartDeliveryAddress.objects.filter(user=request.user,is_default=True).first()
     if not delivery_address:
         delivery_address = None
 

@@ -80,3 +80,10 @@ class CartDeliveryAddress(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.address_type} "
 
+@receiver(pre_save, sender=CartDeliveryAddress)
+def set_default_address(sender, instance, **kwargs):
+    if instance.is_default:
+        # Set all other addresses for this user to not default excluding the current instance
+        CartDeliveryAddress.objects.filter(user=instance.user).exclude(pk=instance.pk).update(is_default=False)
+
+
