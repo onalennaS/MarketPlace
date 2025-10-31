@@ -221,13 +221,8 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
-ACCOUNT_EMAIL_VERIFICATION = "none"  # optional, adjust as you prefer
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-ACCOUNT_USERNAME_REQUIRED = True
+
+
 
 # Automatically link social accounts to existing users with the same email
 SOCIALACCOUNT_ADAPTER = "authenticator.adapters.MySocialAccountAdapter"

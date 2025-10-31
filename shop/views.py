@@ -5,7 +5,7 @@ from seller.wrap_models.business_model import BusinessInformation, Address, Busi
 from user.wrap_models.cart_models import Cart, Wishlist
 from django.http import HttpResponse
 import random
-from .utils import has_password
+from seller.utils.authentication_utils import has_password
 
 
 def get_cart_items(user):
