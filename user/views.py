@@ -247,6 +247,20 @@ def address(request):
                 messages.error(request, 'Address not found.')
             return redirect('address')
 
+        elif action == 'set_default':
+            address_id = request.POST.get('address_id')
+            try:
+                # First, unset all other addresses as default
+                CartDeliveryAddress.objects.filter(user=request.user, is_default=True).update(is_default=False)
+                # Then set the selected address as default
+                address = CartDeliveryAddress.objects.get(id=address_id, user=request.user)
+                address.is_default = True
+                address.save()
+                messages.success(request, 'Default address updated successfully.')
+            except CartDeliveryAddress.DoesNotExist:
+                messages.error(request, 'Address not found.')
+            return redirect('address')
+
         # Validation for new address creation
         errors = []
 

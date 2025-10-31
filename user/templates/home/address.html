@@ -192,6 +192,19 @@
     .address-badge.business {
         background-color: var(--primary-teal);
     }
+
+    .address-badge.default-badge {
+        background-color: #f39c12;
+    }
+
+    .btn-set-default {
+        background-color: var(--accent-green);
+        color: white;
+    }
+
+    .btn-set-default:hover {
+        background-color: #27ae60;
+    }
     
     /* Form radio styling */
     .address-type-selector {
@@ -346,8 +359,9 @@
         }
 
         .action-buttons {
+            width:100%;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 8px;
             margin-top: 10px;
         }
@@ -743,6 +757,11 @@
                         <span class="address-badge {% if address.address_type == 'campus' %}business{% endif %}">
                             {{ address.address_type|title }}
                         </span>
+                        {% if address.is_default %}
+                        <span class="address-badge default-badge">
+                            <i class="fas fa-star"></i> Default
+                        </span>
+                        {% endif %}
                         <div class="address-info">
                             {% if address.address_type == 'residential' %}
                                 {% if address.house_no %}
@@ -761,8 +780,8 @@
                                 <div class="address-line">Notes: {{ address.notes }}</div>
                                 {% endif %}
                             {% elif address.address_type == 'campus' %}
-                                {% if address.instutition %}
-                                <div class="address-line">{{ address.instutition }}</div>
+                                {% if address.institution %}
+                                <div class="address-line">{{ address.institution }}</div>
                                 {% endif %}
                                 {% if address.block %}
                                 <div class="address-line">Block: {{ address.block }}</div>
@@ -774,15 +793,18 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <button type="button" class="btn btn-edit" onclick="edit_button('address-{{ address.id }}')">
-                            <i class="fas fa-pencil-alt"></i> Edit
+                        {% if not address.is_default %}
+                        <button type="button" class="btn btn-set-default" onclick="set_default_address('{{ address.id }}')">
+                            <i class="fas fa-star"></i> Set Default
                         </button>
+                        {% endif %}
+                      
                         <button type="button" class="btn btn-delete" onclick="delete_address('{{ address.id }}')">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </div>
                 </div>
-            </div> 
+            </div>
 
             <div class="card-body" id="address-form-{{ address.id }}" style="display:none;">
                 <form method="POST" class="auth-form">
@@ -1053,6 +1075,46 @@
                 actionInput.type = 'hidden';
                 actionInput.name = 'action';
                 actionInput.value = 'delete';
+
+                let idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'address_id';
+                idInput.value = addressId;
+
+                form.appendChild(csrfInput);
+                form.appendChild(actionInput);
+                form.appendChild(idInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+
+    function set_default_address(addressId) {
+        Swal.fire({
+            title: 'Set as Default Address?',
+            text: "This address will be used as your default delivery address.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#E74C3C',
+            confirmButtonText: 'Yes, set as default!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.style.display = 'none';
+
+                let csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                let actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action';
+                actionInput.value = 'set_default';
 
                 let idInput = document.createElement('input');
                 idInput.type = 'hidden';

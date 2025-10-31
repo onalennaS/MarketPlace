@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from seller.wrap_models.product_model import Product, Extras,Addon
 import uuid
-
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
