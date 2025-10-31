@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .utils import login_required_custom, has_password
+from .utils import login_required_custom
+from seller.utils.authentication_utils import has_password
 from allauth.socialaccount.models import SocialAccount
 from .wrap_models.cart_models import Cart , Wishlist,CartDeliveryMethod, CartDeliveryAddress, CartExtra
 from seller.wrap_models.orders_model import Order, OrderItem, OrderExtra, OrderAddress
@@ -449,6 +450,39 @@ def account_settings(request):
         ]
 
     return render(request, 'home/account_settings.html', {'login_activity': login_activity_data})
+
+@login_required_custom
+@has_password
+def delete_account(request):
+    if request.method == 'POST':
+        # Delete all related data
+        # Delete cart items
+        Cart.objects.filter(user=request.user).delete()
+        # Delete wishlist items
+        Wishlist.objects.filter(user=request.user).delete()
+        # Delete cart extras
+        CartExtra.objects.filter(user=request.user).delete()
+        # Delete delivery methods
+        CartDeliveryMethod.objects.filter(user=request.user).delete()
+        # Delete delivery addresses
+        CartDeliveryAddress.objects.filter(user=request.user).delete()
+        # Delete orders and related items
+        orders = Order.objects.filter(user=request.user)
+        for order in orders:
+            OrderItem.objects.filter(order=order).delete()
+            OrderExtra.objects.filter(order=order).delete()
+        orders.delete()
+        # Delete business ratings
+        BusinessRating.objects.filter(user=request.user).delete()
+        # Delete login activity
+        LoginActivity.objects.filter(user=request.user).delete()
+        # Delete social accounts
+        SocialAccount.objects.filter(user=request.user).delete()
+        # Finally delete the user
+        request.user.delete()
+        messages.success(request, 'Your account has been permanently deleted.')
+        return redirect('home')
+    return redirect('account_settings')
 
 def buyer_support(request):
     return render(request, 'home/buyer_support.html')

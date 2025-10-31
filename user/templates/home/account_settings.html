@@ -1024,6 +1024,27 @@ and (orientation: portrait) {
         </div>
     </div>
 
+    <!-- Delete Account Card -->
+    <div class="profile-card">
+        <div class="card-header">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h5>Danger Zone</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="card-text mb-1">
+                        Delete Account
+                    </p>
+                    <small class="text-muted">Permanently delete your account and all associated data. This action cannot be undone.</small>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="confirmDeleteAccount()">
+                    <i class="fas fa-trash-alt me-1"></i> Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
     
 <script type="text/javascript">
     function edit_button(name) {
@@ -1040,6 +1061,30 @@ and (orientation: portrait) {
 
         forms.style.display = 'none';
         displays.style.display = 'block';
+    }
+
+    function confirmDeleteAccount() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this! All your data will be permanently deleted.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete my account!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Create a form to submit the delete request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{% url "delete_account" %}';
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                form.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     }
     
     // Password strength checker

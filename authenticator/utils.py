@@ -84,7 +84,7 @@ def verify_reset_token(token, expiration=3600):
 
 def send_email_verification_link(recipient_email, verify_link):
     try:
-        user = User.objects.values('username').get(email=recipient_email)
+        user = User.objects.values('username','email').get(email=recipient_email)
     except User.DoesNotExist:
         logger.error(f"No user found with email: {recipient_email}")
         return False  # Return failure if user doesn't exist
