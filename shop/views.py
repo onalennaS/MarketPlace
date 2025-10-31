@@ -5,7 +5,7 @@ from seller.wrap_models.business_model import BusinessInformation, Address, Busi
 from user.wrap_models.cart_models import Cart, Wishlist
 from django.http import HttpResponse
 import random
-
+from .utils import has_password
 
 
 def get_cart_items(user):
@@ -29,7 +29,7 @@ def has_password(view_func):
         return redirect('create_password')
     return _wrapped_view
 
-
+@has_password
 def shop_base(request):
     products = list(Product.objects.filter(status="active").all())
     random.shuffle(products)
