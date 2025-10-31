@@ -99,6 +99,8 @@ def paystack_webhook(request):
             order = Order.objects.get(ref=reference)
             order.paid = False
             order.save()
+            transaction = transfer_money_to_business(ref=reference,status="Canceled")
+
         except Order.DoesNotExist:
             pass
     return HttpResponse(status=200)
