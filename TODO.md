@@ -1,6 +1,6 @@
-# TODO: Remove Loading Spinner from base.html
-
-- [x] Remove the first CSS block for spinner styles (including #pageSpinner, .spinner-border, .spinner-text, and keyframes)
-- [x] Remove the duplicate CSS block for spinner styles
-- [x] Remove the HTML div with id="pageSpinner"
-- [x] Remove the JavaScript code that controls the spinner display
+- [x] Update CSS styles in address.html to match profile.html
+- [x] Change class names from address-card to profile-card
+- [ ] Add floating sell icon
+- [ ] Update breadcrumb styling
+- [ ] Ensure container and other elements match profile.html design
+- [ ] Test the changes

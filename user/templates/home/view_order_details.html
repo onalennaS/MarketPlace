@@ -1,351 +1,695 @@
 {% extends 'home/base.html' %}
 
-{% block title %}Order History{% endblock %}
+{% block title %}Order Details{% endblock %}
 
 {% block styles %}
-
 {% endblock %}
 {% load static %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {% block nav %}
-            <ul class="nav flex-column px-3 mt-2">
-                <div class="flex-container ">
-                    
-                    <h5 class="fw-bold">Profile </h5>
-                    <hr >
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
-                        <i class="fas fa-user me-2"></i> Personal details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
-                        <i class="fas fa-cog me-2"></i> Account Settings
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-user-cog me-2"></i> Address Book
-                    </a>
-                </li>
-                  <div class="flex-container ">
-
-                <h5 class="fw-bold">Orders</h5>
-                 <hr >
-             </div>
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{% url 'order_history' %}">
-                        <i class="fas fa-history me-2"></i> Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart me-2"></i> Wish Lists
-                    </a>
-                </li>
-              
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">Payment</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
-                        <i class="fas fa-headset me-2"></i> Credit & Refunds
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-headset me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-headset me-2"></i> Refferals & earnings
-                    </a>
-                </li>
-                  <div class="flex-container ">
-                <h5 class="fw-bold">More</h5>
-                 <hr >
-             </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Payment history
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-headset me-2"></i> Support
-                    </a>
-                </li>
-            </ul>
-            {% endblock %}
+<ul class="nav flex-column px-3 mt-2">
+    <div class="flex-container">
+        <h5 class="fw-bold">Profile</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}">
+            <i class="fas fa-user me-2"></i> Personal details
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'account_settings' %}">
+            <i class="fas fa-cog me-2"></i> Account Settings
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
+            <i class="fas fa-user-cog me-2"></i> Address Book
+        </a>
+    </li>
+    <div class="flex-container">
+        <h5 class="fw-bold">Orders</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center active" href="{% url 'order_history' %}">
+            <i class="fas fa-history me-2"></i> Order History
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'wish_lists' %}">
+            <i class="fas fa-heart me-2"></i> Wish Lists
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_reviews' %}">
+            <i class="fas fa-star me-2"></i> Reviews
+        </a>
+    </li>
+    <div class="flex-container">
+        <h5 class="fw-bold">Payment</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'credit' %}">
+            <i class="fas fa-credit-card me-2"></i> Credit & Refunds
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
+            <i class="fas fa-gift me-2"></i> Gift Card
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
+            <i class="fas fa-users me-2"></i> Referrals & earnings
+        </a>
+    </li>
+    <div class="flex-container">
+        <h5 class="fw-bold">More</h5>
+        <hr>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-headset me-2"></i> Subscription plan
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-history me-2"></i> Payment history
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
+            <i class="fas fa-life-ring me-2"></i> Support
+        </a>
+    </li>
+</ul>
+{% endblock %}
 
 {% block content %}
+<style>
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+    border-radius: 0;
+}
+
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-teal);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #008B8B;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary-teal);
+    border: 1px solid var(--primary-teal);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-teal);
+    color: white;
+}
+
+/* Card styling */
+.order-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.order-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.order-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--border-color);
+}
+
+/* Section styling */
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark-gray);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title i {
+    color: var(--primary-teal);
+    font-size: 18px;
+}
+
+.section-content {
+    font-size: 14px;
+    color: var(--text-dark-gray);
+    line-height: 1.6;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-success {
+    color: var(--accent-green) !important;
+}
+
+/* Product grid */
+.product-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.product-thumbnail {
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.product-thumbnail:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-teal);
+}
+
+.product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Track order button */
+.track-order-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 8px;
+}
+
+.track-order-btn i {
+    font-size: 24px;
+}
+
+/* Offcanvas styling */
+.offcanvas {
+    background-color: var(--background-light);
+}
+
+.offcanvas-header {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.offcanvas-title {
+    font-weight: 600;
+    color: var(--text-dark-gray);
+}
+
+.offcanvas-body {
+    padding: 20px;
+}
+
+.invoice-item {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.item-row {
+    display: flex;
+    gap: 15px;
+    align-items: start;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.item-row:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark-gray);
+    margin-bottom: 8px;
+}
+
+.item-price {
+    font-weight: 600;
+    color: var(--text-dark-gray);
+}
+
+.item-qty {
+    font-size: 13px;
+    color: #6c757d;
+    margin-left: 15px;
+}
+
+/* Summary styling */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.summary-row.total {
+    font-weight: 600;
+    font-size: 16px;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 2px solid var(--border-color);
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--accent-green);
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .order-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .divider {
+        display: none;
+    }
+    
+    .order-card {
+        padding: 15px;
+    }
+    
+    .product-thumbnail {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .item-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 15px;
+    }
+    
+    .section-content {
+        font-size: 13px;
+    }
+    
+    .product-thumbnail {
+        width: 80px;
+        height: 80px;
+    }
+}
+</style>
+
 <div class="container p-0">
     <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb" style=" border-radius: 0; padding: 8px 15px;">
-
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" style="color: black; text-decoration: none;">Home</a>
+                <a href="{% url 'home' %}">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}" style="color: black; text-decoration: none;">Dashboard</a>
+                <a href="{% url 'dash' %}">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'order_history' %}" style="color: black; text-decoration: none;">Order history</a>
+                <a href="{% url 'order_history' %}">Order history</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page" style="color: black;"> Order details</li>
+            <li class="breadcrumb-item active" aria-current="page">Order details</li>
         </ol>
     </nav>
 
-    <!-- Filter Options for Order History -->
-    <div class="mb-4 d-flex justify-content-between">
-        <div>
-            <a href="{% url 'track_orders' order.id %}" class="btn btn-dark rounded-0 ">
-                <span>Track Order</span>
+    <!-- Action Buttons -->
+    <div class="mb-4 d-flex justify-content-between flex-wrap gap-2">
+        <a href="{% url 'track_orders' order.id %}" class="btn btn-primary">
+            <i class="fas fa-truck"></i>
+            <span>Track Order</span>
+        </a>
+        <a class="btn btn-outline-primary" href="{% url 'order_history'%}">
+            <i class="fas fa-arrow-left"></i>
+            <span>View Orders</span>
+        </a>
+    </div>
+
+    <!-- Order Header Card -->
+    <div class="order-card">
+        <div class="order-header">
+            <div class="order-meta">
+                <div class="order-meta-item">
+                    <strong>Order #{{order.order_id}}</strong>
+                </div>
+                <div class="divider"></div>
+                <div class="order-meta-item">
+                    <span>Ordered {{order.created_at}}</span>
+                </div>
+                <div class="divider"></div>
+                <div class="order-meta-item">
+                    <span>Paid {{order.created_at}}</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <i class="fas fa-file-invoice"></i>
+                View Invoice
+            </button>
+        </div>
+    </div>
+
+    <!-- Order Details Card -->
+    <div class="order-card">
+        <div class="row">
+            <div class="col-12 col-md-4 mb-4 mb-md-0">
+                <h6 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Delivery Address
+                </h6>
+                <div class="section-content">
+                    <div><strong>{{user.username}}</strong></div>
+                    <div>{{address.house_no}} {{address.street}}, {{address.area}}</div>
+                    <div>{{address.complex_name}}</div>
+                    {% if address.notes %}
+                    <div class="text-muted small">{{address.notes}}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 mb-4 mb-md-0">
+                <div class="mb-4">
+                    <h6 class="section-title">
+                        <i class="fas fa-shipping-fast"></i>
+                        Delivery Method
+                    </h6>
+                    <div class="section-content">
+                        {{order.delivery_method}}
+                    </div>
+                </div>
+                <div>
+                    <h6 class="section-title">
+                        <i class="fas fa-credit-card"></i>
+                        Payment Method
+                    </h6>
+                    <div class="section-content">
+                        Credit / Debit Card
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <h6 class="section-title">
+                    <i class="fas fa-receipt"></i>
+                    Order Summary
+                </h6>
+                <div class="section-content">
+                    <div class="summary-row">
+                        <span>{{items_count}} items</span>
+                        <strong>R {{price_total}}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>{{extras_count}} extras</span>
+                        <strong>R {{extra_total}}</strong>
+                    </div>
+                    {% if order.delivery_method == "delivery" %}
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <strong>R 15</strong>
+                    </div>
+                    {% endif %}
+                    <div class="summary-row total">
+                        <span>Order Total</span>
+                        <strong>R {{total}}</strong>
+                    </div>
+                    <div class="summary-row" style="color: var(--accent-green);">
+                        <span>Paid</span>
+                        <strong>- R {{total}}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Status Card -->
+    <div class="order-card">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+            <div>
+                <h6 class="section-title mb-3">
+                    {{order.status}} {% if order.status == "Delivered" %} Today, 21 November 2024 {% endif %}
+                </h6>
+                <div class="status-badge">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></span>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight1">
+                <i class="fas fa-box"></i>
+                Show Items
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+            <div class="product-grid">
+                {% for order_item in order_items %}
+                <div class="product-thumbnail">
+                    <img src="{{order_item.product.image.url}}" alt="{{order_item.product.name}}">
+                </div>
+                {% endfor %}
+            </div>
+            <a href="{% url 'track_orders' order.id %}" class="btn btn-outline-primary track-order-btn">
+                <span>Track</span>
+                <i class="fas fa-truck"></i>
+                <span>Order</span>
             </a>
         </div>
-        <div>
-            
-            <a class="btn btn-outline-dark rounded-0 " href="{% url 'order_history'%}"> View Orders</a>
-
-        </div>
     </div>
-
-    <div id="viewdetails" style="display:block;">
-        <div class="row  w-100 mx-0 mb-5" >
-            <div class="col-12  d-flex justify-content-between flex-wrap w-100 p-3  border shadow" style="background-color:white;">
-                <div class=" w-100  d-flex justify-content-start flex-wrap"  >
-                    <div class="d-flex justify-content-start">
-                        <span class="px-3  "><b>Order #{{order.order_id}}</b></span>
-                       <span class="border border" style="width: 2px; height: 50%; background-color: black; margin-top: -5px;"></span>
-                    </div>
-                    <div class="d-flex justify-content-start">
-                        <span class="px-3">Ordered {{order.created_at}} </span>
-
-                         <span class="border border" style="width: 2px; height: 50%; background-color: black; margin-top: -5px;"></span>
-                    </div>
-                    <span class="px-3"> Paid {{order.created_at}} </span>
-                </div>
-                <div class="">
-                    
-                   <button class="btn btn-dark rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">View Invoice</button>
-                </div>
-                
-            </div>
-           
-           <div class="row d-flex  mx-0 justify-content-between w-100 p-4 border p-0  shadow " style="background-color:white;">
-               <div class="col-12 col-md-4">
-
-                    <h6 class="fw-bold"><i class="fa fa-shopping-cart"></i> Delivery address</h6>
-                   <span class="text-muted small">name : {{user.username}}</span><br>
-                   
-                   <span class="text-muted small">{{address.house_no}} {{address.street}},{{address.area}}, {{address.complex_name}} </span><br>
-
-                   <span class="text-muted small">{{address.notes}}</span><br>
-                  
-                   
-               </div>
-               
-
-               <div class="col-12 col-md-4">
-                   <div>
-                        
-                        <h6 class="fw-bold"><i class="fa fa-car"></i> Delivery Method</h6>
-                        <span class="text-muted small">{{order.delivery_method}}</span><br>
-                   </div>
-                   <div class="mt-4">
-                    
-                        <h6 class="fw-bold"><i class="fa fa-credit-card"></i> Payment Method</h6>
-                        <span class="text-muted small">Credit / debit card</span><br><br>
-                    </div>
-               </div>
-
-               <div class="col-12 col-md-4">
-                
-                    <h6 class="fw-bold"><i class="fa fa-list"></i> Order Summary</h6><br>
-                     <span class="d-flex justify-content-between text-muted small">{{items_count}} items  <b>R {{price_total}}</b></span>
-                     <span class="d-flex justify-content-between text-muted small">{{extras_count}} extras  <b>R {{extra_total}}</b></span>
-                     {% if order.delivery_method == "delivery" %}
-                    <span class="d-flex justify-content-between text-muted small" >Delivery <b>R 15 </b></span>
-                    {% endif %}
-                    <br><br>
-                    <span class="d-flex justify-content-between text-muted small">Order Total <b>R {{total}}</b></span>
-                    <span class="d-flex justify-content-between text-muted small">Paid  <b>- R {{total}}</b></span><br>
-
-
-               </div>
-
-           </div>  
-        </div>
-
-       <div class="row mx-0 w-100 " >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-            <div class="" >
-                <h6 class="fw-bold">{{order.status}} {% if order.status == "Delivered" %} Today ,21 November 2024 {% endif %}</h6>
-                <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
-            </div>
-            <div class="">
-                
-                <button class="btn btn-dark rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight">Show items</button>
-            </div>
-            
-        </div>
-       
-       <div class=" d-flex justify-content-between p-4 border shadow shadow" style="background-color:white;">
-            <div class="w-100 d-flex justify-content-start" >
-            {% for order_item in order_items %}
-               <div class="border rounded mx-1" style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{{order_item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div>
-            {% endfor %}
-                 
-            </div>
-            <div class="tex-center ">
-                <a href="{% url 'track_orders' order.id %}" style="text-decoration:none;" class="btn btn-outline-primary">
-                   <span>Track</span> <br> <i class="fa fa-truck px-3"></i> <br> <span>Order</span>
-
-                </a>
-            </div>
-
-       </div>  
-       </div>
-        
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel " style="z-index: 1350;">
-  <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel" class=" text-center w-100 d-flex justify-content-center fw-bold">Invoices</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-light shadow border p-4 ">
-    <div class="p-3 w-100 border fw-bold mb-3" style="background-color:white;">
-        Order #{{order.order_id}}, 16 May 2024
-    </div>
-
-
-    <div class="  w-100 mb-3" >
-        <div class="d-flex justify-content-between flex-wrap w-100 p-3  border shadow" style="background-color:white;">
-            <div class="" >
-                <h6 class="">Sold by : <span class="fw-bold">{{order.business.name}}.</span></h6>
-               <span class="text-muted small">Invoice Total: R {{total}} </span>
-            </div>
-            <div class="">
-                
-               
-                <button class="btn btn-dark rounded-0"><i class="fa fa-download"></i> Download invoice</button>
-            </div>
-            
-        </div>
-       
-       <div class=" p-4 border shadow shadow" style="background-color:white;">
-            <h6 class="text-muted">Invoice items</h6>
-            <br>
-          
-            {% for item in order_items %}
-             <div class="d-flex justify-content-start mb-2">
-               <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                    <img src="{{item.product.image.url}}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                </div>
-                <div class="p-3">
-                    <h6 >{{item.product.name}}</h6>
-                    <span><b>R{{item.product.price}} </b> <span class="text-muted small px-3 fw-bold"> Qty : {{item.quantity}}</span></span>
-                    
-                </div>
-            </div>
-            {% endfor %}
-       </div>  
-       
-    </div>
-                <div class="row p-2 border  shadow " style="background-color:white;">
-                    <h6 class="text-muted fw-bold"> Extras</h6>
-                    {% for extra in extras %}
-                     <div class="">
-                    
-                        <div class="px-3 d-flex justify-content-between">
-                            <div class="">
-                                <h6 class="mb-0 pb-0">{{extra.extra.name}} </h6>
-                                <span><b>R{{extra.extra.price}}</b> <span class="text-muted small px-3 fw-bold"> </span></span>
-                            </div>
-                            
-                        </div>
-                        <hr style="border:1px solid black;">
-                    </div>
-                    {% endfor %}
-
-                  
-                </div>
-
-  </div>
 </div>
 
-
-
-
-
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel " style="z-index: 1350;">
-  <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel " class=" text-center w-100 d-flex justify-content-center fw-bold">Order items</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-light shadow border p-4">
-    <div class="  w-100 mb-3" >
-        <div class="d-flex justify-content-between w-100 p-3  border shadow" style="background-color:white;">
-            <h6 class="fw-bold"></h6>
-             <p><i class="fa fa-user-circle text-success"></i> Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></p>
+<!-- Invoice Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="z-index: 1350;">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel" class="offcanvas-title">Invoice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="invoice-item">
+            <strong>Order #{{order.order_id}}</strong>, {{order.created_at}}
         </div>
-       
-       <div class=" p-4 border shadow shadow" style="background-color:white;">
-            <h6 class="text-muted">Invoice items</h6>
-            <br>
+
+        <div class="invoice-item">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h6 class="mb-2">Sold by: <strong>{{order.business.name}}</strong></h6>
+                    <span class="text-muted small">Invoice Total: R {{total}}</span>
+                </div>
+                <button class="btn btn-primary btn-sm">
+                    <i class="fas fa-download"></i>
+                    Download
+                </button>
+            </div>
+
+            <h6 class="section-title mt-4">Invoice Items</h6>
             {% for item in order_items %}
-                <a href="{% url 'view_product' item.product.business.id item.product.id %}">
-                   <div class="d-flex justify-content-start mb-2">
-                       <div class="border rounded mx-2 " style="max-width: 120px; max-height: 120px; overflow: hidden;">
-                            <img src="{% static 'images/order.png' %}" alt="product image" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div class="p-3">
-                            <h6 >{{item.product.name}} </h6>
-                            <span><b>R{{item.product.price}} </b> <span class="text-muted small px-3 fw-bold"> Qty : 1</span></span>
-                            
+            <div class="item-row">
+                <div class="item-image">
+                    <img src="{{item.product.image.url}}" alt="{{item.product.name}}">
+                </div>
+                <div class="item-details">
+                    <div class="item-name">{{item.product.name}}</div>
+                    <div>
+                        <span class="item-price">R {{item.product.price}}</span>
+                        <span class="item-qty">Qty: {{item.quantity}}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if extras %}
+        <div class="invoice-item">
+            <h6 class="section-title">Extras</h6>
+            {% for extra in extras %}
+            <div class="item-row">
+                <div class="item-details">
+                    <div class="item-name">{{extra.extra.name}}</div>
+                    <div class="item-price">R {{extra.extra.price}}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Order Items Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel1" style="z-index: 1350;">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel1" class="offcanvas-title">Order Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="invoice-item">
+            <div class="status-badge mb-3">
+                <i class="fas fa-user-circle"></i>
+                <span>Signed by {{user.first_name}} <span class="text-muted small">(customer)</span></span>
+            </div>
+
+            <h6 class="section-title">Order Items</h6>
+            {% for item in order_items %}
+            <a href="{% url 'view_product' item.product.business.id item.product.id %}" style="text-decoration: none; color: inherit;">
+                <div class="item-row">
+                    <div class="item-image">
+                        <img src="{{item.product.image.url}}" alt="{{item.product.name}}">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">{{item.product.name}}</div>
+                        <div>
+                            <span class="item-price">R {{item.product.price}}</span>
+                            <span class="item-qty">Qty: {{item.quantity}}</span>
                         </div>
                     </div>
-                </a>
+                </div>
+            </a>
             {% endfor %}
-           
-
+        </div>
     </div>
-  </div>
-        
 </div>
 {% endblock %}
