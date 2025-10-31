@@ -903,6 +903,7 @@ body {
     
     <div class="horizontal-scroll-container">
         <div class="horizontal-scroll-row">
+            <!-- TODO :make the wishlist button work and add produnct to wish list -->
             {% for product in flash_deal_products %}
             <div class="product-card-wrapper">
                 <div class="product-card">
@@ -919,7 +920,7 @@ body {
                             <span class="product-badge">{{product.discount}}% OFF</span>
                         {% endif %}
                         
-                        <button class="wishlist-btn" onclick="event.preventDefault();">
+                        <button class="wishlist-btn" data-product-id="{{ product.id }}" onclick="event.preventDefault();">
                             <i class="bi bi-heart"></i>
                         </button>
                     </div>
@@ -968,7 +969,7 @@ body {
                         <span class="product-badge">{{product.discount}}% OFF</span>
                     {% endif %}
                     
-                    <button class="wishlist-btn" onclick="event.preventDefault();">
+                    <button class="wishlist-btn" data-product-id="{{product.id}}" onclick="event.preventDefault();">
                         <i class="bi bi-heart"></i>
                     </button>
                 </div>
@@ -1056,6 +1057,8 @@ body {
 </footer>
 
 <script>
+    var user_authenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+
     // Toast notification function
     function showToast(message, type = 'info') {
         const toastContainer = document.querySelector('.toast-container') || createToastContainer();
@@ -1186,21 +1189,73 @@ body {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
+
+            const productId = this.getAttribute('data-product-id');
+            if (!productId) {
+                showToast('Product ID not found', 'error');
+                return;
+            }
+
+            // Check if user is authenticated (assuming a global variable or check)
+            if (typeof user_authenticated === 'undefined' || !user_authenticated) {
+                showToast('Please login to add to wishlist', 'warning');
+                return;
+            }
+
             const icon = this.querySelector('i');
-            if (icon.classList.contains('bi-heart')) {
-                icon.classList.remove('bi-heart');
-                icon.classList.add('bi-heart-fill');
-                this.classList.add('active');
-                showToast('Added to wishlist!', 'success');
-            } else {
+            const isCurrentlyWishlisted = icon.classList.contains('bi-heart-fill');
+
+            if (isCurrentlyWishlisted) {
+                // For now, just toggle UI since delete API needs wishlist_id
                 icon.classList.remove('bi-heart-fill');
                 icon.classList.add('bi-heart');
                 this.classList.remove('active');
                 showToast('Removed from wishlist', 'info');
+                // TODO: Implement delete wishlist API call when available
+            } else {
+                // Add to wishlist
+                fetch('/account/api/user/add_wishlist/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') // Assuming CSRF token is set
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                        this.classList.add('active');
+                        showToast(data.message, 'success');
+                    } else {
+                        showToast(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Failed to add to wishlist', 'error');
+                });
             }
         });
     });
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 {% endblock %}
