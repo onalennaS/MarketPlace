@@ -8,168 +8,178 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-white: #FFFFFF;
+        --background-light: #F9F9F9;
+        --text-dark-gray: #333333;
+        --border-color: #E0E0E0;
+        --danger-color: #E74C3C;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        background-color: var(--background-light);
+        color: var(--text-dark-gray);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        width: 90%;
+        margin: 0;
+        padding: 20px;
+    }
+
     /* Breadcrumb styling */
     .breadcrumb {
         background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eaecef;
+        padding: 0;
+        margin-bottom: 30px;
     }
     
     .breadcrumb-item a {
-        color: #3498db;
+        color: var(--text-dark-gray);
         text-decoration: none;
         font-weight: 500;
-        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
     
     .breadcrumb-item a:hover {
-        color: #2980b9;
+        color: var(--primary-teal);
     }
     
     .breadcrumb-item.active {
-        color: #6c757d;
-        font-weight: 500;
+        color: var(--text-dark-gray);
     }
     
-    /* Card styling to match sidebar */
+    /* Card styling to match profile page */
     .address-card {
-        background-color: #f8f9fa;
-        border: 1px solid #eaecef;
+        background-color: white;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         margin-bottom: 20px;
-        transition: all 0.3s ease;
-    }
-    
-    .address-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-        border-color: #3498db;
+        overflow: hidden;
     }
     
     .card-header {
+        background-color: var(--base-white);
+        color: var(--text-dark-gray);
+        padding: 16px 20px;
+        border-bottom: none;
         display: flex;
         align-items: center;
-        padding: 14px 18px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid #eaecef;
     }
     
     .card-header i {
-        color: #3498db;
-        font-size: 18px;
+        color: var(--primary-teal);
+        font-size: 20px;
         margin-right: 12px;
     }
     
     .card-header h5 {
         margin: 0;
-        color: #2c3e50;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 600;
     }
     
     .card-body {
-        padding: 16px 18px;
+        padding: 20px;
     }
     
     /* Content styling */
     .card-text {
-        color: #495057;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 500;
         margin-bottom: 0;
     }
     
     /* Form styling */
     .form-floating .form-control {
-        border: 1px solid #ced4da;
+        border: 1px solid var(--border-color);
         border-radius: 6px;
-        padding: 12px;
+        padding: 12px 16px;
+        font-size: 16px;
         height: calc(3rem + 2px);
-        transition: all 0.2s ease;
+        transition: var(--transition);
     }
     
     .form-floating .form-control:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.25);
     }
     
     .form-floating label {
-        padding: 12px;
-        color: #6c757d;
+        padding: 12px 16px;
+        color: var(--text-dark-gray);
+        font-size: 14px;
     }
     
-    /* Button styling to match sidebar */
+    /* Button styling to match profile page */
+    .btn {
+        border-radius: 6px;
+        font-weight: 500;
+        padding: 8px 16px;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
     .btn-edit {
         background-color: transparent;
-        color: #495057;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
-        padding: 7px 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        color: var(--text-dark-gray);
+        border: 1px solid var(--border-color);
     }
     
     .btn-edit:hover {
-        background-color: rgba(52, 152, 219, 0.08);
-        color: #3498db;
-        border-color: #3498db;
-        transform: translateX(2px);
+        background-color: var(--primary-teal);
+        color: white;
+        border-color: var(--primary-teal);
     }
     
     .btn-delete {
         background-color: transparent;
-        color: #e74c3c;
-        border: 1px solid #e74c3c;
-        border-radius: 6px;
-        padding: 7px 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
     }
     
     .btn-delete:hover {
-        background-color: rgba(231, 76, 60, 0.08);
-        color: #c0392b;
-        transform: translateX(2px);
+        background-color: var(--danger-color);
+        color: white;
     }
     
     .btn-save {
-        background-color: #3498db;
+        background-color: var(--primary-teal);
         color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-weight: 500;
-        transition: all 0.3s ease;
     }
     
     .btn-save:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
+        background-color: #008B8B;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
     }
     
     .btn-cancel {
         background-color: transparent;
-        color: #e74c3c;
-        border: 1px solid #e74c3c;
-        border-radius: 6px;
-        padding: 7px 14px;
-        font-weight: 500;
+        color: var(--danger-color);
+        border: 1px solid var(--danger-color);
         margin-left: 8px;
-        transition: all 0.3s ease;
     }
     
     .btn-cancel:hover {
-        background-color: rgba(231, 76, 60, 0.08);
-        color: #c0392b;
-        transform: translateY(-2px);
+        background-color: var(--danger-color);
+        color: white;
     }
     
     /* Address type badge */
     .address-badge {
-        background-color: #2ecc71;
+        background-color: var(--accent-green);
         color: white;
         font-size: 12px;
         font-weight: 600;
@@ -180,7 +190,7 @@
     }
     
     .address-badge.business {
-        background-color: #3498db;
+        background-color: var(--primary-teal);
     }
     
     /* Form radio styling */
@@ -192,16 +202,17 @@
 
     .address-type-option {
         flex: 1;
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
+        background-color: var(--background-light);
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 14px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: var(--transition);
     }
 
     .address-type-option:hover {
-        background-color: rgba(52, 152, 219, 0.05);
+        background-color: rgba(0, 168, 168, 0.05);
+        border-color: var(--primary-teal);
     }
 
     .address-type-option input {
@@ -210,16 +221,16 @@
 
     .address-type-option label {
         font-weight: 500;
-        color: #495057;
+        color: var(--text-dark-gray);
         cursor: pointer;
     }
 
-    /* Improved form styling */
+    /* Form container styling */
     .address-form-container {
         padding: 20px;
-        background-color: #f8f9fa;
+        background-color: var(--background-light);
         border-radius: 8px;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--border-color);
     }
 
     .form-row {
@@ -233,7 +244,7 @@
     .map-container {
         height: 300px;
         border-radius: 8px;
-        border: 1px solid #ced4da;
+        border: 1px solid var(--border-color);
         overflow: hidden;
         position: relative;
     }
@@ -243,7 +254,7 @@
         top: 10px;
         right: 10px;
         z-index: 1000;
-        background-color: #3498db;
+        background-color: var(--primary-teal);
         color: white;
         border: none;
         border-radius: 6px;
@@ -252,14 +263,14 @@
         font-weight: 500;
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
         gap: 5px;
     }
 
     .btn-get-location:hover {
-        background-color: #2980b9;
+        background-color: #008B8B;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
@@ -291,11 +302,12 @@
     .address-line {
         font-weight: 500;  
         margin-bottom: 3px;
+        color: var(--text-dark-gray);
     }
     
     .address-contact {
         font-size: 14px;
-        color: #6c757d;
+        color: var(--text-dark-gray);
         margin-top: 5px;
     }
     
@@ -303,12 +315,141 @@
         display: flex;
         gap: 8px;
     }
+
+    /* Alert styling */
+    .alert {
+        background-color: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 16px 20px;
+        color: var(--text-dark-gray);
+    }
+
+    .alert i {
+        color: var(--primary-teal);
+    }
     
     /* Mobile responsiveness */
-    /* iPads (portrait and landscape) */
-    @media only screen
-    and (min-device-width: 768px)
-    and (max-device-width: 1024px) {
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+
+        .address-type-selector {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-save, .btn-cancel {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .action-buttons .btn {
+            width: 100%;
+            margin-right: 0;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .address-info {
+            margin-left: 0;
+        }
+
+        .card-body .d-flex {
+            flex-direction: column;
+        }
+
+        .card-body .d-flex .card-text {
+            margin-bottom: 10px;
+        }
+
+        .form-group-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group-buttons .btn {
+            width: 100%;
+            margin-left: 0;
+            justify-content: center;
+        }
+
+        .form-row {
+            flex-direction: column !important;
+        }
+
+        .form-group {
+            min-width: 100% !important;
+            margin-right: 0 !important;
+            margin-bottom: 15px !important;
+        }
+
+        .address-form-container {
+            padding: 15px;
+        }
+
+        .map-container {
+            height: 200px;
+        }
+
+        .card-header {
+            padding: 12px 15px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .btn-cancel {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .d-flex.justify-content-between.align-items-start {
+            flex-direction: column;
+        }
+
+        .d-flex.justify-content-between.align-items-start .btn-edit {
+            margin-top: 10px;
+            align-self: flex-end;
+        }
+    }
+    
+    @media (max-width: 575px) {
+        .breadcrumb {
+            padding: 0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header h5 {
+            font-size: 16px;
+        }
+        
+        .card-body {
+            padding: 12px;
+        }
+        
+        .form-floating .form-control {
+            font-size: 14px;
+        }
+        
+        .form-floating label {
+            font-size: 13px;
+        }
+    }
+
+    /* iPad and tablet responsiveness */
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
         .container {
             max-width: 95%;
             padding-left: 15px;
@@ -339,7 +480,6 @@
             padding: 8px 14px;
         }
 
-        /* Flex form responsiveness */
         .form-row {
             flex-direction: column !important;
         }
@@ -357,156 +497,56 @@
             height: 250px;
         }
     }
-    
-    /* iPad Mini and smaller iPads */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px)
-    and (max-device-height: 1024px) 
-    and (-webkit-min-device-pixel-ratio: 1) {
-        .container {
-            max-width: 98%;
-            padding-left: 12px;
-            padding-right: 12px;
+
+    /* Message container positioning for bottom right */
+    .message-container {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        top: auto !important;
+        width: auto !important;
+        max-width: 400px !important;
+        z-index: 1200 !important;
+        padding: 0 !important;
+    }
+
+    .message-container .alert {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: slideInFromRight 0.5s ease-out;
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .message-container .alert:last-child {
+        margin-bottom: 0;
+    }
+
+    @keyframes slideInFromRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
         }
-        
-        .card-header h5 {
-            font-size: 15px;
-        }
-        
-        .card-body .d-flex {
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: space-between;
-        }
-        
-        .form-group-buttons {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-        
-        .form-group-buttons .btn {
-            margin-left: 0;
+        to {
+            transform: translateX(0);
+            opacity: 1;
         }
     }
-    
-    /* iPad in portrait */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px) 
-    and (orientation: portrait) {
-        .action-buttons {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-        }
-        
-        .action-buttons .btn {
-            padding: 6px 10px;
-            font-size: 14px;
-        }
-        
-        .card-body .d-flex {
-            flex-direction: row;
-            align-items: flex-start;
-        }
-    }
-    
-    /* iPhone and smaller mobile devices */
-    @media (max-width: 767px) {
-        .container {
-            padding-left: 10px;
-            padding-right: 10px;
+
+    /* Mobile adjustments for messages */
+    @media (max-width: 768px) {
+        .message-container {
+            bottom: 80px !important; /* Above mobile bottom nav */
+            right: 10px !important;
+            left: 10px !important;
+            max-width: none !important;
         }
 
-        .address-type-selector {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-save, .btn-cancel {
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .action-buttons .btn {
-            width: 100%;
-            margin-right: 0;
-            text-align: center;
-        }
-
-        .address-info {
-            margin-left: 0;
-        }
-
-        .card-body .d-flex {
-            flex-direction: column;
-        }
-
-        .card-body .d-flex .card-text {
-            margin-bottom: 10px;
-        }
-
-        .form-group-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-group-buttons .btn {
-            width: 100%;
-            margin-left: 0;
-        }
-
-        /* Mobile flex form adjustments */
-        .form-row {
-            flex-direction: column !important;
-        }
-
-        .form-group {
-            min-width: 100% !important;
-            margin-right: 0 !important;
-            margin-bottom: 15px !important;
-        }
-
-        .address-form-container {
-            padding: 15px;
-        }
-
-        .map-container {
-            height: 200px;
-        }
-    }
-    
-    @media (max-width: 575px) {
-        .breadcrumb {
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        
-        .card-header h5 {
-            font-size: 15px;
-        }
-        
-        .card-body {
-            padding: 12px;
-        }
-        
-        .form-floating .form-control {
-            font-size: 14px;
-        }
-        
-        .form-floating label {
-            font-size: 14px;
+        .message-container .alert {
+            font-size: 13px;
+            padding: 10px 14px;
         }
     }
 </style>
@@ -516,7 +556,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt"></i> My Account</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Address Book</li>
         </ol>
@@ -530,9 +570,9 @@
         </div>
         <div class="card-body" id="activity-disp" style="display:block;">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="card-text">Add your delivery address either Residential or Business address</p>
+                <p class="card-text">Add your delivery address either Residential or Campus address</p>
                 <button type="button" class="btn btn-edit" onclick="edit_button('activity')">
-                    <i class="fas fa-plus me-1"></i> Add Address
+                    <i class="fas fa-plus"></i> Add Address
                 </button>
             </div>
         </div>
@@ -678,10 +718,10 @@
 
                     <div class="col-12 text-end form-group-buttons">
                         <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                            <i class="fas fa-check"></i> Save
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('activity')">
-                            <i class="fas fa-times me-1"></i> Cancel
+                            <i class="fas fa-times"></i> Cancel
                         </button>
                     </div>
                 </div>
@@ -735,10 +775,10 @@
                     </div>
                     <div class="action-buttons">
                         <button type="button" class="btn btn-edit" onclick="edit_button('address-{{ address.id }}')">
-                            <i class="fas fa-pencil-alt me-1"></i> Edit
+                            <i class="fas fa-pencil-alt"></i> Edit
                         </button>
                         <button type="button" class="btn btn-delete" onclick="delete_address('{{ address.id }}')">
-                            <i class="fas fa-trash-alt me-1"></i> Delete
+                            <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </div>
                 </div>
@@ -820,10 +860,10 @@
                         
                         <div class="col-12 text-end form-group-buttons">
                             <button type="submit" class="btn btn-save">
-                                <i class="fas fa-check me-1"></i> Save
+                                <i class="fas fa-check"></i> Save
                             </button>
                             <button type="button" class="btn btn-cancel" onclick="cancel_button('address-{{ address.id }}')">
-                                <i class="fas fa-times me-1"></i> Cancel
+                                <i class="fas fa-times"></i> Cancel
                             </button>    
                         </div>
                     </div>
@@ -869,7 +909,7 @@
     }
 
     function initResidentialMap() {
-        residentialMap = L.map('map').setView([-26.2041, 28.0473], 13); // Johannesburg coordinates
+        residentialMap = L.map('map').setView([-26.2041, 28.0473], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
@@ -890,7 +930,7 @@
     }
 
     function initCampusMap() {
-        campusMap = L.map('campus-map').setView([-26.2041, 28.0473], 13); // Johannesburg coordinates
+        campusMap = L.map('campus-map').setView([-26.2041, 28.0473], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
@@ -912,7 +952,6 @@
 
     function getCurrentLocation(type, button) {
         if (navigator.geolocation) {
-            // Change button state to loading
             button.classList.add('loading');
             button.innerHTML = '<i class="fas fa-spinner"></i> Getting Location...';
             button.disabled = true;
@@ -940,7 +979,6 @@
                         }
                     }
 
-                    // Reset button state
                     button.classList.remove('loading');
                     button.innerHTML = '<i class="fas fa-crosshairs"></i> Get Location';
                     button.disabled = false;
@@ -948,15 +986,13 @@
                 function(error) {
                     console.error('Error getting location:', error);
 
-                    // Show SweetAlert error message
                     Swal.fire({
                         icon: 'error',
                         title: 'Location Error',
                         text: 'Unable to get your location. Please check your browser permissions and try again.',
-                        confirmButtonColor: '#3498db'
+                        confirmButtonColor: '#00A8A8'
                     });
 
-                    // Reset button state
                     button.classList.remove('loading');
                     button.innerHTML = '<i class="fas fa-crosshairs"></i> Get Location';
                     button.disabled = false;
@@ -968,12 +1004,11 @@
                 }
             );
         } else {
-            // Show SweetAlert for unsupported geolocation
             Swal.fire({
                 icon: 'warning',
                 title: 'Geolocation Not Supported',
                 text: 'Your browser does not support geolocation. Please use manual location selection.',
-                confirmButtonColor: '#3498db'
+                confirmButtonColor: '#00A8A8'
             });
         }
     }
@@ -995,43 +1030,49 @@
     }
 
     function delete_address(addressId) {
-        if (confirm('Are you sure you want to delete this address?')) {
-            // Create form and submit to delete the address
-            let form = document.createElement('form');
-            form.method = 'POST';
-            form.style.display = 'none';
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#E74C3C',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.style.display = 'none';
 
-            let csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = 'csrfmiddlewaretoken';
-            csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                let csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            let actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'action';
-            actionInput.value = 'delete';
+                let actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action';
+                actionInput.value = 'delete';
 
-            let idInput = document.createElement('input');
-            idInput.type = 'hidden';
-            idInput.name = 'address_id';
-            idInput.value = addressId;
+                let idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'address_id';
+                idInput.value = addressId;
 
-            form.appendChild(csrfInput);
-            form.appendChild(actionInput);
-            form.appendChild(idInput);
+                form.appendChild(csrfInput);
+                form.appendChild(actionInput);
+                form.appendChild(idInput);
 
-            document.body.appendChild(form);
-            form.submit();
-        }
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     }
 
-    // Add touch device detection for better handling on iPads
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if device is touch-enabled
         if ('ontouchstart' in window || navigator.maxTouchPoints) {
             document.body.classList.add('touch-device');
 
-            // Make buttons larger on touch devices for better tappability
             var buttons = document.querySelectorAll('.btn');
             buttons.forEach(function(button) {
                 button.classList.add('touch-friendly');
@@ -1041,19 +1082,17 @@
 </script>
 
 <style>
-    /* Additional styles for touch devices specifically for iPad */
     .touch-device .btn.touch-friendly {
-        min-height: 44px; /* Apple's recommended minimum touch target size */
+        min-height: 44px;
     }
     
-    /* Fix for iPad Mini */
     @media only screen 
     and (min-device-width: 768px) 
     and (max-device-width: 1024px)
     and (max-device-height: 1024px) {
         .touch-device .form-floating .form-control {
-            font-size: 16px; /* Prevent zoom on iOS when focusing inputs */
-            height: calc(3.2rem + 2px); /* Slightly larger for better touch */
+            font-size: 16px;
+            height: calc(3.2rem + 2px);
         }
         
         .touch-device .address-type-option {
@@ -1065,647 +1104,5 @@
             height: 20px;
         }
     }
-    
-    /* iPad Pro */
-    @media only screen 
-    and (min-device-width: 1024px) 
-    and (max-device-width: 1366px) {
-        .container {
-            max-width: 92%;
-        }
-        
-        .action-buttons {
-            flex-direction: row;
-        }
-        
-        .form-group-buttons {
-            flex-direction: row;
-            justify-content: flex-end;
-        }
-        
-        .form-group-buttons .btn {
-            width: auto;
-        }
-    }
-    
-    /* Landscape orientation for all iPads */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1366px) 
-    and (orientation: landscape) {
-        .row {
-            margin-right: -10px;
-            margin-left: -10px;
-        }
-        
-        .col-md-6 {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-        
-        .address-type-selector {
-            flex-direction: row;
-        }
-    }
-    
-    /* Portrait orientation for all iPads */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1366px) 
-    and (orientation: portrait) {
-        .card-body .d-flex {
-            align-items: center;
-        }
-    }
-    /* Base variables for consistent theming */
-:root {
-        --primary-color: #3498db;
-        --primary-hover: #2980b9;
-        --danger-color: #e74c3c;
-        --danger-hover: #c0392b;
-        --success-color: #2ecc71;
-        --text-primary: #2c3e50;
-        --text-secondary: #6c757d;
-        --border-color: #eaecef;
-        --bg-light: #f8f9fa;
-        --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 5px 15px rgba(52, 152, 219, 0.1);
-        --transition: all 0.3s ease;
-    }
-
-    /* Navbar responsive styling */
-    .navbar {
-        padding: 8px 16px;
-        transition: var(--transition);
-    }
-
-    .navbar-brand {
-        font-size: 1.25rem;
-        transition: var(--transition);
-    }
-
-    .navbar-toggler {
-        padding: 6px 10px;
-        font-size: 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-    }
-
-    .navbar-nav .nav-link {
-        padding: 8px 15px;
-        transition: var(--transition);
-    }
-
-    /* Breadcrumb styling */
-    .breadcrumb {
-        background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .breadcrumb-item a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: var(--primary-hover);
-    }
-    
-    .breadcrumb-item.active {
-        color: var(--text-secondary);
-        font-weight: 500;
-    }
-    
-    /* Card styling to match sidebar */
-    .profile-card {
-        background-color: var(--bg-light);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        box-shadow: var(--shadow-sm);
-        margin-bottom: 20px;
-        overflow: hidden;
-        transition: var(--transition);
-    }
-    
-    .profile-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-md);
-        border-color: var(--primary-color);
-    }
-    
-    .card-header {
-        display: flex;
-        align-items: center;
-        padding: 16px 20px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .card-header i {
-        color: var(--primary-color);
-        font-size: 18px;
-        margin-right: 12px;
-    }
-    
-    .card-header h5 {
-        margin: 0;
-        color: var(--text-primary);
-        font-size: 16px;
-        font-weight: 600;
-    }
-    
-    .card-body {
-        padding: 20px;
-    }
-    
-    /* Content styling */
-    .card-text {
-        color: var(--text-primary);
-        font-size: 15px;
-        font-weight: 500;
-        margin-bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-    
-    .status-icon {
-        margin-left: 8px;
-        font-size: 14px;
-    }
-    
-  /* Form styling */
-  .form-floating .form-control {
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        padding: 12px;
-        height: calc(3rem + 2px);
-        transition: var(--transition);
-        font-size: 15px;
-    }
-    
-    .form-floating .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-    }
-    
-    .form-floating label {
-        padding: 12px;
-        color: var(--text-secondary);
-    }
-    
-    /* Button styling */
-    .btn {
-        font-weight: 500;
-        border-radius: 6px;
-        transition: var(--transition);
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .btn-edit {
-        background-color: transparent;
-        color: var(--text-primary);
-        border: 1px solid #ced4da;
-        padding: 8px 16px;
-    }
-    
-    .btn-edit:hover {
-        background-color: rgba(52, 152, 219, 0.08);
-        color: var(--primary-color);
-        border-color: var(--primary-color);
-        transform: translateX(2px);
-    }
-    
-    .btn-save {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 10px 18px;
-    }
-    
-    .btn-save:hover {
-        background-color: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-    }
-    
-    .btn-cancel {
-        background-color: transparent;
-        color: var(--danger-color);
-        border: 1px solid var(--danger-color);
-        padding: 8px 16px;
-        margin-left: 8px;
-    }
-    
-    .btn-cancel:hover {
-        background-color: rgba(231, 76, 60, 0.08);
-        color: var(--danger-hover);
-        transform: translateY(-2px);
-    }
-    
-    /* Verification icons */
-    .verified {
-        color: var(--success-color);
-    }
-    
-    .unverified {
-        color: var(--danger-color);
-    }
-
-    
-    /* Base responsive container adjustments */
-.container {
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 100%;
-    max-width: 100%;
-}
-
-/* Responsive adjustments for all screen sizes */
-@media (max-width: 991px) {
-    .card-header h5 {
-        font-size: 15px;
-    }
-    
-    .card-text {
-        font-size: 14px;
-    }
-    
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-    
-    /* Ensure menu toggle is visible on tablets and smaller devices */
-    .navbar-toggler {
-        display: block !important;
-        margin-right: 10px;
-    }
-    
-    /* Fix for navbar collapse on tablets */
-    .navbar-collapse {
-        display: none;
-    }
-    
-    .navbar-collapse.show {
-        display: block;
-    }
-}
-
-/* iPad Mini and other tablet specific fixes */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px) {
-    /* Ensure navbar toggle is visible */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* Adjust navbar container for tablets */
-    .navbar > .container,
-    .navbar > .container-fluid {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    /* Ensure collapsed navbar displays properly */
-    .navbar-collapse {
-        flex-basis: 100%;
-    }
-    
-    /* Improve visibility of toggle button */
-    .navbar-toggler {
-        padding: 0.5rem;
-        font-size: 1.25rem;
-        border: 1px solid rgba(0,0,0,.1);
-        background-color: rgba(52, 152, 219, 0.05);
-    }
-    
-    /* Fix for potential hidden toggle icon */
-    .navbar-toggler-icon {
-        display: inline-block !important;
-        visibility: visible !important;
-    }
-}
-
-/* Tablet adjustments */
-@media (max-width: 768px) {
-    .profile-card {
-        margin-bottom: 15px;
-    }
-    
-    .card-header {
-        padding: 12px 15px;
-    }
-    
-    .card-body {
-        padding: 15px;
-    }
-    
-    .form-floating .form-control {
-        height: calc(2.8rem + 2px);
-    }
-    
-    /* Adjust button alignment for small screens */
-    .col-md-4.text-md-end {
-        text-align: right !important;
-        margin-top: 10px;
-    }
-}
-
-/* Mobile phone adjustments */
-@media (max-width: 576px) {
-    /* Adjust breadcrumb */
-    .breadcrumb {
-        padding: 10px 0;
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
-    
-    /* Card adjustments */
-    .profile-card {
-        margin-bottom: 12px;
-    }
-    
-    .card-header {
-        padding: 10px 12px;
-    }
-    
-    .card-header i {
-        font-size: 16px;
-        margin-right: 8px;
-    }
-    
-    .card-body {
-        padding: 12px;
-    }
-    
-    /* Text adjustments */
-    .card-header h5 {
-        font-size: 14px;
-    }
-    
-    .card-text {
-        font-size: 13px;
-    }
-    
-    /* Button adjustments */
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 13px;
-        padding: 5px 10px;
-    }
-    
-    /* Stack buttons vertically on smallest screens */
-    .btn-cancel {
-        margin-left: 0;
-        margin-top: 8px;
-    }
-    
-    /* Form layout adjustments */
-    #fullname-form .row .col-md-6:last-child {
-        margin-top: 10px;
-    }
-    
-    /* Fix form button display */
-    #fullname-form .col-12.text-end,
-    #email-form .col-md-4.text-md-end,
-    #phone-form .col-md-4.text-md-end,
-    #username-form .col-md-4.text-md-end {
-        text-align: center !important;
-        margin-top: 15px;
-    }
-    
-    /* Make all form inputs full width */
-    .col-md-8, .col-md-6, .col-md-4 {
-        width: 100%;
-    }
-    
-    /* Fix display of name/value pairs */
-    .d-flex.justify-content-between.align-items-center {
-        flex-direction: column;
-        align-items: flex-start !important;
-    }
-    
-    .d-flex.justify-content-between.align-items-center .btn-edit {
-        margin-top: 10px;
-        align-self: flex-end;
-    }
-    
-    /* Fix form displays */
-    #username-form .row,
-    #email-form .row,
-    #phone-form .row {
-        margin: 0;
-    }
-    
-    /* Improve form usability on small screens */
-    .form-floating {
-        margin-bottom: 10px;
-    }
-    
-    .form-floating .form-control {
-        height: calc(2.5rem + 2px);
-        font-size: 14px;
-    }
-    
-    .form-floating label {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-}
-
-/* Extra small devices adjustments */
-@media (max-width: 320px) {
-    .breadcrumb {
-        font-size: 13px;
-    }
-    
-    .card-header h5 {
-        font-size: 13px;
-    }
-    
-    .card-text {
-        font-size: 12px;
-    }
-    
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-}
-
-/* Fix for form buttons on all mobile screens */
-@media (max-width: 768px) {
-    .btn-save, .btn-cancel {
-        display: block;
-        width: 100%;
-        margin-bottom: 8px;
-    }
-    
-    .btn-cancel {
-        margin-left: 0;
-    }
-}
-/* Force the navbar-toggler to be visible on all tablet devices */
-@media (max-width: 1024px) {
-    /* Important overrides to ensure menu toggle is visible */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: relative !important;
-        z-index: 1000 !important;
-        margin-right: 15px !important;
-    }
-    
-    /* Make sure the toggle icon is showing */
-    .navbar-toggler-icon {
-        display: inline-block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* Ensure navbar container is using flexbox */
-    .navbar, 
-    .navbar > .container,
-    .navbar > .container-fluid {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        position: relative !important;
-    }
-    
-    /* Additional styling to make toggle button more noticeable */
-    .navbar-toggler {
-        padding: 8px 12px !important;
-        font-size: 1.25rem !important;
-        background-color: rgba(52, 152, 219, 0.1) !important;
-        border: 1px solid rgba(52, 152, 219, 0.2) !important;
-        border-radius: 4px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-    }
-}
-
-/* Specific iPad Mini targeting */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px)
-and (-webkit-min-device-pixel-ratio: 1) {
-    /* Additional iPad-specific fixes */
-    body .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        right: 15px !important;
-        top: 15px !important;
-    }
-    
-    /* Make the toggle button stand out visually */
-    body .navbar-toggler {
-        padding: 10px !important;
-        background-color: rgba(52, 152, 219, 0.15) !important;
-        border: 2px solid rgba(52, 152, 219, 0.3) !important;
-    }
-    
-    /* Force visibility on containers */
-    body .navbar > .container,
-    body .navbar > .container-fluid {
-        position: relative !important;
-        padding-right: 50px !important; /* Make room for toggle button */
-    }
-}
-
-/* Even more specific targeting for iPad Mini */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px)
-and (orientation: portrait) {
-    body header .navbar-toggler,
-    body nav .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* If navbar is fixed-top, adjust positioning */
-    body .navbar.fixed-top .navbar-toggler {
-        right: 15px !important;
-        top: 10px !important;
-    }
-}
-
-/* Super aggressive approach for iPad Mini */
-@supports (-webkit-overflow-scrolling: touch) {
-    /* Target all iOS devices */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* More visible iOS-specific styling */
-    @media (min-width: 768px) and (max-width: 1024px) {
-        .navbar-toggler {
-            position: absolute !important;
-            right: 15px !important;
-            top: 15px !important;
-            background-color: rgba(52, 152, 219, 0.2) !important;
-            border: 2px solid #3498db !important;
-        }
-    }
-}
-
-/* Fix for Bootstrap's default hiding of navbar-toggler */
-@media (min-width: 768px) {
-    .navbar-expand-md .navbar-toggler,
-    .navbar-expand-lg .navbar-toggler {
-        display: block !important;
-    }
-    
-    .navbar-expand-md .navbar-collapse,
-    .navbar-expand-lg .navbar-collapse {
-        display: none !important;
-    }
-    
-    .navbar-expand-md .navbar-collapse.show,
-    .navbar-expand-lg .navbar-collapse.show {
-        display: block !important;
-    }
-}
-
-/* Fixed positioning as a last resort if nothing else works */
-@media (min-width: 768px) and (max-width: 1024px) {
-    body::before {
-        content: '';
-        display: block;
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        width: 45px;
-        height: 45px;
-        z-index: 10000;
-        pointer-events: none;
-    }
-    
-    .navbar-toggler {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        z-index: 10001 !important;
-    }
-}
 </style>
 {% endblock content %}
