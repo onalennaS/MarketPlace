@@ -6,870 +6,410 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    /* Breadcrumb styling */
-    .breadcrumb {
-        background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eaecef;
-        overflow-x: auto;
-        white-space: nowrap;
-        scrollbar-width: none; /* For Firefox */
-    }
-    
-    .breadcrumb::-webkit-scrollbar {
-        display: none; /* For Chrome, Safari, and Opera */
-    }
-    
-    .breadcrumb-item a {
-        color: #3498db;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: #2980b9;
-    }
-    
-    .breadcrumb-item.active {
-        color: #6c757d;
-        font-weight: 500;
-    }
-    
-    /* Card styling to match sidebar */
-    .profile-card {
-        background-color: #f8f9fa;
-        border: 1px solid #eaecef;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 16px;
-        transition: all 0.3s ease;
-    }
-    
-    .profile-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-        border-color: #3498db;
-    }
-    
-    .card-header {
-        display: flex;
-        align-items: center;
-        padding: 14px 18px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid #eaecef;
-    }
-    
-    .card-header i {
-        color: #3498db;
-        font-size: 18px;
-        margin-right: 12px;
-    }
-    
-    .card-header h5 {
-        margin: 0;
-        color: #2c3e50;
-        font-size: 16px;
-        font-weight: 600;
-    }
-    
-    .card-body {
-        padding: 16px 18px;
-    }
-    
-    /* Content styling */
-    .card-text {
-        color: #495057;
-        font-size: 15px;
-        font-weight: 500;
-        margin-bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-    
-    /* Button styling to match sidebar - REDUCED SIZE */
-    .btn-edit {
-        background-color: transparent;
-        color: #495057;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
-        padding: 5px 10px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        font-size: 0.875rem;
-    }
-    
-    .btn-edit:hover {
-        background-color: rgba(52, 152, 219, 0.08);
-        color: #3498db;
-        border-color: #3498db;
-        transform: translateX(2px);
-    }
-    
-    .btn-cart {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        font-size: 0.875rem;
-    }
-    
-    .btn-cart:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-    }
-    
-    .btn-remove {
-        background-color: transparent;
-        color: #e74c3c;
-        border: 1px solid #e74c3c;
-        border-radius: 6px;
-        padding: 5px 10px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        font-size: 0.875rem;
-    }
-    
-    .btn-remove:hover {
-        background-color: rgba(231, 76, 60, 0.08);
-        color: #c0392b;
-        transform: translateY(-2px);
-    }
-    
-    .wishlist-img-container {
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
-        border: 1px solid #eaecef;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-    }
-    
-    .wishlist-img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-    
-    .empty-wishlist {
-        text-align: center;
-        padding: 30px 0;
-    }
-    
-    .empty-wishlist i {
-        font-size: 40px;
-        color: #d5d8dc;
-        margin-bottom: 16px;
-    }
-    
-    .empty-wishlist h4 {
-        color: #7f8c8d;
-        margin-bottom: 12px;
-        font-size: 1.25rem;
-    }
-    
-    .empty-wishlist p {
-        color: #95a5a6;
-        margin-bottom: 24px;
-        font-size: 0.9rem;
-    }
-    
-    .btn-continue-shopping {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        padding: 8px 20px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        font-size: 0.875rem;
-    }
-    
-    .btn-continue-shopping:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 3px 8px rgba(41, 128, 185, 0.3);
-    }
-    
-    .price-current {
-        font-size: 16px;
-        font-weight: 600;
-        color: #2c3e50;
-    }
-    
-    .price-original {
-        font-size: 13px;
-        color: #95a5a6;
-        text-decoration: line-through;
-    }
-    
-    /* Mobile Responsive Enhancements */
-    @media (max-width: 767px) {
-        .container {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-        
-        .card-body {
-            padding: 12px;
-        }
-        
-        .wishlist-img-container {
-            width: 70px;
-            height: 70px;
-            margin-bottom: 10px;
-        }
-        
-        h5 {
-            font-size: 0.95rem;
-        }
-        
-        .price-current {
-            font-size: 14px;
-        }
-        
-        .price-original {
-            font-size: 12px;
-        }
-        
-        .btn-container {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            margin-top: 8px;
-        }
-        
-        .btn-remove, .btn-cart {
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            flex: 1;
-        }
-        
-        .btn-remove {
-            margin-right: 8px;
-        }
-        
-        .btn-cart i, .btn-remove i {
-            margin-right: 2px;
-        }
-        
-        .badge {
-            font-size: 0.7rem;
-        }
-    }
-    
-    /* Small phone adjustments */
-    @media (max-width: 575px) {
-        .product-details {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .product-actions {
-            text-align: center;
-        }
-        
-        .badge {
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-    }
-    /* Base variables for consistent theming */
 :root {
-        --primary-color: #3498db;
-        --primary-hover: #2980b9;
-        --danger-color: #e74c3c;
-        --danger-hover: #c0392b;
-        --success-color: #2ecc71;
-        --text-primary: #2c3e50;
-        --text-secondary: #6c757d;
-        --border-color: #eaecef;
-        --bg-light: #f8f9fa;
-        --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 5px 15px rgba(52, 152, 219, 0.1);
-        --transition: all 0.3s ease;
-    }
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-    /* Navbar responsive styling */
-    .navbar {
-        padding: 8px 16px;
-        transition: var(--transition);
-    }
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    .navbar-brand {
-        font-size: 1.25rem;
-        transition: var(--transition);
-    }
-
-    .navbar-toggler {
-        padding: 6px 10px;
-        font-size: 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-    }
-
-    .navbar-nav .nav-link {
-        padding: 8px 15px;
-        transition: var(--transition);
-    }
-
-    /* Breadcrumb styling */
-    .breadcrumb {
-        background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .breadcrumb-item a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: var(--primary-hover);
-    }
-    
-    .breadcrumb-item.active {
-        color: var(--text-secondary);
-        font-weight: 500;
-    }
-    
-    /* Card styling to match sidebar */
-    .profile-card {
-        background-color: var(--bg-light);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        box-shadow: var(--shadow-sm);
-        margin-bottom: 20px;
-        overflow: hidden;
-        transition: var(--transition);
-    }
-    
-    .profile-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-md);
-        border-color: var(--primary-color);
-    }
-    
-    .card-header {
-        display: flex;
-        align-items: center;
-        padding: 16px 20px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .card-header i {
-        color: var(--primary-color);
-        font-size: 18px;
-        margin-right: 12px;
-    }
-    
-    .card-header h5 {
-        margin: 0;
-        color: var(--text-primary);
-        font-size: 16px;
-        font-weight: 600;
-    }
-    
-    .card-body {
-        padding: 20px;
-    }
-    
-    /* Content styling */
-    .card-text {
-        color: var(--text-primary);
-        font-size: 15px;
-        font-weight: 500;
-        margin-bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-    
-    .status-icon {
-        margin-left: 8px;
-        font-size: 14px;
-    }
-    
-  /* Form styling */
-  .form-floating .form-control {
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        padding: 12px;
-        height: calc(3rem + 2px);
-        transition: var(--transition);
-        font-size: 15px;
-    }
-    
-    .form-floating .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-    }
-    
-    .form-floating label {
-        padding: 12px;
-        color: var(--text-secondary);
-    }
-    
-    /* Button styling */
-    .btn {
-        font-weight: 500;
-        border-radius: 6px;
-        transition: var(--transition);
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .btn-edit {
-        background-color: transparent;
-        color: var(--text-primary);
-        border: 1px solid #ced4da;
-        padding: 8px 16px;
-    }
-    
-    .btn-edit:hover {
-        background-color: rgba(52, 152, 219, 0.08);
-        color: var(--primary-color);
-        border-color: var(--primary-color);
-        transform: translateX(2px);
-    }
-    
-    .btn-save {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 10px 18px;
-    }
-    
-    .btn-save:hover {
-        background-color: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-    }
-    
-    .btn-cancel {
-        background-color: transparent;
-        color: var(--danger-color);
-        border: 1px solid var(--danger-color);
-        padding: 8px 16px;
-        margin-left: 8px;
-    }
-    
-    .btn-cancel:hover {
-        background-color: rgba(231, 76, 60, 0.08);
-        color: var(--danger-hover);
-        transform: translateY(-2px);
-    }
-    
-    /* Verification icons */
-    .verified {
-        color: var(--success-color);
-    }
-    
-    .unverified {
-        color: var(--danger-color);
-    }
-
-    
-    /* Base responsive container adjustments */
 .container {
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 100%;
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.profile-card:hover {
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    background-color: var(--base-white);
+    color: var(--text-dark-gray);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.card-header i {
+    color: var(--primary-teal);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Badge styling */
+.badge {
+    background-color: var(--primary-teal);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.badge.bg-success {
+    background-color: var(--accent-green) !important;
+}
+
+.badge.bg-light {
+    background-color: #f0f0f0 !important;
+    color: var(--text-dark-gray) !important;
+}
+
+/* Wishlist item styling */
+.wishlist-item-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wishlist-img-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.wishlist-img {
     max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
-/* Responsive adjustments for all screen sizes */
-@media (max-width: 991px) {
-    .card-header h5 {
-        font-size: 15px;
-    }
-    
-    .card-text {
-        font-size: 14px;
-    }
-    
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-    
-    /* Ensure menu toggle is visible on tablets and smaller devices */
-    .navbar-toggler {
-        display: block !important;
-        margin-right: 10px;
-    }
-    
-    /* Fix for navbar collapse on tablets */
-    .navbar-collapse {
-        display: none;
-    }
-    
-    .navbar-collapse.show {
-        display: block;
-    }
+.product-details {
+    flex: 1;
 }
 
-/* iPad Mini and other tablet specific fixes */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px) {
-    /* Ensure navbar toggle is visible */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* Adjust navbar container for tablets */
-    .navbar > .container,
-    .navbar > .container-fluid {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    /* Ensure collapsed navbar displays properly */
-    .navbar-collapse {
-        flex-basis: 100%;
-    }
-    
-    /* Improve visibility of toggle button */
-    .navbar-toggler {
-        padding: 0.5rem;
-        font-size: 1.25rem;
-        border: 1px solid rgba(0,0,0,.1);
-        background-color: rgba(52, 152, 219, 0.05);
-    }
-    
-    /* Fix for potential hidden toggle icon */
-    .navbar-toggler-icon {
-        display: inline-block !important;
-        visibility: visible !important;
-    }
+.product-details h5 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark-gray);
 }
 
-/* Tablet adjustments */
+.product-business {
+    color: var(--primary-teal);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+}
+
+.product-rating i {
+    color: #FFA500;
+}
+
+.product-rating span {
+    color: #666;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.product-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.product-price {
+    text-align: right;
+}
+
+.price-current {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark-gray);
+    margin: 0;
+}
+
+.price-original {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin: 0;
+}
+
+.product-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.btn-remove {
+    background-color: transparent;
+    color: #E74C3C;
+    border: 1px solid #E74C3C;
+}
+
+.btn-remove:hover {
+    background-color: #E74C3C;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-cart {
+    background-color: var(--primary-teal);
+    color: white;
+}
+
+.btn-cart:hover {
+    background-color: #008B8B;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+.btn-continue-shopping {
+    background-color: var(--primary-teal);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.btn-continue-shopping:hover {
+    background-color: #008B8B;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+/* Empty wishlist styling */
+.empty-wishlist {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-wishlist i {
+    font-size: 60px;
+    color: var(--primary-teal);
+    opacity: 0.3;
+    margin-bottom: 20px;
+}
+
+.empty-wishlist h4 {
+    color: var(--text-dark-gray);
+    margin-bottom: 12px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.empty-wishlist p {
+    color: #666;
+    margin-bottom: 24px;
+    font-size: 16px;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .profile-card {
-        margin-bottom: 15px;
+    .container {
+        padding: 15px;
     }
     
     .card-header {
         padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
     
     .card-body {
         padding: 15px;
     }
     
-    .form-floating .form-control {
-        height: calc(2.8rem + 2px);
+    .wishlist-item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
     
-    /* Adjust button alignment for small screens */
-    .col-md-4.text-md-end {
-        text-align: right !important;
-        margin-top: 10px;
+    .wishlist-img-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+    }
+    
+    .product-details {
+        text-align: center;
+        width: 100%;
+    }
+    
+    .product-details h5 {
+        font-size: 16px;
+    }
+    
+    .product-rating {
+        justify-content: center;
+    }
+    
+    .product-badges {
+        justify-content: center;
+    }
+    
+    .product-actions {
+        width: 100%;
+        align-items: center;
+    }
+    
+    .product-price {
+        text-align: center;
+    }
+    
+    .product-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-remove, .btn-cart {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .price-current {
+        font-size: 18px;
     }
 }
 
-/* Mobile phone adjustments */
 @media (max-width: 576px) {
-    /* Adjust breadcrumb */
     .breadcrumb {
-        padding: 10px 0;
-        margin-bottom: 15px;
         font-size: 14px;
+        margin-bottom: 20px;
     }
     
-    /* Card adjustments */
-    .profile-card {
-        margin-bottom: 12px;
-    }
-    
-    .card-header {
-        padding: 10px 12px;
+    .card-header h5 {
+        font-size: 16px;
     }
     
     .card-header i {
-        font-size: 16px;
-        margin-right: 8px;
+        font-size: 18px;
     }
     
-    .card-body {
-        padding: 12px;
+    .badge {
+        font-size: 12px;
+        padding: 4px 10px;
     }
     
-    /* Text adjustments */
-    .card-header h5 {
-        font-size: 14px;
+    .product-details h5 {
+        font-size: 15px;
     }
     
-    .card-text {
-        font-size: 13px;
-    }
-    
-    /* Button adjustments */
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 13px;
-        padding: 5px 10px;
-    }
-    
-    /* Stack buttons vertically on smallest screens */
-    .btn-cancel {
-        margin-left: 0;
-        margin-top: 8px;
-    }
-    
-    /* Form layout adjustments */
-    #fullname-form .row .col-md-6:last-child {
-        margin-top: 10px;
-    }
-    
-    /* Fix form button display */
-    #fullname-form .col-12.text-end,
-    #email-form .col-md-4.text-md-end,
-    #phone-form .col-md-4.text-md-end,
-    #username-form .col-md-4.text-md-end {
-        text-align: center !important;
-        margin-top: 15px;
-    }
-    
-    /* Make all form inputs full width */
-    .col-md-8, .col-md-6, .col-md-4 {
-        width: 100%;
-    }
-    
-    /* Fix display of name/value pairs */
-    .d-flex.justify-content-between.align-items-center {
+    .product-buttons {
         flex-direction: column;
-        align-items: flex-start !important;
+        gap: 8px;
     }
     
-    .d-flex.justify-content-between.align-items-center .btn-edit {
-        margin-top: 10px;
-        align-self: flex-end;
-    }
-    
-    /* Fix form displays */
-    #username-form .row,
-    #email-form .row,
-    #phone-form .row {
-        margin: 0;
-    }
-    
-    /* Improve form usability on small screens */
-    .form-floating {
-        margin-bottom: 10px;
-    }
-    
-    .form-floating .form-control {
-        height: calc(2.5rem + 2px);
-        font-size: 14px;
-    }
-    
-    .form-floating label {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-}
-
-/* Extra small devices adjustments */
-@media (max-width: 320px) {
-    .breadcrumb {
-        font-size: 13px;
-    }
-    
-    .card-header h5 {
-        font-size: 13px;
-    }
-    
-    .card-text {
-        font-size: 12px;
-    }
-    
-    .btn-edit, .btn-cancel, .btn-save {
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-}
-
-/* Fix for form buttons on all mobile screens */
-@media (max-width: 768px) {
-    .btn-save, .btn-cancel {
-        display: block;
+    .btn {
         width: 100%;
-        margin-bottom: 8px;
+        justify-content: center;
     }
     
-    .btn-cancel {
-        margin-left: 0;
-    }
-}
-/* Force the navbar-toggler to be visible on all tablet devices */
-@media (max-width: 1024px) {
-    /* Important overrides to ensure menu toggle is visible */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: relative !important;
-        z-index: 1000 !important;
-        margin-right: 15px !important;
+    .empty-wishlist i {
+        font-size: 50px;
     }
     
-    /* Make sure the toggle icon is showing */
-    .navbar-toggler-icon {
-        display: inline-block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+    .empty-wishlist h4 {
+        font-size: 20px;
     }
     
-    /* Ensure navbar container is using flexbox */
-    .navbar, 
-    .navbar > .container,
-    .navbar > .container-fluid {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        position: relative !important;
-    }
-    
-    /* Additional styling to make toggle button more noticeable */
-    .navbar-toggler {
-        padding: 8px 12px !important;
-        font-size: 1.25rem !important;
-        background-color: rgba(52, 152, 219, 0.1) !important;
-        border: 1px solid rgba(52, 152, 219, 0.2) !important;
-        border-radius: 4px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-    }
-}
-
-/* Specific iPad Mini targeting */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px)
-and (-webkit-min-device-pixel-ratio: 1) {
-    /* Additional iPad-specific fixes */
-    body .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        right: 15px !important;
-        top: 15px !important;
-    }
-    
-    /* Make the toggle button stand out visually */
-    body .navbar-toggler {
-        padding: 10px !important;
-        background-color: rgba(52, 152, 219, 0.15) !important;
-        border: 2px solid rgba(52, 152, 219, 0.3) !important;
-    }
-    
-    /* Force visibility on containers */
-    body .navbar > .container,
-    body .navbar > .container-fluid {
-        position: relative !important;
-        padding-right: 50px !important; /* Make room for toggle button */
-    }
-}
-
-/* Even more specific targeting for iPad Mini */
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px)
-and (orientation: portrait) {
-    body header .navbar-toggler,
-    body nav .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* If navbar is fixed-top, adjust positioning */
-    body .navbar.fixed-top .navbar-toggler {
-        right: 15px !important;
-        top: 10px !important;
-    }
-}
-
-/* Super aggressive approach for iPad Mini */
-@supports (-webkit-overflow-scrolling: touch) {
-    /* Target all iOS devices */
-    .navbar-toggler {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* More visible iOS-specific styling */
-    @media (min-width: 768px) and (max-width: 1024px) {
-        .navbar-toggler {
-            position: absolute !important;
-            right: 15px !important;
-            top: 15px !important;
-            background-color: rgba(52, 152, 219, 0.2) !important;
-            border: 2px solid #3498db !important;
-        }
-    }
-}
-
-/* Fix for Bootstrap's default hiding of navbar-toggler */
-@media (min-width: 768px) {
-    .navbar-expand-md .navbar-toggler,
-    .navbar-expand-lg .navbar-toggler {
-        display: block !important;
-    }
-    
-    .navbar-expand-md .navbar-collapse,
-    .navbar-expand-lg .navbar-collapse {
-        display: none !important;
-    }
-    
-    .navbar-expand-md .navbar-collapse.show,
-    .navbar-expand-lg .navbar-collapse.show {
-        display: block !important;
-    }
-}
-
-/* Fixed positioning as a last resort if nothing else works */
-@media (min-width: 768px) and (max-width: 1024px) {
-    body::before {
-        content: '';
-        display: block;
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        width: 45px;
-        height: 45px;
-        z-index: 10000;
-        pointer-events: none;
-    }
-    
-    .navbar-toggler {
-        position: fixed !important;
-        top: 15px !important;
-        right: 15px !important;
-        z-index: 10001 !important;
+    .empty-wishlist p {
+        font-size: 14px;
     }
 }
 </style>
@@ -879,10 +419,10 @@ and (orientation: portrait) {
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Wish List</li>
         </ol>
@@ -891,14 +431,11 @@ and (orientation: portrait) {
     <!-- Wish List Header Card -->
     <div class="profile-card">
         <div class="card-header">
-            <i class="fas fa-heart"></i>
-            <h5>My Wish List</h5>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="card-text">Items you've saved for later</p>
-                <span class="badge bg-primary rounded-pill">{{wishlist_items_count}} items</span>
+            <div class="card-header-left">
+                <i class="fas fa-heart"></i>
+                <h5>My Wish List</h5>
             </div>
+            <span class="badge">{{wishlist_items_count}} items</span>
         </div>
     </div>
 
@@ -907,42 +444,40 @@ and (orientation: portrait) {
         {% for wishlist_item in wishlist_items %}
         <div class="profile-card">
             <div class="card-body">
-                <div class="row align-items-center">
+                <div class="wishlist-item-row">
                     <!-- Product Image -->
-                    <div class="col-4 col-sm-3 col-md-2 mb-2 mb-md-0">
-                        <div class="wishlist-img-container">
-                            <img src="{{wishlist_item.product.image.url}}" alt="{{wishlist_item.product.name}}" class="wishlist-img">
-                        </div>
+                    <div class="wishlist-img-container">
+                        <img src="{{wishlist_item.product.image.url}}" alt="{{wishlist_item.product.name}}" class="wishlist-img">
                     </div>
                     
                     <!-- Product Details -->
-                    <div class="col-8 col-sm-5 col-md-6 mb-2 mb-md-0 product-details">
-                        <h5 class="mb-1">{{wishlist_item.product.name}}</h5>
-                        <p class="text-primary mb-1 small">{{wishlist_item.product.business}}</p>
-                        <div class="d-flex align-items-center mb-1">
-                            <i class="fas fa-star text-warning"></i>
-                            <span class="ms-1 text-muted small fw-bold">4.6</span>
+                    <div class="product-details">
+                        <h5>{{wishlist_item.product.name}}</h5>
+                        <p class="product-business">{{wishlist_item.product.business}}</p>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.6</span>
                         </div>
-                        <span class="badge bg-success">In Stock</span>
-                        <span class="badge bg-light text-dark border ms-2">BWP</span>
+                        <div class="product-badges">
+                            <span class="badge bg-success">In Stock</span>
+                            <span class="badge bg-light">BWP</span>
+                        </div>
                     </div>
                     
                     <!-- Product Actions -->
-                    <div class="col-12 col-sm-4 col-md-4 product-actions">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="mb-2">
-                                <p class="price-current mb-0">R {{wishlist_item.product.price}}</p>
-                                <p class="price-original">R 530</p>
-                            </div>
+                    <div class="product-actions">
+                        <div class="product-price">
+                            <p class="price-current">R {{wishlist_item.product.price}}</p>
                             
-                            <div class="btn-container">
-                                <button class="btn btn-remove" onclick="deleteWishlist({{wishlist_item.id}})">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
-                                <button class="btn btn-cart" onclick="addCart({{wishlist_item.product.id}})">
-                                    <i class="fas fa-cart-plus"></i> Add
-                                </button>
-                            </div>
+                        </div>
+                        
+                        <div class="product-buttons">
+                            <button class="btn btn-remove" onclick="deleteWishlist({{wishlist_item.id}})">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                            <button class="btn btn-cart" onclick="addCart({{wishlist_item.product.id}})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -957,8 +492,8 @@ and (orientation: portrait) {
                     <i class="fas fa-heart"></i>
                     <h4>Your Wishlist is Empty!</h4>
                     <p>Start adding your favorite items and plan ahead for special occasions!</p>
-                    <a href="{% url 'home' %}" class="btn btn-continue-shopping">
-                        <i class="fas fa-shopping-cart me-1"></i> Continue Shopping
+                    <a href="{% url 'home' %}" class="btn-continue-shopping">
+                        <i class="fas fa-shopping-cart"></i> Continue Shopping
                     </a>
                 </div>
             </div>
