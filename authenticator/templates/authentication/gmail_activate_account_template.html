@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activate Your Account - VersityFinds</title>
+    <title>Welcome to VersityFinds</title>
     <style>
         body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa; }
         .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -35,19 +35,21 @@
                     <tr>
                         <td class="content">
                             <div class="icon">✅</div>
-                            <h2 style="color: #333; margin-bottom: 10px;">Verify Your Email Address</h2>
+                            <h2 style="color: #333; margin-bottom: 10px;">Welcome to VersityFinds!</h2>
                             <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Hello <strong>{{user.username}}</strong>,</p>
-                            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Thank you for signing up with VersityFinds. Your account details are as follows:</p>
+                            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Thank you for registering with Gmail. Your account has been successfully linked.</p>
                             <div class="details">
                                 <ul>
                                     <li><strong>Username:</strong> {{user.username}}</li>
                                     <li><strong>Email:</strong> {{user.email}}</li>
-                                    <li><strong>Password:</strong> <em>Not shown due to security policy</em></li>
+                                    <li><strong>password:</strong> password used on registration.</li>
+                                    <li><strong>Login Method:</strong> Gmail</li>
+                                </ul>
                             </div>
-                            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">To complete your registration and activate your account, please verify your email address by clicking the button below.</p>
-                            <a href="{{verify_link}}" class="btn">Verify Email</a>
-                            <p style="font-size: 14px; color: #777; margin-top: 20px;">By verifying your email, you'll gain full access to our stores and all features of your account.</p>
-                            <p style="font-size: 14px; color: #777;">If you didn’t request this, you can safely ignore this email.</p>
+                            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">You can now explore our stores and enjoy all the features of your account.</p>
+                            <a href="{{verify_link}}" class="btn">Go to Dashboard</a>
+                            <p style="font-size: 14px; color: #777; margin-top: 20px;">If you have any questions, feel free to contact our support team.</p>
+                            <p style="font-size: 14px; color: #777;">Welcome aboard!</p>
                         </td>
                     </tr>
                     <tr>

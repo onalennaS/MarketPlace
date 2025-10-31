@@ -160,8 +160,9 @@ def create_password(request):
             return render(request, 'authentication/create_password.html', {'data':data})
         request.user.password = make_password(data['password'])
         request.user.save()
-        return redirect('buyer_dashboard')
-    return render(request, 'authentication/create_password.html')
+        send_verify_gmail(request.user.email)
+        return redirect('shop_base')
+    return redirect('shop_base')
 
 def logout_view(request):
     messages.error(request,"Logged out successfully")

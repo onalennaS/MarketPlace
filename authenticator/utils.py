@@ -108,6 +108,33 @@ def send_verify_email(email):
     send_email_verification_link(email, reset_link)
 
 
+
+def send_gmail_verification_link(recipient_email, verify_link):
+    try:
+        user = User.objects.values('username','email').get(email=recipient_email)
+    except User.DoesNotExist:
+        logger.error(f"No user found with email: {recipient_email}")
+        return False  # Return failure if user doesn't exist
+
+    email_content = render_to_string("authentication/gmail_activate_account_template.html", {'user': user, 'verify_link': verify_link})
+    text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
+
+    success = send_email_via_gmail(recipient_email, "Verify Your Email", email_content, text_content)
+
+    if success:
+        logger.info(f"Verification email sent to {recipient_email}")
+        return True  # Indicate success
+    else:
+        return False
+
+def send_verify_gmail(email):
+
+    reset_link = f"{settings.SITE_URL}/home/"
+    print("================")
+    print(reset_link)
+    send_gmail_verification_link(email, reset_link)
+
+
 def send_email_reset_link(recipient_email, reset_link):
     try:
         user = User.objects.values('first_name').get(email=recipient_email)
