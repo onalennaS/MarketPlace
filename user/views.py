@@ -98,7 +98,7 @@ def get_discount(cart_items):
 @login_required_custom
 @has_password
 def dash(request):
-    return render(request, 'home/dash.html')
+    return render(request, 'home/dash.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 @has_password
@@ -125,7 +125,7 @@ def profile(request):
         request.user.save()
         messages.success(request, 'Profile updated successfully.')
         return redirect('profile')
-    return render(request, 'home/profile.html', {'is_google_linked': is_google_linked(request.user)})
+    return render(request, 'home/profile.html', {'is_google_linked': is_google_linked(request.user),'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def cart(request):
@@ -204,7 +204,7 @@ def checkout(request):
         'extras':extras,
         'delivery_address':delivery_address,
         'cart_items':cart_items,
-        "cart_total":price_total,
+        'cart_items_count':items,'wishlist_items_count':wishlist_items_count,
         "items_count":items,
         "method":method,
         "checkout_total":checkout_total,
@@ -227,7 +227,8 @@ def payment_failed(request):
 @login_required_custom
 @has_password
 def buyer_dashboard(request):
-    return render(request, 'home/profile.html', {'linked':is_google_linked(request.user)})
+   
+    return render(request, 'home/profile.html', {'linked':is_google_linked(request.user),'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 @has_password
@@ -362,12 +363,12 @@ def address(request):
 
     # Get existing addresses for display
     addresses = CartDeliveryAddress.objects.filter(user=request.user).order_by('-timestamp').all()
-    return render(request, 'home/address.html', {'addresses': addresses})
+    return render(request, 'home/address.html', {'addresses': addresses,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def order_history(request):
     orders = Order.objects.filter(user=request.user).all()
-    return render(request, 'home/order_history.html',{'orders':orders})
+    return render(request, 'home/order_history.html',{'orders':orders,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def view_order_details(request,order_id):
@@ -385,18 +386,18 @@ def view_order_details(request,order_id):
         delivery_total = 15
     total = price_total + extra_total + delivery_total 
     address = CartDeliveryAddress.objects.filter(user=request.user).first()
-    return render(request, 'home/view_order_details.html',{"price_total":price_total,'extra_total':extra_total,'extras_count':extra_count,'items_count':items_count,'address':address,'extras':extras,'total':total,'order':order,'order_items':order_items})
+    return render(request, 'home/view_order_details.html',{"price_total":price_total,'extra_total':extra_total,'extras_count':extra_count,'items_count':items_count,'address':address,'extras':extras,'total':total,'order':order,'order_items':order_items,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def track_orders(request,order_id):
     order = Order.objects.filter(id=order_id).first()
     if request.user == order.user:
-        return render(request, 'home/track_orders.html',{'order':order})
+        return render(request, 'home/track_orders.html',{'order':order,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
     return  render(request, 'home/errors/400.html')
 @login_required_custom
 def buyer_reviews(request):
     reviews = BusinessRating.objects.filter(user=request.user).order_by('-timestamp')
-    return render(request, 'home/buyer_reviews.html', {'reviews': reviews})
+    return render(request, 'home/buyer_reviews.html', {'reviews': reviews,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 @has_password
@@ -438,33 +439,7 @@ def account_settings(request):
             'status': activity.status
         })
 
-    # If no activity found, show some dummy data for demo
-    if not login_activity_data:
-        login_activity_data = [
-            {
-                'date_time': timezone.now() - timezone.timedelta(days=1),
-                'device': 'Chrome on Windows',
-                'location': 'New York, USA',
-                'ip_address': '192.168.1.xxx',
-                'status': 'Success'
-            },
-            {
-                'date_time': timezone.now() - timezone.timedelta(days=3),
-                'device': 'Safari on iOS',
-                'location': 'New York, USA',
-                'ip_address': '172.16.254.xxx',
-                'status': 'Success'
-            },
-            {
-                'date_time': timezone.now() - timezone.timedelta(days=7),
-                'device': 'Chrome on Android',
-                'location': 'Boston, USA',
-                'ip_address': '10.0.0.xxx',
-                'status': 'Success'
-            }
-        ]
-
-    return render(request, 'home/account_settings.html', {'login_activity': login_activity_data})
+    return render(request, 'home/account_settings.html', {'login_activity': login_activity_data,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 @has_password
@@ -500,20 +475,20 @@ def delete_account(request):
     return redirect('account_settings')
 
 def buyer_support(request):
-    return render(request, 'home/buyer_support.html')
+    return render(request, 'home/buyer_support.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 
 @login_required_custom
 def referrals_earnings(request):
-    return render(request, 'home/referrals_earnings.html')
+    return render(request, 'home/referrals_earnings.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def gift_card(request):
-    return render(request, 'home/gift_card.html')
+    return render(request, 'home/gift_card.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 def credit(request):
-    return render(request, 'home/credit.html')
+    return render(request, 'home/credit.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 
 
