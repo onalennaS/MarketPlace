@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
@@ -8,9 +7,56 @@ from django.contrib.auth.models import Group
 import logging
 from itsdangerous import URLSafeTimedSerializer
 from django.conf import settings
+import os
+import pickle
+from googleapiclient.discovery import build
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import base64
+from functools import wraps
+
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
+
+
+def get_gmail_service():
+    creds = None
+    if os.path.exists('token.pkl'):
+        with open('token.pkl', 'rb') as token:
+            creds = pickle.load(token)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        with open('token.pkl', 'wb') as token:
+            pickle.dump(creds, token)
+    service = build('gmail', 'v1', credentials=creds)
+    return service
+
+
+def send_email_via_gmail(to, subject, html_content, text_content):
+    try:
+        service = get_gmail_service()
+        message = MIMEMultipart('alternative')
+        message['to'] = to
+        message['from'] = settings.EMAIL_HOST_USER
+        message['subject'] = subject
+        message.attach(MIMEText(text_content, 'plain'))
+        message.attach(MIMEText(html_content, 'html'))
+        raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
+        message = service.users().messages().send(userId='me', body={'raw': raw}).execute()
+        logger.info(f"Email sent to {to} via Gmail API")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send email to {to}: {str(e)}")
+        return False
 
 
 def login_required_custom(view_func):
@@ -46,17 +92,13 @@ def send_email_verification_link(recipient_email, verify_link):
     email_content = render_to_string("authentication/email_activate_account_template.html", {'user': user, 'verify_link': verify_link})
     text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
 
-    email = EmailMultiAlternatives(
-        subject="Verify Your Email",
-        body=text_content,
-        from_email=settings.EMAIL_HOST_USER,
-        to=[recipient_email],
-    )
-    email.attach_alternative(email_content, "text/html")  # Attach HTML version
-    email.send()
+    success = send_email_via_gmail(recipient_email, "Verify Your Email", email_content, text_content)
 
-    logger.info(f"Password reset email sent to {recipient_email}")
-    return True  # Indicate success
+    if success:
+        logger.info(f"Verification email sent to {recipient_email}")
+        return True  # Indicate success
+    else:
+        return False
 
 def send_verify_email(email):
     reset_token = generate_reset_token(email)
@@ -76,17 +118,13 @@ def send_email_reset_link(recipient_email, reset_link):
     email_content = render_to_string("authentication/email_reset_password_template.html", {'user': user, 'reset_link': reset_link})
     text_content = strip_tags(email_content)  # Plain text fallback for email clients that don't support HTML
 
-    email = EmailMultiAlternatives(
-        subject="Reset Your Password",
-        body=text_content,
-        from_email=settings.EMAIL_HOST_USER,
-        to=[recipient_email],
-    )
-    email.attach_alternative(email_content, "text/html")  # Attach HTML version
-    email.send()
+    success = send_email_via_gmail(recipient_email, "Reset Your Password", email_content, text_content)
 
-    logger.info(f"Password reset email sent to {recipient_email}")
-    return True  # Indicate success
+    if success:
+        logger.info(f"Password reset email sent to {recipient_email}")
+        return True  # Indicate success
+    else:
+        return False
 
 
 def verify_role(user):

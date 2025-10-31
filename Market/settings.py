@@ -219,11 +219,20 @@ LOGOUT_REDIRECT_URL = "/"
 
 # settings.py
 
-# EMAIL_BACKEND = config('EMAIL_BACKEND')
-# EMAIL_HOST = config('EMAIL_HOST')
-# EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-# EMAIL_HOST_USER = 'versityfinds@gmail.com'  # Replace with your Gmail address
-# EMAIL_HOST_PASSWORD = 'cuvg vzvp gbqi upkm'  # Replace with the App Password you generated
+
+SOCIALACCOUNT_AUTO_SIGNUP = True
+ACCOUNT_EMAIL_VERIFICATION = "none"  # optional, adjust as you prefer
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_USERNAME_REQUIRED = True
+
+# Automatically link social accounts to existing users with the same email
+SOCIALACCOUNT_ADAPTER = "authenticator.adapters.MySocialAccountAdapter"
+
+
+
 
 
