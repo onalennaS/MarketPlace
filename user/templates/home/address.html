@@ -1,4 +1,4 @@
-{% extends 'home/base.html' %}
+{% extends 'products/shop_base2.html' %}
 
 {% block title %}Address Book{% endblock %}
 
@@ -658,14 +658,14 @@
                         <div class="form-row d-flex flex-wrap">
                             <div class="form-group flex-fill me-3 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="latitude" placeholder="" name="latitude" value="" hidden>
+                                    <input type="text" hidden  class="form-control d-block disabled" id="latitude" placeholder="" name="latitude" value="" >
                                     <label for="latitude">Latitude</label>
                                 </div>
                             </div>
 
                             <div class="form-group flex-fill mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="longitude" placeholder="" name="longitude" value="" hidden>
+                                    <input type="text" hidden class="form-control d-block disabled" id="longitude" placeholder="" name="longitude" value="" >
                                     <label for="longitude">Longitude</label>
                                 </div>
                             </div>
@@ -730,14 +730,14 @@
                         </div>
                     </div>
 
-                    <div class="col-12 text-end form-group-buttons">
-                        <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check"></i> Save
-                        </button>
-                        <button type="button" class="btn btn-cancel" onclick="cancel_button('activity')">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                    </div>
+                        <div class="col-12 text-end form-group-buttons">
+                            <button type="submit" class="btn btn-save" onclick="return validateForm()">
+                                <i class="fas fa-check"></i> Save
+                            </button>
+                            <button type="button" class="btn btn-cancel" onclick="cancel_button('activity')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
                 </div>
             </form>
         </div>
@@ -905,6 +905,10 @@
 
 <script type="text/javascript">
     let residentialMap, campusMap;
+    const bbox_coords = {
+        sw: [-26.71513, 27.86318], // Southwest corner
+        ne: [-26.70253, 27.89338]  // Northeast corner
+    };
 
     function toggleAddressForm() {
         const residentialRadio = document.getElementById('inlineRadio1');
@@ -940,6 +944,20 @@
         let marker;
 
         function onResidentialMapClick(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            if (!isWithinBoundingBox(lat, lng)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Delivery Not Available',
+                    text: 'Delivery not available on that address location.',
+                    iconHtml: '<i class="fas fa-map-marked-alt" style="color: #E74C3C;"></i>',
+                    confirmButtonColor: '#00A8A8'
+                });
+                return;
+            }
+
             if (marker) {
                 residentialMap.removeLayer(marker);
             }
@@ -961,6 +979,20 @@
         let marker;
 
         function onCampusMapClick(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            if (!isWithinBoundingBox(lat, lng)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Delivery Not Available',
+                    text: 'Delivery not available on that address location.',
+                    iconHtml: '<i class="fas fa-map-marked-alt" style="color: #E74C3C;"></i>',
+                    confirmButtonColor: '#00A8A8'
+                });
+                return;
+            }
+
             if (marker) {
                 campusMap.removeLayer(marker);
             }
@@ -970,6 +1002,11 @@
         }
 
         campusMap.on('click', onCampusMapClick);
+    }
+
+    function isWithinBoundingBox(lat, lng) {
+        return lat >= bbox_coords.sw[0] && lat <= bbox_coords.ne[0] &&
+               lng >= bbox_coords.sw[1] && lng <= bbox_coords.ne[1];
     }
 
     function getCurrentLocation(type, button) {
@@ -982,6 +1019,20 @@
                 function(position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
+
+                    if (!isWithinBoundingBox(lat, lng)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Delivery Not Available',
+                            text: 'Delivery not available on that address location.',
+                            iconHtml: '<i class="fas fa-map-marked-alt" style="color: #E74C3C;"></i>',
+                            confirmButtonColor: '#00A8A8'
+                        });
+                        button.classList.remove('loading');
+                        button.innerHTML = '<i class="fas fa-crosshairs"></i> Get Location';
+                        button.disabled = false;
+                        return;
+                    }
 
                     if (type === 'residential') {
                         document.getElementById('latitude').value = lat.toFixed(6);
@@ -1089,6 +1140,56 @@
                 form.submit();
             }
         });
+    }
+
+    function validateForm() {
+        const residentialRadio = document.getElementById('inlineRadio1');
+        const campusRadio = document.getElementById('inlineRadio2');
+
+        if (residentialRadio.checked) {
+            const houseNo = document.getElementById('house_no').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const area = document.getElementById('area').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const latitude = document.getElementById('latitude').value.trim();
+            const longitude = document.getElementById('longitude').value.trim();
+
+            if (!houseNo || !street || !area || !phone || !latitude || !longitude) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please fill in all required fields: House No, Street, Area, Phone, Latitude, Longitude.',
+                    confirmButtonColor: '#00A8A8'
+                });
+                return false;
+            }
+        } else if (campusRadio.checked) {
+            const institution = document.getElementById('institution').value.trim();
+            const block = document.getElementById('block').value.trim();
+            const venue = document.getElementById('venue').value.trim();
+            const campusLatitude = document.getElementById('campus_latitude').value.trim();
+            const campusLongitude = document.getElementById('campus_longitude').value.trim();
+
+            if (!institution || !block || !venue || !campusLatitude || !campusLongitude) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please fill in all required fields: Institution, Block, Venue, Latitude, Longitude.',
+                    confirmButtonColor: '#00A8A8'
+                });
+                return false;
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please select an address type.',
+                confirmButtonColor: '#00A8A8'
+            });
+            return false;
+        }
+
+        return true;
     }
 
     function set_default_address(addressId) {

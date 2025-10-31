@@ -289,6 +289,7 @@ def address(request):
             if not latitude or not longitude:
                 errors.append('Location coordinates are required. Please select a location on the map.')
 
+            print("---------",latitude,longitude)
             # Validate coordinates
             try:
                 lat = float(latitude)
@@ -338,7 +339,7 @@ def address(request):
                 latitude=request.POST.get('latitude').strip(),
                 longitude=request.POST.get('longitude').strip(),
                 phone=phone,
-                is_default=False
+                is_default=True
             )
         elif address_type == 'campus':
             CartDeliveryAddress.objects.create(
@@ -350,7 +351,7 @@ def address(request):
                 latitude=request.POST.get('latitude').strip(),
                 longitude=request.POST.get('longitude').strip(),
                 phone=phone,
-                is_default=False
+                is_default=True
             )
 
         messages.success(request, 'Address added successfully.')
@@ -520,7 +521,9 @@ def credit(request):
 
 @login_required_custom
 def payment_history(request):
-    return render(request, 'home/payment_history.html')
+    from transactions.models import BusinessTransaction
+    payments = BusinessTransaction.objects.filter(sender=request.user).order_by('-timestamp')
+    return render(request, 'home/payment_history.html', {'payments': payments})
 
 @login_required_custom
 def subscription_plan(request):
