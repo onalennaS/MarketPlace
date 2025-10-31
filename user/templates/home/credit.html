@@ -1,4 +1,4 @@
-{% extends 'products/shop_base2.html' %}
+{% extends 'home/base.html' %}
 
 {% block title %}Credit & Refund{% endblock %}
 {% load static %}
@@ -6,361 +6,224 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    /* Breadcrumb styling */
-    .breadcrumb {
-        background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eaecef;
-        flex-wrap: wrap;
-    }
-    
-    .breadcrumb-item a {
-        color: #3498db;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: #2980b9;
-    }
-    
-    .breadcrumb-item.active {
-        color: #6c757d;
-        font-weight: 500;
-    }
-    
-    /* Card styling to match sidebar */
-    .profile-card {
-        background-color: #f8f9fa;
-        border: 1px solid #eaecef;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 16px;
-        transition: all 0.3s ease;
-    }
-    
-    .profile-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-        border-color: #3498db;
-    }
-    
-    .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 18px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid #eaecef;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .card-header i {
-        color: #3498db;
-        font-size: 18px;
-        margin-right: 12px;
-    }
-    
-    .card-header h5 {
-        margin: 0;
-        color: #2c3e50;
-        font-size: 16px;
-        font-weight: 600;
-    }
-    
-    .card-body {
-        padding: 16px 18px;
-        background-color: white;
-    }
-    
-    .credit-card {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        padding: 20px;
-        transition: all 0.3s ease;
-        height: 100%;
-    }
-    
-    .credit-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-    }
-    
-    .credit-icon {
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        margin-right: 15px;
-    }
-    
-    .credit-icon i {
-        font-size: 24px;
-    }
-    
-    .table-responsive {
-        border-radius: 8px;
-        overflow: hidden;
-        width: 100%;
-    }
-    
-    .table {
-        margin-bottom: 0;
-        width: 100%;
-    }
-    
-    .table thead th {
-        background-color: rgba(52, 152, 219, 0.05);
-        color: #2c3e50;
-        font-weight: 600;
-        border-bottom: 2px solid #eaecef;
-    }
-    
-    .table tbody tr:hover {
-        background-color: rgba(52, 152, 219, 0.03);
-    }
-    
-    .btn-redeem {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-    }
-    
-    .btn-redeem:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-    }
-    
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 20px;
-        text-align: center;
-    }
-    
-    .empty-state i {
-        font-size: 40px;
-        color: #d5d8dc;
-        margin-bottom: 16px;
-    }
-    
-    .empty-state h4 {
-        color: #7f8c8d;
-        margin-bottom: 12px;
-        font-size: 1.2rem;
-    }
-    
-    .empty-state p {
-        color: #95a5a6;
-        margin-bottom: 24px;
-        max-width: 500px;
-        font-size: 0.95rem;
-    }
-    
-    /* Mobile responsive adjustments */
-    @media (max-width: 767px) {
-        .container {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-        
-        .card-header {
-            padding: 10px 12px;
-        }
-        
-        .card-body {
-            padding: 12px;
-        }
-        
-        .credit-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-        
-        .credit-icon i {
-            font-size: 20px;
-        }
-        
-        h2.fw-bold {
-            font-size: 1.5rem;
-        }
-        
-        .empty-state {
-            padding: 30px 15px;
-        }
-        
-        .empty-state i {
-            font-size: 36px;
-        }
-        
-        .table {
-            font-size: 0.85rem;
-        }
-        
-        .badge {
-            font-size: 0.7rem;
-        }
-        
-        .btn-redeem {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-    }
-    
-    /* Extra small devices */
-    @media (max-width: 575px) {
-        .breadcrumb {
-            font-size: 0.85rem;
-        }
-        
-        .card-header h5 {
-            font-size: 14px;
-        }
-        
-        .card-header i {
-            font-size: 16px;
-            margin-right: 8px;
-        }
-        
-        h2.fw-bold {
-            font-size: 1.3rem;
-        }
-        
-        p.text-muted {
-            font-size: 0.85rem;
-        }
-        
-        .table th, .table td {
-            padding: 0.5rem;
-        }
-    }
-</style>
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-<div class="container">
-    <!-- Breadcrumb navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Credit & Refund</li>
-        </ol>
-    </nav>
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Poppins', sans-serif;
+}
 
-    <!-- Credit Summary Cards -->
-    <div class="row mb-4">
-        <div class="col-md-6 mb-3">
-            <div class="profile-card h-100">
-                <div class="card-header">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-dollar-sign"></i>
-                        <h5>Available Credit</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="credit-icon bg-primary-subtle me-3">
-                            <i class="fas fa-dollar-sign text-primary"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-1">Current Balance</p>
-                            <h2 class="fw-bold mb-0">R 0</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6 mb-3">
-            <div class="profile-card h-100">
-                <div class="card-header">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-coins"></i>
-                        <h5>Credit Used</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="credit-icon bg-info-subtle me-3">
-                            <i class="fas fa-coins text-info"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-1">Total Used</p>
-                            <h2 class="fw-bold text-danger mb-0">- R 23</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+.container {
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
 
-    <!-- Credit History Table -->
-<div class="profile-card">
-    <div class="card-header">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-history"></i>
-            <h5>Credit History</h5>
-        </div>
-        <a href="{% url 'gift_card' %}" class="btn btn-redeem">
-            <i class="fas fa-gift me-1"></i> Redeem Gift
-        </a>
-    </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table" style="width: 100%; min-width: 100%;">
-                <thead>
-                    <tr>
-                        <th scope="col" style="width: 8%;">#</th>
-                        <th scope="col" style="width: 25%;">Type</th>
-                        <th scope="col" style="width: 25%;">Amount</th>
-                        <th scope="col" style="width: 42%;">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td><span class="badge bg-success">Voucher</span></td>
-                        <td>R 10</td>
-                        <td class="date-cell">04/11/2024</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td><span class="badge bg-warning">Refund</span></td>
-                        <td>R 100</td>
-                        <td class="date-cell">01/12/2024</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td><span class="badge bg-success">Voucher</span></td>
-                        <td>R 70</td>
-                        <td class="date-cell">28/12/2024</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+}
 
-<style>
-/* Additional CSS for table width and date visibility */
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    background-color: var(--base-white);
+    color: var(--text-dark-gray);
+    padding: 16px 20px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header i {
+    color: var(--primary-teal);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Credit Summary Cards */
+.credit-summary-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: var(--transition);
+    height: 100%;
+    box-shadow: var(--shadow);
+}
+
+.credit-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.credit-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.credit-icon i {
+    font-size: 24px;
+}
+
+/* Table styling */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.table {
+    margin-bottom: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    background-color: rgba(0, 168, 168, 0.05);
+    color: var(--text-dark-gray);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+    padding: 12px 16px;
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 168, 168, 0.03);
+}
+
+.table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-redeem {
+    background-color: var(--primary-teal);
+    color: white;
+    font-size: 14px;
+}
+
+.btn-redeem:hover {
+    background-color: #008B8B;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.bg-success {
+    background-color: var(--accent-green) !important;
+}
+
+.bg-warning {
+    background-color: #F39C12 !important;
+}
+
+/* Empty state styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #D5D8DC;
+    margin-bottom: 16px;
+}
+
+.empty-state h4 {
+    color: #7f8c8d;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.empty-state p {
+    color: #95a5a6;
+    margin-bottom: 20px;
+    max-width: 500px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Table width and column management */
 .table-responsive {
     width: 100%;
     max-width: 100%;
@@ -372,660 +235,202 @@
     width: 100%;
     min-width: 100%;
     table-layout: fixed;
-    border-collapse: collapse;
 }
 
-/* Ensure the table stretches to fill the container */
-.profile-card .card-body {
-    padding: 0 !important;
-    width: 100%;
-}
-
-/* Specific styling for date cells */
-.date-cell {
-    white-space: nowrap;
-    overflow: visible;
-    min-width: 90px;
-}
-
-/* Column width distribution - give more space to the date column */
-.table th:first-child {
+/* Column width distribution */
+.table th:first-child,
+.table td:first-child {
     width: 8%;
 }
 
 .table th:nth-child(2),
-.table th:nth-child(3) {
+.table td:nth-child(2) {
     width: 25%;
 }
 
-.table th:last-child {
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 25%;
+}
+
+.table th:last-child,
+.table td:last-child {
     width: 42%;
 }
 
-/* Make table cells properly visible */
-.table td, .table th {
-    padding: 0.75rem;
-    vertical-align: middle;
-    text-overflow: ellipsis;
-}
-
 /* Responsive adjustments */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .card-header {
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .credit-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+    
+    .credit-icon i {
+        font-size: 20px;
+    }
+    
+    .empty-state {
+        padding: 30px 15px;
+    }
+    
+    .empty-state i {
+        font-size: 36px;
+    }
+    
+    .empty-state h4 {
+        font-size: 1.1rem;
+    }
+    
     .table {
-        min-width: 500px; /* Ensure minimum width on small screens */
+        min-width: 500px;
     }
     
-    .table td, .table th {
-        padding: 0.5rem;
-    }
-    
-    /* Force date to be visible on mobile */
-    .date-cell {
-        font-size: 0.9rem;
-        letter-spacing: -0.2px;
+    .table th, 
+    .table td {
+        padding: 8px 12px;
     }
 }
 
-/* Extra small devices */
-@media (max-width: 575px) {
-    .table td, .table th {
-        padding: 0.4rem;
+@media (max-width: 480px) {
+    .breadcrumb {
+        font-size: 14px;
+    }
+    
+    .card-header h5 {
+        font-size: 16px;
+    }
+    
+    .credit-summary-card {
+        padding: 15px;
+    }
+    
+    h2.fw-bold {
+        font-size: 1.5rem;
+    }
+    
+    .btn-redeem {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .table {
+        min-width: 450px;
+        font-size: 0.85rem;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
     }
 }
 </style>
-<style>
-    /* Base variables for consistent theming */
-    :root {
-            --primary-color: #3498db;
-            --primary-hover: #2980b9;
-            --danger-color: #e74c3c;
-            --danger-hover: #c0392b;
-            --success-color: #2ecc71;
-            --text-primary: #2c3e50;
-            --text-secondary: #6c757d;
-            --border-color: #eaecef;
-            --bg-light: #f8f9fa;
-            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 5px 15px rgba(52, 152, 219, 0.1);
-            --transition: all 0.3s ease;
-        }
-    
-        /* Navbar responsive styling */
-        .navbar {
-            padding: 8px 16px;
-            transition: var(--transition);
-        }
-    
-        .navbar-brand {
-            font-size: 1.25rem;
-            transition: var(--transition);
-        }
-    
-        .navbar-toggler {
-            padding: 6px 10px;
-            font-size: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-        }
-    
-        .navbar-nav .nav-link {
-            padding: 8px 15px;
-            transition: var(--transition);
-        }
-    
-        /* Breadcrumb styling */
-        .breadcrumb {
-            background-color: transparent;
-            padding: 12px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .breadcrumb-item a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .breadcrumb-item a:hover {
-            color: var(--primary-hover);
-        }
-        
-        .breadcrumb-item.active {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        /* Card styling to match sidebar */
-        .profile-card {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-color);
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            background-color: rgba(52, 152, 219, 0.05);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .card-header i {
-            color: var(--primary-color);
-            font-size: 18px;
-            margin-right: 12px;
-        }
-        
-        .card-header h5 {
-            margin: 0;
-            color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        /* Content styling */
-        .card-text {
-            color: var(--text-primary);
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .status-icon {
-            margin-left: 8px;
-            font-size: 14px;
-        }
-        
-      /* Form styling */
-      .form-floating .form-control {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            height: calc(3rem + 2px);
-            transition: var(--transition);
-            font-size: 15px;
-        }
-        
-        .form-floating .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .form-floating label {
-            padding: 12px;
-            color: var(--text-secondary);
-        }
-        
-        /* Button styling */
-        .btn {
-            font-weight: 500;
-            border-radius: 6px;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-edit {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid #ced4da;
-            padding: 8px 16px;
-        }
-        
-        .btn-edit:hover {
-            background-color: rgba(52, 152, 219, 0.08);
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: translateX(2px);
-        }
-        
-        .btn-save {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-        }
-        
-        .btn-save:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-        }
-        
-        .btn-cancel {
-            background-color: transparent;
-            color: var(--danger-color);
-            border: 1px solid var(--danger-color);
-            padding: 8px 16px;
-            margin-left: 8px;
-        }
-        
-        .btn-cancel:hover {
-            background-color: rgba(231, 76, 60, 0.08);
-            color: var(--danger-hover);
-            transform: translateY(-2px);
-        }
-        
-        /* Verification icons */
-        .verified {
-            color: var(--success-color);
-        }
-        
-        .unverified {
-            color: var(--danger-color);
-        }
-    
-        
-        /* Base responsive container adjustments */
-    .container {
-        padding-left: 15px;
-        padding-right: 15px;
-        width: 100%;
-        max-width: 100%;
-    }
-    
-    /* Responsive adjustments for all screen sizes */
-    @media (max-width: 991px) {
-        .card-header h5 {
-            font-size: 15px;
-        }
-        
-        .card-text {
-            font-size: 14px;
-        }
-        
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 14px;
-            padding: 6px 12px;
-        }
-        
-        /* Ensure menu toggle is visible on tablets and smaller devices */
-        .navbar-toggler {
-            display: block !important;
-            margin-right: 10px;
-        }
-        
-        /* Fix for navbar collapse on tablets */
-        .navbar-collapse {
-            display: none;
-        }
-        
-        .navbar-collapse.show {
-            display: block;
-        }
-    }
-    
-    /* iPad Mini and other tablet specific fixes */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px) {
-        /* Ensure navbar toggle is visible */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* Adjust navbar container for tablets */
-        .navbar > .container,
-        .navbar > .container-fluid {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        /* Ensure collapsed navbar displays properly */
-        .navbar-collapse {
-            flex-basis: 100%;
-        }
-        
-        /* Improve visibility of toggle button */
-        .navbar-toggler {
-            padding: 0.5rem;
-            font-size: 1.25rem;
-            border: 1px solid rgba(0,0,0,.1);
-            background-color: rgba(52, 152, 219, 0.05);
-        }
-        
-        /* Fix for potential hidden toggle icon */
-        .navbar-toggler-icon {
-            display: inline-block !important;
-            visibility: visible !important;
-        }
-    }
-    
-    /* Tablet adjustments */
-    @media (max-width: 768px) {
-        .profile-card {
-            margin-bottom: 15px;
-        }
-        
-        .card-header {
-            padding: 12px 15px;
-        }
-        
-        .card-body {
-            padding: 15px;
-        }
-        
-        .form-floating .form-control {
-            height: calc(2.8rem + 2px);
-        }
-        
-        /* Adjust button alignment for small screens */
-        .col-md-4.text-md-end {
-            text-align: right !important;
-            margin-top: 10px;
-        }
-    }
-    
-    /* Mobile phone adjustments */
-    @media (max-width: 576px) {
-        /* Adjust breadcrumb */
-        .breadcrumb {
-            padding: 10px 0;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-        
-        /* Card adjustments */
-        .profile-card {
-            margin-bottom: 12px;
-        }
-        
-        .card-header {
-            padding: 10px 12px;
-        }
-        
-        .card-header i {
-            font-size: 16px;
-            margin-right: 8px;
-        }
-        
-        .card-body {
-            padding: 12px;
-        }
-        
-        /* Text adjustments */
-        .card-header h5 {
-            font-size: 14px;
-        }
-        
-        .card-text {
-            font-size: 13px;
-        }
-        
-        /* Button adjustments */
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 13px;
-            padding: 5px 10px;
-        }
-        
-        /* Stack buttons vertically on smallest screens */
-        .btn-cancel {
-            margin-left: 0;
-            margin-top: 8px;
-        }
-        
-        /* Form layout adjustments */
-        #fullname-form .row .col-md-6:last-child {
-            margin-top: 10px;
-        }
-        
-        /* Fix form button display */
-        #fullname-form .col-12.text-end,
-        #email-form .col-md-4.text-md-end,
-        #phone-form .col-md-4.text-md-end,
-        #username-form .col-md-4.text-md-end {
-            text-align: center !important;
-            margin-top: 15px;
-        }
-        
-        /* Make all form inputs full width */
-        .col-md-8, .col-md-6, .col-md-4 {
-            width: 100%;
-        }
-        
-        /* Fix display of name/value pairs */
-        .d-flex.justify-content-between.align-items-center {
-            flex-direction: column;
-            align-items: flex-start !important;
-        }
-        
-        .d-flex.justify-content-between.align-items-center .btn-edit {
-            margin-top: 10px;
-            align-self: flex-end;
-        }
-        
-        /* Fix form displays */
-        #username-form .row,
-        #email-form .row,
-        #phone-form .row {
-            margin: 0;
-        }
-        
-        /* Improve form usability on small screens */
-        .form-floating {
-            margin-bottom: 10px;
-        }
-        
-        .form-floating .form-control {
-            height: calc(2.5rem + 2px);
-            font-size: 14px;
-        }
-        
-        .form-floating label {
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-    }
-    
-    /* Extra small devices adjustments */
-    @media (max-width: 320px) {
-        .breadcrumb {
-            font-size: 13px;
-        }
-        
-        .card-header h5 {
-            font-size: 13px;
-        }
-        
-        .card-text {
-            font-size: 12px;
-        }
-        
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 12px;
-            padding: 4px 8px;
-        }
-    }
-    
-    /* Fix for form buttons on all mobile screens */
-    @media (max-width: 768px) {
-        .btn-save, .btn-cancel {
-            display: block;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-        
-        .btn-cancel {
-            margin-left: 0;
-        }
-    }
-    /* Force the navbar-toggler to be visible on all tablet devices */
-    @media (max-width: 1024px) {
-        /* Important overrides to ensure menu toggle is visible */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: relative !important;
-            z-index: 1000 !important;
-            margin-right: 15px !important;
-        }
-        
-        /* Make sure the toggle icon is showing */
-        .navbar-toggler-icon {
-            display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* Ensure navbar container is using flexbox */
-        .navbar, 
-        .navbar > .container,
-        .navbar > .container-fluid {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            position: relative !important;
-        }
-        
-        /* Additional styling to make toggle button more noticeable */
-        .navbar-toggler {
-            padding: 8px 12px !important;
-            font-size: 1.25rem !important;
-            background-color: rgba(52, 152, 219, 0.1) !important;
-            border: 1px solid rgba(52, 152, 219, 0.2) !important;
-            border-radius: 4px !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-        }
-    }
-    
-    /* Specific iPad Mini targeting */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px)
-    and (-webkit-min-device-pixel-ratio: 1) {
-        /* Additional iPad-specific fixes */
-        body .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: absolute !important;
-            right: 15px !important;
-            top: 15px !important;
-        }
-        
-        /* Make the toggle button stand out visually */
-        body .navbar-toggler {
-            padding: 10px !important;
-            background-color: rgba(52, 152, 219, 0.15) !important;
-            border: 2px solid rgba(52, 152, 219, 0.3) !important;
-        }
-        
-        /* Force visibility on containers */
-        body .navbar > .container,
-        body .navbar > .container-fluid {
-            position: relative !important;
-            padding-right: 50px !important; /* Make room for toggle button */
-        }
-    }
-    
-    /* Even more specific targeting for iPad Mini */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px)
-    and (orientation: portrait) {
-        body header .navbar-toggler,
-        body nav .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* If navbar is fixed-top, adjust positioning */
-        body .navbar.fixed-top .navbar-toggler {
-            right: 15px !important;
-            top: 10px !important;
-        }
-    }
-    
-    /* Super aggressive approach for iPad Mini */
-    @supports (-webkit-overflow-scrolling: touch) {
-        /* Target all iOS devices */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* More visible iOS-specific styling */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .navbar-toggler {
-                position: absolute !important;
-                right: 15px !important;
-                top: 15px !important;
-                background-color: rgba(52, 152, 219, 0.2) !important;
-                border: 2px solid #3498db !important;
-            }
-        }
-    }
-    
-    /* Fix for Bootstrap's default hiding of navbar-toggler */
-    @media (min-width: 768px) {
-        .navbar-expand-md .navbar-toggler,
-        .navbar-expand-lg .navbar-toggler {
-            display: block !important;
-        }
-        
-        .navbar-expand-md .navbar-collapse,
-        .navbar-expand-lg .navbar-collapse {
-            display: none !important;
-        }
-        
-        .navbar-expand-md .navbar-collapse.show,
-        .navbar-expand-lg .navbar-collapse.show {
-            display: block !important;
-        }
-    }
-    
-    /* Fixed positioning as a last resort if nothing else works */
-    @media (min-width: 768px) and (max-width: 1024px) {
-        body::before {
-            content: '';
-            display: block;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 45px;
-            height: 45px;
-            z-index: 10000;
-            pointer-events: none;
-        }
-        
-        .navbar-toggler {
-            position: fixed !important;
-            top: 15px !important;
-            right: 15px !important;
-            z-index: 10001 !important;
-        }
-    }
-    
-    </style>
+
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}"><i class="fas fa-home me-1"></i> Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Credit & Refund</li>
+        </ol>
+    </nav>
+
+    <!-- Credit Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="credit-summary-card">
+                <div class="d-flex align-items-center">
+                    <div class="credit-icon bg-primary-subtle me-3">
+                        <i class="fas fa-dollar-sign text-primary"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1">Current Balance</p>
+                        <h2 class="fw-bold mb-0">R 0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="credit-summary-card">
+                <div class="d-flex align-items-center">
+                    <div class="credit-icon bg-info-subtle me-3">
+                        <i class="fas fa-coins text-info"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1">Total Used</p>
+                        <h2 class="fw-bold text-danger mb-0">- R 23</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit History Table -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-history"></i>
+                <h5>Credit History</h5>
+            </div>
+            <a href="{% url 'gift_card' %}" class="btn btn-redeem">
+                <i class="fas fa-gift me-1"></i> Redeem Gift
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><span class="badge bg-success">Voucher</span></td>
+                            <td>R 10</td>
+                            <td>04/11/2024</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td><span class="badge bg-warning">Refund</span></td>
+                            <td>R 100</td>
+                            <td>01/12/2024</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td><span class="badge bg-success">Voucher</span></td>
+                            <td>R 70</td>
+                            <td>28/12/2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!-- Empty State (hidden by default) -->
     <div class="profile-card" style="display: none;">

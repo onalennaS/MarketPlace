@@ -1,4 +1,4 @@
-{% extends 'products/shop_base2.html' %}
+{% extends 'home/base.html' %}
 
 {% block title %}Referrals & Earnings{% endblock %}
 {% load static %}
@@ -6,828 +6,315 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    /* Base variables for consistent theming */
-    :root {
-            --primary-color: #3498db;
-            --primary-hover: #2980b9;
-            --danger-color: #e74c3c;
-            --danger-hover: #c0392b;
-            --success-color: #2ecc71;
-            --text-primary: #2c3e50;
-            --text-secondary: #6c757d;
-            --border-color: #eaecef;
-            --bg-light: #f8f9fa;
-            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 5px 15px rgba(52, 152, 219, 0.1);
-            --transition: all 0.3s ease;
-        }
-    
-        /* Navbar responsive styling */
-        .navbar {
-            padding: 8px 16px;
-            transition: var(--transition);
-        }
-    
-        .navbar-brand {
-            font-size: 1.25rem;
-            transition: var(--transition);
-        }
-    
-        .navbar-toggler {
-            padding: 6px 10px;
-            font-size: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-        }
-    
-        .navbar-nav .nav-link {
-            padding: 8px 15px;
-            transition: var(--transition);
-        }
-    
-        /* Breadcrumb styling */
-        .breadcrumb {
-            background-color: transparent;
-            padding: 12px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .breadcrumb-item a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .breadcrumb-item a:hover {
-            color: var(--primary-hover);
-        }
-        
-        .breadcrumb-item.active {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        /* Card styling to match sidebar */
-        .profile-card {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-color);
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            background-color: rgba(52, 152, 219, 0.05);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .card-header i {
-            color: var(--primary-color);
-            font-size: 18px;
-            margin-right: 12px;
-        }
-        
-        .card-header h5 {
-            margin: 0;
-            color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        /* Content styling */
-        .card-text {
-            color: var(--text-primary);
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .status-icon {
-            margin-left: 8px;
-            font-size: 14px;
-        }
-        
-      /* Form styling */
-      .form-floating .form-control {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            height: calc(3rem + 2px);
-            transition: var(--transition);
-            font-size: 15px;
-        }
-        
-        .form-floating .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .form-floating label {
-            padding: 12px;
-            color: var(--text-secondary);
-        }
-        
-        /* Button styling */
-        .btn {
-            font-weight: 500;
-            border-radius: 6px;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-edit {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid #ced4da;
-            padding: 8px 16px;
-        }
-        
-        .btn-edit:hover {
-            background-color: rgba(52, 152, 219, 0.08);
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: translateX(2px);
-        }
-        
-        .btn-save {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-        }
-        
-        .btn-save:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-        }
-        
-        .btn-cancel {
-            background-color: transparent;
-            color: var(--danger-color);
-            border: 1px solid var(--danger-color);
-            padding: 8px 16px;
-            margin-left: 8px;
-        }
-        
-        .btn-cancel:hover {
-            background-color: rgba(231, 76, 60, 0.08);
-            color: var(--danger-hover);
-            transform: translateY(-2px);
-        }
-        
-        /* Verification icons */
-        .verified {
-            color: var(--success-color);
-        }
-        
-        .unverified {
-            color: var(--danger-color);
-        }
-    
-        
-        /* Base responsive container adjustments */
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: var(--base-white);
+    color: var(--text-dark-gray);
+    padding: 16px 20px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+}
+
+.card-header i {
+    color: var(--primary-teal);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Content styling */
+.card-text {
+    color: var(--text-dark-gray);
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+/* Stats card styling */
+.stats-value {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--text-dark-gray);
+    margin-bottom: 0;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-primary {
+    background-color: var(--primary-teal);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #008B8B;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary-teal);
+    border: 1px solid var(--primary-teal);
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(0, 168, 168, 0.1);
+    color: #008B8B;
+    border-color: #008B8B;
+    transform: translateY(-2px);
+}
+
+/* Table styling */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    border-bottom: 2px solid var(--border-color);
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+}
+
+.table tbody td, .table tbody th {
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px;
+    color: var(--text-dark-gray);
+    font-weight: 400;
+    font-size: 15px;
+}
+
+/* Activity list styling */
+.activity-list .list-group-item {
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 20px;
+    background-color: white;
+}
+
+.activity-list .list-group-item:first-child {
+    border-top: none;
+}
+
+.activity-list .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    color: var(--primary-teal);
+    font-size: 2rem;
+}
+
+.activity-name {
+    font-weight: 600;
+    color: var(--text-dark-gray);
+    font-size: 15px;
+    margin-bottom: 0.25rem;
+}
+
+.activity-text {
+    color: #6c757d;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.notification-icon {
+    color: var(--primary-teal);
+    margin-left: auto;
+}
+
+/* Input group styling */
+.input-group .form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 6px 0 0 6px;
+    padding: 0.5rem 1rem;
+    transition: var(--transition);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 0.25rem rgba(0, 168, 168, 0.25);
+}
+
+.input-group-text {
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+    color: #6c757d;
+}
+
+/* Empty state styling */
+.empty-state {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.empty-state-icon {
+    color: #ced4da;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-text {
+    color: #6c757d;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .container {
-        padding-left: 15px;
-        padding-right: 15px;
-        width: 100%;
-        max-width: 100%;
-    }
-    
-    /* Responsive adjustments for all screen sizes */
-    @media (max-width: 991px) {
-        .card-header h5 {
-            font-size: 15px;
-        }
-        
-        .card-text {
-            font-size: 14px;
-        }
-        
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 14px;
-            padding: 6px 12px;
-        }
-        
-        /* Ensure menu toggle is visible on tablets and smaller devices */
-        .navbar-toggler {
-            display: block !important;
-            margin-right: 10px;
-        }
-        
-        /* Fix for navbar collapse on tablets */
-        .navbar-collapse {
-            display: none;
-        }
-        
-        .navbar-collapse.show {
-            display: block;
-        }
-    }
-    
-    /* iPad Mini and other tablet specific fixes */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px) {
-        /* Ensure navbar toggle is visible */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* Adjust navbar container for tablets */
-        .navbar > .container,
-        .navbar > .container-fluid {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        /* Ensure collapsed navbar displays properly */
-        .navbar-collapse {
-            flex-basis: 100%;
-        }
-        
-        /* Improve visibility of toggle button */
-        .navbar-toggler {
-            padding: 0.5rem;
-            font-size: 1.25rem;
-            border: 1px solid rgba(0,0,0,.1);
-            background-color: rgba(52, 152, 219, 0.05);
-        }
-        
-        /* Fix for potential hidden toggle icon */
-        .navbar-toggler-icon {
-            display: inline-block !important;
-            visibility: visible !important;
-        }
-    }
-    
-    /* Tablet adjustments */
-    @media (max-width: 768px) {
-        .profile-card {
-            margin-bottom: 15px;
-        }
-        
-        .card-header {
-            padding: 12px 15px;
-        }
-        
-        .card-body {
-            padding: 15px;
-        }
-        
-        .form-floating .form-control {
-            height: calc(2.8rem + 2px);
-        }
-        
-        /* Adjust button alignment for small screens */
-        .col-md-4.text-md-end {
-            text-align: right !important;
-            margin-top: 10px;
-        }
-    }
-    
-    /* Mobile phone adjustments */
-    @media (max-width: 576px) {
-        /* Adjust breadcrumb */
-        .breadcrumb {
-            padding: 10px 0;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-        
-        /* Card adjustments */
-        .profile-card {
-            margin-bottom: 12px;
-        }
-        
-        .card-header {
-            padding: 10px 12px;
-        }
-        
-        .card-header i {
-            font-size: 16px;
-            margin-right: 8px;
-        }
-        
-        .card-body {
-            padding: 12px;
-        }
-        
-        /* Text adjustments */
-        .card-header h5 {
-            font-size: 14px;
-        }
-        
-        .card-text {
-            font-size: 13px;
-        }
-        
-        /* Button adjustments */
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 13px;
-            padding: 5px 10px;
-        }
-        
-        /* Stack buttons vertically on smallest screens */
-        .btn-cancel {
-            margin-left: 0;
-            margin-top: 8px;
-        }
-        
-        /* Form layout adjustments */
-        #fullname-form .row .col-md-6:last-child {
-            margin-top: 10px;
-        }
-        
-        /* Fix form button display */
-        #fullname-form .col-12.text-end,
-        #email-form .col-md-4.text-md-end,
-        #phone-form .col-md-4.text-md-end,
-        #username-form .col-md-4.text-md-end {
-            text-align: center !important;
-            margin-top: 15px;
-        }
-        
-        /* Make all form inputs full width */
-        .col-md-8, .col-md-6, .col-md-4 {
-            width: 100%;
-        }
-        
-        /* Fix display of name/value pairs */
-        .d-flex.justify-content-between.align-items-center {
-            flex-direction: column;
-            align-items: flex-start !important;
-        }
-        
-        .d-flex.justify-content-between.align-items-center .btn-edit {
-            margin-top: 10px;
-            align-self: flex-end;
-        }
-        
-        /* Fix form displays */
-        #username-form .row,
-        #email-form .row,
-        #phone-form .row {
-            margin: 0;
-        }
-        
-        /* Improve form usability on small screens */
-        .form-floating {
-            margin-bottom: 10px;
-        }
-        
-        .form-floating .form-control {
-            height: calc(2.5rem + 2px);
-            font-size: 14px;
-        }
-        
-        .form-floating label {
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-    }
-    
-    /* Extra small devices adjustments */
-    @media (max-width: 320px) {
-        .breadcrumb {
-            font-size: 13px;
-        }
-        
-        .card-header h5 {
-            font-size: 13px;
-        }
-        
-        .card-text {
-            font-size: 12px;
-        }
-        
-        .btn-edit, .btn-cancel, .btn-save {
-            font-size: 12px;
-            padding: 4px 8px;
-        }
-    }
-    
-    /* Fix for form buttons on all mobile screens */
-    @media (max-width: 768px) {
-        .btn-save, .btn-cancel {
-            display: block;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-        
-        .btn-cancel {
-            margin-left: 0;
-        }
-    }
-    /* Force the navbar-toggler to be visible on all tablet devices */
-    @media (max-width: 1024px) {
-        /* Important overrides to ensure menu toggle is visible */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: relative !important;
-            z-index: 1000 !important;
-            margin-right: 15px !important;
-        }
-        
-        /* Make sure the toggle icon is showing */
-        .navbar-toggler-icon {
-            display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* Ensure navbar container is using flexbox */
-        .navbar, 
-        .navbar > .container,
-        .navbar > .container-fluid {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            position: relative !important;
-        }
-        
-        /* Additional styling to make toggle button more noticeable */
-        .navbar-toggler {
-            padding: 8px 12px !important;
-            font-size: 1.25rem !important;
-            background-color: rgba(52, 152, 219, 0.1) !important;
-            border: 1px solid rgba(52, 152, 219, 0.2) !important;
-            border-radius: 4px !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-        }
-    }
-    
-    /* Specific iPad Mini targeting */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px)
-    and (-webkit-min-device-pixel-ratio: 1) {
-        /* Additional iPad-specific fixes */
-        body .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: absolute !important;
-            right: 15px !important;
-            top: 15px !important;
-        }
-        
-        /* Make the toggle button stand out visually */
-        body .navbar-toggler {
-            padding: 10px !important;
-            background-color: rgba(52, 152, 219, 0.15) !important;
-            border: 2px solid rgba(52, 152, 219, 0.3) !important;
-        }
-        
-        /* Force visibility on containers */
-        body .navbar > .container,
-        body .navbar > .container-fluid {
-            position: relative !important;
-            padding-right: 50px !important; /* Make room for toggle button */
-        }
-    }
-    
-    /* Even more specific targeting for iPad Mini */
-    @media only screen 
-    and (min-device-width: 768px) 
-    and (max-device-width: 1024px)
-    and (orientation: portrait) {
-        body header .navbar-toggler,
-        body nav .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* If navbar is fixed-top, adjust positioning */
-        body .navbar.fixed-top .navbar-toggler {
-            right: 15px !important;
-            top: 10px !important;
-        }
-    }
-    
-    /* Super aggressive approach for iPad Mini */
-    @supports (-webkit-overflow-scrolling: touch) {
-        /* Target all iOS devices */
-        .navbar-toggler {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        
-        /* More visible iOS-specific styling */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .navbar-toggler {
-                position: absolute !important;
-                right: 15px !important;
-                top: 15px !important;
-                background-color: rgba(52, 152, 219, 0.2) !important;
-                border: 2px solid #3498db !important;
-            }
-        }
-    }
-    
-    /* Fix for Bootstrap's default hiding of navbar-toggler */
-    @media (min-width: 768px) {
-        .navbar-expand-md .navbar-toggler,
-        .navbar-expand-lg .navbar-toggler {
-            display: block !important;
-        }
-        
-        .navbar-expand-md .navbar-collapse,
-        .navbar-expand-lg .navbar-collapse {
-            display: none !important;
-        }
-        
-        .navbar-expand-md .navbar-collapse.show,
-        .navbar-expand-lg .navbar-collapse.show {
-            display: block !important;
-        }
-    }
-    
-    /* Fixed positioning as a last resort if nothing else works */
-    @media (min-width: 768px) and (max-width: 1024px) {
-        body::before {
-            content: '';
-            display: block;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 45px;
-            height: 45px;
-            z-index: 10000;
-            pointer-events: none;
-        }
-        
-        .navbar-toggler {
-            position: fixed !important;
-            top: 15px !important;
-            right: 15px !important;
-            z-index: 10001 !important;
-        }
-    }
-    
-    </style>
-<style>
-    /* Breadcrumb styling */
-    .breadcrumb {
-        background-color: transparent;
-        padding: 12px 0;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eaecef;
-    }
-    
-    .breadcrumb-item a {
-        color: #3498db;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: #2980b9;
-    }
-    
-    .breadcrumb-item.active {
-        color: #6c757d;
-        font-weight: 500;
-    }
-    
-    /* Card styling to match sidebar */
-    .profile-card {
-        background-color: #f8f9fa;
-        border: 1px solid #eaecef;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 16px;
-        transition: all 0.3s ease;
-    }
-    
-    .profile-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-        border-color: #3498db;
+        padding: 15px;
     }
     
     .card-header {
-        display: flex;
-        align-items: center;
-        padding: 14px 18px;
-        background-color: rgba(52, 152, 219, 0.05);
-        border-bottom: 1px solid #eaecef;
-    }
-    
-    .card-header i {
-        color: #3498db;
-        font-size: 18px;
-        margin-right: 12px;
-    }
-    
-    .card-header h5 {
-        margin: 0;
-        color: #2c3e50;
-        font-size: 16px;
-        font-weight: 600;
+        padding: 12px 15px;
     }
     
     .card-body {
-        padding: 16px 18px;
+        padding: 15px;
     }
     
-    /* Content styling */
-    .card-text {
-        color: #495057;
-        font-size: 15px;
-        font-weight: 500;
-        margin-bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-    
-    /* Stats card styling */
-    .stats-icon {
-        color: #3498db;
-        font-size: 2.5rem;
+    .activity-list .list-group-item {
+        padding: 12px 15px;
     }
     
     .stats-value {
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: #2c3e50;
-        margin-bottom: 0;
+        font-size: 1.3rem;
     }
     
-    .stats-label {
-        color: #6c757d;
-        font-weight: 500;
-        font-size: 0.875rem;
+    .table thead th,
+    .table tbody td,
+    .table tbody th {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header h5 {
+        font-size: 15px;
     }
     
-    /* Button styling */
-    .btn-primary {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    .card-text {
+        font-size: 13px;
     }
     
-    .btn-primary:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(41, 128, 185, 0.3);
-    }
-    
-    .btn-outline-primary {
-        background-color: transparent;
-        color: #3498db;
-        border: 1px solid #3498db;
-        border-radius: 6px;
-        padding: 7px 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-outline-primary:hover {
-        background-color: rgba(52, 152, 219, 0.08);
-        color: #2980b9;
-        border-color: #2980b9;
-        transform: translateY(-2px);
-    }
-    
-    /* Table styling */
-    .table {
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    
-    .table thead th {
-        border-bottom: 2px solid #eaecef;
-        color: #6c757d;
-        font-weight: 600;
-        font-size: 0.875rem;
-        padding: 12px;
-    }
-    
-    .table tbody td, .table tbody th {
-        border-bottom: 1px solid #eaecef;
-        padding: 12px;
-        color: #495057;
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-    
-    /* Activity list styling */
-    .activity-list .list-group-item {
-        border-left: none;
-        border-right: none;
-        border-bottom: 1px solid #eaecef;
-        padding: 14px 0;
-    }
-    
-    .activity-list .list-group-item:first-child {
-        border-top: none;
-    }
-    
-    .activity-list .list-group-item:last-child {
-        border-bottom: none;
-    }
-    
-    .activity-icon {
-        color: #3498db;
-        font-size: 2rem;
+    .stats-value {
+        font-size: 1.2rem;
     }
     
     .activity-name {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 1rem;
-        margin-bottom: 0.25rem;
+        font-size: 13px;
     }
     
     .activity-text {
-        color: #6c757d;
-        font-size: 0.9rem;
+        font-size: 13px;
     }
     
-    .notification-icon {
-        color: #3498db;
-        margin-left: auto;
+    .table thead th,
+    .table tbody td,
+    .table tbody th {
+        font-size: 13px;
+        padding: 8px;
     }
     
-    /* Input group styling */
     .input-group .form-control {
-        border: 1px solid #ced4da;
-        border-radius: 6px 0 0 6px;
-        padding: 0.5rem 1rem;
-        transition: all 0.2s ease;
+        font-size: 13px;
     }
     
-    .input-group .form-control:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    .btn {
+        font-size: 14px;
+        padding: 6px 12px;
     }
-    
-    .input-group-text {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        color: #6c757d;
-    }
-    
-    /* Empty state styling */
-    .empty-state {
-        padding: 2rem 0;
-        text-align: center;
-    }
-    
-    .empty-state-icon {
-        color: #ced4da;
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
-    
-    .empty-state-title {
-        color: #6c757d;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    .empty-state-text {
-        color: #6c757d;
-        margin-bottom: 1.5rem;
-    }
+}
 </style>
 
 <div class="container">
