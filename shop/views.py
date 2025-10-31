@@ -23,7 +23,7 @@ def login_required_custom(view_func):
 
 
 
-@has_password
+
 def shop_base(request):
     products = list(Product.objects.filter(status="active").all())
     random.shuffle(products)

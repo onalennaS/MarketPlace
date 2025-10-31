@@ -161,7 +161,7 @@ def create_password(request):
         request.user.password = make_password(data['password'])
         request.user.save()
         send_verify_gmail(request.user.email)
-        return redirect('shop_base')
+        return redirect('buyer_dashboard')
     return redirect('shop_base')
 
 def logout_view(request):
