@@ -4,473 +4,616 @@
 {% load static %}
 
 {% block content %}
-<div class="container register-business-container my-4">
-  <div class="card border-0 shadow">
-    <div class="card-body p-3">
-      <h3 class="text-center mb-3">Business Registration</h3>
-      <p class="text-center text-muted mb-4">Provide accurate details to register your business on Versity Vibes.</p>
 
-        <!-- Logo & Basic Info Row -->
-        <div class="row mb-3">
-          <!-- Logo -->
-          <div class="col-md-3 text-center">
-            <label for="businessLogo" class="form-label fw-bold">Business Logo</label>
-            <div class="logo-upload-container">
-              <div class="logo-preview-wrapper">
-                <img id="logoPreview" class="logo-preview" alt="Logo Preview">
-                <div class="upload-icon-wrapper">
-                  <i class="fas fa-camera"></i>
-                </div>
-              </div>
-              <input type="file" class="form-control mt-2" id="businessLogo" accept="image/*" required>
-            </div>
-          </div>
-          
-          <!-- Basic Business Info -->
-          <div class="col-md-9">
-            <div class="row g-2">
-              <div class="col-md-6">
-                <label for="name" class="form-label fw-bold">Business Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter business name" required>
-              </div>
-              <div class="col-md-6">
-                <label for="business_type" class="form-label fw-bold">Business Type</label>
-                <select class="form-control" id="business_type" required>
-                  <option value="">Select Type</option>
-                  <option value="sole_proprietorship">Sole Proprietorship</option>
-                  <option value="partnership">Partnership</option>
-                  <option value="corporation">Corporation</option>
-                  <option value="limited_liability">Limited Liability Company (LLC)</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <label for="description" class="form-label fw-bold">Business Description</label>
-                <textarea class="form-control" id="description" rows="2" placeholder="Describe your business" required></textarea>
-              </div>
-              <div class="col-md-6">
-                <label for="registration_number" class="form-label fw-bold">Registration Number</label>
-                <input type="text" class="form-control" id="registration_number" placeholder="If available">
-              </div>
-              <div class="col-md-6">
-                <label for="category" class="form-label fw-bold">Category</label>
-                <select class="form-control" id="categorys" required>
-                  <option value="">Select Category</option>
-                  <option value="food">Food & Beverages</option>
-                </select>
-              </div>
-            </div>
-          </div>
+<style>
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --text-gray: #666666;
+    }
+    
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
+    
+    .register-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .register-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        padding: 2rem;
+    }
+    
+    .register-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .register-header h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--base-dark);
+        margin-bottom: 0.5rem;
+    }
+    
+    .register-header p {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--base-dark);
+        margin: 1.5rem 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--primary-teal);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-title i {
+        color: var(--primary-teal);
+        font-size: 1.1rem;
+    }
+    
+    .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.35rem;
+    }
+    
+    .form-control, .form-select {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        transition: border-color 0.2s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-teal);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
+    }
+    
+    .logo-section {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .logo-upload-wrapper {
+        display: inline-block;
+    }
+    
+    .logo-preview-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 2px dashed #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-light);
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto 0.75rem;
+        cursor: pointer;
+        transition: border-color 0.2s;
+    }
+    
+    .logo-preview-container:hover {
+        border-color: var(--primary-teal);
+    }
+    
+    .logo-preview-container i {
+        font-size: 2rem;
+        color: #ccc;
+    }
+    
+    .logo-preview {
+        max-width: 100%;
+        max-height: 100%;
+        display: none;
+        object-fit: cover;
+    }
+    
+    .logo-preview.active {
+        display: block;
+    }
+    
+    .logo-preview.active ~ i {
+        display: none;
+    }
+    
+    #businessLogo {
+        font-size: 0.85rem;
+    }
+    
+    .form-grid {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .form-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-check {
+        margin: 1.5rem 0;
+    }
+    
+    .form-check-input {
+        width: 1.1rem;
+        height: 1.1rem;
+        border: 2px solid #ddd;
+        margin-top: 0.15rem;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--primary-teal);
+        border-color: var(--primary-teal);
+    }
+    
+    .form-check-label {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+    }
+    
+    .form-check-label a {
+        color: var(--primary-teal);
+        text-decoration: none;
+    }
+    
+    .form-check-label a:hover {
+        text-decoration: underline;
+    }
+    
+    .submit-section {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary-teal) 0%, var(--accent-green) 100%);
+        color: white;
+        border: none;
+        padding: 0.75rem 2.5rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 168, 168, 0.3);
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 168, 168, 0.4);
+    }
+    
+    .btn-submit:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .btn-submit i {
+        margin-right: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .register-container {
+            padding: 0 0.5rem;
+        }
+        
+        .register-card {
+            padding: 1.5rem;
+        }
+        
+        .form-grid-2,
+        .form-grid-3,
+        .form-grid-4 {
+            grid-template-columns: 1fr;
+        }
+        
+        .logo-preview-container {
+            width: 90px;
+            height: 90px;
+        }
+    }
+</style>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h1>Business Registration</h1>
+            <p>Provide accurate details to register your business on Versity Vibes</p>
         </div>
 
-        <!-- Contact & Address Section -->
-        <div class="row mt-4">
-          <!-- Contact Information -->
-          <div class="col-md-6">
-            <div class="form-section-compact mb-2">
-              <i class="fas fa-address-card me-2 text-primary"></i>
-              <span class="fw-bold fs-5">Contact Information</span>
+        <!-- Logo Upload -->
+        <div class="logo-section">
+            <div class="logo-upload-wrapper">
+                <label for="businessLogo" style="cursor: pointer;">
+                    <div class="logo-preview-container">
+                        <img id="logoPreview" class="logo-preview" alt="Logo">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="form-label" style="text-align: center;">Business Logo</div>
+                </label>
+                <input type="file" class="form-control" id="businessLogo" accept="image/*" style="max-width: 250px; margin: 0 auto;">
             </div>
-            <div class="row g-2">
-              <div class="col-sm-6">
-                <label for="phone" class="form-label fw-bold">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" placeholder="Phone" required>
-              </div>
-              <div class="col-sm-6">
-                <label for="telephone" class="form-label fw-bold">Telephone (Optional)</label>
-                <input type="tel" class="form-control" id="telephone" placeholder="Telephone">
-              </div>
-              <div class="col-12">
-                <label for="email" class="form-label fw-bold">Business Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter business email" required>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          <!-- Operating Hours -->
-          <div class="col-md-6">
-            <div class="form-section-compact mb-2">
-              <i class="fas fa-clock me-2 text-primary"></i>
-              <span class="fw-bold fs-5">Operating Hours</span>
+        <!-- Basic Information -->
+        <div class="section-title">
+            <i class="fas fa-building"></i>
+            Basic Information
+        </div>
+        
+        <div class="form-grid form-grid-2">
+            <div class="form-group">
+                <label for="name" class="form-label">Business Name *</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter business name" required>
             </div>
-            <div class="row g-2">
-              <div class="col-sm-6">
-                <label for="open_time" class="form-label fw-bold">Opening Hour</label>
+            <div class="form-group">
+                <label for="business_type" class="form-label">Business Type *</label>
+                <select class="form-control form-select" id="business_type" required>
+                    <option value="">Select Type</option>
+                    <option value="sole_proprietorship">Sole Proprietorship</option>
+                    <option value="partnership">Partnership</option>
+                    <option value="corporation">Corporation</option>
+                    <option value="limited_liability">Limited Liability Company (LLC)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="description" class="form-label">Business Description *</label>
+                <textarea class="form-control" id="description" rows="3" placeholder="Describe your business" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-grid form-grid-2">
+            <div class="form-group">
+                <label for="registration_number" class="form-label">Registration Number</label>
+                <input type="text" class="form-control" id="registration_number" placeholder="If available">
+            </div>
+            <div class="form-group">
+                <label for="categorys" class="form-label">Category *</label>
+                <select class="form-control form-select" id="categorys" required>
+                    <option value="">Select Category</option>
+                    <option value="food">Food & Beverages</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="section-title">
+            <i class="fas fa-address-card"></i>
+            Contact Information
+        </div>
+
+        <div class="form-grid form-grid-2">
+            <div class="form-group">
+                <label for="phone" class="form-label">Phone Number *</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Phone" required>
+            </div>
+            <div class="form-group">
+                <label for="telephone" class="form-label">Telephone</label>
+                <input type="tel" class="form-control" id="telephone" placeholder="Telephone (Optional)">
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="email" class="form-label">Business Email *</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter business email" required>
+            </div>
+        </div>
+
+        <!-- Operating Hours -->
+        <div class="section-title">
+            <i class="fas fa-clock"></i>
+            Operating Hours
+        </div>
+
+        <div class="form-grid form-grid-2">
+            <div class="form-group">
+                <label for="open_time" class="form-label">Opening Time *</label>
                 <input type="time" class="form-control" id="open_time" name="openingHour" required>
-              </div>
-              <div class="col-sm-6">
-                <label for="close_time" class="form-label fw-bold">Closing Hour</label>
-                <input type="time" class="form-control" id="close_time" name="closingHour" required>
-              </div>
             </div>
-          </div>
+            <div class="form-group">
+                <label for="close_time" class="form-label">Closing Time *</label>
+                <input type="time" class="form-control" id="close_time" name="closingHour" required>
+            </div>
         </div>
 
         <!-- Address Information -->
-        <div class="mt-4">
-          <div class="form-section-compact mb-2">
-            <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-            <span class="fw-bold fs-5">Address Information</span>
-          </div>
-          <div class="row g-2">
-            <div class="col-md-6">
-              <label for="address_line_1" class="form-label fw-bold">Address Line 1</label>
-              <input type="text" class="form-control" id="address_line_1" placeholder="Address line 1" required>
+        <div class="section-title">
+            <i class="fas fa-map-marker-alt"></i>
+            Address Information
+        </div>
+
+        <div class="form-grid form-grid-2">
+            <div class="form-group">
+                <label for="address_line_1" class="form-label">Address Line 1 *</label>
+                <input type="text" class="form-control" id="address_line_1" placeholder="Street address" required>
             </div>
-            <div class="col-md-6">
-              <label for="address_line_2" class="form-label fw-bold">Address Line 2</label>
-              <input type="text" class="form-control" id="address_line_2" placeholder="Address line 2">
+            <div class="form-group">
+                <label for="address_line_2" class="form-label">Address Line 2</label>
+                <input type="text" class="form-control" id="address_line_2" placeholder="Apartment, suite, etc.">
             </div>
-          </div>
-          <div class="row g-2 mt-1">
-            <div class="col-md-3">
-              <label for="suburb" class="form-label fw-bold">Suburb</label>
-              <input type="text" class="form-control" id="suburb" placeholder="Suburb" required>
+        </div>
+
+        <div class="form-grid form-grid-3">
+            <div class="form-group">
+                <label for="suburb" class="form-label">Suburb *</label>
+                <input type="text" class="form-control" id="suburb" placeholder="Suburb" required>
             </div>
-            <div class="col-md-3">
-              <label for="city" class="form-label fw-bold">City</label>
-              <input type="text" class="form-control" id="city" placeholder="City" required>
+            <div class="form-group">
+                <label for="city" class="form-label">City *</label>
+                <input type="text" class="form-control" id="city" placeholder="City" required>
             </div>
-            <div class="col-md-2">
-              <label for="province" class="form-label fw-bold">Province</label>
-              <input type="text" class="form-control" id="province" placeholder="Province" required>
+            <div class="form-group">
+                <label for="province" class="form-label">Province *</label>
+                <input type="text" class="form-control" id="province" placeholder="Province" required>
             </div>
-            <div class="col-md-2">
-              <label for="postal_code" class="form-label fw-bold">Postal Code</label>
-              <input type="text" class="form-control" id="postal_code" placeholder="Postal code" required>
+        </div>
+
+        <div class="form-grid form-grid-3">
+            <div class="form-group">
+                <label for="postal_code" class="form-label">Postal Code *</label>
+                <input type="text" class="form-control" id="postal_code" placeholder="Postal code" required>
             </div>
-            <div class="col-md-2">
-              <label for="address_type" class="form-label fw-bold">Type</label>
-              <select class="form-control" id="address_type" required>
-                <option value="">Select</option>
-                <option value="retail">Home</option>
-                <option value="services">Office</option>
-                <option value="food">Shipping</option>
-                <option value="technology">Business</option>
-              </select>
+            <div class="form-group">
+                <label for="address_type" class="form-label">Address Type *</label>
+                <select class="form-control form-select" id="address_type" required>
+                    <option value="">Select Type</option>
+                    <option value="retail">Home</option>
+                    <option value="services">Office</option>
+                    <option value="food">Shipping</option>
+                    <option value="technology">Business</option>
+                </select>
             </div>
-            <div class="col-md-12 mt-1">
-              <label for="country" class="form-label fw-bold">Country</label>
-              <input type="text" class="form-control" id="country" placeholder="Country" required>
+            <div class="form-group">
+                <label for="country" class="form-label">Country *</label>
+                <input type="text" class="form-control" id="country" placeholder="Country" required>
             </div>
-          </div>
         </div>
 
         <!-- Terms and Submit -->
-        <div class="mt-4">
-          <div class="form-check mb-3">
+        <div class="form-check">
             <input type="checkbox" class="form-check-input" id="termsAgreement" required>
-            <label for="termsAgreement" class="form-check-label">I agree to the <a href="#" class="text-primary">Terms & Conditions</a>.</label>
-          </div>
-          <div class="text-center">
-            <button id="submitButton" type="button" class="btn btn-primary submit-btn" onclick="registerBusiness()">
-              <i class="fas fa-store me-1"></i>Submit Registration
-            </button>
-          </div>
+            <label for="termsAgreement" class="form-check-label">
+                I agree to the <a href="#">Terms & Conditions</a>
+            </label>
         </div>
-      </form>
+
+        <div class="submit-section">
+            <button id="submitButton" type="button" class="btn-submit" onclick="registerBusiness()">
+                <i class="fas fa-store"></i>Submit Registration
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
-<style>
-  /* Compact Form Styling with Larger Fonts */
-  .register-business-container {
-    max-width: 1000px;
-  }
-  
-  .form-section-compact {
-    border-bottom: 1px solid #eaeaea;
-    padding-bottom: 8px;
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Font size adjustments */
-  .form-label {
-    font-size: 0.95rem;
-    margin-bottom: 0.3rem;
-  }
-  
-  .form-control {
-    font-size: 1rem;
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .form-check-label {
-    font-size: 1rem;
-  }
-  
-  /* Logo Upload Styling */
-  .logo-preview-wrapper {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    border: 2px dashed #cbd5e0;
-    overflow: hidden;
-    position: relative;
-    margin: 0 auto 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fa;
-  }
-  
-  .logo-preview {
-    max-width: 100%;
-    max-height: 100%;
-    display: none;
-  }
-  
-  .upload-icon-wrapper {
-    position: absolute;
-    font-size: 32px;
-    color: #cbd5e0;
-  }
-  
-  /* Submit Button Styling */
-  .submit-btn {
-    padding: 10px 28px;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 1rem;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    border: none;
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-  }
-  
-  .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
-  }
-  
-  /* Disabled button styling */
-  .submit-btn:disabled {
-    background: #94bada;
-    transform: none;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-</style>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Add SweetAlert2 CSS and JS
-document.head.insertAdjacentHTML('beforeend', `
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-`);
-
-// Load SweetAlert2 library if not already loaded
-if (typeof Swal === 'undefined') {
-  const sweetAlertScript = document.createElement('script');
-  sweetAlertScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-  document.head.appendChild(sweetAlertScript);
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle logo upload functionality
-  const logoInput = document.getElementById('businessLogo');
-  if (logoInput) {
-    logoInput.addEventListener('change', function(event) {
-      let file = event.target.files[0];
-      if (file) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-          let preview = document.getElementById('logoPreview');
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-          document.querySelector('.upload-icon-wrapper').style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
-  // Fix the navbar toggler functionality
-  const navbarToggler = document.querySelector('.navbar-toggler');
-  
-  if (navbarToggler) {
-    // Remove any existing event listeners first to avoid duplicates
-    const newToggler = navbarToggler.cloneNode(true);
-    navbarToggler.parentNode.replaceChild(newToggler, navbarToggler);
+    // Logo preview functionality
+    const logoInput = document.getElementById('businessLogo');
+    const logoPreview = document.getElementById('logoPreview');
     
-    // Add the click event listener to the new toggler
-    newToggler.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Get the target offcanvas element
-      const targetId = this.getAttribute('data-bs-target');
-      const offcanvasElement = document.querySelector(targetId);
-      
-      if (offcanvasElement) {
-        // Remove existing backdrop attribute if it exists
-        if (offcanvasElement.hasAttribute('data-bs-backdrop')) {
-          offcanvasElement.removeAttribute('data-bs-backdrop');
-        }
-        
-        try {
-          // Initialize the offcanvas with proper options
-          const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement, {
-            backdrop: true  // Ensure this is a boolean, not a string
-          });
-          
-          // Show the offcanvas
-          bsOffcanvas.show();
-        } catch (error) {
-          console.error('Error initializing offcanvas:', error);
-        }
-      } else {
-        console.error('Offcanvas element not found with selector:', targetId);
-      }
-    });
-  } else {
-    console.error('Navbar toggler button not found');
-  }
-
-  // API error detection
-  const originalFetch = window.fetch;
-  const originalXHROpen = XMLHttpRequest.prototype.open;
-  const originalXHRSend = XMLHttpRequest.prototype.send;
-  
-  window.apiErrorDetected = false;
-  
-  window.fetch = async function(...args) {
-    const response = await originalFetch.apply(this, args);
-    const clone = response.clone();
-    
-    try {
-      const data = await clone.json();
-      if (!response.ok || (data && data.errors) || 
-          (data && typeof data === 'object' && Object.keys(data).some(key => 
-            typeof data[key] === 'string' && data[key].includes('required')
-          ))) {
-        console.log('API error detected in fetch response:', data);
-        window.apiErrorDetected = true;
-      }
-    } catch (e) {}
-    
-    return response;
-  };
-  
-  XMLHttpRequest.prototype.open = function(...args) {
-    this._url = args[1];
-    return originalXHROpen.apply(this, args);
-  };
-  
-  XMLHttpRequest.prototype.send = function(body) {
-    const xhr = this;
-    const originalStateChange = xhr.onreadystatechange;
-    
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        try {
-          if (xhr.status !== 200 || (xhr.responseText && xhr.responseText.includes('required'))) {
-            const responseData = JSON.parse(xhr.responseText);
-            
-            if (responseData && typeof responseData === 'object') {
-              const hasValidationErrors = Object.keys(responseData).some(key => 
-                typeof responseData[key] === 'string' && 
-                (responseData[key].includes('required') || responseData[key].includes('valid'))
-              );
-              
-              if (hasValidationErrors) {
-                console.log('API error detected in XHR response:', responseData);
-                window.apiErrorDetected = true;
-              }
+    if (logoInput) {
+        logoInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoPreview.src = e.target.result;
+                    logoPreview.classList.add('active');
+                };
+                reader.readAsDataURL(file);
             }
-          }
-        } catch (e) {}
-      }
-      
-      if (originalStateChange) {
-        originalStateChange.apply(xhr, arguments);
-      }
-    };
-    
-    return originalXHRSend.call(this, body);
-  };
+        });
+    }
 
-  if (typeof window.registerBusiness === 'function') {
-    window.registerBusinessOriginal = window.registerBusiness;
-  }
+    // Fix navbar toggler
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    if (navbarToggler) {
+        const newToggler = navbarToggler.cloneNode(true);
+        navbarToggler.parentNode.replaceChild(newToggler, navbarToggler);
+        
+        newToggler.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const targetId = this.getAttribute('data-bs-target');
+            const offcanvasElement = document.querySelector(targetId);
+            
+            if (offcanvasElement) {
+                if (offcanvasElement.hasAttribute('data-bs-backdrop')) {
+                    offcanvasElement.removeAttribute('data-bs-backdrop');
+                }
+                try {
+                    const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement, {
+                        backdrop: true
+                    });
+                    bsOffcanvas.show();
+                } catch (error) {
+                    console.error('Error initializing offcanvas:', error);
+                }
+            }
+        });
+    }
 
-  window.registerBusiness = function() {
-    const submitButton = document.getElementById('submitButton');
+    // API error detection
+    const originalFetch = window.fetch;
+    const originalXHROpen = XMLHttpRequest.prototype.open;
+    const originalXHRSend = XMLHttpRequest.prototype.send;
     
     window.apiErrorDetected = false;
     
-    if (submitButton.disabled) {
-      return;
+    window.fetch = async function(...args) {
+        const response = await originalFetch.apply(this, args);
+        const clone = response.clone();
+        
+        try {
+            const data = await clone.json();
+            if (!response.ok || (data && data.errors) || 
+                (data && typeof data === 'object' && Object.keys(data).some(key => 
+                    typeof data[key] === 'string' && data[key].includes('required')
+                ))) {
+                console.log('API error detected in fetch response:', data);
+                window.apiErrorDetected = true;
+            }
+        } catch (e) {}
+        
+        return response;
+    };
+    
+    XMLHttpRequest.prototype.open = function(...args) {
+        this._url = args[1];
+        return originalXHROpen.apply(this, args);
+    };
+    
+    XMLHttpRequest.prototype.send = function(body) {
+        const xhr = this;
+        const originalStateChange = xhr.onreadystatechange;
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                try {
+                    if (xhr.status !== 200 || (xhr.responseText && xhr.responseText.includes('required'))) {
+                        const responseData = JSON.parse(xhr.responseText);
+                        if (responseData && typeof responseData === 'object') {
+                            const hasValidationErrors = Object.keys(responseData).some(key => 
+                                typeof responseData[key] === 'string' && 
+                                (responseData[key].includes('required') || responseData[key].includes('valid'))
+                            );
+                            if (hasValidationErrors) {
+                                console.log('API error detected in XHR response:', responseData);
+                                window.apiErrorDetected = true;
+                            }
+                        }
+                    }
+                } catch (e) {}
+            }
+            if (originalStateChange) {
+                originalStateChange.apply(xhr, arguments);
+            }
+        };
+        
+        return originalXHRSend.call(this, body);
+    };
+
+    if (typeof window.registerBusiness === 'function') {
+        window.registerBusinessOriginal = window.registerBusiness;
     }
-    
-    const originalButtonText = submitButton.innerHTML;
-    
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Processing...';
-    submitButton.disabled = true;
-    
-    let alertShown = false;
-    
-    try {
-      if (window.registerBusinessOriginal) {
-        window.registerBusinessOriginal();
-      }
-      
-      setTimeout(() => {
-        if (window.apiErrorDetected) {
-          console.log('Not showing success message due to API error');
-        } else if (!alertShown) {
-          alertShown = true;
-          
-          Swal.fire({
-            title: 'Thank you!',
-            text: 'Your business registration request is being reviewed. We will notify you soon with an update.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
+
+    window.registerBusiness = function() {
+        const submitButton = document.getElementById('submitButton');
+        
+        window.apiErrorDetected = false;
+        
+        if (submitButton.disabled) return;
+        
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitButton.disabled = true;
+        
+        let alertShown = false;
+        
+        try {
+            if (window.registerBusinessOriginal) {
+                window.registerBusinessOriginal();
+            }
+            
+            setTimeout(() => {
+                if (window.apiErrorDetected) {
+                    console.log('Not showing success message due to API error');
+                } else if (!alertShown) {
+                    alertShown = true;
+                    Swal.fire({
+                        title: 'Thank you!',
+                        text: 'Your business registration request is being reviewed. We will notify you soon with an update.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#00A8A8'
+                    });
+                }
+                
+                if (submitButton.disabled) {
+                    submitButton.innerHTML = originalButtonText;
+                    submitButton.disabled = false;
+                }
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Error in business registration:', error);
+            window.apiErrorDetected = true;
+            
+            if (submitButton.disabled) {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+            }
         }
         
-        if (submitButton.disabled) {
-          submitButton.innerHTML = originalButtonText;
-          submitButton.disabled = false;
-        }
-      }, 2000);
-      
-    } catch (error) {
-      console.error('Error in business registration:', error);
-      window.apiErrorDetected = true;
-      
-      if (submitButton.disabled) {
-        submitButton.innerHTML = originalButtonText;
-        submitButton.disabled = false;
-      }
-    }
+        setTimeout(() => {
+            if (submitButton.disabled) {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+            }
+            
+            if (!alertShown && !window.apiErrorDetected) {
+                alertShown = true;
+                Swal.fire({
+                    title: 'Thank you!',
+                    text: 'Your business registration request is being reviewed. We will notify you soon with an update.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#00A8A8'
+                });
+            }
+        }, 10000);
+    };
     
-    setTimeout(() => {
-      if (submitButton.disabled) {
-        submitButton.innerHTML = originalButtonText;
-        submitButton.disabled = false;
-      }
-      
-      if (!alertShown && !window.apiErrorDetected) {
-        alertShown = true;
-        
-        Swal.fire({
-          title: 'Thank you!',
-          text: 'Your business registration request is being reviewed. We will notify you soon with an update.',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      }
-    }, 10000);
-  };
-  
-  window.addEventListener('error', function(event) {
-    window.apiErrorDetected = true;
-  });
+    window.addEventListener('error', function(event) {
+        window.apiErrorDetected = true;
+    });
 });
 </script>
 
 <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
 <script type="text/javascript" src="{% static 'seller/js/register_business_request.js' %}"></script>
-<!-- At the end of your body tag -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}
