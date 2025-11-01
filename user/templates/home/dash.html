@@ -12,33 +12,16 @@
     
     .main-content {
         flex: 1 !important;
-        padding: 2rem !important;
-        max-width: 1200px !important;
+        padding: 1rem !important;
+        max-width: 1000px !important;
         margin: 0 auto !important;
         width: 100% !important;
     }
     
-    .dashboard-header {
-        margin-bottom: 2.5rem !important;
-        text-align: center !important;
-    }
-    
-    .dashboard-header h1 {
-        color: #1A3D7C !important;
-        font-size: 2.5rem !important;
-        margin-bottom: 0.5rem !important;
-        font-weight: 700 !important;
-    }
-    
-    .dashboard-header p {
-        color: #666 !important;
-        font-size: 1.2rem !important;
-    }
-    
     .cards-grid {
         display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
-        gap: 1.5rem !important;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+        gap: 1rem !important;
     }
     
     .card {
@@ -56,7 +39,7 @@
     }
     
     .card-header {
-        padding: 1.5rem 1.5rem 0.5rem !important;
+        padding: 1rem 1rem 0.5rem !important;
         display: flex !important;
         align-items: center !important;
         border-bottom: 1px solid #eee !important;
@@ -64,8 +47,8 @@
     }
     
     .card-icon {
-        width: 40px !important;
-        height: 40px !important;
+        width: 32px !important;
+        height: 32px !important;
         border-radius: 8px !important;
         background-color: #1A3D7C !important;
         display: flex !important;
@@ -77,13 +60,13 @@
     }
     
     .card-title {
-        font-size: 1.2rem !important;
+        font-size: 1rem !important;
         color: #1A3D7C !important;
         font-weight: 600 !important;
     }
     
     .card-content {
-        padding: 0 1.5rem 1.5rem !important;
+        padding: 0 1rem 1rem !important;
     }
     
     .card-link {
@@ -121,17 +104,99 @@
         border-radius: 12px !important;
         margin-left: 8px !important;
     }
+
+    /* Seller promo on dashboard - distinct, professional style */
+    .seller-card {
+        grid-column: 1 / -1 !important; /* full width */
+        background: linear-gradient(90deg, #0f172a 0%, #12263a 100%) !important;
+        color: #f8fafc !important;
+        border-top: 4px solid #00A8A8 !important;
+        padding: 1.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 1rem !important;
+    }
+
+    .seller-card .seller-info {
+        max-width: 720px !important;
+    }
+
+    .seller-card h3 {
+        margin: 0 0 0.25rem 0 !important;
+        color: #e6f7f7 !important;
+        font-size: 1.15rem !important;
+    }
+
+    .seller-card p {
+        margin: 0 !important;
+        color: rgba(230,247,247,0.9) !important;
+        font-size: 0.95rem !important;
+    }
+
+    .seller-features {
+        display: flex !important;
+        gap: 1rem !important;
+        margin-top: 0.75rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    .seller-bullet {
+        background: rgba(255,255,255,0.06) !important;
+        padding: 0.35rem 0.6rem !important;
+        border-radius: 8px !important;
+        font-size: 0.85rem !important;
+        color: #e6f7f7 !important;
+    }
+
+    .seller-cta {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        flex-direction: column !important;
+    }
+
+    .seller-cta .btn-primary {
+        background: linear-gradient(135deg,#00A8A8,#008888) !important;
+        border: none !important;
+        padding: 0.6rem 1rem !important;
+        font-weight: 700 !important;
+    }
+
+    .seller-cta .btn-outline-light {
+        border-color: rgba(255,255,255,0.18) !important;
+        color: rgba(255,255,255,0.95) !important;
+    }
+
+    @media (max-width: 768px) {
+        .seller-card { flex-direction: column !important; align-items: flex-start !important; }
+        .seller-cta { width: 100% !important; flex-direction: row !important; justify-content: stretch !important; }
+        .seller-cta .btn { flex: 1 !important; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <main class="main-content">
-    <div class="dashboard-header">
-        <h1>Account Dashboard</h1>
-        <p>Manage your profile, orders, and preferences</p>
-    </div>
-    
     <div class="cards-grid">
+        <!-- Seller Promo Card (dashboard) -->
+        <div class="card seller-card">
+            <div class="seller-info">
+                <h3>Start selling on VersityFinds</h3>
+                <p>Reach thousands of students on your campus. List items in minutes, enjoy 0% commission, and get optional featured placement to boost sales.</p>
+
+                <div class="seller-features">
+                    <span class="seller-bullet">0% commission</span>
+                    <span class="seller-bullet">Fast listings (2 mins)</span>
+                    <span class="seller-bullet">Campus-wide visibility</span>
+                </div>
+            </div>
+
+            <div class="seller-cta">
+                <a href="{% url 'seller_landing_page' %}" class="btn btn-primary">Become a Seller</a>
+                <a href="{% url 'seller_landing_page' %}#features" class="btn btn-outline-light">Learn how it works</a>
+            </div>
+        </div>
         <!-- Profile Card -->
         <div class="card">
             <div class="card-header">

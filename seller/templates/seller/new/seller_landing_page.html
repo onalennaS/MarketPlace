@@ -1,805 +1,330 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Landing Page | Versityfinds </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+{% extends 'products/shop_base2.html' %}
+{% load static %}
+
+{% block title %}Sell on VersityFinds{% endblock %}
+
+{% block links %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block styles %}
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            color: #444;
+        :root{
+            --primary:#00A8A8;
+            --primary-dark:#008888;
+            --accent:#2ECC71;
+            --base:#1A3D7C;
+            --bg:#F9F9F9;
+            --card:#FFFFFF;
+            --muted:#666;
         }
-        
-        /* Hero Section */
+
+        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: #222; }
+
         .hero-section {
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-            padding: 80px 0;
+            background: linear-gradient(135deg,var(--base),var(--primary));
             color: white;
-            position: relative;
+            padding: 4rem 0;
+            border-radius: 12px;
             overflow: hidden;
+            margin-bottom: 2rem;
         }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://cdn.jsdelivr.net/gh/tailwindtoolbox/Rainblur-Landing-Page@main/pattern.png');
-            opacity: 0.1;
-            z-index: 1;
+
+        .hero-title { font-size: 2rem; font-weight:800; margin-bottom:0.5rem; color: #000 !important; }
+        .hero-sub { font-size:1.05rem; color: #000 !important; margin-bottom:1rem; }
+
+        .feature-card { background: var(--card); border-radius: 12px; padding:1.5rem; box-shadow: 0 8px 30px rgba(10,20,40,0.06); transition: all .25s ease; }
+        .feature-card:hover{ transform: translateY(-6px); }
+        .feature-icon{ width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; }
+
+        .cta-section{ background: linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#000 !important; padding:3rem; border-radius:12px; margin-top:2rem; text-align:center; }
+        .btn-hero{ background: white; color:var(--primary); font-weight:700; border-radius:50px; padding:0.75rem 1.5rem; }
+
+        /* Flashing / attention animation for Get Started button */
+        .btn-flash {
+            /* snappier, brighter pulse */
+            animation: flashGradient 2s ease-in-out infinite;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: transform 0.14s ease, box-shadow 0.14s ease;
+            color: #000 !important;
+            border: 1px solid rgba(0,0,0,0.06);
         }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
+
+        .btn-flash:hover {
+            animation-play-state: paused;
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.16);
         }
-        
-        /* Features Section */
-        .features-section {
-            padding: 80px 0;
-            background-color: #f8f9fa;
+
+        @keyframes flashGradient {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0,168,168,0);
+                background-color: #ffffff;
+                transform: scale(1);
+            }
+            20% {
+                box-shadow: 0 0 18px 6px rgba(0,200,180,0.28);
+                background-color: #e8fff8; /* bright mint */
+                transform: scale(1.01);
+            }
+            50% {
+                box-shadow: 0 0 28px 10px rgba(46,204,113,0.30);
+                background-color: #f2fff4; /* bright lime tint */
+                transform: scale(1.02);
+            }
+            80% {
+                box-shadow: 0 0 18px 6px rgba(20,120,220,0.22);
+                background-color: #eef7ff; /* bright sky tint */
+                transform: scale(1.01);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0,168,168,0);
+                background-color: #ffffff;
+                transform: scale(1);
+            }
         }
-        
-        .feature-card {
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            height: 100%;
-            transition: all 0.3s ease;
-            background-color: white;
+
+        /* Respect users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .btn-flash { animation: none !important; }
         }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        /* Steps Section */
-        .steps-section {
-            padding: 80px 0;
-        }
-        
-        .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-        
-        .step-card {
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            background-color: white;
-            height: 100%;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-            color: white;
-            text-align: center;
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            border: none;
-            border-radius: 30px;
-            padding: 12px 30px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
-            background: linear-gradient(135deg, #2980b9, #2471a3);
-        }
-        
-        .btn-outline-light {
-            border-radius: 30px;
-            padding: 12px 30px;
-            font-weight: 600;
-        }
-        
+
+        .steps .step-card{ border-radius:12px; padding:1rem; background:white; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+
         /* Footer */
-        footer {
-            padding: 40px 0;
-            background-color: #222;
+        .footer {
+            background: #1e3a5f;
             color: white;
+            padding: 4rem 0 2rem;
         }
-      
-    /* Keep dropdown menu width appropriate */
-    .dropdown-menu.dropdown-menu-end {
-        width: 100% !important;
-        margin-top: 5px;
-    }
-    /* Additional Mobile Responsive CSS */
 
-/* Base responsive adjustments */
-@media (max-width: 992px) {
-    h1.display-4 {
-        font-size: 2.5rem;
-    }
-    
-    .lead {
-        font-size: 1rem;
-    }
-    
-    .hero-section {
-        padding: 50px 0;
-    }
-    
-    .features-section, .steps-section {
-        padding: 50px 0;
-    }
-}
+        .footer-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
 
-/* Specific adjustments for smaller devices (Samsung Galaxy S8+ is 360x740) */
-@media (max-width: 576px) {
-    /* Navigation adjustments */
-    .navbar-brand {
-        font-size: 1.1rem;
-    }
-    
-    /* Hero section adjustments */
-    h1.display-4 {
-        font-size: 2rem;
-        line-height: 1.3;
-    }
-    
-    .hero-section {
-        padding: 40px 0;
-        text-align: center;
-    }
-    
-    .btn-lg {
-        padding: 8px 20px;
-        font-size: 0.95rem;
-    }
-    
-    .d-flex.flex-wrap.gap-2 {
-        justify-content: center;
-    }
-    
-    /* Features section adjustments */
-    .feature-card {
-        padding: 20px;
-        margin-bottom: 15px;
-    }
-    
-    .feature-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-    
-    /* Steps section adjustments */
-    .step-card {
-        padding: 20px;
-        margin-bottom: 15px;
-    }
-    
-    /* Footer adjustments */
-    footer h4 {
-        font-size: 1.25rem;
-    }
-    
-    footer h5 {
-        font-size: 1.1rem;
-        margin-top: 10px;
-    }
-    
-    /* CTA section adjustments */
-    .cta-section {
-        padding: 50px 0;
-    }
-    
-    /* Accordion adjustments */
-    .accordion-button {
-        padding: 15px;
-        font-size: 0.95rem;
-    }
-    
-    .accordion-body {
-        padding: 15px;
-        font-size: 0.9rem;
-    }
-}
+        .footer-text {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
 
-/* Specific Galaxy S8+ and similar device optimizations */
-@media (max-width: 360px) {
-    h1.display-4 {
-        font-size: 1.8rem;
-    }
-    
-    .navbar-brand {
-        font-size: 1rem;
-    }
-    
-    .btn-lg {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
-    
-    .feature-card, .step-card {
-        padding: 15px;
-    }
-    
-    .feature-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
-    }
-    
-    .step-number {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-    }
-    
-    footer {
-        font-size: 0.9rem;
-    }
-    
-    .input-group .form-control, .input-group .btn {
-        font-size: 0.9rem;
-    }
-}
+        .footer-links-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+        }
 
-/* Fix for user dropdown menu on mobile */
-@media (max-width: 768px) {
-    .dropdown-menu.dropdown-menu-end {
-        position: absolute;
-        right: 0;
-        left: auto;
-        width: 230px !important;
-    }
-    
-    /* Welcome message adjustments */
-    .d-flex.align-items-center.ms-3 {
-        border-start: none !important;
-        padding-left: 0 !important;
-        margin-left: 0 !important;
-    }
-}
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+        }
 
-/* Fix for horizontal overflow issues */
-html, body {
-    overflow-x: hidden;
-    width: 100%;
-}
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
 
-/* Better tap targets for mobile */
-.nav-link, .btn, .dropdown-item {
-    padding: 0.5rem 0.75rem;
-}
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
 
-/* Additional spacing fixes */
-.row {
-    margin-right: 0;
-    margin-left: 0;
-}
+        .footer-links a:hover {
+            color: var(--primary);
+        }
 
-.container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-/* Enhanced Navbar Responsiveness for Samsung Galaxy Phones */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
 
-/* Base navbar adjustments */
-@media (max-width: 992px) {
-    .navbar-brand {
-        max-width: 60%;
-        font-size: 1.1rem;
-    }
-    
-    /* Ensure dropdown menu appears properly */
-    .navbar .dropdown-menu {
-        position: absolute;
-    }
-    
-    /* Better spacing for collapsed navbar */
-    .navbar-collapse {
-        margin-top: 15px;
-    }
-}
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 168, 168, 0.2);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
 
-/* Specific Samsung Galaxy adjustments */
-@media (max-width: 576px) {
-    /* Brand text sizing */
-    .navbar-brand {
-        font-size: 0.95rem;
-        max-width: 70%;
-        white-space: normal;
-        line-height: 1.2;
-    }
-    
-    /* Adjust icon size */
-    .navbar-brand i.bi {
-        font-size: 0.9rem;
-    }
-    
-    /* Improve toggle button positioning */
-    .navbar-toggler {
-        padding: 0.4rem 0.6rem;
-        margin-right: 0;
-    }
-    
-    /* Welcome message formatting */
-    .d-flex.align-items-center.ms-3 {
-        border-left: none !important;
-        padding-left: 0 !important;
-        margin-left: 0 !important;
-        flex-direction: column;
-        align-items: flex-start !important;
-        width: 100%;
-        margin-top: 10px;
-    }
-    
-    /* User dropdown adjustments */
-    .dropdown {
-        width: 100%;
-        margin-top: 10px;
-    }
-    
-    /* Make the dropdown toggle full width */
-    #userDropdown {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    /* Ensure dropdown menu appears in the right position */
-    .dropdown-menu.dropdown-menu-end {
-        width: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-        margin-top: 5px;
-    }
-    
-    /* Ensure the welcome message is visible only when navbar is expanded */
-    .navbar-collapse.collapse:not(.show) .me-3.d-none.d-lg-block {
-        display: none !important;
-    }
-    
-    /* When navbar is expanded */
-    .navbar-collapse.collapse.show {
-        padding-bottom: 15px;
-    }
-    
-    /* Increase size of user icon for better touch target */
-    .rounded-circle.bg-light.p-1 {
-        width: 35px !important;
-        height: 35px !important;
-    }
-}
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
 
-/* Extra small devices like Galaxy S8+ (360px) */
-@media (max-width: 360px) {
-    
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    
-    .navbar-brand {
-        font-size: 0.85rem;
-        max-width: 65%;
-    }
-    
-    /* Make dropdown items easier to tap */
-    .dropdown-item {
-        padding: 12px 15px;
-        font-size: 0.95rem;
-    }
-    
-    /* Improve user menu appearance */
-    .dropdown-menu.dropdown-menu-end {
-        padding: 8px 0;
-    }
-    
-    /* Ensure toggle button has enough space */
-    .navbar > .container {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-}
-
-/* Force Navbar Layout Fixes */
-@media (max-width: 576px) {
-    /* Force column display when collapsed */
-    .navbar .container > .d-flex {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        width: 100%;
-    }
-    
-    /* Allow navbar brand and toggler to be on same line */
-    .navbar .container {
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    
-    /* Ensure collapsed menu takes full width */
-    #navbarNav {
-        width: 100%;
-    }
-}
-
-
+        @media(max-width:768px){ .hero-title{ font-size:1.5rem; } .hero-section{ padding:2rem 0; } }
     </style>
-</head>
-<body>
-   <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="container">
+    <div class="hero-section p-4">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h1 class="hero-title">Grow your sales — Sell on VersityFinds</h1>
+                <p class="hero-sub">Reach thousands of students on campus. Easy setup, 0% commission options, and promotional tools to scale fast.</p>
+                <div class="d-flex gap-2">
+                    <!-- Keep original visible 'Get Started' style for familiarity -->
+                    <a href="{% url 'business' %}" class="btn btn-light btn-lg btn-flash">
+                        Get Started <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#features" class="btn btn-outline-light btn-lg text-white">See Features</a>
+                </div>
+            </div>
+            <div class="col-md-5 d-none d-md-block text-end">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60" alt="Sell on VersityFinds" style="width:85%; border-radius:12px; box-shadow: 0 15px 40px rgba(0,0,0,0.12);">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="container mt-3">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Why sellers love VersityFinds</h2>
+        <p class="text-muted">Tools and terms built for student sellers — fast, fair, and focused on growth.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="feature-icon bg-primary text-white"><i class="bi bi-percent"></i></div>
+                    <div>
+                        <h5 class="mb-1">Low / No Commission</h5>
+                        <p class="text-muted small mb-0">Keep more of what you earn. Competitive fees and occasional 0% promotions for new sellers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="feature-icon bg-success text-white"><i class="bi bi-graph-up"></i></div>
+                    <div>
+                        <h5 class="mb-1">Boosted Visibility</h5>
+                        <p class="text-muted small mb-0">Featured listings and campus targeting help your products get noticed faster.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="feature-icon bg-info text-white"><i class="bi bi-clock-history"></i></div>
+                    <div>
+                        <h5 class="mb-1">Fast Onboarding</h5>
+                        <p class="text-muted small mb-0">Set up your store and list items in minutes — no complicated paperwork.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Steps -->
+<section class="container mt-4 steps">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="step-card text-center p-3">
+                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">1</div>
+                <h5 class="mt-2">Register</h5>
+                <p class="text-muted small">Create your seller account and verify your details.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card text-center p-3">
+                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">2</div>
+                <h5 class="mt-2">List Items</h5>
+                <p class="text-muted small">Add product photos, descriptions, and prices in a few quick steps.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card text-center p-3">
+                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">3</div>
+                <h5 class="mt-2">Sell & Grow</h5>
+                <p class="text-muted small">Start receiving orders and use analytics to grow your business.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="container">
+    <div class="cta-section mt-4">
+        <h3 class="mb-2" style="color:#000;">Ready to reach thousands of students?</h3>
+        <p class="mb-3" style="color:#000;">Join VersityFinds today and unlock campus customers, seller tools, and promotional support.</p>
+        <a href="{% url 'business' %}" class="btn btn-light btn-lg me-2 btn-flash">Get Started <i class="bi bi-arrow-right"></i></a>
+        <a href="#features" class="btn btn-outline-light btn-lg text-white">Contact Sales</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
     <div class="container">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold" href="#">
-            <i class="bi bi-shop me-2 text-primary"></i>
-            <span class="text-primary">Versity Finds</span> Marketplace
-        </a>
-        
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Main Navigation Links -->
-           
-           <!-- User Account Links in Container -->
-<div class="container mt-4">
-    <div class="d-flex flex-column flex-lg-row justify-content-end gap-2">
-        <a class="btn btn-outline-primary" href="{% url 'home' %}">
-            <i class="bi bi-house-door me-1"></i> Home
-        </a>
-        <a class="btn btn-outline-danger fw-bold" href="#" id="logoutBtn">
-            <i class="bi bi-box-arrow-right me-1"></i> Logout
-        </a>
-    </div>
-</div>
-
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <h3 class="footer-title"><i class="bi bi-mortarboard-fill"></i> VersityFinds</h3>
+                <p class="footer-text">
+                    Your trusted campus marketplace and delivery platform. Built by students, for students.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                </div>
             </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Marketplace</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Browse Items</a></li>
+                    <li><a href="#">Sell an Item</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">How It Works</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Delivery</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Request Delivery</a></li>
+                    <li><a href="#">Become a Courier</a></li>
+                    <li><a href="#">Delivery Rates</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Safety Tips</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h4 class="footer-links-title">Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0 2rem;">
+        <div class="text-center">
+            <p class="footer-text mb-0">© 2024 VersityFinds. All rights reserved. Made with ❤️ by students, for students.</p>
         </div>
     </div>
-</nav>
-    
-    <!-- Add SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Logout Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                Swal.fire({
-                    title: 'Logout Confirmation',
-              .navbar {      text: 'Are you sure you want to logout?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3a7bd5',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, logout',
-                    cancelButtonText: 'Cancel',
-                    background: '#fff',
-                    borderRadius: '15px',
-                    customClass: {
-                        confirmButton: 'btn btn-primary px-4 py-2',
-                        cancelButton: 'btn btn-danger px-4 py-2'
-                    },
-                    buttonsStyling: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Show success message
-                        Swal.fire({
-                            title: 'Logged Out!',
-                            text: 'You have been successfully logged out.',
-                            icon: 'success',
-                            confirmButtonColor: '#3a7bd5',
-                            confirmButtonText: 'OK',
-                            background: '#fff',
-                            borderRadius: '15px',
-                            customClass: {
-                                confirmButton: 'btn btn-primary px-4 py-2'
-                            },
-                            buttonsStyling: false
-                        }).then(() => {
-                            // Redirect to logout URL
-                            window.location.href = "{% url 'logout' %}";
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+</footer>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container hero-content">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">Grow Your Business with Versity Finds</h1>
-                    <p class="lead mb-4">Take your business to the next level by joining our marketplace. Access thousands of customers and boost your sales with our easy-to-use platform.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{% url 'business' %}" class="btn btn-light btn-lg">
-                            Get Started <i class="bi bi-arrow-right"></i>
-                        </a>
-                        <a href="#learn-more" class="btn btn-outline-light btn-lg">
-                            Learn More
-                        </a>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-
-    
-    <!-- Features Section -->
-    <section id="learn-more" class="features-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Why Sell on Versity Finds?</h2>
-                <p class="text-muted">Discover the advantages of becoming a seller on our platform</p>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-globe"></i>
-                        </div>
-                        <h4>Expand Your Reach</h4>
-                        <p class="text-muted">Access a wide customer base and increase your visibility in the market.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-cash-stack"></i>
-                        </div>
-                        <h4>Maximize Profits</h4>
-                        <p class="text-muted">Enjoy competitive fees and various tools to optimize your revenue.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-tools"></i>
-                        </div>
-                        <h4>Easy Management</h4>
-                        <p class="text-muted">Use our intuitive dashboard to manage inventory, orders, and analytics.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-danger bg-opacity-10 text-danger">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h4>Secure Payments</h4>
-                        <p class="text-muted">Rest easy with our secure payment processing and fraud protection.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-info bg-opacity-10 text-info">
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-                        <h4>Growth Insights</h4>
-                        <p class="text-muted">Access detailed analytics and reports to help grow your business.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-secondary bg-opacity-10 text-secondary">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <h4>Dedicated Support</h4>
-                        <p class="text-muted">Get assistance from our seller support team whenever you need it.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Steps Section -->
-    <section class="steps-section">
-        <div class="container">
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-6">
-                    <h2 class="fw-bold mb-4">How to Get Started</h2>
-                    <p class="text-muted">Follow these simple steps to set up your business on Versity Finds</p>
-                </div>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="step-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="step-number">1</div>
-                            <h4 class="mb-0">Register</h4>
-                        </div>
-                        <p class="text-muted">Complete the registration form with your business information and details.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="step-number">2</div>
-                            <h4 class="mb-0">Verification</h4>
-                        </div>
-                        <p class="text-muted">We'll review your application and verify your business credentials.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="step-number">3</div>
-                            <h4 class="mb-0">Start Selling</h4>
-                        </div>
-                        <p class="text-muted">Once approved, set up your store, add products, and start selling.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-   
-                      
-             
-    </section>
-
-   
-
-    <!-- FAQ Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Frequently Asked Questions</h2>
-                <p class="text-muted">Find answers to common questions about selling on SixSkies</p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item border-0 mb-3 shadow-sm">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                                    How much does it cost to sell on SixSkies?
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    We offer competitive commission rates starting at just 5% per sale. There are no monthly fees or hidden charges. You only pay when you make a sale.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item border-0 mb-3 shadow-sm">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                                    How long does the approval process take?
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Most businesses are reviewed and approved within 2-3 business days. We'll notify you via email once your application has been processed.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item border-0 mb-3 shadow-sm">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                                    What types of businesses can sell on SixSkies?
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    We welcome a wide variety of businesses including retail products, food & beverages, services, digital products, and more. All businesses must comply with our terms of service and quality standards.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item border-0 shadow-sm">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-                                    How do I get paid for my sales?
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Payments are processed every two weeks. You can select your preferred payment method (direct deposit, PayPal, etc.) in your seller dashboard settings.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white">
-        <div class="container py-5">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <h4 class="fw-bold mb-4">Versity Finds Marketplace</h4>
-                    <p>Connecting businesses with customers across the globe. Join our community of successful sellers today.</p>
-                    <div class="d-flex gap-3 mt-4">
-                        <a href="#" class="text-white"><i class="bi bi-facebook fs-5"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-twitter fs-5"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-instagram fs-5"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <h5 class="mb-4">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">About Us</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Shop Now</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sell On SixSkies</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <h5 class="mb-4">Seller Resources</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Seller Guide</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Success Stories</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Fee Structure</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Seller Support</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <h5 class="mb-4">Get Updates</h5>
-                    <p>Subscribe to our newsletter for updates and tips.</p>
-                    <form class="mt-3">
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email">
-                            <button class="btn btn-primary" type="button">Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-md-0">© 2025 Versity Finds Marketplace. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-white text-decoration-none me-3">Terms of Service</a>
-                    <a href="#" class="text-white text-decoration-none">Privacy Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        
-        </script>
-</body>
-</html>
+{% endblock %}
