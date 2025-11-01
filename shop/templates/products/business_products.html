@@ -1,849 +1,478 @@
 {% extends 'products/shop_base2.html' %}
 
-{% block title %} {{business.name}}| versityfinds{% endblock %}
+{% block title %}{{business.name}} | versityfinds{% endblock %}
+
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css">
-
-    <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
-
 {% endblock %}
 
 {% block meta %}
-<meta name="description" content="{{ business.description|default:'Check out this Business on VersityFinds.' }} | VersityFinds">
+<meta name="description" content="{{ business.description|default:'Check out this Business on VersityFinds.' }}">
 <meta property="og:title" content="{{ business.name }} | VersityFinds">
 <meta property="og:description" content="{{ business.description|default:'Check out this Business on VersityFinds.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="VersityFinds">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ business.name }} | VersityFinds">
-<meta name="twitter:description" content="{{ bsuiness.description|default:'Check out this business on VersityFinds.' }}">
-<meta name="twitter:image" content="{{ absolute_image_url }}">
 {% endblock %}
+
 {% block styles %}
 :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --secondary: #f59e0b;
-    --dark: #1e293b;
-    --light: #f8fafc;
-    --gray: #94a3b8;
-    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    --card-hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+    --teal: #00A8A8;
+    --green: #2ECC71;
+    --dark: #1A3D7C;
+    --gray: #333333;
+    --light: #F9F9F9;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    color: var(--dark);
-    background-color: #f9fafb;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--light);
+    color: var(--gray);
 }
 
-/* Business Hero Section - Minimalist Design */
-.business-hero {
-    height: 360px;
-    position: relative;
-    border-radius: 12px;
+.hero {
+    height: 300px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 1.5rem;
-    box-shadow: var(--card-shadow);
+    position: relative;
 }
 
-.business-hero-image {
+.hero img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
 }
 
-.business-hero-overlay {
+.hero-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
     padding: 1.5rem;
     color: white;
 }
 
-.business-data {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(2px);
-    padding: 1.25rem;
-    border-radius: 12px;
-    max-width: 800px;
-}
-
-.business-name {
-    font-weight: 700;
-    font-size: 2rem;
+.hero h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
     margin-bottom: 0.75rem;
 }
 
-.business-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.business-meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.business-actions {
+.hero-meta {
     display: flex;
     gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
 }
 
-/* Business Info Card - Minimalist Design */
+.badge {
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
 .info-card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 2rem;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.info-card:hover {
-    box-shadow: var(--card-hover-shadow);
-}
-
-.info-card-title {
-    font-weight: 600;
-    font-size: 1.25rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-bottom: 1.5rem;
-    color: var(--dark);
+    border: 1px solid #e0e0e0;
 }
 
-.info-section-title {
+.info-title {
+    font-size: 1.1rem;
     font-weight: 600;
-    font-size: 1rem;
     margin-bottom: 1rem;
     display: flex;
+    justify-content: between;
     align-items: center;
-    gap: 0.5rem;
+}
+
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.info-section h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--dark);
 }
 
 .info-list {
     list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .info-list li {
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
 }
 
-.info-list strong {
-    font-weight: 600;
-    margin-right: 0.25rem;
-}
-
-.delivery-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-}
-
-.delivery-item i {
-    color: #10b981;
-}
-
-/* Menu Section - Minimalist Design */
 .section-title {
-    font-weight: 700;
     font-size: 1.5rem;
-    margin-bottom: 1.25rem;
-    position: relative;
+    font-weight: 600;
+    margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    color: var(--dark);
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 2px solid var(--teal);
 }
 
-/* Removed the blue underline for minimalist design */
-.section-title::after {
-    display: none;
-}
-
-/* Category Tabs - Minimalist Design */
 .category-tabs {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.5rem;
     margin-bottom: 1.5rem;
     overflow-x: auto;
     padding-bottom: 0.5rem;
-    scrollbar-width: thin;
-}
-
-.category-tabs::-webkit-scrollbar {
-    height: 4px;
-}
-
-.category-tabs::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
-}
-
-.category-tabs::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
 }
 
 .category-tab {
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
-    background: #f1f5f9;
-    color: var(--dark);
-    font-weight: 500;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    color: var(--gray);
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s ease;
     white-space: nowrap;
-    border: none;
-    font-size: 0.95rem;
+    transition: all 0.2s;
 }
 
 .category-tab:hover {
-    background: #e2e8f0;
+    border-color: var(--teal);
 }
 
 .category-tab.active {
-    background: var(--primary);
+    background: var(--teal);
     color: white;
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    border-color: var(--teal);
 }
 
-/* Product Cards - Improved for full-width/height images */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
 }
 
 .product-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s, box-shadow 0.3s;
     background: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.product-image-container {
+.product-img {
     position: relative;
     width: 100%;
-    padding-top: 100%; /* 1:1 Aspect ratio */
-    background: #f8f9fa;
-    overflow: hidden;
+    padding-top: 100%;
+    background: #f5f5f5;
 }
 
-.product-image {
+.product-img img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Changed from contain to cover for full image */
-    transition: transform 0.3s;
-}
-
-.product-card:hover .product-image {
-    transform: scale(1.05);
+    object-fit: cover;
 }
 
 .product-badge {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    background: var(--primary);
+    top: 0.5rem;
+    left: 0.5rem;
+    background: var(--teal);
     color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 1;
 }
 
 .wishlist-btn {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: rgba(255, 255, 255, 0.9);
-    width: 2rem;
-    height: 2rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    background: white;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ef4444;
-    transition: all 0.2s;
-    border: none;
-    z-index: 1;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.wishlist-btn:hover, .wishlist-btn.active {
+.wishlist-btn:hover,
+.wishlist-btn.active {
     background: #ef4444;
     color: white;
-    transform: scale(1.1);
 }
 
 .product-body {
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
 }
 
-
-
-.product-price {
-    font-weight: 700;
-    color: var(--dark);
-    font-size: 1.1rem;
+.product-body h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
-.product-rating {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-    font-size: 0.85rem;
+.product-body .price {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 1rem;
 }
 
-.product-rating i {
-    color: var(--secondary);
-}
-
-.product-actions {
-    margin-top: auto;
-}
-
-.btn-add-cart {
-    width: 100%;
-    border-radius: 8px;
-    padding: 0.5rem;
-    font-weight: 500;
-    background-color: var(--light);
-    border: 1px solid #e5e7eb;
-    color: var(--dark);
-    transition: all 0.2s;
-}
-
-.btn-add-cart:hover {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-/* Empty State - Minimalist Design */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
     background: white;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
-.empty-state-icon {
+.empty-state i {
     font-size: 3rem;
-    color: var(--gray);
+    color: #ccc;
     margin-bottom: 1rem;
 }
 
-.empty-state-title {
-    font-weight: 600;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--dark);
-}
-
-.empty-state-text {
-    color: var(--gray);
-    margin-bottom: 1.5rem;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Offcanvas Styling - Minimalist Design */
-.offcanvas {
-    border-radius: 0;
+.btn-teal {
+    background: var(--teal);
+    color: white;
     border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
 }
 
-.offcanvas-header {
-    border-bottom: 1px solid #f1f5f9;
+.btn-teal:hover {
+    background: #008888;
 }
 
-.offcanvas-title {
-    font-weight: 600;
-    color: var(--dark);
-}
-
-.bg-light-blue {
-    background-color: #f0f7ff;
-}
-
-/* Responsive Adjustments - Improved */
-@media (max-width: 991.98px) {
-    .business-hero {
-        height: 320px;
-    }
-    
-    .business-data {
-        padding: 1rem;
-    }
-    
-    .business-name {
-        font-size: 1.75rem;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-}
-
-@media (max-width: 767.98px) {
-    .business-hero {
-        height: 280px;
-        border-radius: 8px;
-    }
-    
-    .business-hero-overlay {
-        padding: 1rem;
-    }
-    
-    .business-name {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .business-meta {
-        gap: 0.75rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .business-meta-item {
-        font-size: 0.8rem;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 1rem;
-    }
-    
-    .section-title {
-        font-size: 1.25rem;
-    }
-    
-    .category-tab {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 575.98px) {
-    .business-hero {
+@media (max-width: 768px) {
+    .hero {
         height: 240px;
     }
     
-    .business-data {
-        padding: 0.75rem;
-    }
-    
-    .business-name {
+    .hero h1 {
         font-size: 1.25rem;
     }
     
-    .business-actions {
-        gap: 0.5rem;
-    }
-    
-    .business-actions .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-    }
-    
     .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
     
-  
-    
-    .product-price {
-        font-size: 1rem;
-    }
-    
-    .product-rating {
-        font-size: 0.75rem;
-    }
-    
-    /* Improved mobile layout */
     .info-card .row {
         flex-direction: column;
-    }
-    
-    .category-tabs {
-        padding-bottom: 0.75rem;
     }
 }
 {% endblock %}
 
-{% block secend_nav %}
-{% endblock %}
+{% block secend_nav %}{% endblock %}
 
 {% block home %}
-<div class="container py-4">
-    <!-- Business Hero Section -->
-    <div class="business-hero">
-        <img src="{{business.image.url}}" alt="{{business.name}} | versityfinds" class="business-hero-image">
-        <div class="business-hero-overlay">
-            <div class="business-data">
-                <h1 class="business-name">{{business.name}}</h1>
-                 
-                <div class="business-meta">
-                  
-                    {% if business.open_orders %}
-                    <span class="business-meta-item badge bg-success rounded-pill">
-                        <i class="bi bi-clock"></i> Open until {{business.close_time}}
-                    </span>
-                    {% else %}
-                    <span class="business-meta-item badge bg-danger rounded-pill">
-                        <i class="bi bi-clock"></i> We are closed 
-                    </span>
-                    {% endif %}
-                    <span class="business-meta-item badge bg-dark rounded-pill">
-                        <i class="bi bi-truck"></i> Delivery available
-                    </span>
-                </div>
-                
-                
-                <div class="business-actions">
-                    <button class="btn btn-light d-flex align-items-center gap-2" onclick="showShareModal()">
-                        <i class="bi bi-share"></i> Share
-                    </button>
-
-                    <button class="btn btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#ratingOffcanvas">
-                         <i class="bi bi-star-fill text-warning"></i> {{average_rating}} ({{total_rating}} reviews)
-                    </button>
-                </div>
+<div class="container py-3" style="max-width: 1000px;">
+    <!-- Hero -->
+    <div class="hero">
+        <img src="{{business.image.url}}" alt="{{business.name}}">
+        <div class="hero-overlay">
+            <h1>{{business.name}}</h1>
+            <div class="hero-meta">
+                {% if business.open_orders %}
+                <span class="badge bg-success">
+                    <i class="bi bi-clock"></i> Open until {{business.close_time}}
+                </span>
+                {% else %}
+                <span class="badge bg-danger">
+                    <i class="bi bi-clock"></i> Closed
+                </span>
+                {% endif %}
+                <span class="badge bg-dark">
+                    <i class="bi bi-truck"></i> Delivery
+                </span>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-light btn-sm" onclick="showShare()">
+                    <i class="bi bi-share"></i> Share
+                </button>
+                <button class="btn btn-outline-light btn-sm" data-bs-toggle="offcanvas" data-bs-target="#ratings">
+                    <i class="bi bi-star-fill text-warning"></i> {{average_rating}} ({{total_rating}})
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Business Info Section -->
-<div class="card info-card mb-4">
-    <div class="card-body p-4">
-        <h3 class="info-card-title d-flex justify-content-between align-items-center">
-            About {{ business.name }}
-           <button class="btn btn-sm btn-dark rounded-circle d-flex align-items-center" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#businessInfoCollapse" 
-                    aria-expanded="true" 
-                    aria-controls="businessInfoCollapse"
-                    id="toggleInfoBtn">
-                <i class="bi bi-chevron-down" id="toggleIcon"></i>
-                <span id="toggleText"></span>
+    <!-- Info Card -->
+    <div class="info-card">
+        <div class="info-title">
+            About {{business.name}}
+            <button class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#info">
+                <i class="bi bi-chevron-down"></i>
             </button>
-
-        </h3>
-
-        <div class="collapse " id="businessInfoCollapse">
-            <div class="row mt-3">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <h5 class="info-section-title">
-                        <i class="bi bi-info-circle"></i> Business Details
-                    </h5>
-                    <ul class="info-list">
-                        <li><strong>Category:</strong> {{ business.category }}</li>
-                        <li><strong>Location:</strong> {{ address.address_line_1 }} {{ address.address_line_2 }}, {{ address.suburb }}, {{ address.postal_code }}</li>
-                        <li><strong>Hours:</strong> {{ business.open_time }} - {{ business.close_time }} (Mon-Sun)</li>
-                        <li><strong>Contact:</strong> {{ business.phone }}</li>
-                    </ul>
+        </div>
+        <div class="collapse" id="info">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-section">
+                        <h6><i class="bi bi-info-circle"></i> Details</h6>
+                        <ul class="info-list">
+                            <li><strong>Category:</strong> {{business.category}}</li>
+                            <li><strong>Location:</strong> {{address.address_line_1}}, {{address.suburb}}</li>
+                            <li><strong>Hours:</strong> {{business.open_time}} - {{business.close_time}}</li>
+                            <li><strong>Contact:</strong> {{business.phone}}</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-6">
-                    <h5 class="info-section-title">
-                        <i class="bi bi-truck"></i> Delivery Information
-                    </h5>
-                    <div>
-                        <div class="delivery-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Campus delivery available</span>
-                        </div>
-                        <div class="delivery-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Standard (48hrs) & Premium (2hrs) options</span>
-                        </div>
-                        <div class="delivery-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Free delivery on orders over R200</span>
-                        </div>
-                        <div class="delivery-item">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Student discount available</span>
-                        </div>
+                    <div class="info-section">
+                        <h6><i class="bi bi-truck"></i> Delivery</h6>
+                        <ul class="info-list">
+                            <li><i class="bi bi-check-circle text-success"></i> Campus delivery</li>
+                            <li><i class="bi bi-check-circle text-success"></i> Standard & Premium options</li>
+                            <li><i class="bi bi-check-circle text-success"></i> Free over R200</li>
+                            <li><i class="bi bi-check-circle text-success"></i> Student discount</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Menu -->
+    <h2 class="section-title">Menu</h2>
     
-    <!-- Menu Section -->
-    <h2 class="section-title">Our Menu</h2>
-    
-    <!-- Category Tabs -->
     <div class="category-tabs">
         {% for key, value in categories.items %}
-            <button class="category-tab {% if forloop.first %}active{% endif %}" onclick="showCategory('{{ key }}')">{{ key }}</button>
+        <button class="category-tab {% if forloop.first %}active{% endif %}" onclick="showCategory('{{key}}')">
+            {{key}}
+        </button>
         {% endfor %}
     </div>
     
-    <!-- Product Categories -->
     {% for key, value in categories.items %}
-    <section id="{{key}}" class="category-section" {% if not forloop.first %}style="display:none"{% endif %}>
+    <div id="{{key}}" class="category-section" {% if not forloop.first %}style="display:none"{% endif %}>
         {% if value %}
-            <div class="products-grid">
-                {% for product in value %}
-                {% if product.status == "active" %}
-                <div class="product-card">
-                    <div class="product-image-container">
-                        {% if product.image %}
-                            <a href="{% url 'view_product' product.business.slug product.slug %}">
-                                <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds ">
-                            </a>
-                        {% else %}
-                            <img src="https://via.placeholder.com/300" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | versityfinds">
-                        {% endif %}
-                        
-                        {% if product.discount %}
-                            <span class="product-badge">{{product.discount}}% OFF</span>
-                        {% endif %}
-                        
-                        <button class="wishlist-btn" onclick="toggleWishlist(this, {{product.id}})">
-                            <i class="bi bi-heart"></i>
-                        </button>
-                    </div>
-                    <div class="product-body">
-                        <h6 class="fw-bold ">{{product.name}}</h6>
-                        <i class="small" style="max-height:25px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ product.small_description|default:"No Description" }}</i>
-                        <p class=" text-success fw-bold mb-0 p-0">R {{product.price}}</p>
-                        
-                        <!-- <div class="product-actions">
-                            <button class="btn btn-add-cart" onclick="addToCart({{product.id}})">
-                                <i class="bi bi-cart-plus"></i> Add to Cart
-                            </button>
-                        </div> -->
-                    </div>
+        <div class="products-grid">
+            {% for product in value %}
+            {% if product.status == "active" %}
+            <div class="product-card">
+                <div class="product-img">
+                    <a href="{% url 'view_product' product.business.slug product.slug %}">
+                        <img src="{{product.image.url}}" alt="{{product.name}}">
+                    </a>
+                    {% if product.discount %}
+                    <span class="product-badge">{{product.discount}}% OFF</span>
+                    {% endif %}
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, {{product.id}})">
+                        <i class="bi bi-heart"></i>
+                    </button>
                 </div>
-                {% endif %}
-                {% endfor %}
+                <div class="product-body">
+                    <h6>{{product.name}}</h6>
+                    <p class="price mb-0">R{{product.price}}</p>
+                </div>
             </div>
+            {% endif %}
+            {% endfor %}
+        </div>
         {% else %}
-            <div class="empty-state">
-                <div class="empty-state-icon">
-                    <i class="bi bi-basket"></i>
-                </div>
-                <h4 class="empty-state-title">No products available</h4>
-                <p class="empty-state-text">There are currently no products in this category. Please check back later or browse other categories.</p>
-            </div>
+        <div class="empty-state">
+            <i class="bi bi-basket"></i>
+            <h5>No products</h5>
+            <p>Check back later for items in this category</p>
+        </div>
         {% endif %}
-    </section>
+    </div>
     {% endfor %}
 </div>
 
 <!-- Ratings Offcanvas -->
-<div class="offcanvas offcanvas-end w-100 w-md-50" tabindex="-1" id="ratingOffcanvas" style="z-index:9999">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">User Ratings</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
-
-  <div class="offcanvas-body d-flex flex-column p-3 pt-0 bg-white">
-    <!-- Average Rating -->
-    <div class="text-center p-3 rounded bg-light-blue mb-3">
-      <h2 id="averageRating" class="fw-bold text-primary">{{average_rating}}</h2>
-      <small class="text-muted">Average Rating</small>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="ratings">
+    <div class="offcanvas-header">
+        <h5>Ratings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
-
-    <!-- Ratings List -->
-    <div id="ratingsList" class="flex-grow-1 overflow-auto mb-3">
-      <!-- Ratings will appear here -->
-      {% for rating in all_ratings %}
-          <div class="d-flex justify-content-between align-items-center border p-2 rounded mb-2 bg-light-blue">
-                <strong>{{rating.user}}</strong>
-                <span>
-                    <i class="fa-star {% if rating.stars > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
-                    <i class="fa-star {% if rating.stars > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
-                    <i class="fa-star {% if rating.stars > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
-                    <i class="fa-star {% if rating.stars > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
-                    <i class="fa-star {% if rating.stars > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
-                </span>
-            </div>
+    <div class="offcanvas-body">
+        <div class="text-center p-3 mb-3" style="background: rgba(0,168,168,0.1); border-radius: 8px;">
+            <h2 class="fw-bold" style="color: var(--teal);">{{average_rating}}</h2>
+            <small class="text-muted">Average Rating</small>
+        </div>
+        {% for rating in all_ratings %}
+        <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
+            <strong>{{rating.user}}</strong>
+            <span>
+                {% for i in "12345" %}
+                <i class="bi bi-star{% if forloop.counter <= rating.stars %}-fill{% endif %} text-warning"></i>
+                {% endfor %}
+            </span>
+        </div>
         {% endfor %}
     </div>
-  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Toggle wishlist button
-    function toggleWishlist(button, productId) {
-        button.classList.toggle('active');
-        const icon = button.querySelector('i');
-
-        if (button.classList.contains('active')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-            // Add to wishlist API call
-            console.log(`Added product ${productId} to wishlist`);
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-            // Remove from wishlist API call
-            console.log(`Removed product ${productId} from wishlist`);
-        }
+function toggleWishlist(btn, id) {
+    btn.classList.toggle('active');
+    const icon = btn.querySelector('i');
+    if (btn.classList.contains('active')) {
+        icon.classList.replace('bi-heart', 'bi-heart-fill');
+    } else {
+        icon.classList.replace('bi-heart-fill', 'bi-heart');
     }
+}
 
-    // Show share modal with SweetAlert2
-    function showShareModal() {
-        const pageUrl = window.location.href;
-        const businessName = "{{ business.name }}";
-        const businessDescription = "{{ business.description|default:'Check out this business on VersityFinds.' }}";
+function showShare() {
+    const url = window.location.href;
+    const name = "{{ business.name }}";
+    Swal.fire({
+        title: 'Share ' + name,
+        html: `
+            <div class="d-flex flex-column gap-2">
+                <a href="https://api.whatsapp.com/send?text=${url}" target="_blank" class="btn btn-success">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" class="btn btn-primary">
+                    <i class="bi bi-facebook"></i> Facebook
+                </a>
+                <button onclick="copyLink()" class="btn btn-secondary">
+                    <i class="bi bi-clipboard"></i> Copy Link
+                </button>
+            </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true
+    });
+}
 
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
         Swal.fire({
-            title: '<i class="bi bi-share-fill text-primary"></i> Share ' + businessName,
-            html: `
-                <div class="text-center mb-4">
-                    <p class="text-muted">Choose how you want to share this business</p>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                    <a href="https://api.whatsapp.com/send?text=${businessDescription}: ${pageUrl}" target="_blank" class="btn btn-success btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-whatsapp fs-5"></i>
-                        <span class="fw-semibold">WhatsApp</span>
-                    </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-facebook fs-5"></i>
-                        <span class="fw-semibold">Facebook</span>
-                    </a>
-                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${businessDescription}" target="_blank" class="btn btn-info btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-twitter-x fs-5"></i>
-                        <span class="fw-semibold">X (Twitter)</span>
-                    </a>
-                    <button onclick="copyLink()" class="btn btn-secondary btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-clipboard fs-5"></i>
-                        <span class="fw-semibold">Copy Link</span>
-                    </button>
-                </div>
-            `,
-            showConfirmButton: false,
-            showCloseButton: true,
-            customClass: {
-                popup: 'swal2-share-modal border-0 shadow-lg',
-                title: 'text-dark fw-bold mb-3',
-                htmlContainer: 'p-0'
-            },
-            background: '#ffffff',
-            backdrop: 'rgba(0,0,0,0.4)',
-            width: '400px',
-            padding: '2rem'
-        });
-    }
-
-    // Copy link to clipboard
-    function copyLink() {
-        navigator.clipboard.writeText(window.location.href).then(function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Link Copied!',
-                text: 'The link has been copied to your clipboard.',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        }, function(err) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Failed to copy the link.',
-            });
-        });
-    }
-
-
-
-    // Show selected category and hide others
-    function showCategory(categoryId) {
-        // Hide all category sections
-        document.querySelectorAll('.category-section').forEach(section => {
-            section.style.display = 'none';
-        });
-        
-        // Show selected category
-        document.getElementById(categoryId).style.display = 'block';
-        
-        // Update active tab
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        event.target.classList.add('active');
-    }
-    
-    // Initialize first category as active
-    document.addEventListener('DOMContentLoaded', function() {
-        const firstTab = document.querySelector('.category-tab');
-        if (firstTab) {
-            firstTab.classList.add('active');
-        }
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const collapseElement = document.getElementById('businessInfoCollapse');
-        const toggleBtn = document.getElementById('toggleInfoBtn');
-        const toggleText = document.getElementById('toggleText');
-        const toggleIcon = document.getElementById('toggleIcon');
-
-        collapseElement.addEventListener('hide.bs.collapse', function () {
-           
-            toggleIcon.classList.remove('bi-chevron-up');
-            toggleIcon.classList.add('bi-chevron-down');
-        });
-
-        collapseElement.addEventListener('show.bs.collapse', function () {
-            
-            toggleIcon.classList.remove('bi-chevron-down');
-            toggleIcon.classList.add('bi-chevron-up');
+            icon: 'success',
+            title: 'Link Copied!',
+            timer: 2000,
+            showConfirmButton: false
         });
     });
-</script>
+}
 
+function showCategory(id) {
+    document.querySelectorAll('.category-section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+}
+</script>
 {% endblock %}

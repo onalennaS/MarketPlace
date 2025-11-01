@@ -9,14 +9,12 @@
 
 {% block meta %}
 <meta name="description" content="{{ product.name }} from {{product.business.name}} on VersityFinds">
- 
 <meta property="og:title" content="{{ product.name }} from {{product.business.name}} @ R{{product.price}}| VersityFinds">
 <meta property="og:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VersityFinds">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ product.name }} from {{product.business.name}} | VersityFinds">
 <meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
@@ -26,445 +24,755 @@
 {% block secend_nav %}
 {% endblock %}
 
-
 {% block styles %}
 <style>
-    .list-group-item {
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border-left: none;
-        border-right: none;
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --text-muted: #6c757d;
     }
-    .list-group-item:hover {
-        background-color: #f8f9fa;
+
+    body {
+        background: var(--bg-light);
+        color: var(--text-dark);
     }
-    .list-group-item.active {
-        background-color: #e7f1ff !important;
-        color: #0d6efd !important;
-        border-left: 3px solid #0d6efd;
+
+    .product-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem;
     }
-    .product-image-container {
-        position: relative;
+
+    .product-card {
+        background: white;
+        border-radius: 8px;
         overflow: hidden;
-        background: #f8f9fa;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
+
+    .product-image-section {
+        background: white;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .product-image-section img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+    }
+
     .discount-badge {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 10;
-        font-size: 0.8rem;
-        padding: 5px 10px;
+        display: inline-block;
+        background: var(--accent-green);
+        color: white;
+        padding: 4px 12px;
         border-radius: 4px;
-    }
-    .carousel-control-prev-icon, 
-    .carousel-control-next-icon {
-        background-color: rgba(0,0,0,0.5);
-        border-radius: 50%;
-        padding: 15px;
-    }
-    .product-title {
+        font-size: 0.85rem;
         font-weight: 600;
-        color: #212529;
+        margin-bottom: 0.5rem;
     }
-    .product-brand {
-        color: #6c757d;
+
+    .product-details {
+        padding: 1.5rem;
+    }
+
+    .product-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--base-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .product-description {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .business-name {
+        color: var(--primary-teal);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .status-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .badge-custom {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .badge-open {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .badge-closed {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .badge-available {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .badge-outofstock {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .btn-share {
+        background: transparent;
+        border: 1px solid #dee2e6;
+        color: var(--primary-teal);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+
+    .product-info {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+
+    .divider {
+        border: 0;
+        border-top: 1px solid #e9ecef;
+        margin: 1rem 0;
+    }
+
+    .addons-section h6 {
+        color: var(--base-dark);
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    .addon-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .addon-item:hover {
+        border-color: var(--primary-teal);
+        background: #f0fafa;
+    }
+
+    .addon-item.active {
+        border-color: var(--primary-teal);
+        background: #e6f7f7;
+    }
+
+    .addon-name {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .addon-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: var(--primary-teal);
+    }
+
+    .price-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .price-display {
+        margin-bottom: 1rem;
+    }
+
+    .current-price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--base-dark);
+    }
+
+    .original-price {
+        font-size: 1rem;
+        color: var(--text-muted);
+        text-decoration: line-through;
+        margin-left: 0.5rem;
+    }
+
+    .delivery-box {
+        background: #e6f7f7;
+        border-left: 3px solid var(--primary-teal);
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
         font-size: 0.9rem;
     }
+
+    .delivery-time {
+        font-weight: 600;
+        color: var(--base-dark);
+    }
+
+    .promo-text {
+        background: #fff9e6;
+        border-left: 3px solid #ffc107;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+    }
+
+    .btn-add-cart {
+        width: 100%;
+        padding: 0.875rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 0.75rem;
+    }
+
+    .btn-add-cart.available {
+        background: #2ECC71 !important;
+        color: white !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn-add-cart.available:hover {
+        background: #27ae60;
+    }
+
+    .btn-add-cart.unavailable {
+        background: #e9ecef;
+        color: var(--text-muted);
+        cursor: not-allowed;
+    }
+
+    .btn-wishlist {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border: 2px solid #dc3545;
+        background: #ffe6e6;
+        color: #dc3545;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn-wishlist:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .delivery-features {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        padding-top: 0.75rem;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .seller-card {
+        background: white;
+        padding: 1.25rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-top: 1rem;
+    }
+
+    .seller-card h6 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--base-dark);
+        margin-bottom: 1rem;
+    }
+
+    .seller-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .seller-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .seller-details h6 {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+        color: var(--base-dark);
+    }
+
     .rating-stars {
         color: #ffc107;
+        font-size: 0.85rem;
     }
-    .price-container {
-        background: #f8f9fa;
+
+    .seller-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .btn-visit-store {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: 2px solid var(--primary-teal);
+        background: white;
+        color: var(--primary-teal);
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        transition: all 0.2s;
+    }
+
+    .btn-visit-store:hover {
+        background: var(--primary-teal);
+        color: white;
+    }
+
+    .info-table {
+        background: white;
+        padding: 1.5rem;
         border-radius: 8px;
-        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-top: 1rem;
     }
-    .original-price {
-        text-decoration: line-through;
-        color: #6c757d;
+
+    .info-table h6 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--base-dark);
+        margin-bottom: 1rem;
+    }
+
+    .info-row {
+        display: flex;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e9ecef;
         font-size: 0.9rem;
     }
-    .delivery-info {
-        background: #e9ecef;
-        border-radius: 8px;
-        padding: 10px;
-        font-size: 0.9rem;
+
+    .info-row:last-child {
+        border-bottom: none;
     }
-    .description-section {
-        border-top: 1px solid #dee2e6;
-        padding-top: 20px;
+
+    .info-label {
+        font-weight: 600;
+        color: var(--text-muted);
+        width: 40%;
     }
-    .specs-table th {
-        background-color: #f8f9fa;
-        width: 30%;
+
+    .info-value {
+        color: var(--text-dark);
+        width: 60%;
     }
-    .review-progress {
-        height: 8px;
-    }
-    .review-header {
-        border-bottom: 1px solid #dee2e6;
-        padding-bottom: 15px;
-    }
-    @media (max-width: 768px) {
-        .product-details-section {
-            margin-top: 20px;
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 991px) {
+        .product-container {
+            padding: 0.75rem;
         }
-        .price-container {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
+
+        .product-title {
+            font-size: 1.25rem;
         }
-        .carousel-inner {
+
+        .current-price {
+            font-size: 1.75rem;
+        }
+
+        .product-image-section img {
             max-height: 300px;
         }
     }
 
+    @media (max-width: 767px) {
+        .product-container {
+            padding: 0.5rem;
+            padding-bottom: 0;
+        }
+
+        .product-card {
+            border-radius: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-details {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.15rem;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+        }
+
+        .original-price {
+            font-size: 0.9rem;
+        }
+
+        .product-image-section {
+            padding: 0.75rem;
+        }
+
+        .product-image-section img {
+            max-height: 250px;
+        }
+
+        .status-badges {
+            gap: 0.4rem;
+        }
+
+        .badge-custom {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+        }
+
+        .btn-share {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+        }
+
+        .addon-item {
+            padding: 0.6rem;
+        }
+
+        .addon-name {
+            font-size: 0.85rem;
+        }
+
+        .info-table,
+        .seller-card {
+            border-radius: 0;
+            margin-top: 0.5rem;
+        }
+
+        .info-table {
+            padding: 1rem;
+        }
+
+        .seller-card {
+            padding: 1rem;
+        }
+
+        .info-row {
+            flex-direction: column;
+            padding: 0.6rem 0;
+        }
+
+        .info-label {
+            width: 100%;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            width: 100%;
+        }
+
+        .price-section {
+            border-radius: 0;
+            margin-top: 0.5rem;
+            padding: 1rem;
+        }
+
+        .delivery-box,
+        .promo-text {
+            font-size: 0.8rem;
+            padding: 0.6rem;
+        }
+
+        .btn-add-cart {
+            padding: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-wishlist {
+            padding: 0.65rem;
+            font-size: 0.9rem;
+        }
+
+        .delivery-features {
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .seller-info {
+            gap: 0.6rem;
+        }
+
+        .seller-image {
+            width: 45px;
+            height: 45px;
+        }
+
+        .seller-details h6 {
+            font-size: 0.9rem;
+        }
+
+        .rating-stars {
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-title {
+            font-size: 1.05rem;
+        }
+
+        .current-price {
+            font-size: 1.4rem;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+        }
+
+        .business-name {
+            font-size: 0.85rem;
+        }
+
+        .product-info {
+            font-size: 0.8rem;
+        }
+
+        .addons-section h6 {
+            font-size: 0.9rem;
+        }
+
+        .addon-item {
+            padding: 0.5rem;
+        }
+
+        .addon-name {
+            font-size: 0.8rem;
+        }
+
+        .addon-checkbox {
+            width: 16px;
+            height: 16px;
+        }
+
+        .info-table h6,
+        .seller-card h6 {
+            font-size: 0.9rem;
+        }
+
+        .info-row {
+            font-size: 0.85rem;
+        }
+
+        .seller-meta {
+            font-size: 0.8rem;
+        }
+
+        .btn-visit-store {
+            font-size: 0.85rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="container-fluid mt-3">
-    <div class="row">
-        <!-- Product Images and Details -->
-        <div class="col-lg-8 col-md-7">
-            <div class="card mb-4 shadow-sm">
-                <div class="row g-0">
-                    <!-- Product Images -->
-                    <div class="col-md-6">
-                        <div class="product-image-container ">
-                            <span class="discount-badge bg-primary text-white fw-bold">20% OFF</span>
-                            <img src="{{product.image.url}}" 
-                                 class="img-fluid w-100 rounded" 
-                                 alt="Product - {{product.name}} from {{product.business.name}} | versityfinds" 
-                                 style="object-fit: contain; height: 100%; max-height: 100vh;">
-                        </div>
-                    </div>
-
-                    
-                    <!-- Product Info -->
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <h1 class="product-title mb-1">{{product.name}}</h1>
-                             <p class="mb-1">{{product.small_description}}</p>
-                            <p class="product-brand mb-2">by {{product.business}}</p>
-                             {% if product.business.open_orders %}
-                                <span class="business-meta-item badge bg-success rounded-pill">
-                                    <i class="bi bi-clock"></i> Open until {{product.business.close_time}}
-                                </span>
-                                {% else %}
-                                <span class="business-meta-item badge bg-danger rounded-pill">
-                                    <i class="bi bi-clock"></i> We are closed 
-                                </span>
-                                {% endif %}
-                            {% if product.is_instock %}
-                                <span class="business-meta-item badge bg-success rounded-pill">
-                                    <i class="bi bi-stock"></i> Available 
-                                </span>
-                            {% else %}
-                            <span class="business-meta-item badge bg-danger rounded-pill">
-                                    <i class="bi bi-stock"></i> out of stock
-                                </span>
-                            {% endif %}
-                             <span class="business-meta-item btn btn-outline-info small p-0 px-1 rounded-pill" onclick="showShareModal()">
-                                      <i class="bi bi-share"></i> share
-                                </span>
-
-                             <!-- <div class="d-flex align-items-center mb-0 mt-3">
-                                <div class="rating-stars me-2">
-                                   <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                </div>
-                                <span class="text-muted small">{{average_rating}} ({{total_rating}} reviews)</span>
-                            </div> -->
-                           
-                           <div class="d-flex justify-content-between mt-2 mb-0 pb-0">
-                               <p class="mb-0 pb-0"><strong>Size :</strong> Quater Loaf</p>
-                                <p class="mb-0 pb-0"><strong>Serves :</strong> 1 Person</p>
-                           </div>
-                            
-                            <hr>
-                            
-                           
-                            
-                            <h6 class="mb-2">Add-Ons <i class="fas fa-plus-circle text-primary"></i></h6>
-                            <div class="mb-3">
-                                <ul class="list-group list-group-flush">
-                                    {% for addon in product.business.addons.all %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center" onclick="toggleSelection(this)">
-                                        <div>
-                                            <h6 class="mb-0">{{addon.name}}</h6>
-                                            
-                                        </div>
-                                        <input type="checkbox" value="{{addon.id}}" data-name="{{addon.name}}" class="extra form-check-input">
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+<div class="product-container">
+    <div class="row g-3">
+        <!-- Left Column: Product Image & Details -->
+        <div class="col-lg-8">
+            <div class="product-card">
+                <!-- Product Image -->
+                <div class="product-image-section">
+                    <span class="discount-badge">20% OFF</span>
+                    <img src="{{product.image.url}}" alt="{{product.name}}">
                 </div>
-            </div>
 
-      
-            
-            <!-- Product Description -->
-           <!--  <div class="card mb-4 shadow-sm">
-                <div class="card-body description-section">
-                    <h5 class="fw-bold mb-4">Description</h5>
-                    <div id="ProductDescription"></div>
-                    <input type="hidden" value="{{product.description}}" id="tester" hidden>
-                </div>
-            </div> -->
-            
-            <!-- Product Specifications -->
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Product Information</h5>
-                    <div class="table-responsive">
-                        <table class="table specs-table">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="table-secondary">Categories</th>
-                                    <td>{{product.category}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="table-secondary">Brand</th>
-                                    <td>{{product.business}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="table-secondary">What's in the box</th>
-                                    <td>1 x {{product.name}}</td>
-                                </tr>
-                               
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Reviews Section -->
-            <!-- <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4">Customer Reviews</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-4 mb-md-0">
-                            <div class="d-flex align-items-center mb-3">
-                                <h2 class="me-3 mb-0">4.7</h2>
-                                <div>
-                                    <div class="rating-stars mb-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                    <span class="text-muted">40 reviews</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="me-2">5 <i class="fas fa-star text-warning"></i></span>
-                                    <div class="progress flex-grow-1 review-progress">
-                                        <div class="progress-bar bg-success" style="width: 75%"></div>
-                                    </div>
-                                    <span class="ms-2">30</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="me-2">4 <i class="fas fa-star text-warning"></i></span>
-                                    <div class="progress flex-grow-1 review-progress">
-                                        <div class="progress-bar bg-primary" style="width: 55%"></div>
-                                    </div>
-                                    <span class="ms-2">22</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="me-2">3 <i class="fas fa-star text-warning"></i></span>
-                                    <div class="progress flex-grow-1 review-progress">
-                                        <div class="progress-bar bg-info" style="width: 15%"></div>
-                                    </div>
-                                    <span class="ms-2">6</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="me-2">2 <i class="fas fa-star text-warning"></i></span>
-                                    <div class="progress flex-grow-1 review-progress">
-                                        <div class="progress-bar bg-warning" style="width: 5%"></div>
-                                    </div>
-                                    <span class="ms-2">2</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">1 <i class="fas fa-star text-warning"></i></span>
-                                    <div class="progress flex-grow-1 review-progress">
-                                        <div class="progress-bar bg-danger" style="width: 2%"></div>
-                                    </div>
-                                    <span class="ms-2">1</span>
-                                </div>
-                            </div>
-                            
-                            <button class="btn btn-primary w-100 py-2">Write a Review</button>
-                        </div>
-                        
-                        <div class="col-md-8">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="mb-0">Showing 2 of 40 reviews</h6>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortReviews" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Most Helpful
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="sortReviews">
-                                        <li><a class="dropdown-item" href="#">Newest First</a></li>
-                                        <li><a class="dropdown-item" href="#">Highest Rating</a></li>
-                                        <li><a class="dropdown-item" href="#">Lowest Rating</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="mb-4 pb-3 border-bottom">
-                                <h5>Great Product!</h5>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="rating-stars me-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="text-muted small me-2">•</span>
-                                    <span class="text-muted small">Color: Black</span>
-                                </div>
-                                <p class="text-muted small mb-2">Reviewed on February 5, 2021</p>
-                                <p class="mb-3">Pretty great value for money. The board is fairly small as expected from a penny board, if you are a bigger person, I wouldn't recommend it. But other than that, the quality of the board is great! I use it to get to classes and it rolls super smoothly and has some pretty good maneuverability.</p>
-                                <div class="d-flex align-items-center">
-                                    <button class="btn btn-sm btn-outline-secondary me-3">
-                                        <i class="fas fa-thumbs-up me-1"></i> Helpful (7)
-                                    </button>
-                                    <a href="#" class="text-muted small">Report review</a>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="mb-4 pb-3">
-                                <h5>Flexing Skateboard!</h5>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="rating-stars me-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="text-muted small me-2">•</span>
-                                    <span class="text-muted small">Color: Black</span>
-                                </div>
-                                <p class="text-muted small mb-2">Reviewed on February 12, 2021</p>
-                                <p class="mb-3">I really love this! Very smooth and perfect for traveling/having fun. Definitely recommend! Thank you so much.</p>
-                                <div class="d-flex align-items-center">
-                                    <button class="btn btn-sm btn-outline-secondary me-3">
-                                        <i class="fas fa-thumbs-up me-1"></i> Helpful (3)
-                                    </button>
-                                    <a href="#" class="text-muted small">Report review</a>
-                                </div>
-                            </div>
-                            
-                            <button class="btn btn-outline-primary w-100">Load More Reviews</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-        
-        <!-- Price and Action Section -->
-        <div class="col-lg-4 col-md-5">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body price-container">
-                    <div class="d-flex align-items-center mb-3">
-                        <h2 class="mb-0 me-2">R {{product.price}}</h2>
-                        <span class="original-price">R {{product.markup_price}}</span>
-                    </div>
-                    
-                    <div class="delivery-info mb-3">
-                        <p class="mb-1"><i class="fas fa-truck me-2"></i> Estimated Delivery</p>
-                        <p class="fw-bold mb-0">Today in 20 - 45 mins</p>
-                        <small><a href="#" class="text-decoration-none">T&Cs Apply</a></small>
-                    </div>
-                    
-                    <div class="alert alert-info mb-3 py-2 text-center">
-                        Free delivery <a href="#" class="alert-link fw-bold">after 3 different orders</a>   <small><a href="#" class="text-decoration-none">T&Cs Apply</a></small>
-                    </div>
-                    
-                    <div class="d-grid gap-2 mb-3">
+                <!-- Product Details -->
+                <div class="product-details">
+                    <h1 class="product-title">{{product.name}}</h1>
+                    <p class="product-description">{{product.small_description}}</p>
+                    <p class="business-name">by {{product.business}}</p>
+
+                    <!-- Status Badges -->
+                    <div class="status-badges">
+                        {% if product.business.open_orders %}
+                        <span class="badge-custom badge-open">
+                            <i class="bi bi-clock"></i> Open until {{product.business.close_time}}
+                        </span>
+                        {% else %}
+                        <span class="badge-custom badge-closed">
+                            <i class="bi bi-clock"></i> Closed
+                        </span>
+                        {% endif %}
+
                         {% if product.is_instock %}
-                        {% if user.is_authenticated %}
-                        <button onclick="addCart({{ product.id }})" class="add-to-cart-btn btn btn-success">Add to Cart</button>
+                        <span class="badge-custom badge-available">
+                            <i class="bi bi-check-circle"></i> Available
+                        </span>
                         {% else %}
-                        <button onclick="showLoginAlert()" class="add-to-cart-btn btn btn-success">Add to Cart</button>
+                        <span class="badge-custom badge-outofstock">
+                            <i class="bi bi-x-circle"></i> Out of Stock
+                        </span>
                         {% endif %}
-                        {% else %}
-                           <button  class="add-to-cart-btn btn btn-danger fw-bold" disabled>Out of stock</button>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <button class="btn btn-outline-danger" onclick="addWishlist({{product.id}})">
-                            <i class="far fa-heart me-2"></i> Add to Wishlist
+
+                        <button class="btn-share" onclick="showShareModal()">
+                            <i class="bi bi-share"></i> Share
                         </button>
-                        {% else %}
-                        <button class="btn btn-outline-danger" onclick="showLoginAlert()">
-                            <i class="far fa-heart me-2"></i> Add to Wishlist
-                        </button>
-                        {% endif %}
                     </div>
-                    
-                    <div class="d-flex justify-content-between small text-muted">
-                        <span><i class="fas fa-shield-alt me-1"></i> 1 Fast Delivery</span>
-                        <span><i class="fas fa-exchange-alt me-1"></i> No Returns</span>
+
+                    <!-- Product Info -->
+                    <div class="product-info">
+                        <strong>Size:</strong> Quarter Loaf • <strong>Serves:</strong> 1 Person
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- Add-ons -->
+                    <div class="addons-section">
+                        <h6><i class="bi bi-plus-circle" style="color: var(--primary-teal);"></i> Add-Ons</h6>
+                        {% for addon in product.business.addons.all %}
+                        <div class="addon-item" onclick="toggleSelection(this)">
+                            <span class="addon-name">{{addon.name}}</span>
+                            <input type="checkbox" value="{{addon.id}}" data-name="{{addon.name}}" class="extra addon-checkbox">
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h6 class="fw-bold mb-3">Seller Information</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="me-3">
-                            <img src="{{product.business.image.url}}" class="rounded-circle" width="50" height="50" alt="Seller">
-                        </div>
-                        <div>
-                            <h6 class="mb-0">{{product.business}}</h6>
-                            <div class="rating-stars small">
-                                 <i class="fa-star {% if average_rating > 0 %} fas star {% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 1 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 2 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 3 %} fas star{% else %} far {% endif %} text-warning"></i>
-                                    <i class="fa-star {% if average_rating > 4 %} fas star{% else %} far {% endif %} text-warning"></i>
 
-                                <span class="text-muted ms-1">({{average_rating}})</span>
-                            </div>
+            <!-- Product Information -->
+            <div class="info-table">
+                <h6>Product Information</h6>
+                <div class="info-row">
+                    <span class="info-label">Category</span>
+                    <span class="info-value">{{product.category}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Brand</span>
+                    <span class="info-value">{{product.business}}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">What's in the box</span>
+                    <span class="info-value">1 x {{product.name}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Price & Seller -->
+        <div class="col-lg-4">
+            <!-- Price Section -->
+            <div class="price-section">
+                <div class="price-display">
+                    <span class="current-price">R {{product.price}}</span>
+                    <span class="original-price">R {{product.markup_price}}</span>
+                </div>
+
+                <div class="delivery-box">
+                    <div><i class="bi bi-truck"></i> Estimated Delivery</div>
+                    <div class="delivery-time">Today in 20 - 45 mins</div>
+                </div>
+
+                <div class="promo-text">
+                    Free delivery after 3 different orders
+                </div>
+
+                {% if product.is_instock %}
+                    {% if user.is_authenticated %}
+                    <button onclick="addCart({{ product.id }})" class="btn-add-cart available">Add to Cart</button>
+                    {% else %}
+                    <button onclick="showLoginAlert()" class="btn-add-cart available">Add to Cart</button>
+                    {% endif %}
+                {% else %}
+                <button class="btn-add-cart unavailable" disabled>Out of Stock</button>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <button class="btn-wishlist" onclick="addWishlist({{product.id}})">
+                    <i class="bi bi-heart"></i> Add to Wishlist
+                </button>
+                {% else %}
+                <button class="btn-wishlist" onclick="showLoginAlert()">
+                    <i class="bi bi-heart"></i> Add to Wishlist
+                </button>
+                {% endif %}
+
+                <div class="delivery-features">
+                    <span><i class="bi bi-lightning"></i> Fast Delivery</span>
+                    <span><i class="bi bi-shield-check"></i> No Returns</span>
+                </div>
+            </div>
+
+            <!-- Seller Information -->
+            <div class="seller-card">
+                <h6>Seller Information</h6>
+                <div class="seller-info">
+                    <img src="{{product.business.image.url}}" alt="{{product.business}}" class="seller-image">
+                    <div class="seller-details">
+                        <h6>{{product.business}}</h6>
+                        <div class="rating-stars">
+                            <i class="fa-star {% if average_rating > 0 %} fas {% else %} far {% endif %}"></i>
+                            <i class="fa-star {% if average_rating > 1 %} fas {% else %} far {% endif %}"></i>
+                            <i class="fa-star {% if average_rating > 2 %} fas {% else %} far {% endif %}"></i>
+                            <i class="fa-star {% if average_rating > 3 %} fas {% else %} far {% endif %}"></i>
+                            <i class="fa-star {% if average_rating > 4 %} fas {% else %} far {% endif %}"></i>
+                            <span style="color: var(--text-muted); margin-left: 4px;">({{average_rating}})</span>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between small">
-                        <span><i class="fas fa-map-marker-alt me-1"></i> {{product.business.addresses}} </span>
-                        <span><i class="fas fa-clock me-1"></i> 94% On Time</span>
-                    </div>
-                    <hr>
-                    <a href="" class="btn btn-outline-primary w-100">Visit Store</a>
                 </div>
+                <div class="seller-meta">
+                    <i class="bi bi-geo-alt"></i> {{product.business.addresses}}
+                </div>
+                <hr class="divider">
+                <a href="" class="btn-visit-store">Visit Store</a>
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'user/js/cart.js' %}"></script>
 <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
 <script>
-    // Render product description
-  
-    
     function toggleSelection(item) {
         let checkbox = item.querySelector("input[type='checkbox']");
         checkbox.checked = !checkbox.checked;
@@ -473,13 +781,12 @@
 
     function getSelectedItems() {
         let selectedItems = [];
-        document.querySelectorAll(".list-group-item input:checked").forEach(checkbox => {
+        document.querySelectorAll(".addon-item input:checked").forEach(checkbox => {
             selectedItems.push(checkbox.dataset.name);
         });
         return selectedItems;
     }
     
-    // Show share modal with SweetAlert2
     function showShareModal() {
         const pageUrl = window.location.href;
         const productName = "{{ product.name }}";
@@ -487,45 +794,44 @@
         const businessName = "{{ product.business.name }}";
 
         Swal.fire({
-            title: '<i class="bi bi-share-fill text-primary"></i> Share ' + productName,
+            title: '<i class="bi bi-share-fill" style="color: #00A8A8;"></i> Share ' + productName,
             html: `
-                <div class="text-center mb-4">
-                    <p class="text-muted">Choose how you want to share this product</p>
+                <div class="text-center mb-3">
+                    <p style="color: #6c757d; font-size: 0.9rem;">Choose how you want to share</p>
                 </div>
-                <div class="d-flex flex-column gap-3">
-                    <a href="https://api.whatsapp.com/send?text=${productName} - ${productDescription} | ${businessName}: ${pageUrl}" target="_blank" class="btn btn-success btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-whatsapp fs-5"></i>
-                        <span class="fw-semibold">WhatsApp</span>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="https://api.whatsapp.com/send?text=${productName} - ${productDescription} | ${businessName}: ${pageUrl}" 
+                       target="_blank" 
+                       style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px; background: #25D366; color: white; border-radius: 8px; text-decoration: none; font-weight: 500;">
+                        <i class="bi bi-whatsapp" style="font-size: 1.2rem;"></i>
+                        <span>WhatsApp</span>
                     </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-facebook fs-5"></i>
-                        <span class="fw-semibold">Facebook</span>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" 
+                       target="_blank" 
+                       style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px; background: #1877F2; color: white; border-radius: 8px; text-decoration: none; font-weight: 500;">
+                        <i class="bi bi-facebook" style="font-size: 1.2rem;"></i>
+                        <span>Facebook</span>
                     </a>
-                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${productName} - ${productDescription} | ${businessName}" target="_blank" class="btn btn-info btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-twitter-x fs-5"></i>
-                        <span class="fw-semibold">X (Twitter)</span>
+                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${productName} - ${productDescription} | ${businessName}" 
+                       target="_blank" 
+                       style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px; background: #1DA1F2; color: white; border-radius: 8px; text-decoration: none; font-weight: 500;">
+                        <i class="bi bi-twitter-x" style="font-size: 1.2rem;"></i>
+                        <span>X (Twitter)</span>
                     </a>
-                    <button onclick="copyLink()" class="btn btn-secondary btn-lg d-flex align-items-center justify-content-center gap-3 py-3 shadow-sm" style="border-radius: 12px; transition: all 0.3s;">
-                        <i class="bi bi-clipboard fs-5"></i>
-                        <span class="fw-semibold">Copy Link</span>
+                    <button onclick="copyLink()" 
+                            style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                        <i class="bi bi-clipboard" style="font-size: 1.2rem;"></i>
+                        <span>Copy Link</span>
                     </button>
                 </div>
             `,
             showConfirmButton: false,
             showCloseButton: true,
-            customClass: {
-                popup: 'swal2-share-modal border-0 shadow-lg',
-                title: 'text-dark fw-bold mb-3',
-                htmlContainer: 'p-0'
-            },
-            background: '#ffffff',
-            backdrop: 'rgba(0,0,0,0.4)',
-            width: '400px',
-            padding: '2rem'
+            width: '380px',
+            padding: '1.5rem'
         });
     }
 
-    // Copy link to clipboard
     function copyLink() {
         navigator.clipboard.writeText(window.location.href).then(function() {
             Swal.fire({
@@ -544,40 +850,23 @@
         });
     }
 
-    // Show login alert for unauthenticated users
     function showLoginAlert() {
         Swal.fire({
             icon: 'warning',
-            title: 'Oops! You need to log in first.',
-            text: 'Please log in or sign up to add this product to your cart.',
+            title: 'Login Required',
+            text: 'Please log in or sign up to continue.',
             showCancelButton: true,
             confirmButtonText: 'Log In',
             cancelButtonText: 'Sign Up',
-            confirmButtonColor: '#007bff',
-            cancelButtonColor: '#28a745'
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#2ECC71'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirect to login page
                 window.location.href = '/auth/login/';
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Redirect to signup page
                 window.location.href = '/auth/signup/';
             }
         });
     }
-
-    // Mobile sticky add to cart button
-    window.addEventListener('scroll', function() {
-        if (window.innerWidth < 768) {
-            const priceContainer = document.querySelector('.price-container');
-            const scrollPosition = window.scrollY;
-
-            if (scrollPosition > 300) {
-                priceContainer.classList.add('sticky-bottom');
-            } else {
-                priceContainer.classList.remove('sticky-bottom');
-            }
-        }
-    });
 </script>
 {% endblock %}
