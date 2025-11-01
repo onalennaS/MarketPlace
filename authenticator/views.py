@@ -14,6 +14,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, User
 from courier.models import Courier
+from user.models import  ReferralProfile,Referral
+
 User = get_user_model()
 
 def register(request):
@@ -48,7 +50,15 @@ def register(request):
 
         user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
         user.save()
-        
+        if 'code' in request.session:
+            referrer = ReferralProfile.objects.filter(referral_code=request.session['code']).first()
+            new_profile = ReferralProfile.objects.create(user=user,is_referred=True,referred_by=referrer.user)
+            referrer.wallet_balance += 2
+            referrer.total_earned += 2
+            referrer.signups += 1
+            new_profile.save()
+            ref_reward = Referral.objects.create(referrer=referrer.user,referred=user,is_rewarded=True,reward=2,referral_type="signup")
+            ref_reward.save()
         messages.success(request,f'Account created successfully proceed')
         send_verify_email(user.email)
         return redirect('activate_account', email=user.email)
@@ -161,6 +171,12 @@ def create_password(request):
         request.user.password = make_password(data['password'])
         request.user.save()
         send_verify_gmail(request.user.email)
+        if 'code' in request.session:
+            referrer = ReferralProfile.objects.filter(referral_code=request.session['code']).first()
+            new_profile = ReferralProfile.objects.create(user=request.user,is_referred=True,referred_by=referrer.user)
+            new_profile.save()
+            ref_reward = Referral.objects.create(referrer=referrer.user,referred=request.user,is_rewarded=True,reward=5,referral_type="signup")
+            ref_reward.save()
         return redirect(verify_role(request.user))
     return redirect('authentication/create_password.html')
 

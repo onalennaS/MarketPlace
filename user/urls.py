@@ -42,7 +42,10 @@ urlpatterns = [
     path('api/user/checkout/palce_order/', cart_views.palce_order, name='palce_order'),
     
    path('seller/', views.seller_landing_page, name='seller_landing_page'),
-  
+   
+   
+   path('referral/<str:code>', views.referral_page, name='referrals_page'),
+   
 
 
   

@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.utils import timezone
-from .models import LoginActivity
+from .models import LoginActivity, ReferralProfile,Referral
 
 def is_google_linked(user):
     try:
@@ -480,6 +480,12 @@ def buyer_support(request):
 
 @login_required_custom
 def referrals_earnings(request):
+    profile = ReferralProfile.objects.filter(user=request.user).first()
+    if profile:
+        refs = Referral.objects.filter(referrer=request.user).all()
+
+        return render(request, 'home/referrals_earnings.html',{'profile':profile,'refs':refs ,'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
+
     return render(request, 'home/referrals_earnings.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
@@ -508,5 +514,14 @@ def subscription_plan(request):
 @login_required_custom
 def seller_landing_page(request):
    return render(request, 'seller/new/seller_landing_page.html')
+
+
+def referral_page(request,code):
+    if 'code' not in request.session:
+        referrer = ReferralProfile.objects.filter(referral_code=code).first()
+        referrer.view_clicks += 1
+        referrer.save()
+        request.session['code'] = referrer.referral_code
+    return render(request, 'home/referrals_page.html')
 
 

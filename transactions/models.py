@@ -10,6 +10,8 @@ from django.utils import timezone
 class UserWallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

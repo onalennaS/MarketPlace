@@ -346,7 +346,7 @@ body {
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h2 class="stats-value mb-0">R 300</h2>
+                        <h2 class="stats-value mb-0">R {{profile.total_earned}}</h2>
                     </div>
                 </div>
             </div>
@@ -359,7 +359,7 @@ body {
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h2 class="stats-value mb-0">R 64</h2>
+                        <h2 class="stats-value mb-0">R {{profile.wallet_balance}}</h2>
                     </div>
                 </div>
             </div>
@@ -385,27 +385,18 @@ body {
                                 </tr>
                             </thead>
                             <tbody>
+                                {% if refs %}
+                                    {% for ref in refs %}
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td>John Doe</td>
-                                    <td>ABCD1234</td>
-                                    <td>R 10</td>
-                                    <td>04/11/2024</td>
+                                    <td>{{ref.referred.username}}</td>
+                                    <td>{{ref.referral_type}}</td>
+                                    <td>R {{ref.reward}}</td>
+                                    <td>{{ref.timestamp}}</td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jane Marry</td>
-                                    <td>XVZF312</td>
-                                    <td>R 100</td>
-                                    <td>01/12/2024</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Sam Smith</td>
-                                    <td>XVZF312</td>
-                                    <td>R 70</td>
-                                    <td>28/12/2024</td>
-                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                               
                             </tbody>
                         </table>
                     </div>
@@ -427,13 +418,11 @@ body {
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa fa-link"></i></span>
                         <input type="text" class="form-control" placeholder="link" aria-label="link" 
-                            aria-describedby="basic-addon1" value="https://siskies.co.za/referral?code=ABCD1234">
+                            aria-describedby="basic-addon1" value="https://versityfinds.co.za/account/referral/{{profile.referral_code}}">
                         <button class="btn btn-primary">
                             <i class="fas fa-copy me-1"></i> Copy
                         </button>
-                        <button class="btn btn-outline-primary ms-2">
-                            <i class="fas fa-sync-alt me-1"></i> Generate New Code
-                        </button>
+                        
                     </div>
                 </div>
             </div>
@@ -451,7 +440,7 @@ body {
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h2 class="stats-value mb-0">21</h2>
+                        <h2 class="stats-value mb-0">{{profile.view_clicks}}</h2>
                     </div>
                 </div>
             </div>
@@ -464,7 +453,7 @@ body {
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h2 class="stats-value mb-0">8</h2>
+                        <h2 class="stats-value mb-0">{{profile.signups}}</h2>
                     </div>
                 </div>
             </div>
@@ -477,7 +466,7 @@ body {
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h2 class="stats-value mb-0">3</h2>
+                        <h2 class="stats-value mb-0">{{profile.purchases}}</h2>
                     </div>
                 </div>
             </div>
@@ -492,6 +481,10 @@ body {
                 </div>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush activity-list">
+                        
+                        {% if refs %}
+                        {% for ref in refs %}
+                        {% if ref.referral_type == "purchase" %}
                         <li class="list-group-item">
                             <div class="d-flex align-items-center">
                                 <div class="me-3">
@@ -499,27 +492,14 @@ body {
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">John Doe</h6>
-                                        <i class="far fa-bell notification-icon"></i>
-                                    </div>
-                                    <p class="activity-text mb-0">signed up using your referral code.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fas fa-user-circle activity-icon"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">Jane Foster</h6>
+                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{re.referred.username}}{% endif %}</h6>
                                         <i class="far fa-bell notification-icon"></i>
                                     </div>
                                     <p class="activity-text mb-0">completed a purchase using your link.</p>
                                 </div>
                             </div>
                         </li>
+                        {% else %}
                         <li class="list-group-item">
                             <div class="d-flex align-items-center">
                                 <div class="me-3">
@@ -527,27 +507,17 @@ body {
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">John Doe</h6>
+                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{re.referred.username}} {% endif %}</h6>
                                         <i class="far fa-bell notification-icon"></i>
                                     </div>
                                     <p class="activity-text mb-0">signed up using your referral code.</p>
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fas fa-user-circle activity-icon"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">Jane Foster</h6>
-                                        <i class="far fa-bell notification-icon"></i>
-                                    </div>
-                                    <p class="activity-text mb-0">completed a purchase using your link.</p>
-                                </div>
-                            </div>
-                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    
                     </ul>
                 </div>
             </div>
