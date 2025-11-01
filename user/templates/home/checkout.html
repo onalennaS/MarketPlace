@@ -442,12 +442,26 @@
             </div>
             <div class="d-flex justify-content-between flex-wrap">
                 <p class="fw-bold"><span class="text-muted">Delivery :</p>
-                <p class="fw-bold">{% if method == "pickup" %} Pickup {% elif method == "delivery" %}R 15{% else %} None {% endif %} </p>
+                <p class="fw-bold">{% if method == "pickup" %} Pickup {% elif method == "delivery" %}R 10{% else %} None {% endif %} </p>
 
             </div>
+            {% if method == "delivery" and free_delivery != "none"%}
+            <div class="d-flex justify-content-between flex-wrap">
+                <p class="fw-bold"><span class="text-muted">Delivery after credit apply :</p>
+                <p class="fw-bold">{% if free_delivery == 1 %}
+                        <span class="text-success"><b>Free</b></span>
+                        {% elif free_delivery == 2 %}
+                        <span class="text-success"><b>R {{delivery_total}}</b></span>
+                        {% else %}
+                         R 10
+                        {% endif %} </p>
+
+            </div>
+            {% endif %} 
+            
             <div class="d-flex justify-content-between flex-wrap">
                 <p class="fw-bold"><span class="text-muted">Sub total :</p>
-                <p class="fw-bold">R {{checkout_total}} </p>
+                <p class="fw-bold text-success">R {{checkout_total}} </p>
 
             </div>
             <hr style="border: 1px dashed black;">

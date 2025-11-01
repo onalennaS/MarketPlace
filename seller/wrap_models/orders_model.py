@@ -8,7 +8,8 @@ from django.utils import timezone
 from datetime import timedelta
 import uuid
 import random
- 
+from user.models import ReferralProfile, Referral
+
 class Order(models.Model):
     id = models.AutoField(primary_key=True)  # Auto-incrementing ID
     order_id = models.CharField(max_length=20, unique=True, blank=True)  # Custom Order ID
@@ -40,6 +41,25 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.order_id} - {self.status}"
+
+#######
+@receiver(post_save, sender=Order)
+def create_user_profile(sender, instance, created, **kwargs):
+    """
+    This function runs every time a User is saved.
+    """
+    if created:  # Only run when a new User is created
+        orders = Order.objects.filter(user=instance.user).all()
+        if len(orders) < 2 :
+            referrered = ReferralProfile.objects.filter(user=instance.user).first()
+            
+            referrer = ReferralProfile.objects.filter(user=referrered.referred_by).first()
+            referrer.wallet_balance += 5
+            referrer.total_earned += 5
+            referrer.purchases += 1 
+            referrer.save()
+            ref_reward = Referral.objects.create(referrer=referrer.user,referred=instance.user,is_rewarded=True,reward=5,referral_type="purchase")
+            ref_reward.save()
 
 # ✅ Use a `pre_save` signal to generate `order_id`
 @receiver(pre_save, sender=Order)

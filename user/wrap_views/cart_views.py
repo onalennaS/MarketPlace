@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from transactions.utils.business_transaction import transfer_money_to_business
 from transactions.utils.payments import initiate_split_payment
 from django.conf import settings
+from user.models import ReferralProfile, Referral
+from decimal import Decimal
 
 @login_required_custom
 def add_cart(request):
@@ -342,9 +344,20 @@ def palce_order(request):
     for extra in cart_extras:
         extra_amount += float(extra.extra.price) 
 
-    
+    ref_profile = ReferralProfile.objects.filter(user=request.user).first()
     if delivery_method.method == "delivery":
-    	delivery_amount += 12
+        if ref_profile:
+            wallet = float(ref_profile.wallet_balance) 
+            if wallet > float(12):
+				
+                delivery_amount = 0
+                ref_profile.wallet_balance -= Decimal(12)
+                ref_profile.save()
+            else:
+                delivery_amount += 12
+                delivery_amount -= float(ref_profile.wallet_balance)
+                ref_profile.wallet_balance = Decimal(0) 
+                ref_profile.save()
 
     total_amount = product_amount + extra_amount +delivery_amount
     

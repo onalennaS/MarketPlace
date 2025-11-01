@@ -164,12 +164,32 @@ def checkout(request):
     extras = CartExtra.objects.filter(user=request.user).all()
     delivery_method = CartDeliveryMethod.objects.filter(user=request.user).first()
 
+    ref_profile = ReferralProfile.objects.filter(user=request.user).first()
+    free_delivery = "none"
+    credit=None
+    
     if delivery_method:
         if delivery_method.method == "pickup":
             method = "pickup"
         elif delivery_method.method == "delivery":
+            if ref_profile:
+                if ref_profile.wallet_balance > 11:
+                    
+                    delivery_total = 0
+                    ref_profile.wallet_balance -= 12
+                    free_delivery = 1
+                elif ref_profile.wallet_balance >0:
+                    free_delivery = 2
+                    credit = ref_profile.wallet_balance
+                    delivery_total += 12
+                    delivery_total -= ref_profile.wallet_balance
+                    ref_profile.wallet_balance = 0 
+                else:
+                    delivery_total += 12
+
+                    
             method = "delivery"
-            delivery_total = 15
+             
         else:
             method = "None"
 
@@ -199,6 +219,7 @@ def checkout(request):
     return render(request, 'home/checkout.html', {
         'discount':round(discount,2),
         'total_to_pay':total_to_pay,
+        'cart_total':price_total,
         'extra_total':extra_total,
         'extra_items':extra_items,
         'extras':extras,
@@ -208,7 +229,10 @@ def checkout(request):
         "items_count":items,
         "method":method,
         "checkout_total":checkout_total,
-        'businesses_with_coords': businesses_with_coords
+        'businesses_with_coords': businesses_with_coords,
+        'credit':credit,
+        'free_delivery': free_delivery,
+        'delivery_total':delivery_total
     })
 
 @login_required_custom
