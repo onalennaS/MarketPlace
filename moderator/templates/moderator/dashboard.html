@@ -2,121 +2,426 @@
 {% block links %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   {% endblock %}
+{% endblock %}
+
 {% block styles %}
+    /* Dashboard Cards */
+    .stats-card {
+        background: var(--bg-white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-light);
+        height: 100%;
+    }
+
+    .stats-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-4px);
+    }
+
+    .stats-card .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stats-card.products .card-icon {
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(0, 168, 168, 0.2));
+        color: var(--primary-teal);
+    }
+
+    .stats-card.businesses .card-icon {
+        background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(155, 89, 182, 0.2));
+        color: var(--accent-purple);
+    }
+
+    .stats-card.comments .card-icon {
+        background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(46, 204, 113, 0.2));
+        color: var(--accent-green);
+    }
+
+    .stats-card.users .card-icon {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.2));
+        color: var(--accent-orange);
+    }
+
+    .stats-card h5 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stats-card .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-card .stat-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .stats-card .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .stats-card .stat-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .stats-card .stat-value.small {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    /* Notifications Section */
+    .notifications-section {
+        background: var(--bg-white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    .filter-select {
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        background: var(--bg-light);
+        color: var(--text-dark);
+        font-size: 0.875rem;
+        min-width: 180px;
+        transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
+    }
+
+    /* Alert Cards */
+    .alert-card {
+        background: var(--bg-light);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid var(--border-light);
+        transition: all 0.3s ease;
+    }
+
+    .alert-card:hover {
+        box-shadow: var(--shadow-sm);
+        transform: translateX(4px);
+        border-color: var(--primary-teal);
+    }
+
+    .alert-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .alert-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+    }
+
+    .alert-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .alert-text {
+        flex: 1;
+    }
+
+    .alert-text strong {
+        color: var(--text-dark);
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .alert-actions .btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .alert-actions .btn-primary {
+        background: var(--primary-teal);
+        border: none;
+    }
+
+    .alert-actions .btn-primary:hover {
+        background: #008888;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 168, 168, 0.3);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+    }
+
+    .empty-state .alert-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    /* Chart Containers */
+    .chart-container {
+        background: var(--bg-white);
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        margin-bottom: 1.5rem;
+    }
+
+    .chart-container h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .chart-container canvas {
+        max-height: 350px;
+    }
+
+    /* Page Title */
+    .page-header {
+        margin-bottom: 2rem;
+    }
+
+    .page-header h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .stats-card {
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .filter-select {
+            width: 100%;
+        }
 
         .alert-card {
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
         }
-        .alert-card:hover {
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-        }
-        .alert-icon {
-            font-size: 1.5rem;
-            margin-right: 10px;
-        }
-        .alert-text {
-            flex-grow: 1;
-        }
-        .alert-actions button {
-            margin-left: 5px;
-        }
-        .chart-container {
-            background: inherit;
-            color:inherit;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .card{
-        	background-color:inherit;
-        	color:inherit;
-        }
- {% endblock %}
 
-  {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'moderator' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'moderator_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'user_management' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>User management</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'business_managment' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Busines Management</span>
-            </a>
-             <a href="{% url 'moderator_courier' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Courier">
-                <i class="bi bi-truck"></i>
-                <span>Courier</span>
-            </a>
-            <a href="{% url 'moderator_notifications' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Notificatios</span>
-            </a>
-            <a href="{% url 'moderator_settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </div>
-        {% endblock %}
+        .alert-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .alert-actions {
+            width: 100%;
+        }
+
+        .alert-actions .btn {
+            width: 100%;
+        }
+
+        .chart-container {
+            padding: 1rem;
+        }
+
+        .chart-container h5 {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .page-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .stats-card .stat-value {
+            font-size: 1.1rem;
+        }
+    }
+{% endblock %}
+
+{% block nav %}
+    <div class="nav-items">
+        <a href="{% url 'moderator' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'moderator_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+        </a>
+        <a href="{% url 'user_management' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="User Management">
+            <i class="bi bi-cart"></i>
+            <span>User Management</span>
+            <span class="badge bg-primary ms-auto">3</span>
+        </a>
+        <a href="{% url 'business_managment' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business Management">
+            <i class="bi bi-people"></i>
+            <span>Business Management</span>
+        </a>
+        <a href="{% url 'moderator_courier' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Courier">
+            <i class="bi bi-truck"></i>
+            <span>Courier</span>
+        </a>
+        <a href="{% url 'moderator_notifications' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Notifications">
+            <i class="bi bi-bar-chart"></i>
+            <span>Notifications</span>
+        </a>
+        <a href="{% url 'moderator_settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h2 class="mb-4 text-center">User & Business Management</h2>
-        
- <div class="row g-4 mb-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Products</h5>
-                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">120</span></p>
-                        <p class="text-muted">Pending Review: <span class="fw-bold">30</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Businesses</h5>
-                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">80</span></p>
-                        <p class="text-muted">Pending Review: <span class="fw-bold">20</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Comments</h5>
-                        <p class="text-muted mb-1">Total: <span class="fw-bold">300</span></p>
-                        <p class="text-muted mb-1">Reviewed: <span class="fw-bold">250</span></p>
-                        <p class="text-muted">Pending: <span class="fw-bold">50</span></p>
-                    </div>
-                </div>
-            </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>User & Business Management</h2>
+        <p>Monitor and manage platform statistics</p>
     </div>
 
-        <!-- Filter Section -->
-        <div class="d-flex justify-content-between mb-3">
-            <h5>Notifications</h5>
-            <select id="filterAlerts" class="form-select w-auto">
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card products">
+                <div class="card-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <h5>Products</h5>
+                <div class="stat-row">
+                    <span class="stat-label">Reviewed</span>
+                    <span class="stat-value">{{ product_approved }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Pending Review</span>
+                    <span class="stat-value small">{{ product_pending }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card businesses">
+                <div class="card-icon">
+                    <i class="bi bi-shop"></i>
+                </div>
+                <h5>Businesses</h5>
+                <div class="stat-row">
+                    <span class="stat-label">Reviewed</span>
+                    <span class="stat-value">{{ business_approved }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Pending Review</span>
+                    <span class="stat-value small">{{ business_pending }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card comments">
+                <div class="card-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <h5>Comments</h5>
+                <div class="stat-row">
+                    <span class="stat-label">Total</span>
+                    <span class="stat-value small">{{ comments_total }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Reviewed</span>
+                    <span class="stat-value small">{{ comments_reviewed }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Pending</span>
+                    <span class="stat-value small">{{ comments_pending }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card users">
+                <div class="card-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h5>Users</h5>
+                <div class="stat-row">
+                    <span class="stat-label">Total Users</span>
+                    <span class="stat-value">{{ total_users }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Couriers</span>
+                    <span class="stat-value small">{{ courier_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="notifications-section">
+        <div class="section-header">
+            <h5>Recent Notifications</h5>
+            <select id="filterAlerts" class="filter-select">
                 <option value="all">All Alerts</option>
                 <option value="user">User Alerts</option>
                 <option value="business">Business Alerts</option>
@@ -124,74 +429,60 @@
             </select>
         </div>
 
-        <!-- Notification Section -->
         <div id="notificationSection">
-            <div class="alert-card  d-flex align-items-center" data-category="user">
-                <span class="alert-icon text-primary">🚀</span>
-                <div class="alert-text">
-                    <strong>New User Registered:</strong> <span>jane_doe</span> (2024-03-02)
+            {% for notification in notifications %}
+            <div class="alert-card" data-category="{{ notification.type }}">
+                <div class="alert-content">
+                    <span class="alert-icon">📢</span>
+                    <div class="alert-text">
+                        <strong>{{ notification.message }}</strong>
+                    </div>
                 </div>
                 <div class="alert-actions">
-                    <button class="btn btn-sm btn-primary">View</button>
-                    <button class="btn btn-sm btn-secondary">Approve</button>
+                    <button class="btn btn-primary">{{ notification.action }}</button>
                 </div>
             </div>
-
-            <div class="alert-card  d-flex align-items-center" data-category="content">
-                <span class="alert-icon text-danger">📢</span>
-                <div class="alert-text">
-                    <strong>Content Alert:</strong> User <span>john_doe</span> posted a suspicious comment.
-                </div>
-                <div class="alert-actions">
-                    <button class="btn btn-sm btn-warning">Review</button>
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                </div>
+            {% empty %}
+            <div class="empty-state">
+                <div class="alert-icon">ℹ️</div>
+                <strong>No pending notifications</strong>
+                <p class="mt-2">All caught up! Check back later for new updates.</p>
             </div>
-
-            <div class="alert-card  d-flex align-items-center" data-category="business">
-                <span class="alert-icon text-success">🏢</span>
-                <div class="alert-text">
-                    <strong>New Business Registered:</strong> <span>TechZone</span> (2024-03-01)
-                </div>
-                <div class="alert-actions">
-                    <button class="btn btn-sm btn-primary">View</button>
-                    <button class="btn btn-sm btn-secondary">Approve</button>
-                </div>
-            </div>
-
-            <div class="alert-card  d-flex align-items-center" data-category="business">
-                <span class="alert-icon text-danger">⚠️</span>
-                <div class="alert-text">
-                    <strong>Business Alert:</strong> <span>FoodExpress</span> has received multiple complaints.
-                </div>
-                <div class="alert-actions">
-                    <button class="btn btn-sm btn-warning">Investigate</button>
-                    <button class="btn btn-sm btn-danger">Suspend</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- User Growth vs. Business Growth Chart -->
-        <div class="chart-container">
-            <h5 class="text-center">User Growth vs Business Growth</h5>
-            <canvas id="userBusinessChart"></canvas>
-        </div>
-
-        <!-- Sales Trend Chart -->
-        <div class="chart-container">
-            <h5 class="text-center">Sales Trend</h5>
-            <canvas id="salesChart"></canvas>
+            {% endfor %}
         </div>
     </div>
 
-    <!-- Bootstrap & Chart.js -->
+    <!-- Charts Section -->
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <h5>User Growth vs Business Growth</h5>
+                <canvas id="userBusinessChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <h5>Sales Trend</h5>
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Filtering Functionality
         document.getElementById('filterAlerts').addEventListener('change', function() {
             const selectedCategory = this.value;
-            document.querySelectorAll('.alert-card').forEach(alert => {
-                alert.style.display = (selectedCategory === 'all' || alert.dataset.category === selectedCategory) ? 'flex' : 'none';
+            const alerts = document.querySelectorAll('.alert-card');
+            
+            alerts.forEach(alert => {
+                if (selectedCategory === 'all' || alert.dataset.category === selectedCategory) {
+                    alert.style.display = 'flex';
+                } else {
+                    alert.style.display = 'none';
+                }
             });
         });
 
@@ -200,26 +491,65 @@
         new Chart(ctxUserBusiness, {
             type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: {{ months|safe }},
                 datasets: [
                     {
                         label: 'New Users',
-                        data: [50, 70, 100, 130, 160, 190],
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderRadius: 5
+                        data: {{ user_counts|safe }},
+                        backgroundColor: 'rgba(0, 168, 168, 0.8)',
+                        borderRadius: 8,
+                        borderSkipped: false,
                     },
                     {
                         label: 'New Businesses',
-                        data: [30, 40, 50, 70, 90, 110],
-                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                        borderRadius: 5
+                        data: {{ business_counts|safe }},
+                        backgroundColor: 'rgba(155, 89, 182, 0.8)',
+                        borderRadius: 8,
+                        borderSkipped: false,
                     }
                 ]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 15,
+                            font: {
+                                size: 12,
+                                family: "'Segoe UI', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleFont: { size: 13, weight: 'bold' },
+                        bodyFont: { size: 12 }
+                    }
+                },
                 scales: {
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: { size: 11 }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { size: 11 }
+                        }
+                    }
                 }
             }
         });
@@ -229,20 +559,71 @@
         new Chart(ctxSales, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: {{ months|safe }},
                 datasets: [{
                     label: 'Sales ($)',
-                    data: [1000, 2000, 3500, 5000, 7000, 9000],
-                    borderColor: 'green',
-                    backgroundColor: 'rgba(0, 255, 0, 0.2)',
-                    borderWidth: 2,
-                    fill: true
+                    data: {{ sales_data|safe }},
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: 'rgba(46, 204, 113, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 15,
+                            font: {
+                                size: 12,
+                                family: "'Segoe UI', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleFont: { size: 13, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        callbacks: {
+                            label: function(context) {
+                                return 'Sales: $' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
                 scales: {
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { size: 11 }
+                        }
+                    }
                 }
             }
         });

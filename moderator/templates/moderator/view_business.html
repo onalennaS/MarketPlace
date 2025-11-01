@@ -1,120 +1,640 @@
 {% extends 'moderator/base.html' %}
-
+{% load static %}
+{% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- {% block styles %}
-    
-        .container {
-            max-width: 900px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+{% endblock %}
+
+{% block styles %}
+    /* Business Detail Container */
+    .business-detail-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Back Button */
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.25rem;
+        background: var(--bg-white);
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        color: var(--text-dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+    }
+
+    .back-btn:hover {
+        background: var(--bg-light);
+        color: var(--primary-teal);
+        border-color: var(--primary-teal);
+        transform: translateX(-4px);
+    }
+
+    /* Page Header */
+    .detail-header {
+        background: var(--bg-white);
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .detail-header h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-header p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    /* Info Cards */
+    .info-card {
+        background: var(--bg-white);
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-accent), var(--card-accent-dark));
+    }
+
+    .info-card.owner {
+        --card-accent: var(--primary-teal);
+        --card-accent-dark: #008888;
+    }
+
+    .info-card.business {
+        --card-accent: var(--accent-purple);
+        --card-accent-dark: #8e44ad;
+    }
+
+    .info-card.address {
+        --card-accent: var(--accent-green);
+        --card-accent-dark: #27ae60;
+    }
+
+    .info-card.contact {
+        --card-accent: var(--accent-orange);
+        --card-accent-dark: #e67e22;
+    }
+
+    .info-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .info-card-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+    }
+
+    .info-card.owner .info-card-icon {
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(0, 168, 168, 0.2));
+        color: var(--primary-teal);
+    }
+
+    .info-card.business .info-card-icon {
+        background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(155, 89, 182, 0.2));
+        color: var(--accent-purple);
+    }
+
+    .info-card.address .info-card-icon {
+        background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(46, 204, 113, 0.2));
+        color: var(--accent-green);
+    }
+
+    .info-card.contact .info-card-icon {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.2));
+        color: var(--accent-orange);
+    }
+
+    .info-card-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    .info-row {
+        display: flex;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        flex: 0 0 180px;
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        flex: 1;
+        font-weight: 500;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+        word-break: break-word;
+    }
+
+    .info-value a {
+        color: var(--primary-teal);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .info-value a:hover {
+        color: #008888;
+        text-decoration: underline;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        padding: 0.4rem 0.9rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-badge.active {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
+    }
+
+    .status-badge.pending {
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--accent-orange);
+    }
+
+    .status-badge.rejected,
+    .status-badge.banned {
+        background: rgba(231, 76, 60, 0.15);
+        color: #e74c3c;
+    }
+
+    .status-badge.inactive {
+        background: rgba(127, 140, 141, 0.15);
+        color: var(--text-muted);
+    }
+
+    /* Action Buttons */
+    .action-section {
+        background: var(--bg-white);
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 150px;
+        justify-content: center;
+    }
+
+    .action-btn i {
+        font-size: 1.1rem;
+    }
+
+    .action-btn.accept {
+        background: var(--accent-green);
+        color: white;
+    }
+
+    .action-btn.accept:hover {
+        background: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    }
+
+    .action-btn.reject {
+        background: var(--accent-orange);
+        color: white;
+    }
+
+    .action-btn.reject:hover {
+        background: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+
+    .action-btn.ban {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .action-btn.ban:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        background: var(--bg-white);
+        border-radius: 12px;
+        border: 1px solid var(--border-light);
+    }
+
+    .modal-header {
+        background: var(--bg-light);
+        border-bottom: 1px solid var(--border-light);
+        border-radius: 12px 12px 0 0;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .modal-title i {
+        font-size: 1.3rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-body label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .modal-body textarea {
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        background: var(--bg-light);
+        color: var(--text-dark);
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .modal-body textarea:focus {
+        outline: none;
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+    }
+
+    /* Empty Value Styling */
+    .empty-value {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .info-card {
+            padding: 1.25rem;
         }
-        .section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #f1f1f1;
+
+        .info-row {
+            flex-direction: column;
+            gap: 0.25rem;
         }
-        .btn-action {
-            margin-right: 10px;
+
+        .info-label {
+            flex: none;
         }
-    {% endblock %}
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            width: 100%;
+        }
+
+        .detail-header {
+            padding: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .detail-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .back-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .info-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+{% endblock %}
+
 {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'moderator' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'moderator_product' %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'user_management' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>User management</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'business_managment' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Busines Management</span>
-            </a>
-             <a href="{% url 'moderator_courier' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Courier">
-                <i class="bi bi-truck"></i>
-                <span>Courier</span>
-            </a>
-            <a href="{% url 'moderator_notifications' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Notificatios</span>
-            </a>
-            <a href="{% url 'moderator_settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </div>
-        {% endblock %}
-        {% load static %}
-    {% block content %}
-    
-        <h2 class="text-center mb-4">Business Details</h2>
-         <div class="section">
-            <h5>Owner Information</h5>
-            <p><strong>Username:</strong> {{business.owner.username}}</p>
-            <p><strong>Names:</strong> {{business.owner.first_name}} {{business.owner.last_name}}</p>
-            <p><strong>email:</strong> {{business.owner.email}}</p>
+    <div class="nav-items">
+        <a href="{% url 'moderator' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'moderator_product' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+        </a>
+        <a href="{% url 'user_management' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="User Management">
+            <i class="bi bi-cart"></i>
+            <span>User Management</span>
+            <span class="badge bg-primary ms-auto">3</span>
+        </a>
+        <a href="{% url 'business_managment' %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Business Management">
+            <i class="bi bi-people"></i>
+            <span>Business Management</span>
+        </a>
+        <a href="{% url 'moderator_courier' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Courier">
+            <i class="bi bi-truck"></i>
+            <span>Courier</span>
+        </a>
+        <a href="{% url 'moderator_notifications' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Notifications">
+            <i class="bi bi-bar-chart"></i>
+            <span>Notifications</span>
+        </a>
+        <a href="{% url 'moderator_settings' %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="business-detail-container">
+        <!-- Back Button -->
+        <a href="{% url 'business_managment' %}" class="back-btn">
+            <i class="bi bi-arrow-left"></i> Back to Business Management
+        </a>
+
+        <!-- Page Header -->
+        <div class="detail-header">
+            <h2>Business Details</h2>
+            <p>Review complete business information and make moderation decisions</p>
         </div>
 
-        <div class="section">
-            <h5>Business Information</h5>
-            <p><strong>Name:</strong> {{business.name}}</p>
-            <p><strong>Type:</strong> {{business.business_type}}</p>
-            <p><strong>Description:</strong> {{business.description}}</p>
-            <p><strong>Registration Number:</strong> {{business.registration_number}}</p>
-            <p><strong>Category:</strong> {{business.category}}</p>
-            <p><strong>Status:</strong> {{business.status}}</p>
+        <!-- Two Column Layout -->
+        <div class="row g-3">
+            <!-- Left Column -->
+            <div class="col-lg-6">
+                <!-- Owner Information -->
+                <div class="info-card owner">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <h5 class="info-card-title">Owner Information</h5>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Username</span>
+                        <span class="info-value">{{business.owner.username|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value">{{business.owner.first_name}} {{business.owner.last_name}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">
+                            <a href="mailto:{{business.owner.email}}">{{business.owner.email}}</a>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Business Information -->
+                <div class="info-card business">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="bi bi-shop"></i>
+                        </div>
+                        <h5 class="info-card-title">Business Information</h5>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Business Name</span>
+                        <span class="info-value">{{business.name}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Business Type</span>
+                        <span class="info-value">{{business.business_type|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Category</span>
+                        <span class="info-value">{{business.category|default:"Uncategorized"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Registration Number</span>
+                        <span class="info-value">{{business.registration_number|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Status</span>
+                        <span class="info-value">
+                            {% if business.status == "active" %}
+                                <span class="status-badge active">{{business.status}}</span>
+                            {% elif business.status == "pending" %}
+                                <span class="status-badge pending">{{business.status}}</span>
+                            {% elif business.status == "rejected" %}
+                                <span class="status-badge rejected">{{business.status}}</span>
+                            {% elif business.status == "banned" %}
+                                <span class="status-badge banned">{{business.status}}</span>
+                            {% elif business.status == "inactive" %}
+                                <span class="status-badge inactive">{{business.status}}</span>
+                            {% else %}
+                                <span class="status-badge">{{business.status}}</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Description</span>
+                        <span class="info-value">
+                            {% if business.description %}
+                                {{business.description}}
+                            {% else %}
+                                <span class="empty-value">No description provided</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-6">
+                <!-- Address Details -->
+                <div class="info-card address">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h5 class="info-card-title">Address Details</h5>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address Line 1</span>
+                        <span class="info-value">{{address.address_line_1|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address Line 2</span>
+                        <span class="info-value">{{address.address_line_2|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Suburb</span>
+                        <span class="info-value">{{address.suburb|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">City</span>
+                        <span class="info-value">{{address.city|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Province</span>
+                        <span class="info-value">{{address.province|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Postal Code</span>
+                        <span class="info-value">{{address.postal_code|default:"—"}}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address Type</span>
+                        <span class="info-value">{{address.address_type|default:"—"}}</span>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="info-card contact">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h5 class="info-card-title">Contact Information</h5>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">
+                            {% if business.phone %}
+                                <a href="tel:{{business.phone}}">{{business.phone}}</a>
+                            {% else %}
+                                <span class="empty-value">—</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Telephone</span>
+                        <span class="info-value">
+                            {% if business.telephone %}
+                                <a href="tel:{{business.telephone}}">{{business.telephone}}</a>
+                            {% else %}
+                                <span class="empty-value">—</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Business Email</span>
+                        <span class="info-value">
+                            <a href="mailto:{{business.email}}">{{business.email}}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="section">
-            <h5>Address Details</h5>
-            <p><strong>Address Line 1:</strong> {{address.address_line_1}}</p>
-            <p><strong>Address Line 2:</strong> {{address.address_line_2}}</p>
-            <p><strong>Suburb:</strong> {{address.suburb}}</p>
-            <p><strong>City:</strong> {{address.city}}</p>
-            <p><strong>Province:</strong> {{address.province}}</p>
-            <p><strong>Postal Code:</strong> {{address.postal_code}}</p>
-            <p><strong>Address Type:</strong> {{address.address_type}}</p>
-        </div>
-
-        <div class="section">
-            <h5>Contact Information</h5>
-            <p><strong>Phone:</strong> {{business.phone}}</p>
-            <p><strong>Telephone:</strong> {{business.telephone}}</p>
-            <p><strong>Email:</strong> {{business.email}}</p>
-        </div>
-
-        <div class="text-center mt-4">
-            <button class="btn btn-success btn-action" onclick="approveBusiness({{business.id}})">Accept</button>
-            <button class="btn btn-warning btn-action" data-bs-toggle="modal" data-bs-target="#rejectModal">Reject</button>
-            <button class="btn btn-danger btn-action" data-bs-toggle="modal" data-bs-target="#banModal">Ban</button>
+        <!-- Action Buttons -->
+        <div class="action-section">
+            <div class="action-buttons">
+                <button class="action-btn accept" onclick="approveBusiness({{business.id}})">
+                    <i class="bi bi-check-circle"></i> Accept Business
+                </button>
+                <button class="action-btn reject" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                    <i class="bi bi-x-circle"></i> Reject Business
+                </button>
+                <button class="action-btn ban" data-bs-toggle="modal" data-bs-target="#banModal">
+                    <i class="bi bi-ban"></i> Ban Business
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Reject Modal -->
     <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rejectModalLabel">Reject Business</h5>
+                    <h5 class="modal-title" id="rejectModalLabel">
+                        <i class="bi bi-x-circle text-warning"></i> Reject Business
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <label for="rejectReason" class="form-label">Reason for Rejection:</label>
-                    <textarea id="rejectReason" class="form-control" rows="3" placeholder="Enter reason..."></textarea>
+                    <textarea id="rejectReason" class="form-control" rows="4" placeholder="Enter detailed reason for rejection..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-warning" onclick="rejectBusiness({{business.id}})">Submit</button>
+                    <button type="button" class="action-btn reject" onclick="rejectBusiness({{business.id}})">
+                        <i class="bi bi-x-circle"></i> Submit Rejection
+                    </button>
                 </div>
             </div>
         </div>
@@ -122,23 +642,29 @@
 
     <!-- Ban Modal -->
     <div class="modal fade" id="banModal" tabindex="-1" aria-labelledby="banModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="banModalLabel">Ban Business</h5>
+                    <h5 class="modal-title" id="banModalLabel">
+                        <i class="bi bi-ban text-danger"></i> Ban Business
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <label for="banReason" class="form-label">Reason for Banning:</label>
-                    <textarea id="banReason" class="form-control" rows="3" placeholder="Enter reason..."></textarea>
+                    <textarea id="banReason" class="form-control" rows="4" placeholder="Enter detailed reason for banning this business..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" onclick="banBusiness({{business.id}})">Submit</button>
+                    <button type="button" class="action-btn ban" onclick="banBusiness({{business.id}})">
+                        <i class="bi bi-ban"></i> Submit Ban
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{% static 'moderator/moderator.js' %}"></script>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'moderator/moderator.js' %}"></script>
 {% endblock %}
