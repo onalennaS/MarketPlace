@@ -2,162 +2,399 @@
 {% load static %}
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="{% static 'css/message.css' %}">
 {% endblock %}
 
 {% block styles %}
-    <style>
-        .card-stat {
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            border-radius: 12px;
-            border: none;
-            overflow: hidden;
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
+        --info-blue: #3b82f6;
+        --purple: #8b5cf6;
+    }
+
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
+
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 6px var(--shadow);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .stat-card.primary {
+        background: linear-gradient(135deg, var(--primary-teal), #008888);
+        color: var(--white);
+    }
+
+    .stat-card.success {
+        background: linear-gradient(135deg, var(--accent-green), #27ae60);
+        color: var(--white);
+    }
+
+    .stat-card.info {
+        background: linear-gradient(135deg, var(--info-blue), #2563eb);
+        color: var(--white);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        opacity: 0.9;
+    }
+
+    .stat-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        opacity: 0.95;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-info {
+        font-size: 0.8rem;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px var(--shadow);
+        border: none;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header-custom {
+        background: var(--white);
+        border-bottom: 1px solid var(--border-light);
+        padding: 0.875rem 1.25rem;
+    }
+
+    .card-title-custom {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Buttons */
+    .btn-teal {
+        background: var(--primary-teal);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-teal:hover {
+        background: #008888;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-green {
+        background: var(--accent-green);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-green:hover {
+        background: #27ae60;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-teal {
+        background: transparent;
+        border: 1.5px solid var(--primary-teal);
+        color: var(--primary-teal);
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-teal:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    /* Table Styling */
+    .table-custom {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .table-custom thead {
+        background: var(--bg-light);
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .table-custom thead th {
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        padding: 0.75rem;
+        border: none;
+    }
+
+    .table-custom tbody td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .table-custom tbody tr:hover {
+        background: rgba(0, 168, 168, 0.03);
+    }
+
+    /* Badge Styling */
+    .badge-custom {
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-success {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
+    }
+
+    .badge-pending {
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--warning-orange);
+    }
+
+    .badge-failed {
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger-red);
+    }
+
+    /* Filter Section */
+    .filter-section {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .form-control-custom, .form-select-custom {
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        transition: all 0.3s;
+    }
+
+    .form-control-custom:focus, .form-select-custom:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+        outline: none;
+    }
+
+    /* Charts */
+    .chart-container {
+        height: 300px;
+        position: relative;
+        padding: 1rem;
+    }
+
+    /* Withdrawal Section */
+    .withdrawal-section {
+        background: linear-gradient(135deg, var(--accent-green), #27ae60);
+        color: var(--white);
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .withdrawal-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .btn-withdraw {
+        background: var(--white);
+        color: var(--accent-green);
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-withdraw:hover {
+        background: var(--bg-light);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+        background: var(--bg-light);
+    }
+
+    .modal-title {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+        background: var(--bg-light);
+    }
+
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: var(--primary-teal);
+        outline: none;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border-radius: 6px;
+        padding: 0.4rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header { font-size: 1.25rem; }
+        .stat-value { font-size: 1.5rem; }
+        .withdrawal-amount { font-size: 2rem; }
+        .chart-container { height: 250px; }
+        .filter-section {
+            flex-direction: column;
+            align-items: stretch;
         }
-        .card-stat:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        .filter-section > * {
+            width: 100%;
         }
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-        .btn-primary, .bg-primary {
-            background-color: #4361ee !important;
-            border-color: #4361ee !important;
-        }
-        .btn-success, .bg-success {
-            background-color: #38b000 !important;
-            border-color: #38b000 !important;
-        }
-        .btn-info, .bg-info {
-            background-color: #4cc9f0 !important;
-            border-color: #4cc9f0 !important;
-        }
-        .btn-warning, .bg-warning {
-            background-color: #ffbe0b !important;
-            border-color: #ffbe0b !important;
-        }
-        .card {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .card-header {
-            background-color: rgba(0,0,0,0.03);
-            font-weight: 600;
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .table {
-            margin-bottom: 0;
-        }
-        .badge {
-            font-weight: 500;
-            padding: 0.5em 0.75em;
-            border-radius: 6px;
-        }
-        .form-control, .form-select {
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-        }
-        .withdrawal-section {
-            background: linear-gradient(to right, #38b000, #57cc99);
-            color: white;
-            border-radius: 12px;
-            padding: 2rem;
-        }
-        .withdrawal-amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        .dashboard-title {
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 1.5rem;
-        }
-        .modal-content {
-            border-radius: 12px;
-            border: none;
-        }
-        .modal-header {
-            border-radius: 12px 12px 0 0;
-            background-color: #f8f9fa;
-        }
-        
-        /* Mobile Responsiveness */
-        @media (max-width: 767.98px) {
-            .stats-row {
-                margin-bottom: 0 !important;
-            }
-            .card-stat {
-                margin-bottom: 1rem;
-            }
-            .dashboard-title {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-            .filter-container {
-                flex-direction: column;
-                align-items: stretch !important;
-            }
-            .filter-container > * {
-                margin-bottom: 0.5rem;
-                width: 100%;
-            }
-            .withdrawal-amount {
-                font-size: 2rem;
-            }
-            .chart-container {
-                height: 250px;
-            }
-        }
-    </style>
+    }
+
+    /* Remove Bootstrap defaults */
+    .card { border: none; }
+    .table { color: inherit; }
 {% endblock %}
 
 {% block nav %}
 <div class="nav-items">
-    <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+    <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
         <i class="bi bi-house"></i>
         <span>Dashboard</span>
     </a>
-    <a href="{% url 'manage_product' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+    <a href="{% url 'manage_product' business.id %}" class="nav-link">
         <i class="bi bi-box"></i>
         <span>Products</span>
     </a>
-    <a href="{% url 'orders' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+    <a href="{% url 'orders' business.id %}" class="nav-link">
         <i class="bi bi-cart"></i>
         <span>Orders</span>
-        <span class="badge bg-primary ms-auto">3</span>
+        <span class="badge bg-primary ms-auto"></span>
     </a>
-    <a href="{% url 'transaction' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+    <a href="{% url 'transaction' business.id %}" class="nav-link active">
         <i class="bi bi-currency-exchange"></i>
-        <span>Sales & Transactions</span>
-        <span class="badge bg-primary ms-auto">3</span>
+        <span>Transactions</span>
     </a>
-    <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+    <a href="{% url 'customer' business.id %}" class="nav-link">
         <i class="bi bi-people"></i>
         <span>Customers</span>
     </a>
-    <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+    <a href="{% url 'report' business.id %}" class="nav-link">
         <i class="bi bi-bar-chart"></i>
         <span>Reports</span>
     </a>
-    <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
-       <i class="bi bi-building"></i>
-        <span>Business information</span>
+    <a href="{% url 'business_info' business.id %}" class="nav-link">
+        <i class="bi bi-building"></i>
+        <span>Business Info</span>
     </a>
-    <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+    <a href="{% url 'settings' business.id %}" class="nav-link">
         <i class="bi bi-gear"></i>
         <span>Settings</span>
     </a>
-    <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
+    <a href="#" class="nav-link" onclick="confirmLogout(event)">
         <i class="bi bi-box-arrow-right"></i>
         <span>Logout</span>
     </a>
@@ -165,55 +402,55 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4 px-lg-4">
-    <h3 class="dashboard-title">Sales & Transactions Dashboard</h3>
-    
-    <!-- Stats Overview -->
-    <div class="row g-3 mb-4 stats-row">
-        <div class="col-12 col-md-4">
-            <div class="card text-white bg-primary shadow card-stat h-100">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title m-0">Total Earnings</h5>
-                        <i class="bi bi-cash-coin fs-3"></i>
+<div class="container-fluid px-3 py-3">
+    <h1 class="page-header">Sales & Transactions</h1>
+
+    <!-- Quick Stats -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card primary">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="stat-title">Total Earnings</div>
+                        <div class="stat-value">R{{wallet.total}}</div>
+                        <div class="stat-info">
+                            <i class="fas fa-arrow-up"></i> +12% from last month
+                        </div>
                     </div>
-                    <h2 class="mb-2">R{{wallet.total}}</h2>
-                    <div class="mt-auto">
-                        <small class="d-flex align-items-center">
-                            <i class="bi bi-arrow-up-right me-1"></i> +12% from last month
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4">
-            <div class="card text-white bg-success shadow card-stat h-100">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title m-0">Available Funds</h5>
-                        <i class="bi bi-wallet2 fs-3"></i>
-                    </div>
-                    <h2 class="mb-2">R{{wallet.balance}}</h2>
-                    <div class="mt-auto">
-                        <small class="d-flex align-items-center">
-                            <i class="bi bi-check-circle me-1"></i> Ready for withdrawal
-                        </small>
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-4">
-            <div class="card text-white bg-info shadow card-stat h-100">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title m-0">Total Transactions</h5>
-                        <i class="bi bi-receipt fs-3"></i>
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card success">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="stat-title">Available Funds</div>
+                        <div class="stat-value">R{{wallet.balance}}</div>
+                        <div class="stat-info">
+                            <i class="fas fa-check-circle"></i> Ready for withdrawal
+                        </div>
                     </div>
-                    <h2 class="mb-2">{{count_transactions}}</h2>
-                    <div class="mt-auto">
-                        <small class="d-flex align-items-center">
-                            <i class="bi bi-people me-1"></i> 30% repeat customers
-                        </small>
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card info">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="stat-title">Total Transactions</div>
+                        <div class="stat-value">{{count_transactions}}</div>
+                        <div class="stat-info">
+                            <i class="fas fa-users"></i> 30% repeat customers
+                        </div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-receipt"></i>
                     </div>
                 </div>
             </div>
@@ -221,27 +458,27 @@
     </div>
 
     <!-- Transaction Table -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-white">
-            <div class="d-flex flex-wrap justify-content-between align-items-center">
-                <h5 class="mb-0">Transaction History</h5>
-                <div class="d-flex flex-wrap gap-2 filter-container">
-                    <select id="timeFilter" class="form-select" style="min-width: 140px;">
+    <div class="content-card">
+        <div class="card-header-custom">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="card-title-custom mb-0">Transaction History</h5>
+                <div class="filter-section">
+                    <select id="timeFilter" class="form-select form-select-custom" style="min-width: 140px;">
                         <option value="all">All Time</option>
                         <option value="today">Today</option>
                         <option value="week">This Week</option>
                         <option value="month">This Month</option>
                     </select>
-                    <input type="text" id="dateRangePicker" class="form-control" placeholder="Select Date Range" style="min-width: 220px;">
+                    <input type="text" id="dateRangePicker" class="form-control form-control-custom" placeholder="Select Date Range" style="min-width: 220px;">
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table id="transactionsTable" class="table table-hover nowrap w-100">
+                <table id="transactionsTable" class="table table-custom">
                     <thead>
                         <tr>
-                            <th>Ref</th>
+                            <th>Reference</th>
                             <th>Customer</th>
                             <th>Transaction</th>
                             <th>Amount</th>
@@ -252,12 +489,14 @@
                     <tbody>
                         {% for transaction in transactions %}
                         <tr>
-                            <td>{{transaction.ref}}</td>
+                            <td class="fw-semibold">#{{transaction.ref}}</td>
                             <td>{{transaction.customer}}</td>
                             <td>{{transaction.transaction}}</td>
-                            <td>{{transaction.amount}}</td>
-                            <td><span class="badge bg-success">{{transaction.status}}</span></td>
-                            <td>2025-02-28</td>
+                            <td class="fw-semibold">R{{transaction.amount}}</td>
+                            <td>
+                                <span class="badge-custom badge-{{transaction.status|lower}}">{{transaction.status}}</span>
+                            </td>
+                            <td>{{transaction.date}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -267,41 +506,37 @@
     </div>
 
     <!-- Charts Section -->
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-lg-6">
-            <div class="card shadow h-100">
-                <div class="card-header bg-white">
+    <div class="row g-3 mb-3">
+        <div class="col-lg-6">
+            <div class="content-card">
+                <div class="card-header-custom">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span>Revenue Analytics</span>
-                        <div>
-                            <select class="form-select form-select-sm" id="revenueTimeRange">
-                                <option value="6">Last 6 Months</option>
-                                <option value="12">Last 12 Months</option>
-                                <option value="3">Last 3 Months</option>
-                            </select>
-                        </div>
+                        <h5 class="card-title-custom mb-0">Revenue Analytics</h5>
+                        <select class="form-select form-select-custom" id="revenueTimeRange" style="width: auto;">
+                            <option value="6">Last 6 Months</option>
+                            <option value="12">Last 12 Months</option>
+                            <option value="3">Last 3 Months</option>
+                        </select>
                     </div>
                 </div>
-                <div class="card-body chart-container">
+                <div class="chart-container">
                     <canvas id="revenueChart"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6">
-            <div class="card shadow h-100">
-                <div class="card-header bg-white">
+        <div class="col-lg-6">
+            <div class="content-card">
+                <div class="card-header-custom">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span>Payment Methods</span>
-                        <div>
-                            <select class="form-select form-select-sm" id="paymentTimeRange">
-                                <option value="month">This Month</option>
-                                <option value="quarter">This Quarter</option>
-                                <option value="year">This Year</option>
-                            </select>
-                        </div>
+                        <h5 class="card-title-custom mb-0">Payment Methods</h5>
+                        <select class="form-select form-select-custom" id="paymentTimeRange" style="width: auto;">
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                        </select>
                     </div>
                 </div>
-                <div class="card-body chart-container">
+                <div class="chart-container">
                     <canvas id="paymentChart"></canvas>
                 </div>
             </div>
@@ -309,50 +544,54 @@
     </div>
 
     <!-- Withdraw Section -->
-    <div class="card shadow mb-4">
-        <div class="card-body text-center py-4 withdrawal-section">
+    <div class="content-card">
+        <div class="card-body withdrawal-section">
             <h3 class="mb-3">Withdraw Available Funds</h3>
             <div class="withdrawal-amount">R{{wallet.balance}}</div>
-            <button class="btn btn-lg px-5 py-3" style="background-color: white; color: #38b000; font-weight: 600;" data-bs-toggle="modal" data-bs-target="#withdrawModal">
-                <i class="bi bi-wallet2 me-2"></i> Withdraw Now
+            <button class="btn btn-withdraw" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                <i class="fas fa-wallet me-2"></i> Withdraw Now
             </button>
-            <p class="mt-3 mb-0 opacity-75">Next scheduled payout: 5 March 2025</p>
+            <p class="mt-3 mb-0" style="opacity: 0.9;">
+                <i class="fas fa-calendar-alt me-1"></i> Next scheduled payout: 5 March 2025
+            </p>
         </div>
     </div>
 </div>
 
 <!-- Withdraw Modal -->
-<div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+<div class="modal fade" id="withdrawModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="withdrawModalLabel">
-                    <i class="bi bi-cash-coin me-2"></i>
+                <h5 class="modal-title">
+                    <i class="fas fa-wallet"></i>
                     Withdraw Funds
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="amount" class="form-label">Enter withdrawal amount</label>
+                    <label for="amount" class="form-label fw-semibold">Enter withdrawal amount</label>
                     <div class="input-group">
-                        <span class="input-group-text">R</span>
-                        <input type="number" id="amount" class="form-control" placeholder="0.00" min="0" max="{{wallet.balance}}">
+                        <span class="input-group-text" style="background: var(--bg-light); border-color: var(--border-light);">R</span>
+                        <input type="number" id="amount" class="form-control form-control-custom" placeholder="0.00" min="0" max="{{wallet.balance}}" style="border-left: none;">
                     </div>
-                    <div class="form-text">Available balance: R{{wallet.balance}}</div>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i> Available balance: R{{wallet.balance}}
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="withdrawalMethod" class="form-label">Select withdrawal method</label>
-                    <select class="form-select" id="withdrawalMethod">
+                    <label for="withdrawalMethod" class="form-label fw-semibold">Select withdrawal method</label>
+                    <select class="form-select form-select-custom" id="withdrawalMethod">
                         <option value="bank">Bank Transfer</option>
                         <option value="payfast">PayFast</option>
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" onclick="withdrawal({{business.id}})">
-                    <i class="bi bi-check2 me-1"></i> Confirm Withdrawal
+                <button type="button" class="btn btn-outline-teal" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-green" onclick="withdrawal({{business.id}})">
+                    <i class="fas fa-check me-1"></i> Confirm Withdrawal
                 </button>
             </div>
         </div>
@@ -361,42 +600,35 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
 <script type="text/javascript" src="{% static 'seller/js/transactions.js' %}"></script>
-<script>
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
 
+<script>
     // Sample Data for Transactions
     const transactions = {{transactions|safe}};
 
-    // Initialize DataTable with responsive features
+    // Initialize DataTable
     const table = $('#transactionsTable').DataTable({
         responsive: true,
         data: transactions,
         columns: [
-            { data: 'ref' },
+            { data: 'ref', render: (data) => `#${data}` },
             { data: 'customer' },
             { data: 'transaction' },
             { data: 'amount', render: (data) => `R${data}` },
             { 
                 data: 'status', 
                 render: (data) => {
-                    let badgeClass = 'bg-success';
-                    if (data === 'Pending') badgeClass = 'bg-warning text-dark';
-                    if (data === 'Failed') badgeClass = 'bg-danger';
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
+                    let badgeClass = 'badge-success';
+                    if (data === 'Pending') badgeClass = 'badge-pending';
+                    if (data === 'Failed') badgeClass = 'badge-failed';
+                    return `<span class="badge-custom ${badgeClass}">${data}</span>`;
                 }
             },
             { data: 'date' }
@@ -404,13 +636,16 @@
         ordering: true,
         language: {
             search: "_INPUT_",
-            searchPlaceholder: "Search transactions..."
+            searchPlaceholder: "Search transactions...",
+            lengthMenu: "_MENU_ per page",
+            info: "Showing _START_ to _END_ of _TOTAL_",
+            infoEmpty: "No transactions available",
+            infoFiltered: "(filtered from _MAX_ total)"
         },
-        dom: '<"top"f>rt<"bottom"lp><"clear">',
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]]
     });
 
-    // Initialize Flatpickr for Date Range Picker
+    // Initialize Flatpickr
     flatpickr("#dateRangePicker", {
         mode: "range",
         dateFormat: "Y-m-d",
@@ -424,7 +659,7 @@
         maxDate: "today"
     });
 
-    // Filter Transactions by Date Range
+    // Filter by Date Range
     function filterTransactionsByDateRange(startDate, endDate) {
         const filteredData = transactions.filter(transaction => {
             const transactionDate = transaction.date;
@@ -433,7 +668,7 @@
         table.clear().rows.add(filteredData).draw();
     }
 
-    // Time Period Filter Logic
+    // Time Period Filter
     document.getElementById('timeFilter').addEventListener('change', function() {
         const period = this.value;
         let filteredData = [];
@@ -467,17 +702,11 @@
         table.clear().rows.add(filteredData).draw();
     });
 
-    // Create gradient for chart
-    function createGradient(ctx, color1, color2) {
-        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, color1);
-        gradient.addColorStop(1, color2);
-        return gradient;
-    }
-
-    // Revenue Chart with enhanced styling
+    // Revenue Chart
     const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-    const gradientFill = createGradient(revenueCtx, 'rgba(67, 97, 238, 0.4)', 'rgba(67, 97, 238, 0.05)');
+    const gradientFill = revenueCtx.createLinearGradient(0, 0, 0, 300);
+    gradientFill.addColorStop(0, 'rgba(0, 168, 168, 0.3)');
+    gradientFill.addColorStop(1, 'rgba(0, 168, 168, 0.05)');
     
     const revenueChart = new Chart(revenueCtx, {
         type: 'line',
@@ -486,13 +715,13 @@
             datasets: [{
                 label: 'Monthly Revenue (R)',
                 data: [12000, 19000, 15000, 25000, 22000, 30000],
-                borderColor: '#4361ee',
+                borderColor: '#00A8A8',
                 backgroundColor: gradientFill,
                 fill: true,
                 tension: 0.4,
                 borderWidth: 3,
                 pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#4361ee',
+                pointBorderColor: '#00A8A8',
                 pointRadius: 4,
                 pointHoverRadius: 6
             }]
@@ -514,18 +743,14 @@
                     }
                 },
                 x: {
-                    grid: {
-                        display: false
-                    }
+                    grid: { display: false }
                 }
             },
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
                     cornerRadius: 6,
                     callbacks: {
                         label: function(context) {
@@ -537,7 +762,7 @@
         }
     });
 
-    // Update revenue chart based on timeframe selection
+    // Update Revenue Chart
     document.getElementById('revenueTimeRange').addEventListener('change', function() {
         const months = parseInt(this.value);
         let labels, data;
@@ -551,7 +776,7 @@
                 labels = ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
                 data = [18000, 22000, 19000, 24000, 21000, 25000, 30000, 28000, 26000, 32000, 35000, 38000];
                 break;
-            default: // 6 months
+            default:
                 labels = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
                 data = [25000, 30000, 28000, 26000, 32000, 35000];
         }
@@ -561,7 +786,7 @@
         revenueChart.update();
     });
 
-    // Payment Methods Chart with better styling
+    // Payment Methods Chart
     const paymentCtx = document.getElementById('paymentChart').getContext('2d');
     const paymentChart = new Chart(paymentCtx, {
         type: 'doughnut',
@@ -569,7 +794,7 @@
             labels: ['Credit Card', 'PayFast', 'EFT', 'Cash'],
             datasets: [{
                 data: [45, 30, 20, 5],
-                backgroundColor: ['#4361ee', '#38b000', '#ff9e00', '#6c757d'],
+                backgroundColor: ['#00A8A8', '#2ECC71', '#FF9800', '#6c757d'],
                 borderWidth: 0,
                 hoverOffset: 10
             }]
@@ -582,14 +807,18 @@
                 legend: { 
                     position: 'bottom',
                     labels: {
-                        padding: 20,
+                        padding: 15,
                         usePointStyle: true,
-                        pointStyle: 'circle'
+                        pointStyle: 'circle',
+                        font: {
+                            size: 12,
+                            family: "'Inter', sans-serif"
+                        }
                     }
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
                     cornerRadius: 6,
                     callbacks: {
                         label: function(context) {
@@ -601,7 +830,7 @@
         }
     });
 
-    // Update payment chart based on timeframe selection
+    // Update Payment Chart
     document.getElementById('paymentTimeRange').addEventListener('change', function() {
         const period = this.value;
         let data;
@@ -622,7 +851,7 @@
         paymentChart.update();
     });
 
-    // Validate withdrawal amount
+    // Validate Withdrawal Amount
     document.getElementById('amount').addEventListener('input', function() {
         const balance = {{wallet.balance}};
         if (this.value > balance) {
@@ -632,30 +861,29 @@
             this.value = 0;
         }
     });
-    
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... (keep existing JavaScript code the same) ...
-  
-        // Add Logout Confirmation Function
-        function confirmLogout(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Logout?',
-                text: 'Are you sure you want to logout?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, logout!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = event.currentTarget.href;
-                }
-            });
-        }
+
+    // Logout Confirmation
+    function confirmLogout(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Logout?',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, logout'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        });
+    }
+
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
     });
-  </script>
-  
+</script>
 {% endblock %}
