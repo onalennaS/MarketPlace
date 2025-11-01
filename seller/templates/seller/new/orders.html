@@ -3,199 +3,304 @@
 
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/message.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
 {% block styles %}
     :root {
-        --primary-color: #4f46e5;
-        --primary-hover: #4338ca;
-        --success-color: #10b981;
-        --success-light: #ecfdf5;
-        --warning-color: #f59e0b;
-        --warning-light: #fffbeb;
-        --info-color: #3b82f6;
-        --info-light: #eff6ff;
-        --danger-color: #ef4444;
-        --danger-light: #fef2f2;
-        --completed-color: #10b981;
-        --text-color: #1f2937;
-        --text-muted: #6b7280;
-        --border-color: #e5e7eb;
-        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --border-radius: 0.5rem;
-    }
-
-    * {
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
+        --info-blue: #3b82f6;
     }
 
     body {
-        color: var(--text-color);
+        background-color: var(--bg-light);
+        color: var(--text-dark);
     }
 
-    .dashboard-header {
-        padding: 1.5rem 0;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .dashboard-header h1 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .dashboard-header .header-icon {
-        color: var(--primary-color);
-        background-color: rgba(79, 70, 229, 0.1);
-        height: 32px;
-        width: 32px;
+    /* Floating Action Button */
+    .floating-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--accent-green);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+        font-size: 20px;
+        border: none;
+        cursor: pointer;
+        z-index: 1000;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+    }
+    
+    .floating-btn:hover {
+        background-color: #27ae60;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(46, 204, 113, 0.5);
     }
 
-    .search-box {
-        position: relative;
-    }
-
-    .search-box input {
-        padding-left: 2.5rem;
-        border-radius: var(--border-radius);
-        border: 1px solid var(--border-color);
-        height: 40px;
-    }
-
-    .search-box .bi-search {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-    }
-#loading_button {
-    background-color: var(--warning-light);
-    color: var(--warning-color);
-    border: 1px solid var(--warning-color);
-    cursor: not-allowed;
-    opacity: 0.8;
-}
-
-
-   .control-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: var(--border-radius);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: all 0.2s;
-}
-
-/* Start Orders button */
-#start_order {
-    background-color: var(--info-light);
-    color: var(--info-color);
-    border: 1px solid var(--info-color);
-}
-
-#start_order:hover {
-    background-color: var(--info-color);
-    color: white;
-}
-
-/* Stop Orders button */
-#stop_order {
-    background-color: var(--danger-light);
-    color: var(--danger-color);
-    border: 1px solid var(--danger-color);
-}
-
-#stop_order:hover {
-    background-color: var(--danger-color);
-    color: white;
-}
-
-    .btn-toggle.disabled {
-        background-color: var(--danger-light);
-        color: var(--danger-color);
-        border: 1px solid var(--danger-color);
-    }
-
-
-    .btn-toggle.disabled:hover {
-        background-color: var(--danger-color);
-        color: white;
-    }
-
-    /* Tabs */
-    .tabs-container {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background-color: inherit;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid var(--border-color);
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
         margin-bottom: 1.5rem;
     }
 
-    .order-tabs {
+    /* Compact Stats Cards */
+    .stat-card {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 6px var(--shadow);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+        height: 100%;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-icon.primary { color: var(--primary-teal); }
+    .stat-icon.success { color: var(--accent-green); }
+    .stat-icon.warning { color: var(--warning-orange); }
+    .stat-icon.danger { color: var(--danger-red); }
+    .stat-icon.info { color: var(--info-blue); }
+
+    .stat-title {
+        font-size: 0.75rem;
+        color: #666;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-info {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    /* Content Cards */
+    .content-card {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px var(--shadow);
+        border: none;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header-custom {
+        background: var(--white);
+        border-bottom: 1px solid var(--border-light);
+        padding: 0.875rem 1.25rem;
         display: flex;
-        overflow-x: auto;
-        gap: 0.25rem;
-        scrollbar-width: none; /* Firefox */
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .order-tabs::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Edge */
+    .card-title-custom {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
     }
 
-    .tab-item {
-        white-space: nowrap;
-        padding: 0.75rem 1rem;
-        border-radius: var(--border-radius);
+    /* Buttons */
+    .btn-teal {
+        background: var(--primary-teal);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
         font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.3s;
+    }
+
+    .btn-teal:hover {
+        background: #008888;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-green {
+        background: var(--accent-green);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-green:hover {
+        background: #27ae60;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-danger-custom {
+        background: var(--danger-red);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-danger-custom:hover {
+        background: #c82333;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-teal {
+        background: transparent;
+        border: 1.5px solid var(--primary-teal);
+        color: var(--primary-teal);
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-teal:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    /* Control Button */
+    .control-btn {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--text-color);
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
         border: none;
-        background: none;
     }
 
-    .tab-item:hover {
-        background-color: rgba(0, 0, 0, 0.05);
+    #start_order {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
+        border: 1.5px solid var(--accent-green);
     }
 
-    .tab-item.active {
-        background-color: var(--primary-color);
-        color: white;
+    #start_order:hover {
+        background: var(--accent-green);
+        color: var(--white);
+    }
+
+    #stop_order {
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger-red);
+        border: 1.5px solid var(--danger-red);
+    }
+
+    #stop_order:hover {
+        background: var(--danger-red);
+        color: var(--white);
+    }
+
+    #loading_button {
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--warning-orange);
+        border: 1.5px solid var(--warning-orange);
+        cursor: not-allowed;
+    }
+
+    /* Tabs */
+    .nav-tabs {
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        color: #666;
+        font-weight: 500;
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-teal);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-teal);
+        background: transparent;
+        font-weight: 600;
+    }
+
+    .nav-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-teal);
+        border-radius: 2px 2px 0 0;
     }
 
     .tab-badge {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: inherit;
+        background: rgba(0, 168, 168, 0.15);
+        color: var(--primary-teal);
         border-radius: 9999px;
-        padding: 0.25rem 0.5rem;
+        padding: 0.15rem 0.5rem;
         font-size: 0.75rem;
         font-weight: 600;
     }
 
-    .tab-item:not(.active) .tab-badge {
-        background-color: rgba(0, 0, 0, 0.075);
+    .nav-tabs .nav-link.active .tab-badge {
+        background: rgba(255, 255, 255, 0.3);
+        color: inherit;
     }
 
-    /* Order Cards */
+    /* Order Cards Grid */
     .orders-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -203,19 +308,18 @@
     }
 
     .order-card {
-        border-radius: var(--border-radius);
-        box-shadow: var(--card-shadow);
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px var(--shadow);
         overflow: hidden;
         transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid var(--border-color);
-        background-color: white;
-        height: 100%;
+        border: 1px solid var(--border-light);
+        cursor: pointer;
     }
 
     .order-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        cursor: pointer;
+        box-shadow: 0 4px 12px var(--shadow);
     }
 
     .order-header {
@@ -223,7 +327,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-light);
+        background: var(--bg-light);
     }
 
     .order-id {
@@ -231,11 +336,12 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        color: var(--text-dark);
     }
 
     .order-time {
-        color: var(--text-muted);
-        font-size: 0.875rem;
+        color: #666;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
         gap: 0.25rem;
@@ -246,11 +352,12 @@
     }
 
     .order-note {
-        background-color: #f9fafb;
-        border-radius: var(--border-radius);
+        background-color: rgba(0, 168, 168, 0.05);
+        border-left: 3px solid var(--primary-teal);
+        border-radius: 4px;
         padding: 0.75rem;
         margin-bottom: 1rem;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
     }
 
     .order-note strong {
@@ -258,14 +365,15 @@
         align-items: center;
         gap: 0.25rem;
         margin-bottom: 0.25rem;
+        color: var(--text-dark);
     }
 
     .section-title {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.025em;
-        color: var(--text-muted);
+        letter-spacing: 0.5px;
+        color: #666;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -281,8 +389,10 @@
     .item-entry {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 0.5rem 0;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-light);
+        font-size: 0.85rem;
     }
 
     .item-entry:last-child {
@@ -293,85 +403,88 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        font-weight: 500;
     }
 
     .item-quantity {
-        color: var(--text-muted);
-        background-color: #f3f4f6;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
+        color: var(--text-dark);
+        background-color: var(--bg-light);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
         font-size: 0.75rem;
-        font-weight: 500;
+        font-weight: 600;
     }
 
     .item-extras {
         margin-top: 0.25rem;
         font-size: 0.75rem;
-        color: var(--text-muted);
+        color: #666;
         padding: 0.25rem 0.5rem;
-        background-color: #f9fafb;
-        border-radius: 0.25rem;
+        background-color: rgba(0, 168, 168, 0.05);
+        border-radius: 4px;
         display: inline-block;
     }
 
     .order-footer {
         padding: 1rem;
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid var(--border-light);
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .order-status {
-        padding: 0.35rem 0.75rem;
-        border-radius: 9999px;
+    /* Badge Styling */
+    .badge-custom {
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.5px;
     }
 
     .status-new {
-        background-color: var(--info-light);
-        color: var(--info-color);
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--info-blue);
     }
 
     .status-preparing {
-        background-color: var(--warning-light);
-        color: var(--warning-color);
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--warning-orange);
     }
 
     .status-scheduled {
-        background-color: #e0e7ff;
-        color: #4f46e5;
+        background: rgba(139, 92, 246, 0.15);
+        color: #8b5cf6;
     }
 
     .status-completed {
-        background-color: var(--success-light);
-        color: var(--success-color);
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
     }
 
     .status-canceled {
-        background-color: var(--danger-light);
-        color: var(--danger-color);
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger-red);
     }
 
     .order-total {
-        font-weight: 600;
+        font-weight: 700;
         font-size: 1rem;
+        color: var(--text-dark);
     }
 
     /* Modal Styling */
     .modal-content {
-        border-radius: var(--border-radius);
-        overflow: hidden;
+        border-radius: 8px;
         border: none;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
     .modal-header {
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-light);
         padding: 1rem 1.5rem;
+        background: var(--bg-light);
     }
 
     .modal-title {
@@ -379,6 +492,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        font-size: 1.1rem;
     }
 
     .modal-body {
@@ -390,14 +504,17 @@
     }
 
     .modal-section-title {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.025em;
-        color: var(--text-muted);
+        letter-spacing: 0.5px;
+        color: #666;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 2px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .order-detail-grid {
@@ -407,49 +524,53 @@
     }
 
     .detail-item {
-        background-color: #f9fafb;
+        background-color: var(--bg-light);
         padding: 1rem;
-        border-radius: var(--border-radius);
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
     }
 
     .detail-label {
         font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--text-muted);
+        letter-spacing: 0.5px;
+        color: #666;
         margin-bottom: 0.25rem;
+        font-weight: 600;
     }
 
     .detail-value {
         font-weight: 600;
         font-size: 1rem;
+        color: var(--text-dark);
     }
 
     .payment-status {
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
         font-size: 0.75rem;
         font-weight: 600;
     }
 
     .payment-paid {
-        background-color: var(--success-light);
-        color: var(--success-color);
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
     }
 
     .payment-pending {
-        background-color: var(--warning-light);
-        color: var(--warning-color);
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--warning-orange);
     }
 
     .modal-footer {
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid var(--border-light);
         padding: 1rem 1.5rem;
         display: flex;
         gap: 0.75rem;
+        background: var(--bg-light);
     }
 
     .action-btn {
@@ -457,214 +578,273 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.5rem 1rem;
-        border-radius: var(--border-radius);
+        border-radius: 6px;
         font-weight: 500;
-        transition: all 0.2s;
-    }
-
-    .btn-cancel {
-        background-color: white;
-        color: var(--danger-color);
-        border: 1px solid var(--danger-color);
-    }
-
-    .btn-cancel:hover {
-        background-color: var(--danger-color);
-        color: white;
-    }
-
-    .btn-next {
-        background-color: var(--primary-color);
-        color: white;
+        font-size: 0.875rem;
+        transition: all 0.3s;
         border: none;
     }
 
+    .btn-cancel {
+        background: rgba(220, 53, 69, 0.1);
+        color: var(--danger-red);
+        border: 1.5px solid var(--danger-red);
+    }
+
+    .btn-cancel:hover {
+        background: var(--danger-red);
+        color: var(--white);
+    }
+
+    .btn-next {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
     .btn-next:hover {
-        background-color: var(--primary-hover);
+        background: #008888;
+    }
+
+    /* Search Box */
+    .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+    }
+
+    .search-box input {
+        padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        width: 100%;
+        transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+        border-color: var(--primary-teal);
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
     }
 
     /* Loading Spinner */
     .loading-spinner {
         display: none;
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1001;
-    }
-
-    .spinner-backdrop {
-        position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(255, 255, 255, 0.8);
-        display: flex;
-        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 9999;
         justify-content: center;
-        z-index: 1000;
+        align-items: center;
     }
 
-    /* Mobile Responsiveness */
+    .loading-spinner.active {
+        display: flex;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .dashboard-header {
+        .page-header { font-size: 1.25rem; }
+        .stat-value { font-size: 1.25rem; }
+        .floating-btn { width: 45px; height: 45px; font-size: 18px; }
+        .orders-grid { grid-template-columns: 1fr; }
+        .order-detail-grid { grid-template-columns: 1fr; }
+        .search-box { max-width: 100%; }
+        .header-actions { 
             flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem 0;
-        }
-        
-        .header-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
             width: 100%;
+            gap: 0.75rem !important;
         }
-        
-        .search-box, .control-btn {
-            width: 100%;
-        }
-        
-        .orders-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .order-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-        
-        .order-detail-grid {
-            grid-template-columns: 1fr;
-        }
-        
         .modal-footer {
             flex-direction: column;
         }
-        
         .action-btn {
             width: 100%;
             justify-content: center;
         }
     }
+
+    /* Remove Bootstrap defaults */
+    .card { border: none; }
 {% endblock %}
 
 {% block nav %}
     <div class="nav-items">
-        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
             <i class="bi bi-house"></i>
             <span>Dashboard</span>
         </a>
-        <a href="{% url 'manage_product' business.id  %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+        <a href="{% url 'manage_product' business.id  %}" class="nav-link">
             <i class="bi bi-box"></i>
             <span>Products</span>
         </a>
-        <a href="{% url 'orders' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
+        <a href="{% url 'orders' business.id %}" class="nav-link active">
             <i class="bi bi-cart"></i>
             <span>Orders</span>
-            <span class="badge bg-primary ms-auto">3</span>
+            <span class="badge bg-primary ms-auto"></span>
         </a>
-        <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Sales & Transactions">
+        <a href="{% url 'transaction' business.id %}" class="nav-link">
             <i class="bi bi-currency-exchange"></i>
-            <span>Sales & Transactions</span>
-            <span class="badge bg-primary ms-auto">3</span>
+            <span>Transactions</span>
         </a>
-        <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
+        <a href="{% url 'customer' business.id %}" class="nav-link">
             <i class="bi bi-people"></i>
             <span>Customers</span>
         </a>
-        <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
+        <a href="{% url 'report' business.id %}" class="nav-link">
             <i class="bi bi-bar-chart"></i>
             <span>Reports</span>
         </a>
-        <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business Information">
-           <i class="bi bi-building"></i>
-            <span>Business Information</span>
+        <a href="{% url 'business_info' business.id %}" class="nav-link">
+            <i class="bi bi-building"></i>
+            <span>Business Info</span>
         </a>
-        <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+        <a href="{% url 'settings' business.id %}" class="nav-link">
             <i class="bi bi-gear"></i>
             <span>Settings</span>
         </a>
-        <a href="#" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
+        <a href="#" class="nav-link" onclick="confirmLogout(event)">
             <i class="bi bi-box-arrow-right"></i>
             <span>Logout</span>
         </a>
-        <form id="logoutForm" method="POST" action="{% url 'logout' %}" style="display: none;">
-            {% csrf_token %}
-        </form>
     </div>
 {% endblock %}
 
 {% block content %}
-    <!-- Header -->
-    <div class="dashboard-header d-flex justify-content-between align-items-center flex-wrap">
-        <h1>
-            <span class="header-icon"><i class="bi bi-cart-check"></i></span>
-            Order Management
-        </h1>
-        <div class="header-actions d-flex gap-3">
-            <div class="search-box">
-                <i class="bi bi-search"></i>
-                <input type="text" id="searchOrder" class="form-control" placeholder="Search order #" style="background-color:inherit; color: inherit;">
-            </div>
-            <div id="ordertogglecontainer">
-                <button id="loading_button" class="control-btn btn-toggle" style="display: none;">
-                    <div class="spinner-grow text-danger"></div>
-                    <span>Loading</span>
-                </button>
-                {% if orders_open %}
-                <button onclick="stop_order({{business.id}})" id="stop_order" class="control-btn btn-toggle">
-                    <i class="bi bi-pause-circle"></i> 
-                    <span>Stop Orders</span>
-                </button>
-                {% else %}
-                <button onclick="start_order({{business.id}})" id="start_order" class="control-btn btn-toggle">
-                    <i class="bi bi-play-circle"></i> 
-                    <span>Start Orders</span>
-                </button>
-                {% endif %}
-            </div>
+    <div class="container-fluid px-3 py-3">
+        <h1 class="page-header">Order Management</h1>
 
+        <!-- Quick Stats -->
+        <div class="row g-3 mb-3">
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-title">New Orders</div>
+                    <div class="stat-value" id="stat-new">0</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-title">Preparing</div>
+                    <div class="stat-value" id="stat-preparing">0</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-title">Scheduled</div>
+                    <div class="stat-value" id="stat-scheduled">0</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-title">Completed Today</div>
+                    <div class="stat-value" id="stat-completed">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Section -->
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h5 class="card-title-custom">Order Controls</h5>
+                <div class="d-flex gap-2 header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchOrder" class="form-control" placeholder="Search order #">
+                    </div>
+                    <div id="ordertogglecontainer">
+                        <button id="loading_button" class="control-btn" style="display: none;">
+                            <div class="spinner-border spinner-border-sm"></div>
+                            <span>Loading</span>
+                        </button>
+                        {% if orders_open %}
+                        <button onclick="stop_order({{business.id}})" id="stop_order" class="control-btn">
+                            <i class="fas fa-pause-circle"></i> 
+                            <span>Stop Orders</span>
+                        </button>
+                        {% else %}
+                        <button onclick="start_order({{business.id}})" id="start_order" class="control-btn">
+                            <i class="fas fa-play-circle"></i> 
+                            <span>Start Orders</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h5 class="card-title-custom">Active Orders</h5>
+            </div>
+            <div class="card-body p-3">
+                <!-- Tabs -->
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-stage="new">
+                            <i class="fas fa-bell"></i> New
+                            <span class="tab-badge" id="count-new">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-stage="preparing">
+                            <i class="fas fa-clock"></i> Preparing
+                            <span class="tab-badge" id="count-preparing">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-stage="scheduled">
+                            <i class="fas fa-calendar-check"></i> Scheduled
+                            <span class="tab-badge" id="count-scheduled">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-stage="completed">
+                            <i class="fas fa-check-circle"></i> Completed
+                            <span class="tab-badge" id="count-completed">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-stage="canceled">
+                            <i class="fas fa-times-circle"></i> Canceled
+                            <span class="tab-badge" id="count-canceled">0</span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Orders Grid -->
+                <div id="ordersContainer" class="orders-grid"></div>
+            </div>
         </div>
     </div>
-
-    <!-- Tabs -->
-    <div class="tabs-container">
-        <div class="order-tabs">
-            <button class="tab-item active" data-stage="new">
-                <i class="bi bi-bell"></i> New
-                <span class="tab-badge" id="count-new">0</span>
-            </button>
-            <button class="tab-item" data-stage="preparing">
-                <i class="bi bi-clock-history"></i> Preparing
-                <span class="tab-badge" id="count-preparing">0</span>
-            </button>
-            <button class="tab-item" data-stage="scheduled">
-                <i class="bi bi-calendar-check"></i> Scheduled
-                <span class="tab-badge" id="count-scheduled">0</span>
-            </button>
-            <button class="tab-item" data-stage="completed">
-                <i class="bi bi-check-circle"></i> Completed
-                <span class="tab-badge" id="count-completed">0</span>
-            </button>
-            <button class="tab-item" data-stage="canceled">
-                <i class="bi bi-x-circle"></i> Canceled
-                <span class="tab-badge" id="count-canceled">0</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Orders Container -->
-    <div id="ordersContainer" class="orders-grid"></div>
 
     <!-- Loading Spinner -->
-    <div class="loading-spinner" role="status">
-        <div class="spinner-backdrop">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
@@ -674,14 +854,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 id="modalOrderTitle" class="modal-title">
-                        <i class="bi bi-receipt"></i> Order Details
+                        <i class="fas fa-receipt"></i> Order Details
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-section">
                         <h6 class="modal-section-title">
-                            <i class="bi bi-info-circle"></i> Order Information
+                            <i class="fas fa-info-circle"></i> Order Information
                         </h6>
                         <div class="order-detail-grid">
                             <div class="detail-item">
@@ -702,12 +882,12 @@
                                 <div class="detail-label">Total Amount</div>
                                 <div class="detail-value" id="modalTotal"></div>
                             </div>
-                             <div class="detail-item">
+                            <div class="detail-item">
                                 <div class="detail-label">Delivery Amount</div>
                                 <div class="detail-value" id="modalDelivery"></div>
                             </div>
-                             <div class="detail-item">
-                                <div class="detail-label">Net Amount <small class="small">(fees deducted)</small></div>
+                            <div class="detail-item">
+                                <div class="detail-label">Net Amount <small>(fees deducted)</small></div>
                                 <div class="detail-value" id="modalRecieved"></div>
                             </div>
                         </div>
@@ -715,31 +895,31 @@
                     
                     <div class="modal-section">
                         <h6 class="modal-section-title">
-                            <i class="bi bi-chat-left-text"></i> Customer Note
+                            <i class="fas fa-comment"></i> Customer Note
                         </h6>
                         <div class="order-note" id="modalMessage"></div>
                     </div>
                     
                     <div class="modal-section">
                         <h6 class="modal-section-title">
-                            <i class="bi bi-bag"></i> Order Items
+                            <i class="fas fa-shopping-bag"></i> Order Items
                         </h6>
                         <ul class="items-list" id="modalOrderItems"></ul>
                     </div>
                     
                     <div class="modal-section">
                         <h6 class="modal-section-title">
-                            <i class="bi bi-plus-circle"></i> Extras
+                            <i class="fas fa-plus-circle"></i> Extras
                         </h6>
                         <ul class="items-list" id="modalExtraItems"></ul>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button id="cancelOrder" class="action-btn btn-cancel">
-                        <i class="bi bi-x-circle"></i> Cancel Order
+                        <i class="fas fa-times-circle"></i> Cancel Order
                     </button>
                     <button id="moveOrder" class="action-btn btn-next">
-                        <i class="bi bi-arrow-right-circle"></i> Move to Next Stage
+                        <i class="fas fa-arrow-right"></i> Move to Next Stage
                     </button>
                 </div>
             </div>
@@ -748,8 +928,10 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
     <script type="text/javascript" src="{% static 'seller/js/product_requests.js' %}"></script>
+    
     <script>
         let orders = {{all_orders|safe}};
         let activeStage = "new"; 
@@ -765,7 +947,7 @@
 
             const ordersToRender = filteredOrders || orders;
 
-            // Sort orders by order.id (numerically, handling leading zeros)
+            // Sort orders by order.id
             ordersToRender.sort((a, b) => {
                 const aId = a.id.toString();
                 const bId = b.id.toString();
@@ -779,20 +961,22 @@
                         <div class="order-card" onclick="openOrderModal('${order.id}')">
                             <div class="order-header">
                                 <div class="order-id">
-                                    <i class="bi bi-receipt"></i> Order #${order.id}
+                                    <i class="fas fa-receipt"></i> #${order.id}
                                 </div>
                                 <div class="order-time">
-                                    <i class="bi bi-clock"></i> ${order.timestamp}
+                                    <i class="fas fa-clock"></i> ${order.timestamp}
                                 </div>
                             </div>
                             <div class="order-body">
+                                ${order.message ? `
                                 <div class="order-note">
-                                    <strong><i class="bi bi-chat-left-text"></i> Customer Note:</strong>
-                                    <span>${order.message || "No note provided."}</span>
+                                    <strong><i class="fas fa-comment"></i> Note:</strong>
+                                    <span>${order.message}</span>
                                 </div>
+                                ` : ''}
                                 <div>
                                     <div class="section-title">
-                                        <i class="bi bi-bag"></i> Items (${order.items.length})
+                                        <i class="fas fa-shopping-bag"></i> Items (${order.items.length})
                                     </div>
                                     <ul class="items-list">
                                         ${order.items.map(item => `
@@ -801,7 +985,7 @@
                                                     ${item.product}
                                                     <span class="item-quantity">x${item.quantity}</span>
                                                 </div>
-                                                ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                                                ${item.extras ? `<div class="item-extras"><i class="fas fa-tag"></i> ${item.extras}</div>` : ''}
                                             </li>
                                         `).join('')}
                                     </ul>
@@ -809,14 +993,12 @@
                                 ${order.extras && order.extras.length > 0 ? `
                                     <div>
                                         <div class="section-title">
-                                            <i class="bi bi-plus-circle"></i> Extras (${order.extras.length})
+                                            <i class="fas fa-plus-circle"></i> Extras (${order.extras.length})
                                         </div>
                                         <ul class="items-list">
                                             ${order.extras.map(item => `
                                                 <li class="item-entry">
-                                                    <div class="item-name">
-                                                        ${item.item}
-                                                    </div>
+                                                    <div class="item-name">${item.item}</div>
                                                 </li>
                                             `).join('')}
                                         </ul>
@@ -824,7 +1006,7 @@
                                 ` : ''}
                             </div>
                             <div class="order-footer">
-                                <span class="order-status status-${order.status}">${order.status}</span>
+                                <span class="badge-custom status-${order.status}">${order.status}</span>
                                 <span class="order-total">R${order.total}</span>
                             </div>
                         </div>
@@ -833,9 +1015,20 @@
                 }
             });
 
-            // Update status counts
+            // Update counts
             for (let stage in statusCounts) {
                 document.getElementById(`count-${stage}`).innerText = statusCounts[stage];
+                document.getElementById(`stat-${stage}`).innerText = statusCounts[stage];
+            }
+
+            // Show empty state if no orders
+            if (container.innerHTML === "") {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No orders in this stage</p>
+                    </div>
+                `;
             }
         }
 
@@ -845,13 +1038,12 @@
             let order = orders.find(o => o.id === orderId);
             
             document.getElementById("modalOrderTitle").innerHTML = `
-                <i class="bi bi-receipt"></i> Order #${order.id} ${order.user ? '- ' + order.user : ''}
+                <i class="fas fa-receipt"></i> Order #${order.id} ${order.user ? '- ' + order.user : ''}
             `;
             
             document.getElementById("modalTimestamp").innerText = order.timestamp;
             document.getElementById("modalMessage").innerText = order.message || "No note provided.";
             
-            // Set payment status with appropriate class
             const paymentStatusEl = document.getElementById("modalPaymentStatus");
             paymentStatusEl.innerText = order.paymentStatus;
             paymentStatusEl.className = 'payment-status';
@@ -859,21 +1051,19 @@
             
             document.getElementById("modalDeliveryMethod").innerText = order.deliveryMethod;
             document.getElementById("modalTotal").innerText = `R${order.total}`;
-             document.getElementById("modalDelivery").innerText = `R${order.delivery}`;
-              document.getElementById("modalRecieved").innerText = `R${order.recieved}`;
+            document.getElementById("modalDelivery").innerText = `R${order.delivery}`;
+            document.getElementById("modalRecieved").innerText = `R${order.recieved}`;
             
-            // Order items
             document.getElementById("modalOrderItems").innerHTML = order.items.map(item => `
                 <li class="item-entry">
                     <div class="item-name">
                         ${item.product}
                         <span class="item-quantity">x${item.quantity}</span>
                     </div>
-                    ${item.extras ? `<div class="item-extras"><i class="bi bi-tags"></i> ${item.extras}</div>` : ''}
+                    ${item.extras ? `<div class="item-extras"><i class="fas fa-tag"></i> ${item.extras}</div>` : ''}
                 </li>
             `).join('');
             
-            // Extra items
             document.getElementById("modalExtraItems").innerHTML = 
                 order.extras && order.extras.length > 0 
                 ? order.extras.map(item => `
@@ -883,7 +1073,6 @@
                 `).join('')
                 : '<li class="item-entry">No extras added</li>';
             
-            // Update button states based on order status
             const moveOrderBtn = document.getElementById("moveOrder");
             const cancelOrderBtn = document.getElementById("cancelOrder");
             
@@ -898,16 +1087,14 @@
             new bootstrap.Modal(document.getElementById("orderModal")).show();
         }
 
-        // Move order to the next stage
+        // Move order to next stage
         function moveOrderToNextStage(orderId) {
             const order = orders.find(o => o.id === orderId);
             const stages = ["new", "preparing", "scheduled", "completed"];
             const currentIndex = stages.indexOf(order.status);
             
-            // Show loading spinner
-            document.querySelector('.loading-spinner').style.display = 'block';
+            document.getElementById('loadingSpinner').classList.add('active');
             
-            // Call API
             try {
                 MoveOrderToNextStageAPI(`${order.id}`);
                 
@@ -915,44 +1102,69 @@
                     order.status = stages[currentIndex + 1];
                     renderOrders();
                 }
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Updated',
+                    text: 'Order moved to next stage successfully',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             } catch (error) {
                 console.error("Error moving order:", error);
-                // Display error message to user
-                displayMessage("Error moving order to next stage. Please try again.", "error");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to move order. Please try again.'
+                });
             } finally {
-                // Hide loading spinner
-                document.querySelector('.loading-spinner').style.display = 'none';
-                // Close modal
+                document.getElementById('loadingSpinner').classList.remove('active');
                 bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
             }
         }
 
         // Cancel order
         function cancelOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            
-            // Show loading spinner
-            document.querySelector('.loading-spinner').style.display = 'block';
-            
-            // Call API
-            try {
-                CancelOrderAPI(`${order.id}`);
-                order.status = "canceled";
-                renderOrders();
-            } catch (error) {
-                console.error("Error canceling order:", error);
-                // Display error message to user
-                displayMessage("Error canceling order. Please try again.", "error");
-            } finally {
-                // Hide loading spinner
-                document.querySelector('.loading-spinner').style.display = 'none';
-                // Close modal
-                bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
-            }
+            Swal.fire({
+                title: 'Cancel Order?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const order = orders.find(o => o.id === orderId);
+                    
+                    document.getElementById('loadingSpinner').classList.add('active');
+                    
+                    try {
+                        CancelOrderAPI(`${order.id}`);
+                        order.status = "canceled";
+                        renderOrders();
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Canceled',
+                            text: 'Order has been canceled successfully',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } catch (error) {
+                        console.error("Error canceling order:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to cancel order. Please try again.'
+                        });
+                    } finally {
+                        document.getElementById('loadingSpinner').classList.remove('active');
+                        bootstrap.Modal.getInstance(document.getElementById("orderModal")).hide();
+                    }
+                }
+            });
         }
-
-
-        // Toggle orders enabled/disable
 
         // Search orders
         function searchOrders(query) {
@@ -972,23 +1184,19 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Initial render
             renderOrders();
             
             // Tab switching
-            document.querySelectorAll('.tab-item').forEach(tab => {
+            document.querySelectorAll('.nav-link').forEach(tab => {
                 tab.addEventListener('click', function() {
-                    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     activeStage = this.getAttribute('data-stage');
                     renderOrders();
                 });
             });
             
-            // Toggle orders enabled/disabled
-         
-            
-            // Move order to next stage
+            // Move order
             document.getElementById('moveOrder').addEventListener('click', function() {
                 moveOrderToNextStage(selectedOrderId);
             });
@@ -998,42 +1206,30 @@
                 cancelOrder(selectedOrderId);
             });
             
-            // Search functionality
+            // Search
             const searchInput = document.getElementById('searchOrder');
             searchInput.addEventListener('input', function() {
                 searchOrders(this.value);
             });
             
-            // Enable tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-            
-            // Check for new orders periodically (polling)
+            // Poll for new orders
             setInterval(function() {
                 if (ordersEnabled) {
                     checkForNewOrders();
                 }
-            }, 30000); // Check every 30 seconds
+            }, 30000);
         });
 
         // Check for new orders
         function checkForNewOrders() {
-            // This would normally be an API call to get new orders
-            // For demonstration, we'll simulate it
             FetchOrdersAPI()
                 .then(newOrders => {
                     if (newOrders && newOrders.length > 0) {
-                        // Update orders array with new data
                         orders = newOrders;
-                        
-                        // Play notification sound if there are new orders
                         const newOrdersCount = newOrders.filter(order => order.status === 'new').length;
                         if (newOrdersCount > document.getElementById('count-new').innerText) {
                             playNotificationSound();
                         }
-                        
                         renderOrders();
                     }
                 })
@@ -1042,7 +1238,7 @@
                 });
         }
 
-        // Play notification sound
+        // Play notification
         function playNotificationSound() {
             const audio = new Audio('/static/sounds/notification.mp3');
             audio.play().catch(error => {
@@ -1050,54 +1246,33 @@
             });
         }
 
-        // API Functions (These would typically call backend APIs)
+        // API Functions
         function FetchOrdersAPI() {
-            // Placeholder for real API call
             return new Promise((resolve, reject) => {
-                // In a real application, this would be a fetch to your backend
                 setTimeout(() => resolve(orders), 500);
             });
         }
 
-       
-
         function CancelOrderAPI(orderId) {
-            // Placeholder for real API call
             return true;
         }
 
-        function ToggleOrdersEnabledAPI(enabled) {
-            // Placeholder for real API call
-            return true;
-        }
-    </script>
-    <script>
-        // Replace the existing logout script with this
-    function confirmLogout(event) {
-        event.preventDefault();
-        
-        // Check if SweetAlert2 is available
-        if (typeof Swal !== 'undefined') {
+        // Logout confirmation
+        function confirmLogout(event) {
+            event.preventDefault();
             Swal.fire({
-                title: 'Logout Confirmation',
+                title: 'Logout?',
                 text: 'Are you sure you want to logout?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3a7bd5',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, logout',
-                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00A8A8',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('logoutForm').submit();
+                    window.location.href = "{% url 'logout' %}";
                 }
             });
-        } else {
-            // Fallback if SweetAlert is not available
-            if (confirm('Are you sure you want to logout?')) {
-                document.getElementById('logoutForm').submit();
-            }
         }
-    }
-        </script>
+    </script>
 {% endblock %}

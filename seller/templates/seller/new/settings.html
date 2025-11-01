@@ -1,166 +1,710 @@
 {% extends 'seller/base.html' %}
+{% load static %}
 
 {% block links %}
-   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
- {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'manage_product' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'orders' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>Orders</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-currency-exchange"></i>
-                <span>Sales & Transactions</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-            <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-           <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
-               <i class="bi bi-building"></i>
-                <span>Business information</span>
-            </a>
-            <a href="{% url 'settings' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-            <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-        {% endblock %}
-}
+{% block styles %}
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
+    }
+
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
+
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Settings Container */
+    .settings-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Tabs */
+    .nav-tabs {
+        border-bottom: 2px solid var(--border-light);
+        background: var(--white);
+        border-radius: 8px 8px 0 0;
+        padding: 0.5rem 1rem 0;
+        box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        color: #666;
+        font-weight: 500;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        position: relative;
+        border-radius: 6px 6px 0 0;
+        margin: 0 0.25rem;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-teal);
+        background: rgba(0, 168, 168, 0.05);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-teal);
+        background: transparent;
+        font-weight: 600;
+    }
+
+    .nav-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-teal);
+        border-radius: 2px 2px 0 0;
+    }
+
+    .nav-tabs .nav-link i {
+        margin-right: 0.5rem;
+    }
+
+    /* Tab Content */
+    .tab-content {
+        background: var(--white);
+        border-radius: 0 0 8px 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .tab-pane h5 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--primary-teal);
+        display: flex;
+        align-items: center;
+    }
+
+    .tab-pane h5 i {
+        margin-right: 0.5rem;
+        color: var(--primary-teal);
+    }
+
+    /* Form Controls */
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        transition: all 0.3s;
+        background-color: var(--white);
+        color: var(--text-dark);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+        outline: none;
+    }
+
+    /* Checkboxes */
+    .form-check {
+        padding: 1rem;
+        border-radius: 6px;
+        transition: all 0.3s;
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--border-light);
+    }
+
+    .form-check:hover {
+        background: rgba(0, 168, 168, 0.03);
+        border-color: var(--primary-teal);
+    }
+
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid var(--border-light);
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-teal);
+        border-color: var(--primary-teal);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+    }
+
+    .form-check-label {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        font-weight: 500;
+        cursor: pointer;
+        margin-left: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn-primary-custom {
+        background: var(--primary-teal);
+        color: var(--white);
+        border: none;
+        padding: 0.65rem 2rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+        background: #008888;
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 168, 168, 0.3);
+    }
+
+    .btn-warning-custom {
+        background: var(--warning-orange);
+        color: var(--white);
+        border: none;
+        padding: 0.65rem 2rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-warning-custom:hover {
+        background: #f57c00;
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+
+    .btn-danger-custom {
+        background: var(--danger-red);
+        color: var(--white);
+        border: none;
+        padding: 0.65rem 2rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-danger-custom:hover {
+        background: #c82333;
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Info Box */
+    .info-box {
+        background: rgba(0, 168, 168, 0.05);
+        border-left: 4px solid var(--primary-teal);
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-box i {
+        color: var(--primary-teal);
+        margin-right: 0.5rem;
+    }
+
+    .info-box p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    /* Warning Box */
+    .warning-box {
+        background: rgba(255, 152, 0, 0.05);
+        border-left: 4px solid var(--warning-orange);
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+    }
+
+    .warning-box i {
+        color: var(--warning-orange);
+        margin-right: 0.5rem;
+    }
+
+    .warning-box p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    /* Danger Zone */
+    .danger-zone {
+        background: rgba(220, 53, 69, 0.05);
+        border: 2px solid rgba(220, 53, 69, 0.2);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .danger-zone h6 {
+        color: var(--danger-red);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .danger-zone h6 i {
+        margin-right: 0.5rem;
+    }
+
+    .danger-zone p {
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    /* Settings Card */
+    .settings-card {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px var(--shadow);
+        border: 1px solid var(--border-light);
+    }
+
+    .settings-card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .settings-card-title i {
+        margin-right: 0.5rem;
+        color: var(--primary-teal);
+        font-size: 1.1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            font-size: 1.25rem;
+        }
+
+        .tab-content {
+            padding: 1.5rem;
+        }
+
+        .nav-tabs {
+            padding: 0.5rem 0.5rem 0;
+        }
+
+        .nav-tabs .nav-link {
+            padding: 0.65rem 0.75rem;
+            font-size: 0.85rem;
+            margin: 0 0.15rem;
+        }
+
+        .nav-tabs .nav-link i {
+            display: none;
+        }
+    }
+{% endblock %}
+
+{% block nav %}
+    <div class="nav-items">
+        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'manage_product' business.id %}" class="nav-link">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+        </a>
+        <a href="{% url 'orders' business.id %}" class="nav-link">
+            <i class="bi bi-cart"></i>
+            <span>Orders</span>
+            <span class="badge bg-primary ms-auto"></span>
+        </a>
+        <a href="{% url 'transaction' business.id %}" class="nav-link">
+            <i class="bi bi-currency-exchange"></i>
+            <span>Transactions</span>
+        </a>
+        <a href="{% url 'customer' business.id %}" class="nav-link">
+            <i class="bi bi-people"></i>
+            <span>Customers</span>
+        </a>
+        <a href="{% url 'report' business.id %}" class="nav-link">
+            <i class="bi bi-bar-chart"></i>
+            <span>Reports</span>
+        </a>
+        <a href="{% url 'business_info' business.id %}" class="nav-link">
+            <i class="bi bi-building"></i>
+            <span>Business Info</span>
+        </a>
+        <a href="{% url 'settings' business.id %}" class="nav-link active">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        <a href="#" class="nav-link" onclick="confirmLogout(event)">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="mb-4">Settings</h2>
-        
-        <ul class="nav nav-tabs" id="settingsTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">Account</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">Security</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">Notifications</button>
-            </li>
-        </ul>
+    <div class="container-fluid px-3 py-3">
+        <div class="settings-container">
+            <h1 class="page-header">Settings</h1>
+            <p class="page-subtitle">Manage your account preferences and security settings</p>
 
-        <div class="tab-content mt-3" id="settingsTabContent">
-            <div class="tab-pane fade show active" id="account" role="tabpanel">
-                <h5>Account Settings</h5>
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-control" value="User123">
+            <ul class="nav nav-tabs" id="settingsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">
+                        <i class="fas fa-user"></i> Account
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">
+                        <i class="fas fa-sliders-h"></i> Preferences
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="settingsTabContent">
+                <!-- Account Tab -->
+                <div class="tab-pane fade show active" id="account" role="tabpanel">
+                    <h5><i class="fas fa-user-circle"></i> Account Settings</h5>
+                    
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Update your account information to keep your profile current and accurate.</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone number</label>
-                        <input type="text" class="form-control" value="User123">
+
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" value="User123" placeholder="Enter username">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" value="+27 XX XXX XXXX" placeholder="Enter phone number">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" value="user@example.com" placeholder="Enter email address">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="Enter full name">
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Preferences Tab -->
+                <div class="tab-pane fade" id="preferences" role="tabpanel">
+                    <h5><i class="fas fa-palette"></i> Preferences</h5>
+
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Customize your experience by adjusting the settings below.</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" value="user@example.com">
+
+                    <form>
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-moon"></i> Appearance
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Theme</label>
+                                <select class="form-select">
+                                    <option selected>Light</option>
+                                    <option>Dark</option>
+                                    <option>Auto (System Default)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-language"></i> Language & Region
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-select">
+                                        <option selected>English</option>
+                                        <option>Afrikaans</option>
+                                        <option>Zulu</option>
+                                        <option>Xhosa</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Timezone</label>
+                                    <select class="form-select">
+                                        <option selected>South Africa (GMT+2)</option>
+                                        <option>UTC</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Save Preferences
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Security Tab -->
+                <div class="tab-pane fade" id="security" role="tabpanel">
+                    <h5><i class="fas fa-lock"></i> Security Settings</h5>
+
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Keep your account secure by using a strong password and enabling two-factor authentication.</p>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-            
-            <div class="tab-pane fade" id="preferences" role="tabpanel">
-                <h5>Preferences</h5>
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Theme</label>
-                        <select class="form-select">
-                            <option>Light</option>
-                            <option>Dark</option>
-                        </select>
+
+                    <form>
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-key"></i> Change Password
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control" placeholder="Enter current password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" placeholder="Enter new password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" placeholder="Confirm new password">
+                            </div>
+                            <button type="submit" class="btn btn-warning-custom">
+                                <i class="fas fa-sync-alt me-2"></i>Update Password
+                            </button>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-mobile-alt"></i> Two-Factor Authentication
+                            </div>
+                            <p class="text-muted mb-3">Add an extra layer of security to your account.</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="enable2FA">
+                                <label class="form-check-label" for="enable2FA">
+                                    Enable Two-Factor Authentication
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Danger Zone -->
+                    <div class="danger-zone">
+                        <h6><i class="fas fa-exclamation-circle"></i> Danger Zone</h6>
+                        <p>Once you delete your account, there is no going back. Please be certain.</p>
+                        <button type="button" class="btn btn-danger-custom" onclick="confirmDeleteAccount()">
+                            <i class="fas fa-trash-alt me-2"></i>Delete Account
+                        </button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Preferences</button>
-                </form>
-            </div>
-            
-            <div class="tab-pane fade" id="security" role="tabpanel">
-                <h5>Security Settings</h5>
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Change Password</label>
-                        <input type="password" class="form-control" placeholder="New Password">
+                </div>
+
+                <!-- Notifications Tab -->
+                <div class="tab-pane fade" id="notifications" role="tabpanel">
+                    <h5><i class="fas fa-bell"></i> Notification Preferences</h5>
+
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Choose how you want to receive notifications about your orders, products, and account activity.</p>
                     </div>
-                    <button type="submit" class="btn btn-warning">Update Password</button>
-                </form>
-            </div>
-            
-            <div class="tab-pane fade" id="notifications" role="tabpanel">
-                <h5>Notification Preferences</h5>
-                <form>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="emailNotif" checked>
-                        <label class="form-check-label" for="emailNotif">Receive Email Notifications</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="smsNotif">
-                        <label class="form-check-label" for="smsNotif">Receive SMS Notifications</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="whatsappNotif">
-                        <label class="form-check-label" for="whatsappNotif">Receive WhatsApp Notifications</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="telegramNotif">
-                        <label class="form-check-label" for="telegramNotif">Receive Telegram Notifications</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Save Notification Preferences</button>
-                </form>
+
+                    <form>
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-envelope"></i> Email Notifications
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                                <label class="form-check-label" for="emailNotif">
+                                    Receive Email Notifications
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="emailOrders" checked>
+                                <label class="form-check-label" for="emailOrders">
+                                    New Order Notifications
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="emailPromo">
+                                <label class="form-check-label" for="emailPromo">
+                                    Promotional Emails
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-mobile-alt"></i> Mobile Notifications
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="smsNotif">
+                                <label class="form-check-label" for="smsNotif">
+                                    Receive SMS Notifications
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="whatsappNotif">
+                                <label class="form-check-label" for="whatsappNotif">
+                                    Receive WhatsApp Notifications
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-card-title">
+                                <i class="fas fa-paper-plane"></i> Other Channels
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="telegramNotif">
+                                <label class="form-check-label" for="telegramNotif">
+                                    Receive Telegram Notifications
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="pushNotif" checked>
+                                <label class="form-check-label" for="pushNotif">
+                                    Browser Push Notifications
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom mt-3">
+                            <i class="fas fa-save me-2"></i>Save Notification Preferences
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ... (keep existing JavaScript code the same) ...
-      
-            // Add Logout Confirmation Function
-            function confirmLogout(event) {
-                event.preventDefault();
-                Swal.fire({
-                    title: 'Logout?',
-                    text: 'Are you sure you want to logout?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#0d6efd',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, logout!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = event.currentTarget.href;
-                    }
-                });
-            }
-        });
-      </script>
-      
-    
+{% endblock %}
+
+{% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Logout Confirmation
+        function confirmLogout(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00A8A8',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.currentTarget.href;
+                }
+            });
+        }
+
+        // Delete Account Confirmation
+        function confirmDeleteAccount() {
+            Swal.fire({
+                title: 'Delete Account?',
+                text: "This action cannot be undone! All your data will be permanently deleted.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete my account',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Account Deleted',
+                        'Your account has been permanently deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+
+        // Form submission handlers with success messages
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Settings Saved!',
+                    text: 'Your changes have been saved successfully.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            });
+        });
+    </script>
 {% endblock %}

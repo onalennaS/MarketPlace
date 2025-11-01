@@ -1,828 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Versity Finds is your go-to student marketplace. Sell or Buy FastFood,  textbooks, electronics, and essentials — all for the student budget.">
-
-    <meta name="keywords" content="Versity Finds, student marketplace, buy and sell textbooks, cheap student deals, campus marketplace, student classifieds, college essentials, affordable books">
-
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Versity Finds | The Marketplace for Students">
-    <meta property="og:description" content="Find the best deals on Fastfood, textbooks, gadgets, and campus essentials — by students, for students.">
-    <meta property="og:image" content="{% static '/images/Finds.png' %}">
-    <meta property="og:url" content="https://versityfinds.co.za">
-    <meta property="og:type" content="website">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Versity Finds | Student Deals Made Easy">
-    <meta name="twitter:description" content="Buy, sell, and discover campus deals that fit your student lifestyle.">
-    <meta name="twitter:image" content="{% static '/images/Finds.png' %}">
-    
-    <title>seller dashboard</title>
-    <link rel="icon" type="image/png" href="{% static '/images/Finds.png' %}">
-     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-      <link rel="stylesheet" href="{% static 'css/message.css' %}">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
+    <title>Seller Dashboard - Versity Finds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Navbar Styling */
-        body{
-            overflow-x: hidden;   
-        }
-        .cards{
-            border: 2px solid red ;
-            transition: all 0.5s ease;
-        }
-        .cards:hover {
-        transform: scale(1.02);
-        border: 2px solid blue; /* Subtle highlight on hover */
-        }
-        #navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #dee2e6;
-            z-index: 1300;
-            position: sticky;
-            top: 0; /* Ensures the navbar stays at the top */
-            width: 100%;
-            height: 60px;
-            
-        }
-       
-        /* Content Section */
-        .content {
-            padding:0 ;
-            margin-left: 0; /* Reset left margin */
-            overflow-y: auto; /* Enable scrolling for content */
-            background-color: #f9f9f9; /* Light background color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */     
+        :root {
+            --primary-teal: #00A8A8;
+            --accent-green: #2ECC71;
+            --base-dark-blue: #1A3D7C;
+            --bg-light: #F9F9F9;
+            --text-dark: #333333;
+            --white: #FFFFFF;
+            --border-light: #E0E0E0;
+            --shadow: rgba(0, 0, 0, 0.08);
         }
 
-        /* Hide the Sidebar Toggle Button on larger screens */
-        @media (min-width: 768px) {
-            .content {
-                padding:0 ;
-
-            }
-            .off-nav{
-                display: none;
-            }
-
-            .on-nav{
-                display: block;
-            }
-            .inner{
-            padding: 40px;
-            padding-top:60px;
-        }
-        .pad{
-            padding-left :15px;
-            padding-right: 15px;
-        }
-        #pad{
-            margin:1px;
-        }
-        .const{
-            background-color: white;
-        }
-        .tags{display: none}
-
-        }
-        @media (max-width: 768px){
-               .inner{
-                    padding: 0px;
-                   
-                }
-                .pad{
-                    padding:0px;
-                }
-        
-                .advert{
-                    display: none;
-                }
-                .forms{
-                    display: none;
-                }
-                 .on-nav{
-                display: none;
-            }
-            .tagx{
-                display: none;
-              }
-            .tag{
-                position: fixed;
-                bottom: 0px;
-                width: 100%;
-                margin:0px;
-                padding: 10px;
-                background-color: white;
-                z-index:1100;
-                 box-shadow: 8px 4px 8px black;
-              }
-              .sidebar{
-                display: none;
-              }
-              .checkout{
-                position: fixed;
-                bottom: 0%;
-                width: 100%;
-                  box-shadow: 8px 4px 8px black;
-
-            }
-            .check{
-                display: none;
-            }
-            .checkout h6{
-                display: none;
-            }
-            .price{
-                display: flex;
-                justify-content: space-between;
-            }
-            }
-
-
-
-            #offcanvasRight1, #offcanvasRight{
-                width: 100%;
-            }
-            
-        }
-         .content {
-            padding:0 ;
-            margin-left: 0; /* Reset left margin */
-            overflow-y: auto; /* Enable scrolling for content */
-            background-color: #f9f9f9; /* Light background color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-
-            
-        }
-        .hovers:hover{
-            background-color: black;
-            transform: scale(1.02);
-            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-
-        }
-        .like:hover{
-            color:orangered;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .prods{
-            color: black;
-            text-decoration: none;
-        }
-        .prods:hover{
-            color: #0d6efd;
-            font-weight: bold;
-
-           
-        }
-        .prods img{
-             transition: transform 0.3s ease-in-out;
-        }
-        .prods img:hover{
-            animation: shake 0.6s ease-in-out;
-        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-        hr {
-            flex-grow: 1; /* Makes the <hr> take up remaining space */
-            margin-left: 5px; /* Space between text and line */
-             border: 0; /* Remove default border */
-            border-top: 2px solid white;
-        }
-        .lit{
-            background-color: #212529;
-            color: white;
+        /* Top Navigation */
+        .top-nav {
+            background: var(--base-dark-blue);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
-        .lit:hover{
-            background-color: lightblue;
-            color: #212529;
+
+        .top-nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 0.75rem;
+            transition: color 0.3s;
         }
-         .sidebar {
-            background: linear-gradient(135deg, #2a4b8c, #3c81cc);
-            color: white;
-            height: 100vh;
-            padding: 20px 0;
-            border-right: 1px solid #dee2e6;
+
+        .top-nav a:hover {
+            color: var(--primary-teal);
+        }
+
+        /* Main Header */
+        .main-header {
+            background: var(--white);
+            box-shadow: 0 2px 8px var(--shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
-            overflow-y: auto; /* Enable scrolling for the sidebar */
-            max-height: 100vh; /* Ensures the sidebar doesn't extend beyond the viewport */
-        }
-        .sidebar .nav-link {
-            color: whitesmoke;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .sidebar .nav-link.active {
-            color: #1f406a;
-            background-color: white;
-        }
-        .sidebar .nav-link:hover {
-            background-color: #1f406a;
-            color: white;
-            font-size: 18px;
         }
 
-             .sidebar.active {
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-actions a {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .header-actions a:hover {
+            color: var(--primary-teal);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Layout Container */
+        .dashboard-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--white);
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 8px var(--shadow);
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.65rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link i {
+            width: 20px;
+            margin-right: 0.75rem;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(0, 168, 168, 0.08) 0%, transparent 100%);
+            border-left-color: var(--primary-teal);
+            color: var(--primary-teal);
+        }
+
+        .sidebar-link:hover i,
+        .sidebar-link.active i {
+            color: var(--primary-teal);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.primary { background: rgba(0, 168, 168, 0.1); color: var(--primary-teal); }
+        .stat-icon.green { background: rgba(46, 204, 113, 0.1); color: var(--accent-green); }
+        .stat-icon.blue { background: rgba(26, 61, 124, 0.1); color: var(--base-dark-blue); }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Content Sections */
+        .content-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-teal);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #008888;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 168, 168, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--accent-green);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #27ae60;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-teal);
+            color: var(--primary-teal);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-teal);
+            color: var(--white);
+        }
+
+        /* Table */
+        .simple-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .simple-table thead {
+            background: var(--bg-light);
+        }
+
+        .simple-table th {
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .simple-table td {
+            padding: 1rem 0.75rem;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--accent-green);
+        }
+
+        .badge-warning {
+            background: rgba(255, 165, 0, 0.15);
+            color: #ff8c00;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 0;
+                height: 100vh;
+                z-index: 1100;
+                transition: left 0.3s;
+            }
+
+            .sidebar.active {
                 left: 0;
             }
-             .profile-upload {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .profile-upload img {
-            border: 5px solid gray;
-            border-radius: 50%;
-            width: 90px;
-            height: 85px;
-            object-fit: cover;
-        }
-         .profile-upload {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .profile-upload img {
-            border: 5px solid gray;
-            border-radius: 50%;
-            width: 90px;
-            height: 85px;
-            object-fit: cover;
-        }
 
-        
-        {% block styles %}
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1050;
+            }
 
-{% endblock %}
+            .overlay.active {
+                display: block;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions a span {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div>
+            <span>Welcome, <strong>Seller Name</strong></span>
+        </div>
+        <div>
+            <a href="#">Orders</a>
+            <a href="#">Help</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
 
-<!-- Navbar -->
-<nav id="navbar" class="navbar navbar-expand-lg  navbar-dark bg-white shadow-sm">
-    <div class="container-fluid bg-secondary">
-         <button class="btn border-0 off-nav" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-           <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <img class="nav-logo" src="{% static '/images/logo.png' %}" alt="Logo"  width="130px"height="auto">
-       
-        
-        <!-- <div class="collapse navbar-collapse px-4" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'base' %}">
-                        <i class="fas fa-store me-2"></i> Sell on Marketplace
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-                        <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="40">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                    </ul>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'wish_lists' %}">
-                        <i class="fas fa-heart text-danger fa-2x "></i> 
-                    </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">
-                        
-                        <i class="fas fa-cart-plus  fa-2x text-success "></i>
-                    </a>
-                </li>
-            </ul>
-        </div> -->
-        <div class="d-flex justify-content-end">
-
-            <a data-bs-toggle="offcanvas" data-bs-target="#search" aria-controls="staticBackdrop" class="off-nav">                
-                <i class="fas fa-search   text-dark "></i>
-            </a>
-           
-
-            <div class="on-nav">
-                <span>
-                    <i class="text-muted">{{user.username}}</i> 
-                </span>
-                <span class="text-muted p-2">
-                    |
-                </span> 
-                <span>
-                    <a href="{% url 'logout'%}" class="text-decoration-none text-dark"> Logout</a>
-                </span>
-                 <span class="text-muted p-2">
-                    |
-                </span>
-                <span>
-                    <a href="{% url 'order_history' %}" class="text-decoration-none text-dark" >Orders</a> 
-                </span> 
-                 <span class="text-muted p-2">
-                     |
-                </span>
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="logo">Versity Finds</a>
+            <div class="header-actions">
+                <a href="#"><i class="fas fa-bell"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#"><i class="fas fa-user-circle"></i></a>
             </div>
-             <a class="nav-link dropdown-toggle on-nav pe-4" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-                  <span> My Account</span>
-                    <!-- <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" height="22" /> -->
-            </a>
-                
-            <ul class="dropdown-menu dropdown-menu-end border rounded-0 shadow-md" style="position: absolute; z-index: 1300; right:100px ;top:55px">
-                <li class="rounded-0"><a class="dropdown-item" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="rounded-0"><a class="dropdown-item" href="{% url 'dash' %}">My Account</a>
-                </li>
-                <li  class="rounded-0">
-                    <hr class="dropdown-divider">
-                </li>
-                <li class="rounded-0"><a class="dropdown-item" href="{% url 'track_orders' %}">Track Order</a>
-                 </li>
-                  <li class="rounded-0"><a class="dropdown-item" href="{% url 'buyer_reviews' %}">Product Review</a>
-                 </li>
-                  <li class="rounded-0"><a class="dropdown-item" href="{% url 'wish_lists' %}">Wish list</a>
-                 </li>
-                 
-                   <li  class="rounded-0">
-                    <hr class="dropdown-divider">
-                </li>
-                
-                 <li class="rounded-0"><a class="dropdown-item" href="{% url 'profile' %}">Personal Details</a>
-                 </li>
-                 <li class="rounded-0"><a class="dropdown-item" href="{% url 'address' %}">Address Book</a>
-                 </li>
-                 <li class="rounded-0"><a class="dropdown-item" href="{% url 'account_settings' %}">Security Settings</a>
-                 </li>
-                   <li  class="rounded-0">
-                    <hr class="dropdown-divider">
-                </li>
-                <li class="rounded-0"><a class="dropdown-item" href="{% url 'credit' %}">Credit & Refunds</a>
-                 </li>
-                 <li class="rounded-0"><a class="dropdown-item" href="{% url 'gift_card' %}">Gift Card</a>
-                 </li>
-                 <li class="rounded-0"><a class="dropdown-item" href="{% url 'referrals_earnings' %}">Refferals & earnings </a>
-                 </li>
-                 
-
-                <li  class="rounded-0">
-                    <hr class="dropdown-divider">
-                </li>
-                <li class="rounded-0">
-                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                </li>
-
-
-            </ul>
-
-             <a class="on-nav" href="{% url 'wish_lists' %}">                
-                <i class="fas fa-bell  text-danger "></i>
-            </a>
-            <a class="px-3" href="{% url 'cart' %}">                
-                <i class="fas fa-cog  text-success "></i>
-            </a>
-            
         </div>
-    </div>
-    
-</nav>
+    </header>
 
+    <div class="overlay" onclick="toggleSidebar()"></div>
 
-<div class="offcanvas offcanvas-start bg-light w-100" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="z-index: 1300;">
-  <div class="offcanvas-header bg-white border">
-    <img class="nav-logo" id="menu" src="{% static '/images/logo.png' %}" alt="Logo"  width="130px"height="auto">
-    <!-- Category -->
-    <span id="category" style="display: none;">
-        <a class=" text-decoration-none text-primary" onclick="hide_category()" style="cursor: pointer;"><i class="fa fa-arrow-left text-primary"></i> Main menu </a>
-        <h4 class="fw-bold text-muted">Shop By Category</h4>
-    </span>
-    <!-- end -->
-    <!-- my Account -->
-    <span id="account" style="display: none;">
-        <a class=" text-decoration-none text-primary" onclick="hide_account()" style="cursor: pointer;"><i class="fa fa-arrow-left text-primary"></i> Main menu </a>
-        <h4 class="fw-bold text-muted">My Account</h4>
-    </span>
-    <!-- End my Account -->
-
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-
-  <div class="offcanvas-body p-0 position-relative" id="menus" >
-    <div class="bg-white mt-3 border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100">
-           Home
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a  class="text-decoration-none text-dark w-100 d-flex justify-content-between" onclick="show_category()"  style="cursor: pointer;">
-            <span>Shop by Category</span> <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a href="{% url 'order_history' %}" class="text-decoration-none text-dark w-100">
-            Orders
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a onclick="show_account()"  style="cursor: pointer;" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-          <span>My Account</span>  <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100">
-            Help Center
-        </a>     
-    </div>
-   
-
-
-
-    <div class="bg-white mt-3 border w-100 p-3">
-        <a href="{% url 'cart' %}" class="d-flex justify-content-between text-decoration-none text-dark w-100">
-            <span>
-                <i class="fa fa-shopping-cart  text-success"></i>
-                Cart
-            </span>
-            <span class="text-muted small">
-                 1 item(s)
-            </span>
-        </a>     
-    </div>
-
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'wish_lists' %}" class="d-flex justify-content-between text-decoration-none text-dark w-100">
-            <span>
-                <i class="fa fa-heart  text-danger"></i> 
-                 List
-            </span>
-            <span class="text-muted small"> 
-                 2 item(s)
-            </span>
-
-        </a>     
-    </div>
-    <div class="bg-info border mt-3  w-100 p-3 mb-5">
-        <a href="{% url 'register_business' %}" class="text-decoration-none text-dark fw-bold w-100">
-             <i class="fas fa-store me-2"></i> Sell on SixSkies !
-        </a>     
-    </div>
-
-   
-  </div>
-  <!-- Categoties  -->
-   <div class="offcanvas-body p-0 position-relative" id="categories" style="display:none;">
-    <div class=" mt-3 border w-100 p-3 bg-primary text-white">
-        <a href="" class=" d-flex justify-content-between text-decoration-none  w-100 text-white fw-bold">
-          New in Shop <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-           Laptops <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-            Phones <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-            Computers <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-    <div class="bg-info border w-100 p-3 ">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between fw-bold">
-            FastFood <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-     <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-            Home appliances <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-     <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100 d-flex justify-content-between">
-           clothing <i class="fa fa-arrow-right"></i>
-        </a>     
-    </div>
-
-
-  </div>
-  <!-- end categories -->
-
-  <!-- My Account  -->
-
-<div class="offcanvas-body p-0 position-relative" id="accounts" style="display:none;">
-    <h6 class="mt-3 fw-bold text-muted px-1">Profile Details</h6>
-    <div class="bg-white  border w-100 p-3">
-        <a href="{% url 'profile' %}" class="text-decoration-none text-dark w-100">
-          Personal Details
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a  href="{% url 'address' %}" class="text-decoration-none text-dark w-100 " >
-            <span>Address Book</span> 
-        </a>     
-    </div>
-    <div class="bg-white  border w-100 p-3">
-        <a href="{% url 'account_settings' %}" class="text-decoration-none text-dark w-100">
-            Security Settings
-        </a>     
-    </div>
-
-    <h6 class="mt-3 fw-bold text-muted px-1"> Orders</h6>
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'order_history' %}"  style="cursor: pointer;" class="text-decoration-none text-dark w-100 ">
-          <span>My Orders </span>  
-        </a>     
-    </div>
-    
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'track_orders' %}" class="text-decoration-none text-dark w-100">
-            Track My Order
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'buyer_reviews' %}" class="text-decoration-none text-dark w-100">
-            Product Reviews
-        </a>     
-    </div>
-
-
-    <h6 class="mt-3 fw-bold text-muted">Payments & Credit</h6>
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'credit' %}" class="text-decoration-none text-dark w-100">
-            Credit & Refunds
-        </a>     
-    </div>
-
-   <div class="bg-white border w-100 p-3">
-        <a href="{% url 'gift_card' %}" class="text-decoration-none text-dark w-100">
-            Gift Card
-        </a>     
-    </div>
-
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'referrals_earnings' %}" class="text-decoration-none text-dark w-100">
-            Refferals & earnings
-        </a>     
-    </div>
-
-    <h6 class="mt-3 fw-bold text-muted px-1"> More from SixSkies</h6>
-    <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100">
-            Subscription Plan
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a href="" class="text-decoration-none text-dark w-100">
-            Payment History
-        </a>     
-    </div>
-    <div class="bg-white border w-100 p-3">
-        <a href="{% url 'buyer_support' %}" class="text-decoration-none text-dark w-100">
-           Customer Support 
-        </a>     
-    </div>
-
-   
-  </div>
-  <!-- End My Account -->
-   <div class="offcanvas-footer bg-white border w-100 p-3"  >
-        <div href="" class="d-flex justify-content-between text-decoration-none text-dark ">
-            <span class="text-primary fw-bold fs-5">
-                <i class="fa fa-user-circle  text-primary pe-2"></i> 
-                 {{user.username}}
-            </span>
-            <a href="{% url 'logout' %}" class="text-decoration-none fw-bold">logout</a>
-
-        </div>     
-    </div>
-
-
-  
-</div>
-
-<div class="offcanvas offcanvas-end bg-light w-100" data-bs-backdrop="static" tabindex="-1" id="search" aria-labelledby="staticBackdropLabel" style="z-index:1300">
-  <div class="offcanvas-header bg-white shadow border">
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-     <div class=" d-flex justify-content-between align-items-center  w-100" >
-            <input type="text" class="form-control border border-dark  rounded-3 mx-2" id="floatingInput" placeholder="search ..." name='recipient-name' value="">
-            <i class="fa fa-search  "> </i>
-    </div>
-    
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      I will not close if you click outside of me.
-    </div>
-  </div>
-</div>
-<!-- Sidebar Toggle Button (Beneath Navbar) -->
-{% if messages %}
-        <div class="message-container  ">
-            {% for message in messages %}
-                
-            {% if 'error' in message.tags %}
-                   <div class="alert alert-danger alert-dismissible fade show slider rounded" role="alert">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-            {% else %}
-               <div class="alert alert-{{message.tags}} alert-dismissible fade show slider" role="alert" style="box-shadow: 0 4px 8px rgba(144, 238, 144, 0.6);">
-                 {{message}} {{message.tags}}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-            {% endif %}
-               
-            {% endfor %}
-            
-        </div>
-        {% endif %}
-
-
-
-<div class="container-fluid">
-    <div class="row ">
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
         <!-- Sidebar -->
-    
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Store</div>
+                <a href="#" class="sidebar-link active">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-box"></i> Products
+                </a>
+            </div>
 
-         <div class="col-md-3 sidebar" id="sidebar">
-            {% block nav %}
-            <ul class="nav flex-column px-3 mt-3">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Orders</div>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-shopping-bag"></i> All Orders
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-star"></i> Reviews
+                </a>
+            </div>
 
-                <!-- Products Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Store Front</h5>
-                    <hr>
-                </div>
-                 <a class="nav-link" href="{% url 'add_products' %}"><i class="fas fa-edit"></i> Dashboard </a>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Payments</div>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-credit-card"></i> Transactions
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-gift"></i> Gift Cards
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-users"></i> Referrals
+                </a>
+            </div>
 
-                 <a class="nav-link" href="{% url 'manage_product' %}"><i class="fas fa-plus"></i> Manage product</a>
-                    <!-- <a class="nav-link" href="{% url 'edit_products' %}"><i class="fas fa-edit"></i> view Products</a> -->
-            
-                <!-- Orders Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Orders</h5>
-                    <hr>
-                </div>
-               <a class="nav-link" href="{% url 'orders' %}"><i class="fas fa-box"></i> Orders</a>
-                   <!--  <a class="nav-link" href="{% url 'order_tracking' %}"><i class="fas fa-truck"></i> Order Tracking</a> -->
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'reviews' %}">
-                        <i class="fas fa-star me-2"></i> Reviews
-                    </a>
-                </li>
-            
-               <!-- Payment Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Payment</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'transaction' %}">
-                        <i class="fas fa-credit-card me-2"></i> Sales & Transactions
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'gift_card' %}">
-                        <i class="fas fa-gift me-2"></i> Gift Card
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'referrals_earnings' %}">
-                        <i class="fas fa-users me-2"></i> Referrals & Earnings
-                    </a>
-                </li>
-
-                <!-- Profile Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">Profile</h5>
-                    <hr>
-                </div>
-                 <a class="nav-link" href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Seller Profile</a>
-                    <a class="nav-link" href="{% url 'business_info' %}"><i class="fas fa-building"></i> Business Information</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'address' %}">
-                        <i class="fas fa-address-book me-2"></i> Address Book
-                    </a>
-                </li>
-                <!-- More Section -->
-                <div class="flex-container">
-                    <h5 class="fw-bold text-white">More</h5>
-                    <hr>
-                </div>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'subscription_plan' %}">
-                        <i class="fas fa-headset me-2"></i> Subscription Plan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'payment_history' %}">
-                        <i class="fas fa-history me-2"></i> Payment History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{% url 'buyer_support' %}">
-                        <i class="fas fa-life-ring me-2"></i> Support
-                    </a>
-                </li>
-
-            
-
-            {% endblock %}
-
-            
-
-        </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Settings</div>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-building"></i> Business Info
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-life-ring"></i> Support
+                </a>
+            </div>
+        </aside>
 
         <!-- Main Content -->
-        <div class="col-md-9 content ">
-
-            <div class="inner">
-
-               
-
-            {% block content %}
-            {% endblock content %}
+        <main class="main-content">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-label">Total Sales</div>
+                    <div class="stat-value">R12,450</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-label">Orders</div>
+                    <div class="stat-value">156</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-label">Products</div>
+                    <div class="stat-value">42</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-label">Rating</div>
+                    <div class="stat-value">4.8</div>
+                </div>
             </div>
-        </div>
+
+            <!-- Recent Orders -->
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Recent Orders</h2>
+                    <a href="#" class="btn btn-outline">View All</a>
+                </div>
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#12345</td>
+                            <td>John Doe</td>
+                            <td>Laptop Stand</td>
+                            <td>R250</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>#12346</td>
+                            <td>Jane Smith</td>
+                            <td>Study Notes</td>
+                            <td>R50</td>
+                            <td><span class="badge badge-warning">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>#12347</td>
+                            <td>Mike Johnson</td>
+                            <td>Calculator</td>
+                            <td>R120</td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Quick Actions</h2>
+                </div>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fas fa-chart-bar"></i> View Analytics
+                    </a>
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </div>
+            </div>
+        </main>
     </div>
-</div>
 
-<script src="{% static 'css/bootstrap.bundle.min.js' %}"></script>
-<script type="text/javascript">
-    function show_category(){
-        var cat = document.getElementById('category');
-        var cat1 = document.getElementById('categories');
-        var men = document.getElementById('menu');
-        var men1 = document.getElementById('menus');
-
-        men.style.display = 'none';
-        men1.style.display = 'none';
-        cat.style.display = 'block';
-        cat1.style.display = 'block';
-    }
-    function hide_category(){
-        var cat = document.getElementById('category');
-        var cat1 = document.getElementById('categories');
-        var men = document.getElementById('menu');
-        var men1 = document.getElementById('menus');
-
-        men.style.display = 'block';
-        men1.style.display = 'block';
-        cat.style.display = 'none';
-        cat1.style.display = 'none';
-    }
-      function show_account(){
-        var cat = document.getElementById('account');
-        var cat1 = document.getElementById('accounts');
-        var men = document.getElementById('menu');
-        var men1 = document.getElementById('menus');
-
-        men.style.display = 'none';
-        men1.style.display = 'none';
-        cat.style.display = 'block';
-        cat1.style.display = 'block';
-    }
-    function hide_account(){
-        var cat = document.getElementById('account');
-        var cat1 = document.getElementById('accounts');
-        var men = document.getElementById('menu');
-        var men1 = document.getElementById('menus');
-
-        men.style.display = 'block';
-        men1.style.display = 'block';
-        cat.style.display = 'none';
-        cat1.style.display = 'none';
-    }
-</script>
-
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

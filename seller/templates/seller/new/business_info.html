@@ -1,358 +1,601 @@
 {% extends 'seller/base.html' %}
-
 {% load static %}
 
+{% block links %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
 {% block styles %}
-<style>
-    .add-business-container {
-        max-width: 900px;
-        background: #f8f9fa;
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        margin: 20px auto;
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
     }
+
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
+
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Form Container */
+    .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Form Sections */
+    .form-section {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 6px var(--shadow);
+        margin-bottom: 1.5rem;
+        border: none;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--primary-teal);
+        display: flex;
+        align-items: center;
+    }
+
+    .section-title i {
+        margin-right: 0.5rem;
+        color: var(--primary-teal);
+        font-size: 1.2rem;
+    }
+
+    /* Logo Preview */
+    .logo-upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
     .logo-preview {
         width: 120px;
         height: 120px;
         object-fit: cover;
-        border-radius: 10px;
-        border: 2px solid #007bff;
-        display: block;
+        border-radius: 12px;
+        border: 3px solid var(--primary-teal);
+        box-shadow: 0 4px 12px var(--shadow);
+        transition: transform 0.3s;
     }
-    .form-section {
-        background: white;
-        padding: 25px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+    .logo-preview:hover {
+        transform: scale(1.05);
     }
-    .section-title {
-        color: #495057;
+
+    /* Form Controls */
+    .form-label {
+        font-size: 0.875rem;
         font-weight: 600;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #007bff;
-        padding-bottom: 10px;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
     }
+
+    .form-control, .form-select {
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        transition: all 0.3s;
+        background-color: var(--white);
+        color: var(--text-dark);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+        outline: none;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Map Container */
     .map-container {
         height: 400px;
-        border-radius: 10px;
-        margin-top: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px var(--shadow);
+        margin-top: 1rem;
     }
+
     .coordinate-inputs {
         display: flex;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 1rem;
+        margin-top: 1rem;
     }
+
     .coordinate-inputs input {
         flex: 1;
     }
-    .btn-custom {
-        background: linear-gradient(135deg, #007bff, #0056b3);
+
+    /* Buttons */
+    .btn-primary-custom {
+        background: var(--primary-teal);
+        color: var(--white);
         border: none;
-        border-radius: 25px;
-        padding: 12px 30px;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
         font-weight: 600;
-        transition: all 0.3s ease;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 168, 168, 0.2);
     }
-    .btn-custom:hover {
+
+    .btn-primary-custom:hover {
+        background: #008888;
+        color: var(--white);
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        box-shadow: 0 6px 16px rgba(0, 168, 168, 0.3);
     }
-</style>
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    .btn-outline-custom {
+        background: transparent;
+        border: 1.5px solid var(--primary-teal);
+        color: var(--primary-teal);
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-custom:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    .btn-upload {
+        background: rgba(0, 168, 168, 0.1);
+        color: var(--primary-teal);
+        border: 2px dashed var(--primary-teal);
+        padding: 0.5rem 1.5rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .btn-upload:hover {
+        background: rgba(0, 168, 168, 0.2);
+        border-color: #008888;
+    }
+
+    /* Input File Custom */
+    input[type="file"] {
+        display: none;
+    }
+
+    /* Info Box */
+    .info-box {
+        background: rgba(0, 168, 168, 0.05);
+        border-left: 4px solid var(--primary-teal);
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+    }
+
+    .info-box i {
+        color: var(--primary-teal);
+        margin-right: 0.5rem;
+    }
+
+    .info-box p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            font-size: 1.25rem;
+        }
+
+        .form-section {
+            padding: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+        }
+
+        .logo-preview {
+            width: 100px;
+            height: 100px;
+        }
+
+        .coordinate-inputs {
+            flex-direction: column;
+        }
+
+        .map-container {
+            height: 300px;
+        }
+    }
+
+    /* Remove Bootstrap defaults */
+    .card {
+        border: none;
+    }
 {% endblock %}
 
 {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'manage_product' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'orders' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>Orders</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-currency-exchange"></i>
-                <span>Sales & Transactions</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-            <a href="{% url 'report' business.id
-             %} " class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-            <a href="{% url 'edit_business' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Edit Business">
-               <i class="bi bi-building"></i>
-                <span>Business information</span>
-            </a>
-            <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-            <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-        {% endblock %}
+    <div class="nav-items">
+        <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'manage_product' business.id %}" class="nav-link">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+        </a>
+        <a href="{% url 'orders' business.id %}" class="nav-link">
+            <i class="bi bi-cart"></i>
+            <span>Orders</span>
+            <span class="badge bg-primary ms-auto"></span>
+        </a>
+        <a href="{% url 'transaction' business.id %}" class="nav-link">
+            <i class="bi bi-currency-exchange"></i>
+            <span>Transactions</span>
+        </a>
+        <a href="{% url 'customer' business.id %}" class="nav-link">
+            <i class="bi bi-people"></i>
+            <span>Customers</span>
+        </a>
+        <a href="{% url 'report' business.id %}" class="nav-link">
+            <i class="bi bi-bar-chart"></i>
+            <span>Reports</span>
+        </a>
+        <a href="{% url 'business_info' business.id %}" class="nav-link active">
+            <i class="bi bi-building"></i>
+            <span>Business Info</span>
+        </a>
+        <a href="{% url 'settings' business.id %}" class="nav-link">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        <a href="#" class="nav-link" onclick="confirmLogout(event)">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+{% endblock %}
 
-{% load static %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="add-business-container">
-        <h2 class="text-center mb-4">Update Business Details</h2>
-        <p class="text-center text-muted mb-4">Update your business information on SixSkies.</p>
+    <div class="container-fluid px-3 py-3">
+        <div class="form-container">
+            <h1 class="page-header">Business Information</h1>
+            <p class="page-subtitle">Update your business details and keep your profile up to date</p>
 
-        <form action="{% url 'edit_business' business.id %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+            <form action="{% url 'edit_business' business.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-            <!-- Business Logo -->
-            <div class="form-section">
-                <h5 class="section-title">Business Logo</h5>
-                <div class="mb-3 text-center">
-                    <input type="file" class="form-control" id="businessLogo" name="image" accept="image/*" style="background-color:inherit; color: inherit;">
-                    <div class="mt-3">
+                <!-- Business Logo -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-image"></i>
+                        Business Logo
+                    </h5>
+                    <div class="logo-upload-container">
                         {% if business.image %}
-                            <img id="logoPreview" class="logo-preview" src="{{ business.image.url }}" alt="Business Logo Preview">
+                            <img id="logoPreview" class="logo-preview" src="{{ business.image.url }}" alt="Business Logo">
                         {% else %}
-                            <img id="logoPreview" class="logo-preview" src="{% static 'images/default_business.png' %}" alt="Business Logo Preview">
+                            <img id="logoPreview" class="logo-preview" src="{% static 'images/default_business.png' %}" alt="Business Logo">
                         {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Basic Information -->
-            <div class="form-section">
-                <h5 class="section-title">Basic Information</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="businessName" class="form-label fw-bold">Business Name</label>
-                        <input type="text" class="form-control" id="businessName" name="name" value="{{ business.name }}" required style="background-color:inherit; color: inherit;">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="businessType" class="form-label fw-bold">Business Type</label>
-                        <select class="form-control" id="businessType" name="business_type" required style="background-color:inherit; color: inherit;">
-                            <option value="">Select Type</option>
-                            <option value="sole_proprietorship" {% if business.business_type == 'sole_proprietorship' %}selected{% endif %}>Sole Proprietorship</option>
-                            <option value="partnership" {% if business.business_type == 'partnership' %}selected{% endif %}>Partnership</option>
-                            <option value="corporation" {% if business.business_type == 'corporation' %}selected{% endif %}>Corporation</option>
-                            <option value="limited_liability" {% if business.business_type == 'limited_liability' %}selected{% endif %}>Limited Liability Company (LLC)</option>
-                        </select>
+                        <label for="businessLogo" class="btn-upload">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Choose Image
+                        </label>
+                        <input type="file" id="businessLogo" name="image" accept="image/*">
+                        <small class="text-muted">Recommended: Square image, at least 300x300px</small>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="businessDescription" class="form-label fw-bold">Business Description</label>
-                    <textarea class="form-control" id="businessDescription" name="description" rows="4" required style="background-color:inherit; color: inherit;">{{ business.description }}</textarea>
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Basic Information
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="businessName" class="form-label">Business Name *</label>
+                            <input type="text" class="form-control" id="businessName" name="name" value="{{ business.name }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="businessType" class="form-label">Business Type *</label>
+                            <select class="form-select" id="businessType" name="business_type" required>
+                                <option value="">Select Type</option>
+                                <option value="sole_proprietorship" {% if business.business_type == 'sole_proprietorship' %}selected{% endif %}>Sole Proprietorship</option>
+                                <option value="partnership" {% if business.business_type == 'partnership' %}selected{% endif %}>Partnership</option>
+                                <option value="corporation" {% if business.business_type == 'corporation' %}selected{% endif %}>Corporation</option>
+                                <option value="limited_liability" {% if business.business_type == 'limited_liability' %}selected{% endif %}>Limited Liability Company (LLC)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="businessDescription" class="form-label">Business Description *</label>
+                        <textarea class="form-control" id="businessDescription" name="description" rows="4" required>{{ business.description }}</textarea>
+                        <small class="text-muted">Describe what your business does and what makes it unique</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="registrationNumber" class="form-label">Registration Number</label>
+                            <input type="text" class="form-control" id="registrationNumber" name="registration_number" value="{{ business.registration_number }}" placeholder="Optional">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="businessCategory" class="form-label">Business Category *</label>
+                            <select class="form-select" id="businessCategory" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="dropship" {% if business.category == 'dropship' %}selected{% endif %}>Dropship</option>
+                                <option value="food" {% if business.category == 'food' %}selected{% endif %}>Food & Beverages</option>
+                                <option value="clothing" {% if business.category == 'clothing' %}selected{% endif %}>Clothing</option>
+                                <option value="technology" {% if business.category == 'technology' %}selected{% endif %}>Technology</option>
+                                <option value="other" {% if business.category == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="registrationNumber" class="form-label fw-bold">Registration Number</label>
-                        <input type="text" class="form-control" id="registrationNumber" name="registration_number" value="{{ business.registration_number }}" style="background-color:inherit; color: inherit;">
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-phone"></i>
+                        Contact Information
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="businessPhone" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="businessPhone" name="phone" value="{{ business.phone }}" placeholder="+27 XX XXX XXXX" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="businessEmail" class="form-label">Business Email *</label>
+                            <input type="email" class="form-control" id="businessEmail" name="email" value="{{ business.email }}" placeholder="business@example.com" required>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="businessCategory" class="form-label fw-bold">Business Category</label>
-                        <select class="form-control" id="businessCategory" name="category" required style="background-color:inherit; color: inherit;">
-                            <option value="">Select Category</option>
-                            <option value="dropship" {% if business.category == 'dropship' %}selected{% endif %}>Dropship</option>
-                            <option value="food" {% if business.category == 'food' %}selected{% endif %}>Food & Beverages</option>
-                            <option value="clothing" {% if business.category == 'clothing' %}selected{% endif %}>Clothing</option>
-                            <option value="technology" {% if business.category == 'technology' %}selected{% endif %}>Technology</option>
-                            <option value="other" {% if business.category == 'other' %}selected{% endif %}>Other</option>
-                        </select>
+                    <div class="mb-3">
+                        <label for="businessWebsite" class="form-label">Website</label>
+                        <input type="url" class="form-control" id="businessWebsite" name="website" value="{{ business.website }}" placeholder="https://www.example.com">
                     </div>
                 </div>
-            </div>
 
-            <!-- Contact Information -->
-            <div class="form-section">
-                <h5 class="section-title">Contact Information</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="businessPhone" class="form-label fw-bold">Phone Number</label>
-                        <input type="tel" class="form-control" id="businessPhone" name="phone" value="{{ business.phone }}" required style="background-color:inherit; color: inherit;">
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Address Information
+                    </h5>
+                    {% for address in business.addresses.all %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="addressLine1" class="form-label">Address Line 1 *</label>
+                            <input type="text" class="form-control" id="addressLine1" name="address_line_1" value="{{ address.address_line_1 }}" placeholder="Street address" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="addressLine2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control" id="addressLine2" name="address_line_2" value="{{ address.address_line_2 }}" placeholder="Apartment, suite, etc.">
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="businessEmail" class="form-label fw-bold">Business Email</label>
-                        <input type="email" class="form-control" id="businessEmail" name="email" value="{{ business.email }}" required style="background-color:inherit; color: inherit;">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="suburb" class="form-label">Suburb *</label>
+                            <input type="text" class="form-control" id="suburb" name="suburb" value="{{ address.suburb }}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="city" class="form-label">City *</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="postalCode" class="form-label">Postal Code *</label>
+                            <input type="text" class="form-control" id="postalCode" name="postal_code" value="{{ address.postal_code }}" required>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                <div class="mb-3">
-                    <label for="businessWebsite" class="form-label fw-bold">Website (Optional)</label>
-                    <input type="url" class="form-control" id="businessWebsite" name="website" placeholder="Enter business website URL" style="background-color:inherit; color: inherit;">
-                </div>
-            </div>
 
-            <!-- Address Information -->
-            <div class="form-section">
-                <h5 class="section-title">Address Information</h5>
-                {% for address in business.addresses.all %}
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="addressLine1" class="form-label fw-bold">Address Line 1</label>
-                        <input type="text" class="form-control" id="addressLine1" name="address_line_1" value="{{ address.address_line_1 }}" required style="background-color:inherit; color: inherit;">
+                <!-- Location Coordinates -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-globe"></i>
+                        Location Coordinates
+                    </h5>
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Click on the map to set your business location, or use the "Get Current Location" button to automatically detect your position.</p>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="addressLine2" class="form-label fw-bold">Address Line 2</label>
-                        <input type="text" class="form-control" id="addressLine2" name="address_line_2" value="{{ address.address_line_2 }}" style="background-color:inherit; color: inherit;">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="suburb" class="form-label fw-bold">Suburb</label>
-                        <input type="text" class="form-control" id="suburb" name="suburb" value="{{ address.suburb }}" required style="background-color:inherit; color: inherit;">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="city" class="form-label fw-bold">City</label>
-                        <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}" required style="background-color:inherit; color: inherit;">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="postalCode" class="form-label fw-bold">Postal Code</label>
-                        <input type="text" class="form-control" id="postalCode" name="postal_code" value="{{ address.postal_code }}" required style="background-color:inherit; color: inherit;">
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Coordinates and Map -->
-            <div class="form-section">
-                <h5 class="section-title">Location Coordinates</h5>
-                <div class="mb-3">
-                    <button type="button" class="btn btn-outline-primary mb-3" id="getLocationBtn">Get Current Location</button>
+                    <button type="button" class="btn btn-outline-custom mb-3" id="getLocationBtn">
+                        <i class="fas fa-location-arrow me-2"></i>Get Current Location
+                    </button>
                     <div id="map" class="map-container"></div>
                     <div class="coordinate-inputs">
-                        <input type="number" step="any" class="form-control" id="latitude" name="latitude" placeholder="Latitude" {% if business.addresses.first.latitude %}value="{{ business.addresses.first.latitude }}"{% endif %} required>
-                        <input type="number" step="any" class="form-control" id="longitude" name="longitude" placeholder="Longitude" {% if business.addresses.first.longitude %}value="{{ business.addresses.first.longitude }}"{% endif %} required>
+                        <div class="flex-fill">
+                            <label for="latitude" class="form-label">Latitude *</label>
+                            <input type="number" step="any" class="form-control" id="latitude" name="latitude" placeholder="-26.2041" {% if business.addresses.first.latitude %}value="{{ business.addresses.first.latitude }}"{% endif %} required>
+                        </div>
+                        <div class="flex-fill">
+                            <label for="longitude" class="form-label">Longitude *</label>
+                            <input type="number" step="any" class="form-control" id="longitude" name="longitude" placeholder="28.0473" {% if business.addresses.first.longitude %}value="{{ business.addresses.first.longitude }}"{% endif %} required>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Operating Hours -->
-            <div class="form-section">
-                <h5 class="section-title">Operating Hours</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="openingHour" class="form-label fw-bold">Opening Hour</label>
-                        <input type="time" class="form-control" id="openingHour" name="open_time" value="{{ business.open_time }}" required style="background-color:inherit; color: inherit;">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="closingHour" class="form-label fw-bold">Closing Hour</label>
-                        <input type="time" class="form-control" id="closingHour" name="close_time" value="{{ business.close_time }}" required style="background-color:inherit; color: inherit;">
+                <!-- Operating Hours -->
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-clock"></i>
+                        Operating Hours
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="openingHour" class="form-label">Opening Time *</label>
+                            <input type="time" class="form-control" id="openingHour" name="open_time" value="{{ business.open_time }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="closingHour" class="form-label">Closing Time *</label>
+                            <input type="time" class="form-control" id="closingHour" name="close_time" value="{{ business.close_time }}" required>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Submit Button -->
-            <div class="text-center">
-                <button type="submit" class="btn btn-custom">Update Business</button>
-            </div>
-        </form>
+                <!-- Submit Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="fas fa-save me-2"></i>Update Business Information
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-// Leaflet JS
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize map
-        var map = L.map('map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg
+{% endblock %}
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map
+            var map = L.map('map').setView([-26.2041, 28.0473], 10); // Default to Johannesburg
 
-        var marker;
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        // Set initial marker if coordinates exist
-        var latInput = document.getElementById('latitude');
-        var lngInput = document.getElementById('longitude');
-        if (latInput.value && lngInput.value) {
-            var lat = parseFloat(latInput.value);
-            var lng = parseFloat(lngInput.value);
-            marker = L.marker([lat, lng]).addTo(map);
-            map.setView([lat, lng], 15);
-        }
+            var marker;
 
-        // Update coordinates when clicking on map
-        map.on('click', function(e) {
-            var lat = e.latlng.lat;
-            var lng = e.latlng.lng;
-
-            if (marker) {
-                marker.setLatLng([lat, lng]);
-            } else {
+            // Set initial marker if coordinates exist
+            var latInput = document.getElementById('latitude');
+            var lngInput = document.getElementById('longitude');
+            if (latInput.value && lngInput.value) {
+                var lat = parseFloat(latInput.value);
+                var lng = parseFloat(lngInput.value);
                 marker = L.marker([lat, lng]).addTo(map);
+                map.setView([lat, lng], 15);
             }
 
-            latInput.value = lat.toFixed(6);
-            lngInput.value = lng.toFixed(6);
-        });
+            // Update coordinates when clicking on map
+            map.on('click', function(e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
 
-        // Get current location
-        document.getElementById('getLocationBtn').addEventListener('click', function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-
-                    if (marker) {
-                        marker.setLatLng([lat, lng]);
-                    } else {
-                        marker = L.marker([lat, lng]).addTo(map);
-                    }
-
-                    map.setView([lat, lng], 15);
-                    latInput.value = lat.toFixed(6);
-                    lngInput.value = lng.toFixed(6);
-                }, function(error) {
-                    alert('Error getting location: ' + error.message);
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        });
-
-        // Update marker when coordinates are manually entered
-        latInput.addEventListener('input', updateMarkerFromInputs);
-        lngInput.addEventListener('input', updateMarkerFromInputs);
-
-        function updateMarkerFromInputs() {
-            var lat = parseFloat(latInput.value);
-            var lng = parseFloat(lngInput.value);
-            if (!isNaN(lat) && !isNaN(lng)) {
                 if (marker) {
                     marker.setLatLng([lat, lng]);
                 } else {
                     marker = L.marker([lat, lng]).addTo(map);
                 }
-                map.setView([lat, lng], 15);
-            }
-        }
 
-        // Logo preview
-        document.getElementById('businessLogo').addEventListener('change', function(event) {
-            let file = event.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    let preview = document.getElementById('logoPreview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+                latInput.value = lat.toFixed(6);
+                lngInput.value = lng.toFixed(6);
+            });
+
+            // Get current location
+            document.getElementById('getLocationBtn').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+
+                        if (marker) {
+                            marker.setLatLng([lat, lng]);
+                        } else {
+                            marker = L.marker([lat, lng]).addTo(map);
+                        }
+
+                        map.setView([lat, lng], 15);
+                        latInput.value = lat.toFixed(6);
+                        lngInput.value = lng.toFixed(6);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Location Found!',
+                            text: 'Your current location has been set.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }, function(error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Location Error',
+                            text: 'Could not get your location: ' + error.message
+                        });
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Supported',
+                        text: 'Geolocation is not supported by this browser.'
+                    });
+                }
+            });
+
+            // Update marker when coordinates are manually entered
+            latInput.addEventListener('input', updateMarkerFromInputs);
+            lngInput.addEventListener('input', updateMarkerFromInputs);
+
+            function updateMarkerFromInputs() {
+                var lat = parseFloat(latInput.value);
+                var lng = parseFloat(lngInput.value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng]).addTo(map);
+                    }
+                    map.setView([lat, lng], 15);
+                }
             }
+
+            // Logo preview
+            document.getElementById('businessLogo').addEventListener('change', function(event) {
+                let file = event.target.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let preview = document.getElementById('logoPreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         });
 
         // Logout confirmation
@@ -363,16 +606,14 @@
                 text: 'Are you sure you want to logout?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
+                confirmButtonColor: '#00A8A8',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, logout!'
+                confirmButtonText: 'Yes, logout'
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = event.currentTarget.href;
                 }
             });
         }
-    });
-</script>
-
+    </script>
 {% endblock %}
