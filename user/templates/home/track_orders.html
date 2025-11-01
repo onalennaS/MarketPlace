@@ -1,108 +1,224 @@
-{% extends 'products/shop_base2.html' %}
+{% extends 'home/base.html' %}
 
 {% block title %}Track Orders{% endblock %}
 
 {% block styles %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<style type="text/css">
+<style>
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .track-order-container {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-            font-size: 16px;
-            line-height: 24px;
-            font-family: 'Arial', sans-serif;
-            color: #555;
-            background: #fff;
-            border-radius: 10px;
-        }
-        .progress {
-            height: 25px;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .progress-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        .icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-        .text-muted {
-            color: #6c757d !important;
-        }
-        .status-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .status-step {
-            text-align: center;
-            flex: 1;
-            position: relative;
-        }
-        .status-step i {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: #6c757d;
-        }
-        .status-step.pending.active i {
-        --bs-bg-opacity: 1;
-        color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        }
-        .status-step.pending.active span {
-            --bs-bg-opacity: 1;
-            color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-            font-weight: bold;
-        }
-        .status-step.processing.active i {
-        --bs-bg-opacity: 1;
-        color: rgba(var(--bs-warning-rgb),var(--bs-bg-opacity)) !important;
-        }
-        .status-step.processing.active span {
-            --bs-bg-opacity: 1;
-            color: rgba(var(--bs-warning-rgb),var(--bs-bg-opacity)) !important;
-            font-weight: bold;
-        }
-          .status-step.delivery.active i {
-            --bs-bg-opacity: 1;
-            color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
-        }
-        .status-step.delivery.active span {
-             --bs-bg-opacity: 1;
-            color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity)) !important;
-            font-weight: bold;
-        }
-        .status-step.delivered.active i {
-         --bs-bg-opacity: 1;
-            color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity)) !important;
-        }
-        .status-step.delivered.active span {
-             --bs-bg-opacity: 1;
-            color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity)) !important;
-            font-weight: bold;
-        }
-        .status-step span {
-            display: block;
-            font-size: 14px;
-            color: #6c757d;
-        }
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.profile-card:hover {
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    background-color: var(--base-white);
+    color: var(--text-dark-gray);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.card-header i {
+    color: var(--primary-teal);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.card-header h5, .card-header h6 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Progress bar styling */
+.progress {
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Status steps */
+.status-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.status-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.status-step i {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.status-step.pending.active i {
+    color: var(--text-dark-gray) !important;
+}
+
+.status-step.pending.active span {
+    color: var(--text-dark-gray) !important;
+    font-weight: bold;
+}
+
+.status-step.processing.active i {
+    color: #ffc107 !important;
+}
+
+.status-step.processing.active span {
+    color: #ffc107 !important;
+    font-weight: bold;
+}
+
+.status-step.delivery.active i {
+    color: #007bff !important;
+}
+
+.status-step.delivery.active span {
+    color: #007bff !important;
+    font-weight: bold;
+}
+
+.status-step.delivered.active i {
+    color: var(--accent-green) !important;
+}
+
+.status-step.delivered.active span {
+    color: var(--accent-green) !important;
+    font-weight: bold;
+}
+
+.status-step span {
+    display: block;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.btn-dark {
+    background-color: var(--text-dark-gray);
+    color: white;
+}
+
+.btn-dark:hover {
+    background-color: #333;
+    transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .card-header {
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .status-steps {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
 </style>
 {% endblock %}
 

@@ -6,67 +6,192 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    
-    /* Inherit the font family from the sidebar */
-    .card {
-        background-color: transparent; /* Removes the background color */
-        border: 1px solid #ddd; /* Adds a subtle border for structure */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a soft shadow */
-        transition: border-color 0.3s ease, transform 0.3s ease;
-        font-family: Arial, sans-serif; /* Ensure the card text matches sidebar text */
-    }
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-    /* Apply hover effect */
-    .card:hover {
-        transform: scale(1.02);
-        border-color: #0f4f8a; /* Subtle highlight on hover */
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.checkout-container {
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.breadcrumb-item a {
+    color: var(--text-dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-teal);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-dark-gray);
+}
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.profile-card:hover {
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    background-color: var(--base-white);
+    color: var(--text-dark-gray);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.card-header i {
+    color: var(--primary-teal);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.card-header h5, .card-header h6 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.btn-custom {
+    background-color: var(--primary-teal);
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #008B8B;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+}
+
+.btn-success {
+    background-color: var(--accent-green);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+    transform: translateY(-1px);
+}
+
+.btn-outline-dark {
+    background-color: transparent;
+    color: var(--text-dark-gray);
+    border: 1px solid var(--text-dark-gray);
+}
+
+.btn-outline-dark:hover {
+    background-color: var(--text-dark-gray);
+    color: white;
+}
+
+.btn-outline-danger {
+    background-color: transparent;
+    color: #E74C3C;
+    border: 1px solid #E74C3C;
+}
+
+.btn-outline-danger:hover {
+    background-color: #E74C3C;
+    color: white;
+}
+
+.form-check-label {
+    margin-left: 10px;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-right: 120px solid transparent;
+    border-bottom: 120px solid white;
+    transform: scaleY(-1);
+    margin-left: -25px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
     }
 
     .card-header {
-        color: #333; /* Ensures good contrast */
-        font-weight: normal; /* Heading is not bold */
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
 
-    .card-title {
-        display: flex;
-        align-items: center;
-        font-weight: normal; /* Ensures card titles are not bold */
+    .card-body {
+        padding: 15px;
     }
-
-    .card-title i {
-        margin-right: 8px;
-    }
-
-    .btn-custom {
-        background-color: #165baa;
-        color: white;
-        border: none;
-    }
-    
-    .btn-custom:hover {
-        background-color: #0f4f8a;
-    }
-
-    .form-check-label {
-        margin-left: 10px;
-    }
-
-     .triangle {
-            width: 0;
-            height: 0;
-            border-right: 120px solid transparent; /* Left side of the triangle */
-            border-bottom: 120px solid white; /* Bottom side of the triangle */
-            transform: scaleY(-1);
-
-            margin-left: -25px;
-        }
-     .hidden {
-            display: none;
-        }
+}
 </style>
 
-{% block nav %}
-{% endblock %}
+{% block nav %}{% endblock %}
 <div class="container ">
     <!-- Breadcrumb navigation -->
    
