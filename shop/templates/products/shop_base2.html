@@ -459,9 +459,10 @@
                     <a href="#" class="text-decoration-none text-dark me-3">About</a>
                     <a href="#" class="text-decoration-none text-dark me-3">Contact Us</a>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" class="text-decoration-none text-primary logout-link">Logout</a>
+                        <a href="{% url 'dash' %}" class="text-decoration-none text-dark me-3" aria-label="My Account">My Account</a>
+                        <a href="{% url 'logout' %}" class="text-decoration-none text-primary logout-link">Logout</a>
                     {% else %}
-                    <a href="{% url 'signin' %}" class="text-decoration-none text-primary">Login</a>
+                        <a href="{% url 'signin' %}" class="text-decoration-none text-primary">Login</a>
                     {% endif %}
                 </div>
             </div>

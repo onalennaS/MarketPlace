@@ -800,6 +800,20 @@ body {
 .product-card {
     animation-duration: 0.4s; /* Faster animations */
 }
+
+/* Sell on VersityFinds promotional banner */
+.sell-banner {
+    background: linear-gradient(90deg, rgba(0,168,168,0.06), rgba(26,61,124,0.02));
+    border: 1px solid rgba(0,168,168,0.08);
+}
+.btn-sell {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--light);
+    border: none;
+}
+@media (max-width: 576px) {
+    .sell-banner { flex-direction: column; gap: 0.75rem; text-align: center; }
+}
 {% endblock %}
 
 {% block secend_nav %}
@@ -821,6 +835,25 @@ body {
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sell on VersityFinds Promo -->
+<section class="container mb-3">
+    <div class="sell-banner p-3 rounded-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg,#00A8A8,#2ECC71); color: white; width:56px; height:56px;">
+                <i class="bi bi-cash-coin" style="font-size:1.35rem;"></i>
+            </div>
+            <div>
+                <h4 class="mb-1" style="margin:0;">Sell on VersityFinds — Earn from day one</h4>
+                <p class="mb-0 text-muted small">List in under 2 minutes, pay 0% commission, and reach thousands of students on your campus. Get featured for a limited time when you sign up today.</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'seller_landing_page' %}" class="btn btn-lg btn-sell">Start Earning <i class="bi bi-arrow-right ms-1"></i></a>
+            <a href="{% url 'seller_landing_page' %}#how-it-works" class="btn btn-outline-primary">How it works</a>
         </div>
     </div>
 </section>

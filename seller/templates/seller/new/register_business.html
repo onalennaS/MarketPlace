@@ -8,174 +8,398 @@
 {% block content %}
 
 <style>
+    :root {
+        --primary: #00A8A8;
+        --primary-dark: #008888;
+        --accent: #2ECC71;
+        --accent-dark: #27AE60;
+        --base: #1A3D7C;
+        --base-dark: #152F5F;
+        --bg: #F9F9F9;
+        --card: #FFFFFF;
+        --text: #333333;
+        --muted: #666666;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--base) 0%, var(--primary) 100%);
+        color: white;
+        padding: 3rem 0;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%);
+    }
+
+    .page-header-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.95;
+    }
+
+    .home-button {
+        background: white;
+        color: var(--primary);
+        border: none;
+        border-radius: 50px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 700;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .home-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        color: var(--primary-dark);
+    }
+
+    .dashboard-notice {
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
+        border-left: 4px solid var(--primary);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .dashboard-notice strong {
+        color: var(--base);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid var(--primary);
+    }
+
+    .section-header h4 {
+        font-weight: 700;
+        color: var(--base);
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .section-header i {
+        color: var(--primary);
+        font-size: 1.75rem;
+    }
+
     .business-card {
         transition: all 0.3s ease;
-        border: 1px solid rgba(0,0,0,0.125);
-        border-radius: 12px;
+        border: 2px solid rgba(0, 168, 168, 0.1);
+        border-radius: 16px;
         overflow: hidden;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        height: 100%;
     }
     
     .business-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 1rem 3rem rgba(0,0,0,0.1)!important;
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 168, 168, 0.2);
+        border-color: var(--primary);
     }
-    
-    .border-dashed {
-        border: 2px dashed #dee2e6!important;
-        border-radius: 12px;
+
+    .business-card-clickable {
+        cursor: pointer;
+    }
+
+    .business-card-disabled {
+        cursor: not-allowed;
+        opacity: 0.85;
+    }
+
+    .business-card-disabled:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
     
     .status-badge {
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         z-index: 2;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.5px;
         border-radius: 20px;
-        padding: 5px 10px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+
+    .badge.bg-success {
+        background: var(--accent) !important;
+    }
+
+    .badge.bg-warning {
+        background: #FFA500 !important;
+    }
+
+    .badge.bg-danger {
+        background: #E74C3C !important;
     }
     
-    .hover-scale {
-        transition: transform 0.3s ease;
+    .card-title {
+        color: var(--base);
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .category-tag {
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .category-tag i {
+        color: var(--primary);
+    }
+
+    .category-tag span {
+        color: var(--text);
+        font-weight: 500;
+    }
+
+    .btn-details {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-details:hover {
+        background: var(--primary-dark);
+        color: white;
+        transform: translateX(3px);
+    }
+
+    .business-id {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 500;
     }
     
-    .hover-scale:hover {
-        transform: scale(1.05);
+    .add-business-card {
+        border: 3px dashed var(--primary);
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.05), rgba(46, 204, 113, 0.05));
+        transition: all 0.3s ease;
+        height: 100%;
+        min-height: 280px;
     }
-    
+
+    .add-business-card:hover {
+        transform: scale(1.03);
+        border-color: var(--accent);
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
+        box-shadow: 0 8px 25px rgba(46, 204, 113, 0.2);
+    }
+
     .icon-wrapper {
-        height: 60px;
-        width: 60px;
+        height: 80px;
+        width: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+    }
+
+    .icon-wrapper i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .add-business-title {
+        color: var(--base);
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+
+    .add-business-text {
+        color: var(--muted);
+        font-size: 0.95rem;
     }
     
     .no-businesses-card {
-        border-radius: 15px;
-        background-color: #f8f9fa;
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        border: 2px dashed var(--primary);
+        padding: 3rem;
     }
-    
-    /* New styles for the added features */
-    .home-button {
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        border: none;
-        border-radius: 30px;
-        padding: 12px 25px;
+
+    .no-businesses-card i {
+        color: var(--primary);
+        font-size: 4rem;
+    }
+
+    .no-businesses-card h3 {
+        color: var(--base);
+        font-weight: 700;
+        margin-top: 1.5rem;
+    }
+
+    .no-businesses-card p {
+        color: var(--muted);
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
         color: white;
-        font-weight: 600;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
         transition: all 0.3s;
-        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 8px 20px rgba(0, 168, 168, 0.3);
     }
-    
-    .home-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
-        background: linear-gradient(135deg, #2980b9, #2471a3);
+
+    .btn-register:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 12px 30px rgba(0, 168, 168, 0.4);
+        color: white;
     }
-    
-    .stats-container {
-        background-color: #f8f9fa;
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        transition: all 0.3s ease;
-    }
-    
-    .stat-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-    
-    .quick-actions {
-        border-radius: 12px;
-        background-color: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        padding: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .dashboard-notice {
-        background-color: #e7f3ff;
-        border-left: 4px solid #3498db;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 6px;
+
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 1.75rem;
+        }
+
+        .page-header {
+            padding: 2rem 0;
+        }
+
+        .business-card {
+            margin-bottom: 1rem;
+        }
     }
 </style>
 
-<div class="container py-5">
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container page-header-content">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="page-title">Managed Businesses</h1>
+                    <p class="page-subtitle">View and manage all your registered business entities</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <a href="{% url 'home' %}" class="home-button">
+                        <i class="bi bi-shop"></i>
+                        <span>Shop on VersityFinds</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Enhanced notice about accessing dashboard -->
     <div class="dashboard-notice">
-        <i class="bi bi-info-circle-fill me-2 text-primary"></i>
-        <strong> Click on any approved business card to access its dashboard and manage all business operations.<br>
-            Business Dashboard Access:</strong> Only businesses with an <span class="badge bg-success">Approved</span> status can access the full dashboard features. Businesses with <span class="badge bg-warning text-dark">Pending</span> status are being reviewed by our team and will gain access once approved. You can still view business details for any business by clicking the "Details" button.
-    </div>
-    
-    <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h1 class="display-5 fw-bold mb-3">Managed Businesses</h1>
-            <p class="text-muted mb-4">View and manage all your registered business entities</p>
-        </div>
-        <div class="col-lg-4 text-lg-end d-flex align-items-center justify-content-lg-end">
-            <a href="{% url 'home' %}" class="home-button">
-                <i class="bi bi-shop me-2"></i>Shop on Versity Finds
-            </a>
+        <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-info-circle-fill fs-4 text-primary"></i>
+            <div>
+                <strong>Business Dashboard Access:</strong> Only businesses with an <span class="badge bg-success">Approved</span> status can access the full dashboard features. Businesses with <span class="badge bg-warning text-dark">Pending</span> status are being reviewed by our team and will gain access once approved. You can still view business details for any business by clicking the "Details" button.
+            </div>
         </div>
     </div>
-   
     
     <!-- Businesses Section -->
-    <h4 class="mb-3"><i class="bi bi-buildings me-2 text-primary"></i>Your Businesses</h4>
-    <div class="row g-4 justify-content-center">
+    <div class="section-header">
+        <i class="bi bi-buildings"></i>
+        <h4>Your Businesses</h4>
+    </div>
+
+    <div class="row g-4">
         {% if businesses %}
             {% for business in businesses %}
-                <div class="col-sm-6 col-md-4 col-xl-3">
-                    <div class="card h-100 business-card shadow-sm">
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <div class="business-card {% if business.status == 'approved' %}business-card-clickable{% else %}business-card-disabled{% endif %}">
                         <div class="position-relative">
                             <span class="status-badge position-absolute top-0 end-0 m-3 badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %}">
                                 {{ business.status|title }}
                             </span>
                             {% if business.status == 'approved' %}
-                                <a href="{% url 'seller_dashboard' business.id %}" class="text-decoration-none text-dark">
-                                    <div class="card-body p-4">
-                                        <h5 class="card-title fw-bold mb-3">{{ business.name }}</h5>
-                                        <div class="d-flex align-items-center gap-2 mb-3">
-                                            <i class="bi bi-building fs-5 text-secondary"></i>
-                                            <span class="text-muted">{{ business.category }}</span>
+                                <a href="{% url 'seller_dashboard' business.id %}" class="text-decoration-none">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">{{ business.name }}</h5>
+                                        <div class="category-tag mb-3">
+                                            <i class="bi bi-building"></i>
+                                            <span>{{ business.category }}</span>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small class="text-muted">#{{ business.id }}</small>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <span class="business-id">#{{ business.id }}</span>
                                             <a href="{% url 'business_status' business.id %}" 
-                                               class="btn btn-sm btn-outline-primary hover-scale">
-                                                Details <i class="bi bi-chevron-right ms-1"></i>
+                                               class="btn-details"
+                                               onclick="event.stopPropagation()">
+                                                Details <i class="bi bi-arrow-right"></i>
                                             </a>
                                         </div>
                                     </div>
                                 </a>
                             {% else %}
-                                <div class="card-body p-4" onclick="showStatusAlert('{{ business.status }}', event)">
-                                    <h5 class="card-title fw-bold mb-3">{{ business.name }}</h5>
-                                    <div class="d-flex align-items-center gap-2 mb-3">
-                                        <i class="bi bi-building fs-5 text-secondary"></i>
-                                        <span class="text-muted">{{ business.category }}</span>
+                                <div class="card-body" onclick="showStatusAlert('{{ business.status }}', event)">
+                                    <h5 class="card-title mb-3">{{ business.name }}</h5>
+                                    <div class="category-tag mb-3">
+                                        <i class="bi bi-building"></i>
+                                        <span>{{ business.category }}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                            <small class="text-muted">#{{ business.id }}</small>
-                                            <a href="{% url 'business_status' business.id %}" 
-                                               class="btn btn-sm btn-outline-primary hover-scale"
-                                               onclick="event.stopPropagation()">
-                                                Details <i class="bi bi-chevron-right ms-1"></i>
-                                            </a>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="business-id">#{{ business.id }}</span>
+                                        <a href="{% url 'business_status' business.id %}" 
+                                           class="btn-details"
+                                           onclick="event.stopPropagation()">
+                                            Details <i class="bi bi-arrow-right"></i>
+                                        </a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -185,30 +409,28 @@
             {% endfor %}
             
             <!-- Add New Business Card -->
-            <div class="col-sm-6 col-md-4 col-xl-3">
-                <div class="card h-100 business-card border-dashed hover-scale bg-light">
-                    <a href="{% url 'register_business_form' %}" class="text-decoration-none d-flex h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
-                            <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle mb-3">
-                                <i class="bi bi-plus-lg fs-4 text-primary"></i>
+            <div class="col-sm-6 col-lg-4 col-xl-3">
+                <a href="{% url 'register_business_form' %}" class="text-decoration-none">
+                    <div class="add-business-card d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                            <div class="icon-wrapper mx-auto">
+                                <i class="bi bi-plus-lg"></i>
                             </div>
-                            <h5 class="text-primary mb-2">Add New Business</h5>
-                            <p class="text-muted small mb-0">Click here to register a new business entity</p>
+                            <h5 class="add-business-title mb-2">Add New Business</h5>
+                            <p class="add-business-text mb-0">Register a new business entity</p>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
         {% else %}
-            <div class="col-md-8 mx-auto text-center py-5">
-                <div class="card border-dashed py-5 no-businesses-card">
-                    <div class="card-body">
-                        <i class="bi bi-building-add fs-1 text-primary mb-4 d-block"></i>
-                        <h3 class="mb-4">No Businesses Found</h3>
-                        <p class="text-muted mb-4">Get started by registering your first business entity</p>
-                        <a href="{% url 'register_business_form' %}" class="btn btn-primary btn-lg px-4 py-3 hover-scale">
-                            <i class="bi bi-plus-circle me-2"></i>Register First Business
-                        </a>
-                    </div>
+            <div class="col-12">
+                <div class="no-businesses-card text-center">
+                    <i class="bi bi-building-add d-block"></i>
+                    <h3>No Businesses Found</h3>
+                    <p class="mb-4">Get started by registering your first business entity</p>
+                    <a href="{% url 'register_business_form' %}" class="btn-register">
+                        <i class="bi bi-plus-circle me-2"></i>Register First Business
+                    </a>
                 </div>
             </div>
         {% endif %}
@@ -236,7 +458,7 @@
                 html: '<p>You cannot access the dashboard while your business is still under review.</p><p>Please wait for approval before accessing seller dashboard features.</p>',
                 icon: 'info',
                 confirmButtonText: 'Understood',
-                confirmButtonColor: '#3498db'
+                confirmButtonColor: '#00A8A8'
             });
         } else if (status === 'rejected') {
             Swal.fire({
@@ -244,7 +466,7 @@
                 html: '<p>Your business application has been rejected and cannot access the dashboard.</p><p>Please check the details section for reasons and reapplication instructions.</p>',
                 icon: 'error',
                 confirmButtonText: 'View Details',
-                confirmButtonColor: '#3498db'
+                confirmButtonColor: '#00A8A8'
             });
         }
     }
