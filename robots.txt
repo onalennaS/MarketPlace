@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /home/
+Disallow: /accounts/
+Allow: /
+Sitemap: https://versityfinds.co.za/sitemap.xml
