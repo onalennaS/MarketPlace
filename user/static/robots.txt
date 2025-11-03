@@ -1,4 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /god_level/
+Allow: /
 
 Sitemap: https://versityfinds.co.za/sitemap.xml
+Host: https://versityfinds.co.za
