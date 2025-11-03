@@ -1,307 +1,705 @@
 {% extends 'seller/base.html' %}
 {% block links %}
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Datepicker CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
- {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'manage_product' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'orders' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>Orders</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-             <a href="{% url 'transaction' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-currency-exchange"></i>
-                <span>Sales & Transactions</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
+{% block styles %}
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
+        --info-blue: #3b82f6;
+        --purple: #8b5cf6;
+    }
 
-            <a href="{% url 'customer' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-            <a href="{% url 'report' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-            <a href="{% url 'business_info' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Business information">
-               <i class="bi bi-building"></i>
-                <span>Business information</span>
-            </a>
-            <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-            <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
-              <i class="bi bi-box-arrow-right"></i>
-              <span>Logout</span>
-          </a>
-        </div>
-        {% endblock %}
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
+
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px var(--shadow);
+        border: none;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header-custom {
+        background: var(--white);
+        border-bottom: 1px solid var(--border-light);
+        padding: 0.875rem 1.25rem;
+    }
+
+    .card-title-custom {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Buttons */
+    .btn-teal {
+        background: var(--primary-teal);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-teal:hover {
+        background: #008888;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-green {
+        background: var(--accent-green);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-green:hover {
+        background: #27ae60;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-teal {
+        background: transparent;
+        border: 1.5px solid var(--primary-teal);
+        color: var(--primary-teal);
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-teal:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    /* Form Controls */
+    .form-control-custom, .form-select-custom {
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        transition: all 0.3s;
+    }
+
+    .form-control-custom:focus, .form-select-custom:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.15);
+        outline: none;
+    }
+
+    .form-label-custom {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.4rem;
+    }
+
+    /* Input Group */
+    .input-group-text {
+        background: var(--bg-light);
+        border: 1px solid var(--border-light);
+        color: #666;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    /* Table Styling */
+    .table-custom {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .table-custom thead {
+        background: var(--bg-light);
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .table-custom thead th {
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        padding: 0.75rem;
+        border: none;
+    }
+
+    .table-custom tbody td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .table-custom tbody tr:hover {
+        background: rgba(0, 168, 168, 0.03);
+    }
+
+    /* Badge Styling */
+    .badge-custom {
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-paid {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
+    }
+
+    .badge-pending {
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--warning-orange);
+    }
+
+    .badge-failed {
+        background: rgba(220, 53, 69, 0.15);
+        color: var(--danger-red);
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        border: none;
+        transition: all 0.3s;
+        margin-right: 0.25rem;
+    }
+
+    .action-btn-view {
+        background: rgba(0, 168, 168, 0.1);
+        color: var(--primary-teal);
+    }
+
+    .action-btn-view:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    .action-btn-download {
+        background: rgba(46, 204, 113, 0.1);
+        color: var(--accent-green);
+    }
+
+    .action-btn-download:hover {
+        background: var(--accent-green);
+        color: var(--white);
+    }
+
+    /* DatePicker Custom Styling */
+    .datepicker {
+        border-radius: 6px;
+        box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .datepicker table tr td.active,
+    .datepicker table tr td.active:hover {
+        background-color: var(--primary-teal) !important;
+        background-image: none !important;
+    }
+
+    .datepicker table tr td.today {
+        background-color: rgba(0, 168, 168, 0.1) !important;
+    }
+
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: var(--primary-teal);
+        outline: none;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border-radius: 6px;
+        padding: 0.4rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: var(--bg-light);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header { font-size: 1.25rem; }
+    }
+
+    /* Remove Bootstrap defaults */
+    .card { border: none; }
+    .table { color: inherit; }
+{% endblock %}
+
+{% block nav %}
+<div class="nav-items">
+    <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
+        <i class="bi bi-house"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="{% url 'manage_product' business.id %}" class="nav-link">
+        <i class="bi bi-box"></i>
+        <span>Products</span>
+    </a>
+    <a href="{% url 'orders' business.id %}" class="nav-link">
+        <i class="bi bi-cart"></i>
+        <span>Orders</span>
+        <span class="badge bg-primary ms-auto">3</span>
+    </a>
+    <a href="{% url 'transaction' business.id %}" class="nav-link">
+        <i class="bi bi-currency-exchange"></i>
+        <span>Transactions</span>
+    </a>
+    <a href="{% url 'customer' business.id %}" class="nav-link">
+        <i class="bi bi-people"></i>
+        <span>Customers</span>
+    </a>
+    <a href="{% url 'report' business.id %}" class="nav-link active">
+        <i class="bi bi-bar-chart"></i>
+        <span>Reports</span>
+    </a>
+    <a href="{% url 'business_info' business.id %}" class="nav-link">
+        <i class="bi bi-building"></i>
+        <span>Business Info</span>
+    </a>
+    <a href="{% url 'settings' business.id %}" class="nav-link">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+    </a>
+    <a href="#" class="nav-link" onclick="confirmLogout(event)">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+    </a>
+</div>
+{% endblock %}
+
 {% block content %}
-  <div class="container mt-5">
-    <h1 class="mb-4">Invoice Management</h1>
+<div class="container-fluid px-3 py-3">
+    <h1 class="page-header">Reports & Invoices</h1>
 
-    <!-- Date Range Selection -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="dateRangePicker" class="form-label">Select Date Range:</label>
-        <div class="input-daterange input-group" id="dateRangePicker">
-          <input type="text" class="form-control" id="startDate" placeholder="Start Date" />
-          <span class="input-group-text">to</span>
-          <input type="text" class="form-control" id="endDate" placeholder="End Date" />
+    <!-- Date Range & Download Section -->
+    <div class="content-card">
+        <div class="card-header-custom">
+            <h5 class="card-title-custom">Generate Reports</h5>
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="downloadPeriod" class="form-label">Download Transactions PDF:</label>
-        <select class="form-select" id="downloadPeriod">
-          <option value="1">Last 1 Month</option>
-          <option value="2">Last 2 Months</option>
-          <option value="3">Last 3 Months</option>
-          <option value="6">Last 6 Months</option>
-          <option value="12">Last 12 Months</option>
-        </select>
-        <button class="btn btn-primary mt-2" id="downloadPdf">Download PDF</button>
-      </div>
+        <div class="card-body p-3">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label-custom">
+                        <i class="fas fa-calendar-alt me-1"></i> Select Date Range
+                    </label>
+                    <div class="input-daterange input-group" id="dateRangePicker">
+                        <input type="text" class="form-control form-control-custom" id="startDate" placeholder="Start Date" />
+                        <span class="input-group-text">to</span>
+                        <input type="text" class="form-control form-control-custom" id="endDate" placeholder="End Date" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-custom">
+                        <i class="fas fa-file-pdf me-1"></i> Download Transactions PDF
+                    </label>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-custom" id="downloadPeriod">
+                            <option value="1">Last 1 Month</option>
+                            <option value="2">Last 2 Months</option>
+                            <option value="3">Last 3 Months</option>
+                            <option value="6">Last 6 Months</option>
+                            <option value="12">Last 12 Months</option>
+                        </select>
+                        <button class="btn btn-green" id="downloadPdf">
+                            <i class="fas fa-download me-1"></i> Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Invoice List Section -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="card-title">Invoice List</h5>
-      </div>
-      <div class="card-body">
-        <table class="table table-striped" id="invoiceTable">
-          <thead>
-            <tr>
-              <th>Invoice ID</th>
-              <th>Transaction Date</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Sample Data -->
-            <tr>
-              <td>INV001</td>
-              <td>2023-10-01</td>
-              <td>$100.00</td>
-              <td><span class="badge bg-success">Paid</span></td>
-              <td>
-                <a href="{% url 'invoice' %}" class="btn btn-sm btn-primary viewInvoice">View</a>
-                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
-              </td>
-            </tr>
-            <tr>
-              <td>INV002</td>
-              <td>2023-10-05</td>
-              <td>$150.00</td>
-              <td><span class="badge bg-warning">Pending</span></td>
-              <td>
-                <button class="btn btn-sm btn-primary viewInvoice">View</button>
-                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
-              </td>
-            </tr>
-            <tr>
-              <td>INV003</td>
-              <td>2023-10-10</td>
-              <td>$200.00</td>
-              <td><span class="badge bg-danger">Failed</span></td>
-              <td>
-                <button class="btn btn-sm btn-primary viewInvoice">View</button>
-                <button class="btn btn-sm btn-success downloadInvoice">Download</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="content-card">
+        <div class="card-header-custom">
+            <h5 class="card-title-custom">Invoice List</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-custom" id="invoiceTable">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Transaction Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">#INV001</td>
+                            <td>2023-10-01</td>
+                            <td class="fw-semibold">R100.00</td>
+                            <td><span class="badge-custom badge-paid">Paid</span></td>
+                            <td>
+                                <a href="{% url 'invoice' %}" class="action-btn action-btn-view" title="View Invoice">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="action-btn action-btn-download downloadInvoice" title="Download Invoice">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#INV002</td>
+                            <td>2023-10-05</td>
+                            <td class="fw-semibold">R150.00</td>
+                            <td><span class="badge-custom badge-pending">Pending</span></td>
+                            <td>
+                                <button class="action-btn action-btn-view viewInvoice" title="View Invoice">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn action-btn-download downloadInvoice" title="Download Invoice">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#INV003</td>
+                            <td>2023-10-10</td>
+                            <td class="fw-semibold">R200.00</td>
+                            <td><span class="badge-custom badge-failed">Failed</span></td>
+                            <td>
+                                <button class="action-btn action-btn-view viewInvoice" title="View Invoice">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn action-btn-download downloadInvoice" title="Download Invoice">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- Premium Plan Transactions Section -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="card-title">Premium Plan Transactions</h5>
-      </div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="subscriptionFilter" class="form-label">Filter by Subscription Tier:</label>
-          <select class="form-select" id="subscriptionFilter">
-            <option value="all">All</option>
-            <option value="basic">Basic</option>
-            <option value="pro">Pro</option>
-            <option value="enterprise">Enterprise</option>
-          </select>
+    <div class="content-card">
+        <div class="card-header-custom">
+            <h5 class="card-title-custom">Premium Plan Transactions</h5>
         </div>
-        <table class="table table-striped" id="premiumTable">
-          <thead>
-            <tr>
-              <th>Invoice ID</th>
-              <th>Transaction Date</th>
-              <th>Amount</th>
-              <th>Subscription Tier</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Sample Data -->
-            <tr>
-              <td>INV004</td>
-              <td>2023-10-02</td>
-              <td>$50.00</td>
-              <td>Basic</td>
-            </tr>
-            <tr>
-              <td>INV005</td>
-              <td>2023-10-07</td>
-              <td>$100.00</td>
-              <td>Pro</td>
-            </tr>
-            <tr>
-              <td>INV006</td>
-              <td>2023-10-12</td>
-              <td>$200.00</td>
-              <td>Enterprise</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="card-body p-3">
+            <div class="filter-section mb-3">
+                <label class="form-label-custom">
+                    <i class="fas fa-filter me-1"></i> Filter by Subscription Tier
+                </label>
+                <select class="form-select form-select-custom" id="subscriptionFilter" style="max-width: 300px;">
+                    <option value="all">All Tiers</option>
+                    <option value="basic">Basic</option>
+                    <option value="pro">Pro</option>
+                    <option value="enterprise">Enterprise</option>
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-custom" id="premiumTable">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Transaction Date</th>
+                            <th>Amount</th>
+                            <th>Subscription Tier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">#INV004</td>
+                            <td>2023-10-02</td>
+                            <td class="fw-semibold">R50.00</td>
+                            <td><span class="badge-custom" style="background: rgba(59, 130, 246, 0.15); color: var(--info-blue);">Basic</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#INV005</td>
+                            <td>2023-10-07</td>
+                            <td class="fw-semibold">R100.00</td>
+                            <td><span class="badge-custom" style="background: rgba(139, 92, 246, 0.15); color: var(--purple);">Pro</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#INV006</td>
+                            <td>2023-10-12</td>
+                            <td class="fw-semibold">R200.00</td>
+                            <td><span class="badge-custom" style="background: rgba(255, 152, 0, 0.15); color: var(--warning-orange);">Enterprise</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+{% endblock %}
 
-  <!-- Bootstrap JS and dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-  <!-- Datepicker JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-  <!-- PDFMake for generating PDFs -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-  <!-- Custom JS -->
-  <script>
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script>
     $(document).ready(function() {
-      // Initialize datepicker
-      $('.input-daterange').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true
-      });
-
-      // Filter invoices by date range
-      $('#dateRangePicker').on('change', function() {
-        const startDate = new Date($('#startDate').val());
-        const endDate = new Date($('#endDate').val());
-
-        $('#invoiceTable tbody tr').each(function() {
-          const rowDate = new Date($(this).find('td:nth-child(2)').text());
-          if (rowDate >= startDate && rowDate <= endDate) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
-      });
-
-      // Filter premium transactions by subscription tier
-      $('#subscriptionFilter').on('change', function() {
-        const selectedTier = $(this).val();
-        $('#premiumTable tbody tr').each(function() {
-          const rowTier = $(this).find('td:nth-child(4)').text().toLowerCase();
-          if (selectedTier === 'all' || rowTier === selectedTier) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
-      });
-
-      // View or Download Individual Invoice
-      $('.viewInvoice').on('click', function() {
-        const invoiceId = $(this).closest('tr').find('td:nth-child(1)').text();
-        alert(`Viewing Invoice: ${invoiceId}`);
-        // Replace with actual logic to view invoice
-      });
-
-      $('.downloadInvoice').on('click', function() {
-        const invoiceId = $(this).closest('tr').find('td:nth-child(1)').text();
-        alert(`Downloading Invoice: ${invoiceId}`);
-        // Replace with actual logic to download invoice
-      });
-
-      // Download PDF of Transactions
-      $('#downloadPdf').on('click', function() {
-        const period = $('#downloadPeriod').val();
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setMonth(endDate.getMonth() - period);
-
-        const filteredData = [];
-        $('#invoiceTable tbody tr').each(function() {
-          const rowDate = new Date($(this).find('td:nth-child(2)').text());
-          if (rowDate >= startDate && rowDate <= endDate) {
-            const rowData = {
-              id: $(this).find('td:nth-child(1)').text(),
-              date: $(this).find('td:nth-child(2)').text(),
-              amount: $(this).find('td:nth-child(3)').text(),
-              status: $(this).find('td:nth-child(4)').text()
-            };
-            filteredData.push(rowData);
-          }
+        // Initialize DataTables
+        $('#invoiceTable').DataTable({
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search invoices...",
+                lengthMenu: "_MENU_ per page",
+                info: "Showing _START_ to _END_ of _TOTAL_",
+                infoEmpty: "No invoices available",
+                infoFiltered: "(filtered from _MAX_ total)"
+            },
+            columnDefs: [
+                { orderable: false, targets: -1 }
+            ]
         });
 
-        // Generate PDF
-        const docDefinition = {
-          content: [
-            { text: `Transactions for Last ${period} Month(s)`, style: 'header' },
-            {
-              table: {
-                headerRows: 1,
-                widths: ['*', '*', '*', '*'],
-                body: [
-                  ['Invoice ID', 'Date', 'Amount', 'Status'],
-                  ...filteredData.map(row => [row.id, row.date, row.amount, row.status])
-                ]
-              }
+        $('#premiumTable').DataTable({
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search transactions...",
+                lengthMenu: "_MENU_ per page",
+                info: "Showing _START_ to _END_ of _TOTAL_",
+                infoEmpty: "No transactions available",
+                infoFiltered: "(filtered from _MAX_ total)"
             }
-          ],
-          styles: {
-            header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] }
-          }
-        };
-        pdfMake.createPdf(docDefinition).download(`transactions_${period}_months.pdf`);
-      });
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... (keep existing JavaScript code the same) ...
-  
-        // Add Logout Confirmation Function
-        function confirmLogout(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Logout?',
-                text: 'Are you sure you want to logout?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, logout!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = event.currentTarget.href;
+        });
+
+        // Initialize datepicker
+        $('.input-daterange').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        // Filter invoices by date range
+        $('#startDate, #endDate').on('change', function() {
+            const startDate = new Date($('#startDate').val());
+            const endDate = new Date($('#endDate').val());
+
+            if (!isNaN(startDate) && !isNaN(endDate)) {
+                $('#invoiceTable tbody tr').each(function() {
+                    const rowDate = new Date($(this).find('td:nth-child(2)').text());
+                    if (rowDate >= startDate && rowDate <= endDate) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Filters Applied',
+                    text: `Showing invoices from ${$('#startDate').val()} to ${$('#endDate').val()}`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        // Filter premium transactions by subscription tier
+        $('#subscriptionFilter').on('change', function() {
+            const selectedTier = $(this).val();
+            $('#premiumTable tbody tr').each(function() {
+                const rowTier = $(this).find('td:nth-child(4)').text().toLowerCase();
+                if (selectedTier === 'all' || rowTier.includes(selectedTier)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
                 }
             });
-        }
+        });
+
+        // View Invoice
+        $(document).on('click', '.viewInvoice', function() {
+            const invoiceId = $(this).closest('tr').find('td:first-child').text();
+            Swal.fire({
+                icon: 'info',
+                title: 'View Invoice',
+                text: `Opening ${invoiceId}...`,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        });
+
+        // Download Invoice
+        $(document).on('click', '.downloadInvoice', function() {
+            const invoiceId = $(this).closest('tr').find('td:first-child').text();
+            const amount = $(this).closest('tr').find('td:nth-child(3)').text();
+            const date = $(this).closest('tr').find('td:nth-child(2)').text();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Download Started',
+                text: `Downloading ${invoiceId}...`,
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            // Generate simple PDF
+            const docDefinition = {
+                content: [
+                    { text: 'Invoice', style: 'header' },
+                    { text: `Invoice ID: ${invoiceId}`, margin: [0, 10, 0, 5] },
+                    { text: `Date: ${date}`, margin: [0, 0, 0, 5] },
+                    { text: `Amount: ${amount}`, margin: [0, 0, 0, 20], style: 'amount' }
+                ],
+                styles: {
+                    header: { fontSize: 22, bold: true, color: '#00A8A8' },
+                    amount: { fontSize: 16, bold: true }
+                }
+            };
+            pdfMake.createPdf(docDefinition).download(`${invoiceId}.pdf`);
+        });
+
+        // Download PDF of Transactions
+        $('#downloadPdf').on('click', function() {
+            const period = $('#downloadPeriod').val();
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setMonth(endDate.getMonth() - period);
+
+            const filteredData = [];
+            $('#invoiceTable tbody tr').each(function() {
+                const rowDate = new Date($(this).find('td:nth-child(2)').text());
+                if (rowDate >= startDate && rowDate <= endDate) {
+                    const rowData = {
+                        id: $(this).find('td:nth-child(1)').text(),
+                        date: $(this).find('td:nth-child(2)').text(),
+                        amount: $(this).find('td:nth-child(3)').text(),
+                        status: $(this).find('td:nth-child(4)').text().trim()
+                    };
+                    filteredData.push(rowData);
+                }
+            });
+
+            if (filteredData.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No Data',
+                    text: 'No transactions found for the selected period.'
+                });
+                return;
+            }
+
+            // Generate PDF
+            const docDefinition = {
+                content: [
+                    { text: `Transaction Report`, style: 'header' },
+                    { text: `Last ${period} Month(s)`, style: 'subheader' },
+                    { text: `Generated: ${new Date().toLocaleDateString()}`, margin: [0, 0, 0, 20] },
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: ['*', '*', '*', '*'],
+                            body: [
+                                [
+                                    { text: 'Invoice ID', style: 'tableHeader' },
+                                    { text: 'Date', style: 'tableHeader' },
+                                    { text: 'Amount', style: 'tableHeader' },
+                                    { text: 'Status', style: 'tableHeader' }
+                                ],
+                                ...filteredData.map(row => [row.id, row.date, row.amount, row.status])
+                            ]
+                        }
+                    }
+                ],
+                styles: {
+                    header: { fontSize: 20, bold: true, margin: [0, 0, 0, 10], color: '#00A8A8' },
+                    subheader: { fontSize: 14, margin: [0, 0, 0, 5] },
+                    tableHeader: { bold: true, fillColor: '#00A8A8', color: 'white', alignment: 'center' }
+                }
+            };
+
+            pdfMake.createPdf(docDefinition).download(`transactions_${period}_months.pdf`);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Download Complete',
+                text: `Downloaded transactions for last ${period} month(s)`,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        });
     });
-  </script>
+
+    // Logout Confirmation
+    function confirmLogout(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Logout?',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, logout'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        });
+    }
+</script>
 {% endblock %}

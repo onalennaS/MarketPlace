@@ -1,14 +1,25 @@
-# Update Checkout and Track Orders Pages to Match Wishlists Design
+# Moderator Dashboard Functionalization Tasks
+
+## Overview
+Make the moderator dashboard functional by replacing hard-coded values with dynamic data fetched from the database. Update the view to query relevant models and pass data to the template.
 
 ## Tasks
-- [ ] Update checkout.html to extend 'home/base.html' and apply wish_lists.html styling
-- [ ] Update track_orders.html to extend 'home/base.html' and apply wish_lists.html styling
-- [ ] Test the updated pages for visual consistency and functionality
+- [ ] Update `moderator/views/render_views.py` dashboard view to fetch real data:
+  - Business moderations (approved, rejected, pending counts)
+  - Product moderations (approved, rejected, pending counts)
+  - User count
+  - Courier count
+  - Comments count (if model exists, else set to 0)
+  - Dynamic notifications based on pending moderations
+  - Chart data: Aggregate user/business growth over time (e.g., by month)
+- [ ] Update `moderator/templates/moderator/dashboard.html` to use context variables instead of hard-coded values
+- [ ] Test the dashboard to ensure data loads correctly
+- [ ] Handle edge cases (e.g., no data available)
 
-## Details
-- Change template extends from 'products/shop_base2.html' to 'home/base.html'
-- Apply CSS variables: --primary-teal, --accent-green, etc.
-- Use profile-card class for card structures
-- Implement breadcrumb navigation
-- Ensure responsive design matches wish_lists.html
-- Preserve all functionality while updating design
+## Dependencies
+- Models: Moderation, ProductModeration, User, Courier
+- If comments model exists, integrate it
+
+## Next Steps
+- After updating view, render template with dynamic data
+- Verify charts display correctly with aggregated data

@@ -1,275 +1,587 @@
 {% extends 'seller/base.html' %}
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
+
 {% block styles %}
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --success-color: #27ae60;
-            --light-bg: #f8f9fa;
-        }
+    :root {
+        --primary-teal: #00A8A8;
+        --accent-green: #2ECC71;
+        --base-dark-blue: #1A3D7C;
+        --bg-light: #F9F9F9;
+        --text-dark: #333333;
+        --white: #FFFFFF;
+        --border-light: #E0E0E0;
+        --shadow: rgba(0, 0, 0, 0.08);
+        --warning-orange: #FF9800;
+        --danger-red: #dc3545;
+        --info-blue: #3b82f6;
+        --purple: #8b5cf6;
+    }
 
-        body {
-           
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
+    body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+    }
 
-        .analytics-card {
-            background: inherit;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
+    /* Page Header */
+    .page-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+    }
 
-        .analytics-card:hover {
-            transform: translateY(-3px);
-        }
+    /* Compact Stats Cards */
+    .stat-card {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 6px var(--shadow);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+        height: 100%;
+    }
 
-        .dataTables_wrapper {
-            background: inherit;
-            border-radius: 10px;
-            
-        }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--shadow);
+    }
 
-        .status-badge {
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 0.35rem 0.7rem;
-            border-radius: 20px;
-        }
+    .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
 
-        .badge-outline-success {
-            border: 1px solid var(--success-color);
-            color: var(--success-color);
-            background: rgba(39, 174, 96, 0.1);
-        }
+    .stat-icon.primary { color: var(--primary-teal); }
+    .stat-icon.success { color: var(--accent-green); }
+    .stat-icon.warning { color: var(--warning-orange); }
+    .stat-icon.danger { color: var(--danger-red); }
 
-        .badge-outline-warning {
-            border: 1px solid #f1c40f;
-            color: #f1c40f;
-            background: rgba(241, 196, 15, 0.1);
-        }
+    .stat-title {
+        font-size: 0.75rem;
+        color: #666;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
 
-        .modal-lg {
-            max-width: 800px;
-        }
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.25rem;
+    }
 
-        @media (max-width: 768px) {
-            .analytics-row {
-                flex-direction: column;
-            }
-            
-            .dataTables_info, .dataTables_length {
-                text-align: center !important;
-            }
-        }
-  {% endblock %}
+    .stat-info {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    /* Content Cards */
+    .content-card {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px var(--shadow);
+        border: none;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header-custom {
+        background: var(--white);
+        border-bottom: 1px solid var(--border-light);
+        padding: 0.875rem 1.25rem;
+    }
+
+    .card-title-custom {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Buttons */
+    .btn-teal {
+        background: var(--primary-teal);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-teal:hover {
+        background: #008888;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-green {
+        background: var(--accent-green);
+        color: var(--white);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-green:hover {
+        background: #27ae60;
+        color: var(--white);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-teal {
+        background: transparent;
+        border: 1.5px solid var(--primary-teal);
+        color: var(--primary-teal);
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-teal:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    .btn-outline-secondary {
+        border: 1.5px solid #6c757d;
+        color: #6c757d;
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #6c757d;
+        color: var(--white);
+    }
+
+    /* Table Styling */
+    .table-custom {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .table-custom thead {
+        background: var(--bg-light);
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .table-custom thead th {
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        padding: 0.75rem;
+        border: none;
+    }
+
+    .table-custom tbody td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .table-custom tbody tr:hover {
+        background: rgba(0, 168, 168, 0.03);
+    }
+
+    /* Badge Styling */
+    .badge-custom {
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-active {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--accent-green);
+    }
+
+    .badge-inactive {
+        background: rgba(108, 117, 125, 0.15);
+        color: #6c757d;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        border: none;
+        transition: all 0.3s;
+    }
+
+    .action-btn-view {
+        background: rgba(0, 168, 168, 0.1);
+        color: var(--primary-teal);
+    }
+
+    .action-btn-view:hover {
+        background: var(--primary-teal);
+        color: var(--white);
+    }
+
+    /* Checkbox Styling */
+    input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--primary-teal);
+    }
+
+    /* Customer Link */
+    .customer-link {
+        color: var(--primary-teal);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .customer-link:hover {
+        color: #008888;
+        text-decoration: underline;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+        background: var(--bg-light);
+    }
+
+    .modal-title {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+        background: var(--bg-light);
+    }
+
+    .modal-section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .info-item {
+        margin-bottom: 0.75rem;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+        color: var(--text-dark);
+        font-size: 0.9rem;
+    }
+
+    /* List Group */
+    .list-group-item {
+        border: 1px solid var(--border-light);
+        border-radius: 6px !important;
+        margin-bottom: 0.5rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s;
+    }
+
+    .list-group-item:hover {
+        background: rgba(0, 168, 168, 0.03);
+        border-color: var(--primary-teal);
+    }
+
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: var(--primary-teal);
+        outline: none;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border-radius: 6px;
+        padding: 0.4rem;
+        border: 1px solid var(--border-light);
+        font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header { font-size: 1.25rem; }
+        .stat-value { font-size: 1.25rem; }
+    }
+
+    /* Remove Bootstrap defaults */
+    .card { border: none; }
+    .table { color: inherit; }
+{% endblock %}
+
 {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'seller_dashboard' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                <i class="bi bi-house"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{% url 'manage_product' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-            <a href="{% url 'orders' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-cart"></i>
-                <span>Orders</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-             <a href="{% url 'transaction' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Orders">
-                <i class="bi bi-currency-exchange"></i>
-                <span>Sales & Transactions</span>
-                <span class="badge bg-primary ms-auto">3</span>
-            </a>
-            <a href="{% url 'customer' business.id %}" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="right" title="Customers">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-            <a href="{% url 'report' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-            <a href="{% url 'business_info' business.id %}" class="nav-link " data-bs-toggle="tooltip" data-bs-placement="right" title="Reports">
-               <i class="bi bi-building"></i>
-                <span>Business information</span>
-            </a>
-            <a href="{% url 'settings' business.id %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-            <a href="{% url 'logout' %}" class="nav-link" onclick="confirmLogout(event)" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-        {% endblock %}
-  {% block content %}
-<div class="container py-4">
-    <!-- Analytics Section -->
-    <div class="row analytics-row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="analytics-card">
-                <div class="d-flex align-items-center">
-                    <div class="bg-primary text-white rounded-circle p-3 me-3">
-                        <i class="bi bi-people fs-4"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-muted mb-1">Total Customers</h6>
-                        <h3 class="mb-0">{{total_customers}}</h3>
-                        
+<div class="nav-items">
+    <a href="{% url 'seller_dashboard' business.id %}" class="nav-link">
+        <i class="bi bi-house"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="{% url 'manage_product' business.id %}" class="nav-link">
+        <i class="bi bi-box"></i>
+        <span>Products</span>
+    </a>
+    <a href="{% url 'orders' business.id %}" class="nav-link">
+        <i class="bi bi-cart"></i>
+        <span>Orders</span>
+        <span class="badge bg-primary ms-auto"></span>
+    </a>
+    <a href="{% url 'transaction' business.id %}" class="nav-link">
+        <i class="bi bi-currency-exchange"></i>
+        <span>Transactions</span>
+    </a>
+    <a href="{% url 'customer' business.id %}" class="nav-link active">
+        <i class="bi bi-people"></i>
+        <span>Customers</span>
+    </a>
+    <a href="{% url 'report' business.id %}" class="nav-link">
+        <i class="bi bi-bar-chart"></i>
+        <span>Reports</span>
+    </a>
+    <a href="{% url 'business_info' business.id %}" class="nav-link">
+        <i class="bi bi-building"></i>
+        <span>Business Info</span>
+    </a>
+    <a href="{% url 'settings' business.id %}" class="nav-link">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+    </a>
+    <a href="#" class="nav-link" onclick="confirmLogout(event)">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+    </a>
+</div>
+{% endblock %}
 
+{% block content %}
+<div class="container-fluid px-3 py-3">
+    <h1 class="page-header">Customer Management</h1>
 
-                    </div>
+    <!-- Quick Stats -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-users"></i>
                 </div>
+                <div class="stat-title">Total Customers</div>
+                <div class="stat-value">{{total_customers}}</div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="analytics-card">
-                <div class="d-flex align-items-center">
-                    <div class="bg-success text-white rounded-circle p-3 me-3">
-                        <i class="bi bi-person-plus fs-4"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-muted mb-1">New Customers</h6>
-                        <h3 class="mb-0">{{new_customers}}</h3>
-                    </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-user-plus"></i>
                 </div>
+                <div class="stat-title">New Customers</div>
+                <div class="stat-value">{{new_customers}}</div>
+                <div class="stat-info">This month</div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="analytics-card">
-                <div class="d-flex align-items-center">
-                    <div class="bg-warning text-white rounded-circle p-3 me-3">
-                        <i class="bi bi-arrow-repeat fs-4"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-muted mb-1">Returning</h6>
-                        <h3 class="mb-0">{{returning_customers}}</h3>
-                    </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="fas fa-user-check"></i>
                 </div>
+                <div class="stat-title">Returning</div>
+                <div class="stat-value">{{returning_customers}}</div>
+                <div class="stat-info">Repeat buyers</div>
             </div>
         </div>
     </div>
 
-    <!-- Table Section -->
-    <div class="card border-0 shadow-sm">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title mb-0">Customer List</h5>
-                <div>
-                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="exportToCSV()">
-                        <i class="bi bi-download me-1"></i>Export
+    <!-- Customer Table -->
+    <div class="content-card">
+        <div class="card-header-custom">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="card-title-custom mb-0">Customer List</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="exportToCSV()">
+                        <i class="fas fa-download me-1"></i>Export
                     </button>
-                    <button class="btn btn-sm btn-primary" id="sendPromoBtn" disabled>
-                        <i class="bi bi-envelope me-1"></i>Send Promo
+                    <button class="btn btn-teal btn-sm" id="sendPromoBtn" disabled>
+                        <i class="fas fa-envelope me-1"></i>Send Promo
                     </button>
                 </div>
             </div>
-
-            <table id="customersTable" class="table table-hover" style="width:100%">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="selectAll"></th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Orders</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for customer in customers %}
-                    <tr>
-                        <td><input type="checkbox" class="customerCheckbox"></td>
-                        <td>{{customer.user.id}}</td>
-                        <td><a href="#" class="text-decoration-none" onclick="viewCustomerDetails('001')">{{customer.user.username}}</a></td>
-                        <td>{{customer.user.email}}</td>
-                        <td>8888888888</td>
-                        <td>{{customer.order_count}}</td>
-                        <td><span class="status-badge badge-outline-success">{% if customer.user.is_active %} Active{% else %} Inactive{% endif %}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" title="View Details" onclick="viewCustomerDetails('001')">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table id="customersTable" class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Orders</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                        <tr>
+                            <td><input type="checkbox" class="customerCheckbox"></td>
+                            <td class="fw-semibold">#{{customer.user.id}}</td>
+                            <td>
+                                <a href="#" class="customer-link" onclick="viewCustomerDetails('{{customer.user.id}}')">
+                                    {{customer.user.username}}
+                                </a>
+                            </td>
+                            <td>{{customer.user.email}}</td>
+                            <td>8888888888</td>
+                            <td class="fw-semibold">{{customer.order_count}}</td>
+                            <td>
+                                {% if customer.user.is_active %}
+                                <span class="badge-custom badge-active">Active</span>
+                                {% else %}
+                                <span class="badge-custom badge-inactive">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="action-btn action-btn-view" title="View Details" onclick="viewCustomerDetails('{{customer.user.id}}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Customer Details Modal -->
 <div class="modal fade" id="customerModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Customer Details</h5>
+                <h5 class="modal-title">
+                    <i class="fas fa-user-circle"></i> Customer Details
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <h6>Customer Information</h6>
-                        <p><strong>Name:</strong> <span id="customerName"></span></p>
-                        <p><strong>Email:</strong> <span id="customerEmail"></span></p>
-                        <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
-                        <p><strong>Status:</strong> <span id="customerStatus"></span></p>
+                        <h6 class="modal-section-title">Customer Information</h6>
+                        <div class="info-item">
+                            <div class="info-label">Name</div>
+                            <div class="info-value" id="customerName"></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="customerEmail"></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value" id="customerPhone"></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Status</div>
+                            <div class="info-value">
+                                <span id="customerStatus" class="badge-custom badge-active"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <h6>Payment History</h6>
+                        <h6 class="modal-section-title">Payment History</h6>
                         <ul class="list-group" id="paymentHistory">
                             <!-- Payment history will be dynamically populated here -->
                         </ul>
                     </div>
                 </div>
-                <hr>
-                <h6>Order History</h6>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Items</th>
-                            <th>Date</th>
-                            <th>Review</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orderHistory">
-                        <!-- Order history will be dynamically populated here -->
-                    </tbody>
-                </table>
+                <hr class="my-4">
+                <h6 class="modal-section-title">Order History</h6>
+                <div class="table-responsive">
+                    <table class="table table-custom table-sm">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Items</th>
+                                <th>Date</th>
+                                <th>Review</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderHistory">
+                            <!-- Order history will be dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="sendPromotionalEmail()">
-                    <i class="bi bi-envelope me-1"></i>Send Promotional Email
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-teal" onclick="sendPromotionalEmail()">
+                    <i class="fas fa-envelope me-1"></i>Send Promotional Email
                 </button>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
 
 <script>
     // Initialize DataTable
@@ -279,6 +591,10 @@
             language: {
                 search: "_INPUT_",
                 searchPlaceholder: "Search customers...",
+                lengthMenu: "_MENU_ per page",
+                info: "Showing _START_ to _END_ of _TOTAL_",
+                infoEmpty: "No customers available",
+                infoFiltered: "(filtered from _MAX_ total)"
             },
             columnDefs: [
                 { orderable: false, targets: [0, -1] },
@@ -314,8 +630,8 @@
             phone: "(555) 123-4567",
             status: "Active",
             paymentHistory: [
-                { id: "PAY001", amount: "$150.00", date: "2023-10-01" },
-                { id: "PAY002", amount: "$200.00", date: "2023-09-15" }
+                { id: "PAY001", amount: "R150.00", date: "2023-10-01" },
+                { id: "PAY002", amount: "R200.00", date: "2023-09-15" }
             ],
             orderHistory: [
                 { id: "ORD001", items: "Product A, Product B", date: "2023-10-01", review: "Great products!" },
@@ -327,13 +643,23 @@
         $('#customerName').text(customerData.name);
         $('#customerEmail').text(customerData.email);
         $('#customerPhone').text(customerData.phone);
-        $('#customerStatus').text(customerData.status);
+        
+        const statusBadge = $('#customerStatus');
+        statusBadge.text(customerData.status);
+        statusBadge.removeClass('badge-active badge-inactive');
+        statusBadge.addClass(customerData.status === 'Active' ? 'badge-active' : 'badge-inactive');
 
         // Populate payment history
         $('#paymentHistory').html(
             customerData.paymentHistory.map(payment => `
                 <li class="list-group-item">
-                    <strong>${payment.id}</strong>: ${payment.amount} on ${payment.date}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${payment.id}</strong>
+                            <div class="text-muted small">${payment.date}</div>
+                        </div>
+                        <strong class="text-success">${payment.amount}</strong>
+                    </div>
                 </li>
             `).join('')
         );
@@ -342,7 +668,7 @@
         $('#orderHistory').html(
             customerData.orderHistory.map(order => `
                 <tr>
-                    <td>${order.id}</td>
+                    <td class="fw-semibold">#${order.id}</td>
                     <td>${order.items}</td>
                     <td>${order.date}</td>
                     <td>${order.review}</td>
@@ -357,42 +683,55 @@
     // Send Promotional Email
     function sendPromotionalEmail() {
         const selectedCustomers = $('.customerCheckbox:checked').map(function() {
-            return $(this).closest('tr').find('td:eq(2)').text();
+            return $(this).closest('tr').find('td:eq(2)').text().trim();
         }).get();
 
-        alert(`Sending promotional emails to: ${selectedCustomers.join(', ')}`);
-        // Add your email sending logic here
+        if (selectedCustomers.length > 0) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Email Sent!',
+                text: `Promotional emails sent to: ${selectedCustomers.join(', ')}`,
+                timer: 3000,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'info',
+                title: 'No Recipients',
+                text: 'Please select at least one customer to send promotional emails.',
+            });
+        }
     }
 
     // Export Function
     function exportToCSV() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Export Started',
+            text: 'Your customer data is being exported to CSV...',
+            timer: 2000,
+            showConfirmButton: false
+        });
         // Add your export logic here
         console.log('Exporting data...');
     }
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... (keep existing JavaScript code the same) ...
-  
-        // Add Logout Confirmation Function
-        function confirmLogout(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Logout?',
-                text: 'Are you sure you want to logout?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#0d6efd',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, logout!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = event.currentTarget.href;
-                }
-            });
-        }
-    });
-  </script>
-  
 
+    // Logout Confirmation
+    function confirmLogout(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Logout?',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00A8A8',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, logout'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        });
+    }
+</script>
 {% endblock %}

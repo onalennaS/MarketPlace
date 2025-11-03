@@ -197,6 +197,17 @@ body {
     transform: translateY(-1px);
 }
 
+/* Blinking animation for order code */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.btn-flashy {
+    animation: blink 1s infinite;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
@@ -414,7 +425,8 @@ body {
                             <h6 class="text-sm"> Estimated Delivery: {{order.estimated_delivery}}</h6>
                         </div>
                         <div class="col-3 " >
-                            <button class="btn btn-dark rounded-2"><b>{{order.drop_codes}}</b></button>
+                            <button class="btn btn-success rounded-2 btn-flashy"><b>{{order.drop_codes}}</b></button>
+                            <small class="text-muted d-block mt-1">Do not share this code with anyone.</small>
                         </div>
                     </div>
 
