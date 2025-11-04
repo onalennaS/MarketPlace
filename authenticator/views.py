@@ -178,7 +178,7 @@ def create_password(request):
             ref_reward = Referral.objects.create(referrer=referrer.user,referred=request.user,is_rewarded=True,reward=5,referral_type="signup")
             ref_reward.save()
         return redirect(verify_role(request.user))
-    return render('authentication/create_password.html')
+    return render(request,'authentication/create_password.html')
 
 def logout_view(request):
     messages.error(request,"Logged out successfully")
