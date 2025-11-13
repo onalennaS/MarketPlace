@@ -674,7 +674,11 @@ body {
 
             <h6 class="section-title">Order Items</h6>
             {% for item in order_items %}
-            <a href="{% url 'view_product' item.product.business.id item.product.id %}" style="text-decoration: none; color: inherit;">
+            {% if item.product.slug and item.product.business.slug %}
+                <a href="{% url 'view_product' item.product.business.slug item.product.slug %}" style="text-decoration: none; color: inherit;">
+            {% else %}
+                <a href="{% url 'view_business_products' item.product.business.slug %}" style="text-decoration: none; color: inherit;">
+            {% endif %}
                 <div class="item-row">
                     <div class="item-image">
                         <img src="{{item.product.image.url}}" alt="{{item.product.name}}">

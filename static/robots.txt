@@ -2,5 +2,5 @@ User-agent: *
 Disallow: /god_level/
 Allow: /
 
-Sitemap: https://versityfinds.co.za/sitemap.xml
-Host: https://versityfinds.co.za
+Sitemap: https://onecartdiscovery.com/sitemap.xml
+Host: https://onecartdiscovery.com

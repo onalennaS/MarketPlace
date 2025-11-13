@@ -120,7 +120,7 @@ def rquest_withdraw(request):
     	if amount < 10:
         	return JsonResponse({'message': 'amount withdrawable must be greater than R10', 'status': 'error'}, status=400)
     except Exception as e :
-        return JsonResponse({'message': 'Invalid Request please contact help@versityfinds.co.za', 'status': 'error'}, status=400)
+        return JsonResponse({'message': 'Invalid Request please contact help@onecartdiscovery.com', 'status': 'error'}, status=400)
 
     user = request.user
 

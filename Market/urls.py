@@ -21,7 +21,8 @@ sitemaps_dict = {
 }
 
 urlpatterns = [
-    path('god_level/', admin.site.urls),
+    # Expose the standard Django admin at /admin/.
+    path('admin/', admin.site.urls),
     
     # IMPORTANT: Put specific paths BEFORE the catch-all shop path!
     path('auth/', include('authenticator.urls')),

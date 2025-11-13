@@ -34,16 +34,16 @@ PAYSTACK_MAIN_ACCOUNT = config('PAYSTACK_MAIN_ACCOUNT')
 PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
 
 
-ALLOWED_HOSTS = ["versityfinds.co.za","market-nfem.onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["onecartdiscovery.com","market-nfem.onrender.com", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "https://versityfinds.co.za",
-    "https://versityfinds.co.za"
+    "https://onecartdiscovery.com",
+    "https://onecartdiscovery.com"
 ]
 # Required if frontend needs to access csrftoken
 
 
-SITE_URL = "https://versityfinds.co.za"  # Replace with your domain in production
+SITE_URL = "https://onecartdiscovery.com"  # Replace with your domain in production
 #SITE_URL = "market-nfem.onrender.com"  # Replace with your domain in production
 
 SITE_ID=3
@@ -128,11 +128,21 @@ WSGI_APPLICATION = 'Market.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
-}
+# Use a local sqlite database for development (when DEBUG=True)
+# and use the DATABASE_URL for production deployments.
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+        )
+    }
 
 
 # Password validation

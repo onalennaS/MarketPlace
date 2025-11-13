@@ -615,7 +615,11 @@
                                     <div class="col-12 col-sm-8">
                                         <div class="d-flex">
                                             <div class="product-image">
-                                                <a href="{% url 'view_product' cart_item.product.business.slug cart_item.product.slug %}">
+                                                {% if cart_item.product.slug and cart_item.product.business.slug %}
+                                                    <a href="{% url 'view_product' cart_item.product.business.slug cart_item.product.slug %}">
+                                                {% else %}
+                                                    <a href="{% url 'view_business_products' cart_item.product.business.slug %}">
+                                                {% endif %}
                                                     <img src="{{cart_item.product.image.url}}" alt="{{cart_item.product.name}}">
                                                 </a>
                                             </div>

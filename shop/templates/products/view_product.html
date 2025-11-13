@@ -1,6 +1,6 @@
 {% extends 'products/shop_base2.html' %}
 
-{% block title %} {{product.name}} | {{product.business.name}}| versityfinds{% endblock %}
+{% block title %} {{product.name}} | {{product.business.name}}| OneCart Discovery{% endblock %}
 {% load static %}
 
 {% block links %}
@@ -8,16 +8,16 @@
 {% endblock %}
 
 {% block meta %}
-<meta name="description" content="{{ product.name }} from {{product.business.name}} on VersityFinds">
-<meta property="og:title" content="{{ product.name }} from {{product.business.name}} @ R{{product.price}}| VersityFinds">
-<meta property="og:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
+<meta name="description" content="{{ product.name }} from {{product.business.name}} on OneCart Discovery">
+<meta property="og:title" content="{{ product.name }} from {{product.business.name}} @ R{{product.price}}| OneCart Discovery">
+<meta property="og:description" content="{{ product.small_description|default:'Check out this product on OneCart Discovery.' }}">
 <meta property="og:image" content="{{ absolute_image_url }}">
 <meta property="og:url" content="{{ absolute_page_url }}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="VersityFinds">
+<meta property="og:site_name" content="OneCart Discovery">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ product.name }} from {{product.business.name}} | VersityFinds">
-<meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on VersityFinds.' }}">
+<meta name="twitter:title" content="{{ product.name }} from {{product.business.name}} | OneCart Discovery">
+<meta name="twitter:description" content="{{ product.small_description|default:'Check out this product on OneCart Discovery.' }}">
 <meta name="twitter:image" content="{{ absolute_image_url }}">
 {% endblock %}
 
@@ -790,7 +790,7 @@
     function showShareModal() {
         const pageUrl = window.location.href;
         const productName = "{{ product.name }}";
-        const productDescription = "{{ product.small_description|default:'Check out this product on VersityFinds.' }}";
+        const productDescription = "{{ product.small_description|default:'Check out this product on OneCart Discovery.' }}";
         const businessName = "{{ product.business.name }}";
 
         Swal.fire({

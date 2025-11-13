@@ -160,7 +160,11 @@
                 <div class="card h-100 border-0 shadow-sm menu-item-card card-theme rounded-4">
                   <div class="row g-0">
                     <div class="col-4">
-                      <a href="{% url 'view_product' product.id %}">
+                      {% if product.slug and business.slug %}
+                        <a href="{% url 'view_product' business.slug product.slug %}">
+                      {% else %}
+                        <a href="{% url 'view_business_products' business.slug %}">
+                      {% endif %}
                         <img src="{{ product.image.url|default:'https://via.placeholder.com/300' }}" class="img-fluid menu-img" alt="{{ product.name }} from {{ business.name }}" loading="lazy" />
                       </a>
                     </div>

@@ -137,7 +137,11 @@
 
 				<a onclick="addWishlist({{product.id}})" class="like"><i class="fa-regular fa-heart fa-1x text-danger" style=" position: absolute; top: 8%;right: 5%; z-index: 100;"> </i>
 				</a>
-				<a class="text-dark prods" href="{% url 'view_product' product.id %}">
+				{% if product.slug and product.business.slug %}
+					<a class="text-dark prods" href="{% url 'view_product' product.business.slug product.slug %}">
+				{% else %}
+					<a class="text-dark prods" href="{% url 'view_business_products' product.business.slug %}">
+				{% endif %}
 				{% if product.image.url %}
 				<img src="{{product.image.url}}" class="d-block w-100" alt="..." style="width: 100%; height: 100%; object-fit: fill;">
 				{% endif %}
@@ -145,7 +149,11 @@
 			</div>
 		
 			<div class="px-2 mt-2">
-				<a class="  prods" href="{% url 'view_product' product.id %}">
+				{% if product.slug and product.business.slug %}
+					<a class="  prods" href="{% url 'view_product' product.business.slug product.slug %}">
+				{% else %}
+					<a class="  prods" href="{% url 'view_business_products' product.business.slug %}">
+				{% endif %}
 				<h6>{{product.name}}</h6>
 				</a>
 				<div class="d-flex justify-content-start">

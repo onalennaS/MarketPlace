@@ -97,7 +97,7 @@ def email_withdrawal(recipient_email,link, user,ref):
     return True  # Indicate success
 
 def send_email_withdrawal(user,ref):
-    emails = [user.email, 'versityfinds@gmail.com']
+    emails = [user.email, 'support@onecartdiscovery.com']
     page_link = f"{settings.SITE_URL}/courier/courier_earnings/"
     email_withdrawal(emails, page_link,user,ref)
 
@@ -122,7 +122,7 @@ def email_withdrawal_failed(recipient_email,link, user,ref):
     return True  # Indicate success
 
 def send_email_withdrawal_failed(user,ref):
-    emails = [user.email, 'versityfinds@gmail.com']
+    emails = [user.email, 'support@onecartdiscovery.com']
 
     page_link = f"{settings.SITE_URL}/courier/courier_earnings/"
     email_withdrawal_failed(emails, page_link,user,ref)
@@ -148,7 +148,7 @@ def email_withdrawal_success(recipient_email,link, user,ref,amount):
     return True  # Indicate success
 
 def send_email_withdrawal_success(user,ref,amount):
-    emails = [user.email, 'versityfinds@gmail.com']
+    emails = [user.email, 'support@onecartdiscovery.com']
 
     page_link = f"{settings.SITE_URL}/courier/courier_earnings/"
     email_withdrawal_success(emails, page_link,user,ref,amount)

@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://versityfinds.co.za/sitemap.xml
+Sitemap: https://onecartdiscovery.com/sitemap.xml
