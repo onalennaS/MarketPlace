@@ -5,13 +5,8 @@
 
 {% block content %}
     <div class="auth-container">
-        <div class="logo-box">
-            <img src="{% static 'images/Finds.png' %}" alt="OneCart Discovery Logo" class="logo">
-        </div>
-        
         <h2>Create an Account</h2>
-        <p class="description">Join our student marketplace community</p>
-        
+
         {% if messages %}
             <div class="mb-3">
                 {% for message in messages %}
@@ -45,7 +40,17 @@
                 <input type="email" class="form-control" id="email" name="email" value="{{data.email}}" placeholder=" " required >
                 <label for="email" class="form-label">Email address</label>
             </div>
-            
+
+            <div class="form-group">
+                <select class="form-control" id="role" name="role" required>
+                    <option value="">Select your role</option>
+                    <option value="buyer" {% if data.role == 'buyer' %}selected{% endif %}>Buyer</option>
+                    <option value="seller" {% if data.role == 'seller' %}selected{% endif %}>Seller</option>
+                    <option value="driver" {% if data.role == 'driver' %}selected{% endif %}>Driver</option>
+                </select>
+                <label for="role" class="form-label">Role</label>
+            </div>
+
             <div class="form-group">
                 <input type="password" class="form-control" id="password" name="password" placeholder=" " required >
                 <label for="password" class="form-label">Password</label>

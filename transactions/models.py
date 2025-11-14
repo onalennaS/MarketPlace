@@ -33,7 +33,7 @@ class BusinessWallet(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.user.username} - Balance: {self.balance}"
+        return f"{self.business.name} - Balance: {self.balance}"
 
 
 class BusinessTransaction(models.Model):
