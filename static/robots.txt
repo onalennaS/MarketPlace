@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /god_level/
-Allow: /
-
-Sitemap: https://onecartdiscovery.com/sitemap.xml
-Host: https://onecartdiscovery.com

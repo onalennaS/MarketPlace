@@ -1,94 +1,72 @@
+{% extends 'authentication/base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create an Account</title>
-    
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Favicon (optional) -->
-    <link rel="icon" href="{% static 'user/images/Finds.png' %}">
-</head>
-<body class="bg-light">
+{% block title %}Become a Driver | OneCart Discovery{% endblock %}
 
-<main class="d-flex align-items-center justify-content-center min-vh-100">
-  <section class="card p-4 shadow-lg rounded" style="max-width: 500px; width: 100%;">
-    
-    <div class="text-center mb-4">
-      <img src="{% static 'images/Finds.png' %}" alt="Logo" class="mb-2" style="max-width: 100px;">
-      <h2>Create an Account</h2>
-      <p class="text-muted">Become a driver.</p>
+{% block content %}
+    <div class="auth-container">
+        <h2>Become a Driver</h2>
+
+        {% if messages %}
+            <div class="mb-3">
+                {% for message in messages %}
+                    <div class="alert alert-{% if 'error' in message.tags %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-container">
+            <form method="POST" class="auth-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <input type="text" class="form-control" id="usernameInput" name="username" placeholder=" " value="{{ data.username|default:'' }}" required>
+                    <label for="usernameInput" class="form-label">Username</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-control" id="emailInput" name="email" placeholder=" " value="{{ data.email|default:'' }}" required>
+                    <label for="emailInput" class="form-label">Email address</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="tel" class="form-control" id="phoneInput" name="phone_number" placeholder=" " value="{{ data.phone_number|default:'' }}" required>
+                    <label for="phoneInput" class="form-label">Phone Number</label>
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="vehicleType" name="vehicle_type" required>
+                        <option value="">Select Vehicle Type</option>
+                        <option {% if data.vehicle_type == "skateboard" %}selected{% endif %} value="skateboard">Skateboard</option>
+                        <option {% if data.vehicle_type == "bicycle" %}selected{% endif %} value="bicycle">Bicycle</option>
+                        <option {% if data.vehicle_type == "hoverboard" %}selected{% endif %} value="hoverboard">Hoverboard</option>
+                        <option {% if data.vehicle_type == "rollerblades" %}selected{% endif %} value="rollerblades">Roller Blades</option>
+                        <option {% if data.vehicle_type == "car" %}selected{% endif %} value="car">Car</option>
+                        <option {% if data.vehicle_type == "motorcycle" %}selected{% endif %} value="motorcycle">Motorcycle</option>
+                        <option {% if data.vehicle_type == "other" %}selected{% endif %} value="other">Other</option>
+                    </select>
+                    <label for="vehicleType" class="form-label">Vehicle Type</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" id="passwordInput" name="password" placeholder=" " required>
+                    <label for="passwordInput" class="form-label">Password</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" id="confirmPasswordInput" name="confirm_password" placeholder=" " required>
+                    <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
+                </div>
+
+                <button type="submit" class="btn btn-continue">Register</button>
+            </form>
+        </div>
+
+        <div class="auth-links">
+            <span>Already have an account? <a href="{% url 'signin' %}">Sign In</a></span>
+        </div>
     </div>
-
-    {% if messages %}
-      <div class="alert alert-info">
-        <ul class="mb-0 list-unstyled">
-          {% for message in messages %}
-            <li class="message {{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
-    <form method="POST" class="needs-validation" novalidate>
-      {% csrf_token %}
-
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="usernameInput" name="username" placeholder="Username" value="{{ data.username }}" required>
-        <label for="usernameInput">Username</label>
-      </div>
-
-      <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="emailInput" name="email" placeholder="Email address" value="{{ data.email }}" required>
-        <label for="emailInput">Email address</label>
-      </div>
-
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="phoneInput" name="phone_number" placeholder="Phone Number" value="{{ data.phone_number }}" required>
-        <label for="phoneInput">Phone Number</label>
-      </div>
-
-      <div class="mb-3">
-        <label for="vehicleType" class="form-label">Vehicle Type</label>
-        <select class="form-select" id="vehicleType" name="vehicle_type" required>
-          <option value="">Choose...</option>
-          <option {% if data.vehicle_type == "skateboard" %}selected{% endif %} vlaue="skateboard">Skateboard</option>
-          <option {% if data.vehicle_type == "bicycle" %}selected{% endif %} vlaue="bicycle">Bicycle</option>
-          <option {% if data.vehicle_type == "hoverboard" %}selected{% endif %} vlaue="hoverboard">Hoverboard</option>
-          <option {% if data.vehicle_type == "rollerblades" %}selected{% endif %} vlaue="rollerblades">Roller Blades</option>
-          <option {% if data.vehicle_type == "car" %}selected{% endif %} vlaue="car">Car</option>
-          <option {% if data.vehicle_type == "motorcycle" %}selected{% endif %} vlaue="motorcycle">Motorcycle</option>
-          <option {% if data.vehicle_type == "other" %}selected{% endif %} vlaue="other">Other</option>
-        </select>
-      </div>
-
-      <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" required>
-        <label for="passwordInput">Password</label>
-      </div>
-
-      <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="confirmPasswordInput" name="confirm_password" placeholder="Confirm Password" required>
-        <label for="confirmPasswordInput">Confirm Password</label>
-      </div>
-
-      <div class="d-grid">
-        <button type="submit" class="btn btn-primary">Register</button>
-      </div>
-    </form>
-
-    <p class="text-center mt-3 mb-0">
-      Already have an account? <a href="{% url 'signin' %}">Sign In</a>
-    </p>
-
-  </section>
-</main>
-
-<!-- Bootstrap JS (optional, for form validation and interactivity) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+{% endblock %}

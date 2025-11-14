@@ -4,7 +4,9 @@
 {% block title %}Verify Email | OneCart Discovery{% endblock %}
 
 {% block content %}
-    <div class="auth-container verification-container">
+    <div class="auth-container">
+        <h2>Check Your Email</h2>
+
         {% if messages %}
             <div class="mb-3">
                 {% for message in messages %}
@@ -15,27 +17,31 @@
                 {% endfor %}
             </div>
         {% endif %}
-        
-        <div class="email-icon">📬</div>
-        <h2>Check Your Email</h2>
-        <p class="description">We've sent a verification link to your email address</p>
-        
-        <div class="text-start">
-            <p>If you don't see the email in your inbox:</p>
-            <ul>
-                <li>Check your spam or junk folder</li>
-                <li>Make sure you entered the correct email address</li>
-                <li>Click the button below if you need a new verification link</li>
-            </ul>
+
+        <div class="form-container">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📬</div>
+                <p style="font-size: 0.95rem; color: var(--gray); line-height: 1.5; margin-bottom: 1rem;">
+                    We've sent a verification link to your email address.
+                </p>
+                <div style="text-align: left; font-size: 0.875rem; color: var(--gray);">
+                    <p style="margin-bottom: 0.5rem;">If you don't see the email in your inbox:</p>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Check your spam or junk folder</li>
+                        <li>Make sure you entered the correct email address</li>
+                        <li>Click the button below if you need a new verification link</li>
+                    </ul>
+                </div>
+            </div>
+
+            <form method="POST" action="{% url 'activate_account' email %}" class="auth-form">
+                {% csrf_token %}
+                <button class="btn btn-continue" type="submit">Resend Verification</button>
+            </form>
         </div>
         
-        <form method="POST" action="{% url 'activate_account' email %}">
-            {% csrf_token %}
-            <button class="btn btn-primary" type="submit">Resend Verification</button>
-        </form>
-        
         <div class="auth-links">
-            <span>Need help? <a href="#">Contact Support</a></span>
+            <span><a href="{% url 'signin' %}">Back to Sign In</a></span>
         </div>
     </div>
 {% endblock %}

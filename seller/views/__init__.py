@@ -1,0 +1,2 @@
+# Seller views module
+
