@@ -26,6 +26,7 @@ def register(request):
         data = {
         'username' : request.POST.get('username').strip(),
         'email' : request.POST.get('email').strip(),
+        'role' : request.POST.get('role').strip(),
         'password' : request.POST.get('password').strip(),
         'confirm_password' : request.POST.get('confirm_password').strip()
         }
@@ -50,6 +51,24 @@ def register(request):
 
         user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
         user.save()
+
+        # Assign role based on selection
+        if data['role'] == 'buyer':
+            group = Group.objects.filter(name="customer").first()
+            if group:
+                user.groups.add(group)
+        elif data['role'] == 'seller':
+            group = Group.objects.filter(name="business").first()
+            if group:
+                user.groups.add(group)
+        elif data['role'] == 'driver':
+            group = Group.objects.filter(name="courier").first()
+            if group:
+                user.groups.add(group)
+                # Create Courier profile for driver
+                courier = Courier.objects.create(user=user, phone_number='', vehicle_type='')  # Phone and vehicle can be updated later
+                courier.save()
+
         if 'code' in request.session:
             referrer = ReferralProfile.objects.filter(referral_code=request.session['code']).first()
             new_profile = ReferralProfile.objects.create(user=user,is_referred=True,referred_by=referrer.user)
@@ -129,11 +148,12 @@ def signin(request):
     if request.method == "POST":
         data = {
             'username': request.POST.get('username'),
-            'password': request.POST.get('password')
+            'password': request.POST.get('password'),
+            'role': request.POST.get('role')
         }
         for key, value in data.items():
-            if not value:     
-                messages.error(request,f'{key} if a required field')
+            if not value and key != 'role':  # role is optional
+                messages.error(request,f'{key} is a required field')
                 return render(request, 'authentication/signin.html', {'data':data})
         user = User.objects.filter(email=data['username']).first()
         if not user:

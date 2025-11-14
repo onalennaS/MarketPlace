@@ -1,0 +1,227 @@
+/* Overall Page Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Container/Card */
+.auth-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 50px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    margin: 20px;
+}
+
+/* Logo Box */
+.logo-box {
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+}
+
+/* Header */
+.auth-container h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1D1D1D;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+/* Google Button (Social Login) */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid #DADADA;
+    border-radius: 50px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s;
+}
+
+.google-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Divider */
+.divider {
+    position: relative;
+    margin: 30px 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+.divider-text {
+    background-color: #ffffff;
+    padding: 0 15px;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Form Styles */
+.auth-form {
+    text-align: left;
+}
+
+/* Input Groups */
+.form-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-control {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #E0E0E0;
+    background: transparent;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-bottom-color: #7CF3C3;
+}
+
+.form-control::placeholder {
+    color: #BDBDBD;
+}
+
+/* Floating Labels */
+.form-label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    color: #BDBDBD;
+    pointer-events: none;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -20px;
+    font-size: 12px;
+    color: #7CF3C3;
+}
+
+/* Select Styling (for role) */
+.form-control[type="select"],
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+select.form-control:focus {
+    border-bottom-color: #7CF3C3;
+}
+
+/* Main Button */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #7CF3C3, #00C896);
+    border: none;
+    border-radius: 50px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(124, 243, 195, 0.3);
+    transition: box-shadow 0.2s, transform 0.2s;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 16px rgba(124, 243, 195, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Auth Links */
+.auth-links {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #666;
+}
+
+.auth-links a {
+    color: #00C896;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.auth-links span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 30px;
+        margin: 10px;
+    }
+
+    .auth-container h2 {
+        font-size: 24px;
+    }
+}

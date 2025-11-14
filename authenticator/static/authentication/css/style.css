@@ -8,106 +8,207 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light grey background for contrast */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    color: #333;
 }
 
 .auth-container {
-    background-color: #ffffff; /* White background for the form */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    padding: 2rem;
-    width: 400px; /* Adjusted width for a more compact form */
-    text-align: center; /* Centered text */
-}
-
-.logo-box {
-    margin-bottom: 1rem; /* Space below logo */
-}
-
-.logo {
-    width: 70%; /* Adjust the logo size */
-    height: auto; /* Maintain aspect ratio */
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 h2 {
-    margin-bottom: 0.5rem; /* Reduced margin */
-    font-size: 1.75rem; /* Increased font size for headings */
-    color: #165baa; /* Primary blue color for headings */
-}
-
-.description {
-    margin-bottom: 1rem; /* Space below description */
-    color: #666; /* Grey text for description */
-    font-size: 0.9rem; /* Font size for description */
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2d5a2d;
+    letter-spacing: -0.025em;
 }
 
 .auth-form {
-    margin-bottom: 1rem; /* Space below the form */
+    margin-bottom: 1.5rem;
 }
 
 .form-group {
-    margin-bottom: 1rem; /* Space between form groups */
+    margin-bottom: 1.25rem;
+    position: relative;
 }
 
-/*
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.form-control {
     width: 100%;
-    padding: 0.5rem; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    font-size: 0.9rem; 
-    transition: border-color 0.3s ease; 
-}*/
+    padding: 0.875rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+    outline: none;
+}
 
-/*input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
-    border-color: #165baa;
-    outline: none; 
-}*/
-/*
+.form-control:focus {
+    border-color: #4ade80;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+.form-label {
+    position: absolute;
+    top: 0.875rem;
+    left: 1rem;
+    font-size: 1rem;
+    color: #666;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    padding: 0 0.25rem;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -0.5rem;
+    font-size: 0.875rem;
+    color: #4ade80;
+    background-color: #ffffff;
+}
+
 .btn-primary {
-    background-color: #165baa; 
-    color: #ffffff; 
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: #ffffff;
     border: none;
-    padding: 0.5rem 1rem; 
-    border-radius: 4px; 
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1rem; 
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #0f4a88; 
-}*/
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #333;
+    border: 2px solid #e0e0e0;
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #ccc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+}
+
+.divider {
+    position: relative;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+}
+
+.divider-text {
+    background-color: #ffffff;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    color: #666;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.auth-links a {
+    color: #4ade80;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #22c55e;
+    text-decoration: underline;
+}
+
+.auth-links span {
+    display: block;
+    margin-bottom: 0.5rem;
+}
 
 /* Styles for error messages */
 .error-message {
-    color: green; /* Color for error messages */
-    font-size: 0.85rem; /* Slightly smaller font size */
-    margin-top: 0.5rem; /* Space above error messages */
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
 }
 
-/* Unified styles for sign in and sign up prompts */
-.signin-prompt {
-    margin-top: 1rem; /* Space above prompt */
-    font-size: 0.9rem; /* Font size for prompt */
-    color: #555; /* Dark grey color for better readability */
-}
+/* Responsive design */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
 
-.signin-prompt a {
-    color: #165baa; /* Primary blue color for links */
-    text-decoration: none; /* No underline */
-    transition: text-decoration 0.2s ease; /* Smooth transition for text decoration */
-}
+    h2 {
+        font-size: 1.75rem;
+    }
 
-.signin-prompt a:hover {
-    text-decoration: underline; /* Underline on hover */
+    .form-control {
+        padding: 0.75rem 0.875rem;
+    }
+
+    .btn-primary,
+    .google-btn {
+        padding: 0.75rem 1.5rem;
+    }
 }

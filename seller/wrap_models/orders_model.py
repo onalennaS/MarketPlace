@@ -127,7 +127,7 @@ class OrderAddons(models.Model):
     
 
     def __str__(self):
-        return f"{self.order.user.username} - {self.addon.name} ({self.quantity})"
+        return f"{self.product.order.user.username} - {self.addon.name}"
 
 class OrderAddress(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_address")
@@ -140,4 +140,4 @@ class OrderAddress(models.Model):
     
 
     def __str__(self):
-        return f"{self.order.user.username} - {self.addon.name} ({self.quantity})"
+        return f"{self.order.user.username} - {self.address_line_1}"

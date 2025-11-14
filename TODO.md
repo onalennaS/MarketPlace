@@ -1,5 +1,10 @@
-# TODO: Update Navbar Logo to Use Finds.png
-
-- [x] Update templates/base.html to replace the text brand with an image tag sourcing from Finds.png
-- [x] Verify the change by checking the updated file
-- [ ] Fix incorrect static paths in shop_base2.html (remove leading slashes)
+- [x] Update signup.html to include role selection (Buyer, Seller, Driver)
+- [x] Modify register view in views.py to handle role selection and create appropriate user/group/Courier based on role
+- [x] Update signin.html to include optional role selection
+- [x] Modify signin view in views.py to handle optional role selection
+- [x] Update base.html to include Bootstrap CSS and JS
+- [x] Redesign style.css with professional, modern styling (clean, minimalist, soft shadows, rounded edges, light pastel green accents, Apple-style flat design)
+- [ ] Test the changes
+- [x] Remove logo and description from signup.html for minimalist UI/UX
+- [x] Remove logo and description from signin.html for minimalist UI/UX
+- [x] Update style.css to enhance modern design with light pastel green accents
