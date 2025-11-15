@@ -589,22 +589,33 @@
         function confirmLogout(event) {
             event.preventDefault();
             const logoutUrl = event.currentTarget.href;
-            showConfirmation(
-                'Logout Confirmation',
-                'Are you sure you want to logout? You will need to sign in again to access your account.',
-                'Yes, Logout',
-                'Cancel',
-                function() {
-                    window.location.href = logoutUrl;
-                }
-            );
-        }
-        
-        // Load confirmation utility if not already loaded
-        if (typeof showConfirmation === 'undefined') {
-            const script = document.createElement('script');
-            script.src = '{% static "seller/js/confirmation.js" %}';
-            document.head.appendChild(script);
+            // Wait for confirmation utility to load if needed
+            if (typeof showConfirmation === 'function') {
+                showConfirmation(
+                    'Logout Confirmation',
+                    'Are you sure you want to logout? You will need to sign in again to access your account.',
+                    'Yes, Logout',
+                    'Cancel',
+                    function() {
+                        window.location.href = logoutUrl;
+                    }
+                );
+            } else {
+                // Wait a bit for script to load
+                setTimeout(() => {
+                    if (typeof showConfirmation === 'function') {
+                        showConfirmation(
+                            'Logout Confirmation',
+                            'Are you sure you want to logout? You will need to sign in again to access your account.',
+                            'Yes, Logout',
+                            'Cancel',
+                            function() {
+                                window.location.href = logoutUrl;
+                            }
+                        );
+                    }
+                }, 100);
+            }
         }
     </script>
 {% endblock %}

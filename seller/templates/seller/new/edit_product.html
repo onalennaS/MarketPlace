@@ -709,14 +709,48 @@
             console.log('Description:', quill.root.innerHTML);
             
             // Show success message
-            alert('Product updated successfully!');
+            if (typeof showToast === 'function') {
+                showToast('Product updated successfully!', 'success');
+            } else {
+                // Load toast utility
+                const script = document.createElement('script');
+                script.src = '{% static "seller/js/toast.js" %}';
+                script.onload = function() {
+                    showToast('Product updated successfully!', 'success');
+                };
+                document.head.appendChild(script);
+            }
         }
 
         // Cancel button action
         document.querySelector('.cancel-btn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
-                // Redirect to product management page
-                window.location.href = "{% url 'manage_product' business.id %}";
+            const cancelUrl = "{% url 'manage_product' business.id %}";
+            if (typeof showConfirmation === 'function') {
+                showConfirmation(
+                    'Cancel Editing',
+                    'Are you sure you want to cancel? Any unsaved changes will be lost.',
+                    'Yes, Cancel',
+                    'Continue Editing',
+                    function() {
+                        window.location.href = cancelUrl;
+                    }
+                );
+            } else {
+                // Load confirmation utility
+                const script = document.createElement('script');
+                script.src = '{% static "seller/js/confirmation.js" %}';
+                script.onload = function() {
+                    showConfirmation(
+                        'Cancel Editing',
+                        'Are you sure you want to cancel? Any unsaved changes will be lost.',
+                        'Yes, Cancel',
+                        'Continue Editing',
+                        function() {
+                            window.location.href = cancelUrl;
+                        }
+                    );
+                };
+                document.head.appendChild(script);
             }
         });
 

@@ -70,30 +70,24 @@ function addCart(product_id) {
         
         if(data.status === "error") {
             // Show error message
-            Swal.fire({
-                title: 'Error',
-                text: data.message,
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
+            if (typeof showToast === 'function') {
+                showToast(data.message, 'error');
+            } else {
+                alert(data.message);
+            }
         } else {
-            // Show success message with product details and only continue shopping option
-            Swal.fire({
-                title: 'Added to Cart!',
-                html: `
-                    <div>
-                        <img src="${productImage}" alt="${productName}" style="max-height: 150px; margin-bottom: 15px;">
-                        <p><strong>${productName}</strong> has been added to your cart</p>
-                        <p>${data.message || ''}</p>
-                    </div>
-                `,
-                icon: 'success',
-                confirmButtonColor: '#808080',
-                confirmButtonText: 'Continue Shopping'
-            }).then(() => {
-                // Reload the page when "Continue Shopping" is clicked
+            // Show success message
+            const successMessage = `<strong>${productName}</strong> has been added to your cart${data.message ? '. ' + data.message : ''}`;
+            if (typeof showToast === 'function') {
+                showToast(successMessage, 'success', 4000);
+                // Reload after a short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                alert(successMessage);
                 window.location.reload();
-            });
+            }
         }
     })
     .catch(error => {
@@ -102,12 +96,11 @@ function addCart(product_id) {
         button.innerHTML = originalButtonText;
         
         console.error('Error adding to cart:', error);
-        Swal.fire({
-            title: 'Error',
-            text: 'An error occurred while processing your request',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
+        if (typeof showToast === 'function') {
+            showToast('An error occurred while processing your request', 'error');
+        } else {
+            alert('An error occurred while processing your request');
+        }
     });
 }
 function addExtraToCart() {
@@ -167,61 +160,65 @@ function deleteExtra(extra_id) {
     // Get the button that was clicked
     const button = event.currentTarget;
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to remove this extra?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, remove it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Disable the button and show spinner
-            button.disabled = true;
-            const originalButtonText = button.innerHTML;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
-            
-            // Get data from form
-            const formData = {
-                extra_id: extra_id,
-            };
+    function proceedWithRemoval() {
+        // Disable the button and show spinner
+        button.disabled = true;
+        const originalButtonText = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
+        
+        // Get data from form
+        const formData = {
+            extra_id: extra_id,
+        };
 
-            console.log(formData);
-            // Fetch API POST request
-            fetch('/account/api/user/delete_extra/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Re-enable the button and restore original text
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                if(data.status == "error"){
-                    showSweetAlert(data.message, 'error');
-                } else {
-                    showSweetAlert(data.message, 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            })
-            .catch(error => {
-                // Re-enable the button and restore original text even in case of error
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                console.error('Error submitting form:', error);
-                showSweetAlert('An error occurred while processing your request', 'error');
-            });
+        console.log(formData);
+        // Fetch API POST request
+        fetch('/account/api/user/delete_extra/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Re-enable the button and restore original text
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            if(data.status == "error"){
+                showSweetAlert(data.message, 'error');
+            } else {
+                showSweetAlert(data.message, 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            // Re-enable the button and restore original text even in case of error
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            console.error('Error submitting form:', error);
+            showSweetAlert('An error occurred while processing your request', 'error');
+        });
+    }
+    
+    if (typeof showConfirmation === 'function') {
+        showConfirmation(
+            'Remove Extra',
+            'Do you want to remove this extra?',
+            'Yes, Remove It',
+            'Cancel',
+            proceedWithRemoval
+        );
+    } else {
+        if (confirm('Do you want to remove this extra?')) {
+            proceedWithRemoval();
         }
-    });
+    }
 }
 
 function deleteCart(product_id) {
@@ -230,61 +227,65 @@ function deleteCart(product_id) {
     // Get the button that was clicked
     const button = event.currentTarget;
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to remove this item from your cart?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, remove it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Disable the button and show spinner
-            button.disabled = true;
-            const originalButtonText = button.innerHTML;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
-            
-            // Get data from form
-            const formData = {
-                product_id: product_id,
-            };
+    function proceedWithCartRemoval() {
+        // Disable the button and show spinner
+        button.disabled = true;
+        const originalButtonText = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
+        
+        // Get data from form
+        const formData = {
+            product_id: product_id,
+        };
 
-            console.log(formData);
-            // Fetch API POST request
-            fetch('/account/api/user/delete_cart/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Re-enable the button and restore original text
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                if(data.status == "error"){
-                    showSweetAlert(data.message, 'error');
-                } else {
-                    showSweetAlert(data.message, 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            })
-            .catch(error => {
-                // Re-enable the button and restore original text even in case of error
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                console.error('Error submitting form:', error);
-                showSweetAlert('An error occurred while processing your request', 'error');
-            });
+        console.log(formData);
+        // Fetch API POST request
+        fetch('/account/api/user/delete_cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Re-enable the button and restore original text
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            if(data.status == "error"){
+                showSweetAlert(data.message, 'error');
+            } else {
+                showSweetAlert(data.message, 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            // Re-enable the button and restore original text even in case of error
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            console.error('Error submitting form:', error);
+            showSweetAlert('An error occurred while processing your request', 'error');
+        });
+    }
+    
+    if (typeof showConfirmation === 'function') {
+        showConfirmation(
+            'Remove Item',
+            'Do you want to remove this item from your cart?',
+            'Yes, Remove It',
+            'Cancel',
+            proceedWithCartRemoval
+        );
+    } else {
+        if (confirm('Do you want to remove this item from your cart?')) {
+            proceedWithCartRemoval();
         }
-    });
+    }
 }
 
 function addWishlist(product_id) {
@@ -344,61 +345,65 @@ function deleteWishlist(wishlist_id) {
     // Get the button that was clicked
     const button = event.currentTarget;
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to remove this item from your wishlist?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, remove it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Disable the button and show spinner
-            button.disabled = true;
-            const originalButtonText = button.innerHTML;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
-            
-            // Get data from form
-            const formData = {
-                wishlist_id: wishlist_id,
-            };
+    function proceedWithWishlistRemoval() {
+        // Disable the button and show spinner
+        button.disabled = true;
+        const originalButtonText = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" style="width: 1rem; height: 1rem;" role="status" aria-hidden="true"></span> Removing...';
+        
+        // Get data from form
+        const formData = {
+            wishlist_id: wishlist_id,
+        };
 
-            console.log(formData);
-            // Fetch API POST request
-            fetch('/account/api/user/delete_wishlist/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Re-enable the button and restore original text
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                if(data.status == "error"){
-                    showSweetAlert(data.message, 'error');
-                } else {
-                    showSweetAlert(data.message, 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            })
-            .catch(error => {
-                // Re-enable the button and restore original text even in case of error
-                button.disabled = false;
-                button.innerHTML = originalButtonText;
-                
-                console.error('Error submitting form:', error);
-                showSweetAlert('An error occurred while processing your request', 'error');
-            });
+        console.log(formData);
+        // Fetch API POST request
+        fetch('/account/api/user/delete_wishlist/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Re-enable the button and restore original text
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            if(data.status == "error"){
+                showSweetAlert(data.message, 'error');
+            } else {
+                showSweetAlert(data.message, 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            // Re-enable the button and restore original text even in case of error
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+            
+            console.error('Error submitting form:', error);
+            showSweetAlert('An error occurred while processing your request', 'error');
+        });
+    }
+    
+    if (typeof showConfirmation === 'function') {
+        showConfirmation(
+            'Remove from Wishlist',
+            'Do you want to remove this item from your wishlist?',
+            'Yes, Remove It',
+            'Cancel',
+            proceedWithWishlistRemoval
+        );
+    } else {
+        if (confirm('Do you want to remove this item from your wishlist?')) {
+            proceedWithWishlistRemoval();
         }
-    });
+    }
 }
 
 function add_cart_delivery_method() {
@@ -651,17 +656,23 @@ function getSelectedValue() {
     return selected.value;
 }
 
-// Function to show SweetAlert messages
+// Function to show toast notifications (replaces SweetAlert)
 function showSweetAlert(message, icon) {
-    Swal.fire({
-        icon: icon,
-        title: icon === 'success' ? 'Success!' : 'Oops...',
-        text: message,
-        timer: icon === 'success' ? 2000 : undefined,
-        timerProgressBar: icon === 'success',
-        showConfirmButton: icon !== 'success',
-        
-    });
+    // Map SweetAlert icons to toast types
+    const typeMap = {
+        'success': 'success',
+        'error': 'error',
+        'warning': 'warning',
+        'info': 'info'
+    };
+    const toastType = typeMap[icon] || 'info';
+    
+    // Use showToast if available, otherwise fallback to alert
+    if (typeof showToast === 'function') {
+        showToast(message, toastType);
+    } else {
+        alert(message);
+    }
 }
 
 // Function to get CSRF token 

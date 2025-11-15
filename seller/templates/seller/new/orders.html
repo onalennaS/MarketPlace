@@ -1076,27 +1076,33 @@
     function confirmLogout(event) {
         event.preventDefault();
         
-        // Check if SweetAlert2 is available
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                title: 'Logout Confirmation',
-                text: 'Are you sure you want to logout?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3a7bd5',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, logout',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
+        // Use professional confirmation
+        if (typeof showConfirmation === 'function') {
+            showConfirmation(
+                'Logout Confirmation',
+                'Are you sure you want to logout? You will need to sign in again to access your account.',
+                'Yes, Logout',
+                'Cancel',
+                function() {
                     document.getElementById('logoutForm').submit();
                 }
-            });
+            );
         } else {
-            // Fallback if SweetAlert is not available
-            if (confirm('Are you sure you want to logout?')) {
-                document.getElementById('logoutForm').submit();
-            }
+            // Load confirmation utility
+            const script = document.createElement('script');
+            script.src = '{% static "seller/js/confirmation.js" %}';
+            script.onload = function() {
+                showConfirmation(
+                    'Logout Confirmation',
+                    'Are you sure you want to logout? You will need to sign in again to access your account.',
+                    'Yes, Logout',
+                    'Cancel',
+                    function() {
+                        document.getElementById('logoutForm').submit();
+                    }
+                );
+            };
+            document.head.appendChild(script);
         }
     }
         </script>

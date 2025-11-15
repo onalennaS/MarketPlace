@@ -16,8 +16,8 @@ from django.utils.dateformat import DateFormat
 from datetime import datetime
 # Create your views here.
 # Create your views here.
-def get_sales_data(trunc_func):
-        return Order.objects.filter(paid=True) \
+def get_sales_data(trunc_func, business):
+        return Order.objects.filter(paid=True, business=business) \
             .annotate(period=trunc_func('created_at')) \
             .values('period') \
             .annotate(total=Sum('total_amount')) \
@@ -31,7 +31,15 @@ def process_data(queryset):
 @login_required_custom
 @verify_role('business')
 def dashboard(request,business_id):
-    business = BusinessInformation.objects.filter(id=int(business_id)).first()
+    business = BusinessInformation.objects.filter(id=int(business_id), owner=request.user).first()
+    
+    # Check if business exists and belongs to the user
+    if not business:
+        from django.contrib import messages
+        messages.error(request, 'You do not have a registered business. Please register a business first.')
+        from django.shortcuts import redirect
+        return redirect('register_business_form')
+    
     orders = Order.objects.filter(business=business).all()
     order_count = orders.count()
     recent_orders = orders.order_by('-created_at')[:4]
@@ -43,9 +51,9 @@ def dashboard(request,business_id):
         
     paid_order_count = orders.filter(paid=True).count()
 
-    daily_sales = get_sales_data(TruncDay)
-    weekly_sales = get_sales_data(TruncWeek)
-    monthly_sales = get_sales_data(TruncMonth)
+    daily_sales = get_sales_data(TruncDay, business)
+    weekly_sales = get_sales_data(TruncWeek, business)
+    monthly_sales = get_sales_data(TruncMonth, business)
 
     daily_labels, daily_data = process_data(daily_sales)
     weekly_labels, weekly_data = process_data(weekly_sales)
@@ -61,23 +69,21 @@ def dashboard(request,business_id):
     labels = [DateFormat(entry['month']).format('M') for entry in customers_by_month]
     data = [entry['count'] for entry in customers_by_month]
    
-    if business:
-        return render(request, 'seller/new/dashboard.html', {'business':business,
-                                                                "order_count":order_count,
-                                                                'total_customers':total_customers,
-                                                                "average_paid_order_amount":average_paid_order_amount,
-                                                                "transaction":paid_order_count,
-                                                                "recent_orders":recent_orders,
-                                                                 'daily_labels': daily_labels,
-                                                                'daily_data': daily_data,
-                                                                'weekly_labels': weekly_labels,
-                                                                'weekly_data': weekly_data,
-                                                                'monthly_labels': monthly_labels,
-                                                                'monthly_data': monthly_data,
-                                                                 'customer_labels': labels,
-                                                                'customer_data': data,
-                                                                })
-    return render(request, 'seller/new/dashboard.html')
+    return render(request, 'seller/new/dashboard.html', {'business':business,
+                                                            "order_count":order_count,
+                                                            'total_customers':total_customers,
+                                                            "average_paid_order_amount":average_paid_order_amount,
+                                                            "transaction":paid_order_count,
+                                                            "recent_orders":recent_orders,
+                                                             'daily_labels': daily_labels,
+                                                            'daily_data': daily_data,
+                                                            'weekly_labels': weekly_labels,
+                                                            'weekly_data': weekly_data,
+                                                            'monthly_labels': monthly_labels,
+                                                            'monthly_data': monthly_data,
+                                                             'customer_labels': labels,
+                                                            'customer_data': data,
+                                                            })
 
 @login_required_custom
 @verify_role('business')

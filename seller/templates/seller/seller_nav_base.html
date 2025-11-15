@@ -7,30 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
    
-        <meta name="keywords" content="OneCart Discovery, student marketplace, buy and sell FastFood, cheap student deals, campus marketplace, student classifieds, college essentials, affordable books">
+        <meta name="keywords" content="OneCart Discovery, seller marketplace, sell products, business dashboard">
         <meta name="robots" content="index, follow">
 
     {% block meta %}
-         <meta name="description" content="OneCart Discovery connects you to the best local food spots and daily deals. Eat well, spend less..">
-              <meta property="og:title" content="OneCart Discovery | connects you to the best local food spots and daily deals. Eat well, spend less.">
-            <meta property="og:description" content="Find the best deals on Fastfood, textbooks, gadgets, and campus essentials — by students, for students.">
+         <meta name="description" content="OneCart Discovery Seller Dashboard - Manage your business, products, and orders.">
+              <meta property="og:title" content="OneCart Discovery | Seller Dashboard">
+            <meta property="og:description" content="Manage your business, products, orders, and customers on OneCart Discovery.">
             <meta property="og:image" content="{% static 'images/Finds.png' %}">
             <meta property="og:url" content="https://OneCart Discovery.co.za">
             <meta property="og:type" content="website">
             <meta name="twitter:card" content="summary_large_image">
-            <meta name="twitter:title" content="OneCart Discovery | Student Deals Made Easy">
-            <meta name="twitter:description" content="OneCart Discovery connects you to the best local food spots and daily deals. Eat well, spend less..">
+            <meta name="twitter:title" content="OneCart Discovery | Seller Dashboard">
+            <meta name="twitter:description" content="Manage your business on OneCart Discovery.">
             <meta name="twitter:image" content="{% static 'images/Finds.png' %}">
     {% endblock %}
 
 
         <link rel="icon" type="image/png" href="{% static 'images/favi.png' %}">
-        <title>{% block title %}Home | OneCart Discovery{% endblock %}</title>
+        <title>{% block title %}Seller Dashboard | OneCart Discovery{% endblock %}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <link rel="stylesheet" href="{% static 'authentication/css/message.css' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        <script src="{% static 'seller/js/confirmation.js' %}"></script>
     <style>
         /* Base styles */
         :root {
@@ -124,52 +125,6 @@
         .search-form button:hover {
             transform: translateY(-50%) scale(1.05);
             box-shadow: var(--shadow-sm);
-        }
-
-
-
-        /* Navigation Icons */
-        .nav-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: var(--light-color);
-            color: var(--secondary-color);
-            transition: var(--transition-normal);
-            position: relative;
-            overflow: visible;
-        }
-
-        .nav-icon:hover {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        .nav-icon i {
-            font-size: 0.95rem;
-        }
-
-        .badge-cart, .badge-wishlist {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            font-size: 0.6rem;
-            min-width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            color: white;
-            border: 2px solid white;
-            box-shadow: var(--shadow-sm);
-            padding: 0 3px;
-            z-index: 1;
         }
 
         /* User Profile */
@@ -375,11 +330,6 @@
                 height: 35px;
             }
             
-            .nav-icon {
-                width: 36px;
-                height: 36px;
-            }
-            
             .user-profile img {
                 width: 36px;
                 height: 36px;
@@ -397,11 +347,6 @@
         @media (max-width: 360px) {
             .nav-logo {
                 height: 30px;
-            }
-            
-            .nav-icon {
-                width: 32px;
-                height: 32px;
             }
             
             .mobile-elements .nav-icon {
@@ -426,40 +371,26 @@
             </button>
 
             <!-- Logo -->
-            <a href="{% url 'home' %}" class="navbar-brand">
+            <a href="{% url 'seller_landing_page' %}" class="navbar-brand">
                 <img class="nav-logo" src="{% static 'images/Finds.png' %}" alt="OneCart Discovery Logo">
             </a>
 
             <!-- Desktop Elements (hidden on mobile) -->
             <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4 justify-content-end">
-                <!-- Search Form -->
-
-                {% if user.is_authenticated %}
-                <!-- Navigation Icons -->
-                <div class="d-flex align-items-center me-3">
-                    <a href="{% url 'wish_lists' %}" class="nav-icon position-relative me-2" aria-label="Wishlist">
-                        <i class="fas fa-heart text-danger"></i>
-                        {% if wishlist_items_count > 0 %}
-                        <span class="badge-wishlist">{{ wishlist_items_count }}</span>
-                        {% endif %}
-                    </a>
-
-                    <a href="{% url 'cart' %}" class="nav-icon position-relative" aria-label="Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        {% if cart_items_count > 0 %}
-                        <span class="badge-cart">{{ cart_items_count }}</span>
-                        {% endif %}
-                    </a>
-                </div>
-                {% endif %}
-
                 <!-- Navbar Links -->
                 <div class="d-flex align-items-center">
-                    <a href="{% url 'home' %}" class="text-decoration-none text-dark me-3">Home</a>
-                    <a href="#" class="text-decoration-none text-dark me-3">About</a>
-                    <a href="#" class="text-decoration-none text-dark me-3">Contact Us</a>
+                    <a href="{% url 'seller_landing_page' %}" class="text-decoration-none text-dark me-3">Home</a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'dash' %}" class="text-decoration-none text-dark me-3" aria-label="My Account">My Account</a>
+                        <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" 
+                           class="text-decoration-none text-dark me-3 dashboard-link" 
+                           {% if not business %}data-no-business="true"{% endif %}
+                           {% if business %}data-business-id="{{ business.id }}"{% endif %}>Dashboard</a>
+                        {% if business %}
+                        <a href="{% url 'manage_product' business.id %}" class="text-decoration-none text-dark me-3">Products</a>
+                        <a href="{% url 'orders' business.id %}" class="text-decoration-none text-dark me-3">Orders</a>
+                        {% else %}
+                        <a href="{% url 'register_business_form' %}" class="text-decoration-none text-dark me-3">Register Business</a>
+                        {% endif %}
                         <a href="{% url 'logout' %}" class="text-decoration-none text-primary logout-link">Logout</a>
                     {% else %}
                         <a href="{% url 'signin' %}" class="text-decoration-none text-primary">Login</a>
@@ -470,19 +401,14 @@
             <!-- Mobile Elements (only visible on mobile) -->
             <div class="mobile-elements d-flex d-lg-none align-items-center ms-auto">
                 {% if user.is_authenticated %}
-                <a href="{% url 'wish_lists' %}" class="nav-icon position-relative mx-1" aria-label="Wishlist">
-                    <i class="fas fa-heart text-danger"></i>
-                    {% if wishlist_items_count > 0 %}
-                    <span class="badge-wishlist">{{ wishlist_items_count }}</span>
-                    {% endif %}
-                </a>
-
-                <a href="{% url 'cart' %}" class="nav-icon position-relative mx-1" aria-label="Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    {% if cart_items_count > 0 %}
-                    <span class="badge-cart">{{ cart_items_count }}</span>
-                    {% endif %}
-                </a>
+                <div class="dropdown">
+                    <button class="btn btn-link text-dark p-0" type="button" id="mobileUserMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserMenu">
+                        <li><a class="dropdown-item" href="{% url 'logout' %}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -496,97 +422,103 @@
         </div>
         
         <div class="offcanvas-body p-0">
-            <!-- Mobile Search Form -->
-            <form method="POST" class="mobile-search-form">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search products..." aria-label="Search">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </form>
-            
             <!-- User Info -->
+            {% if user.is_authenticated %}
             <div class="d-flex align-items-center p-3 border-bottom">
                 <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" width="40" height="40">
                 <div class="ms-3">
                     <div class="fw-bold">{{ user.username }}</div>
-                    <small class="text-muted">Account Member</small>
+                    <small class="text-muted">Seller Account</small>
                 </div>
             </div>
+            {% endif %}
             
             <!-- Main Menu -->
             <div class="list-group list-group-flush">
                 <div class="section-header">
                     <h5>Main</h5>
                 </div>
-                <a href="{% url 'shop_base' %}" class="list-group-item list-group-item-action">
+                <a href="{% url 'seller_landing_page' %}" class="list-group-item list-group-item-action">
                     <i class="fas fa-home"></i> Home
                 </a>
-                <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
+                <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" 
+                   class="list-group-item list-group-item-action dashboard-link"
+                   {% if not business %}data-no-business="true"{% endif %}
+                   {% if business %}data-business-id="{{ business.id }}"{% endif %}>
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+
+                {% if business %}
+                <div class="section-header">
+                    <h5>Dashboard</h5>
+                </div>
+                <a href="{% url 'seller_dashboard' business.id %}" class="list-group-item list-group-item-action dashboard-link" data-business-id="{{ business.id }}">
+                    <i class="fas fa-chart-line"></i> Sales Overview
+                </a>
+                <a href="{% url 'report' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </a>
+
+                <div class="section-header">
+                    <h5>Products</h5>
+                </div>
+                <a href="{% url 'manage_product' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-box"></i> All Products
+                </a>
+                <a href="{% url 'add_products' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus-circle"></i> Add New Product
+                </a>
+
+                <div class="section-header">
+                    <h5>Orders</h5>
+                </div>
+                <a href="{% url 'orders' business.id %}" class="list-group-item list-group-item-action">
                     <i class="fas fa-shopping-bag"></i> Orders
                 </a>
-
-                <div class="section-header">
-                    <h5>Shopping</h5>
-                </div>
-                <a href="{% url 'cart' %}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-                    <span><i class="fa fa-shopping-cart text-success"></i> Cart</span>
-                    {% if cart_items_count > 0 %}
-                    <span class="badge rounded-pill bg-primary">{{ cart_items_count }}</span>
-                    {% endif %}
-                </a>
-                <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-                    <span><i class="fa fa-heart text-danger"></i> Wish List</span>
-                    {% if wishlist_items_count > 0 %}
-                    <span class="badge rounded-pill bg-primary">{{ wishlist_items_count }}</span>
-                    {% endif %}
+                <a href="{% url 'invoice' %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-file-invoice"></i> Invoices
                 </a>
 
                 <div class="section-header">
-                    <h5>Account</h5>
+                    <h5>Customers</h5>
                 </div>
-                <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user"></i> Personal Details
+                <a href="{% url 'customer' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Customers
                 </a>
-                <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-cogs"></i> Security Settings
+
+                <div class="section-header">
+                    <h5>Business</h5>
+                </div>
+                <a href="{% url 'business_info' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-building"></i> Business Info
                 </a>
-                <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-shopping-bag"></i> My Orders
+                <a href="{% url 'business_status' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-info-circle"></i> Business Status
                 </a>
-                <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-star"></i> Product Reviews
+                <a href="{% url 'register_business_form' %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-registered"></i> Register Business
                 </a>
-                <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-credit-card"></i> Credit & Refunds
+                <a href="{% url 'appeal_registration_view' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-gavel"></i> Appeal Registration
                 </a>
-                <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-gift"></i> Gift Card
+
+                <div class="section-header">
+                    <h5>Settings</h5>
+                </div>
+                <a href="{% url 'settings' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cog"></i> Settings
                 </a>
-                <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-users"></i> Referrals & Earnings
-                </a>
-                <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-crown"></i> Subscription Plan
-                </a>
-                <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-history"></i> Payment History
-                </a>
-                <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
-                    <i class="fas fa-headset"></i> Customer Support
-                </a>
+                {% endif %}
             </div>
         </div>
         
         <!-- Offcanvas Footer -->
         <div class="offcanvas-footer border-top p-3">
             <div class="d-flex justify-content-between align-items-center">
+                {% if user.is_authenticated %}
                 <span class="text-primary fw-bold">
                     <i class="fa fa-user-circle text-primary me-2"></i> {{ user.username }}
                 </span>
-                {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm logout-link">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </a>
@@ -601,7 +533,7 @@
 
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-nav d-lg-none">
-        <a href="{% url 'home' %}" class="nav-item-mobile">
+        <a href="{% url 'seller_landing_page' %}" class="nav-item-mobile">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </a>
@@ -609,23 +541,32 @@
             <i class="fas fa-bars"></i>
             <span>Menu</span>
         </a>
-        <a href="{% url 'cart' %}" class="nav-item-mobile position-relative">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Cart</span>
-            {% if cart_items_count > 0 %}
-            <span class="badge bg-danger rounded-pill position-absolute" style="top: 0; right: 50%; transform: translateX(50%);">
-                {{ cart_items_count }}
-            </span>
-            {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" 
+           class="nav-item-mobile dashboard-link"
+           {% if not business %}data-no-business="true"{% endif %}
+           {% if business %}data-business-id="{{ business.id }}"{% endif %}>
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
         </a>
-        <a href="{% url 'wish_lists' %}" class="nav-item-mobile">
-            <i class="fas fa-heart"></i>
-            <span>Wishlist</span>
+        {% if business %}
+        <a href="{% url 'orders' business.id %}" class="nav-item-mobile">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Orders</span>
         </a>
-        <a href="{% url 'dash' %}" class="nav-item-mobile">
+        {% endif %}
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="nav-item-mobile logout-link">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+        {% else %}
+        <a href="{% url 'signin' %}" class="nav-item-mobile">
             <i class="fas fa-user"></i>
-            <span>Account</span>
+            <span>Login</span>
         </a>
+        {% endif %}
     </div>
 
     <!-- Message Container -->
@@ -671,7 +612,7 @@
                     <p id="confirmationMessage" style="font-size: 1rem; color: #495057; margin: 0;">Are you sure you want to proceed?</p>
                 </div>
                 <div class="modal-footer" style="border-top: 1px solid #e9ecef; padding: 1rem 1.5rem;">
-                    <button type="button" class="btn btn-secondary" id="confirmationCancelBtn" data-bs-dismiss="modal" style="border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 500;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 500;">
                         <i class="fas fa-times me-2"></i>Cancel
                     </button>
                     <button type="button" class="btn btn-primary" id="confirmationConfirmBtn" style="border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 500; background: linear-gradient(135deg, #00A8A8 0%, #008888 100%); border: none;">
@@ -700,9 +641,132 @@
 
 
     <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-    <script src="{% static 'seller/js/toast.js' %}"></script>
-    <script src="{% static 'seller/js/confirmation.js' %}"></script>
     <script>
+        // Professional Toast notification utility function
+        function showToast(message, type = 'info', duration = 5000) {
+            // Ensure toast container exists
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                const container = document.createElement('div');
+                container.className = 'toast-container position-fixed top-0 end-0 p-3';
+                container.style.zIndex = '9999';
+                container.innerHTML = '<div id="toastContainer"></div>';
+                document.body.appendChild(container);
+                toastContainer = document.getElementById('toastContainer');
+            }
+            
+            const toastId = 'toast-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            
+            // Professional toast styling
+            const typeConfig = {
+                'success': {
+                    bg: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    border: '#047857',
+                    icon: 'fa-check-circle',
+                    title: 'Success'
+                },
+                'error': {
+                    bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                    border: '#b91c1c',
+                    icon: 'fa-times-circle',
+                    title: 'Error'
+                },
+                'warning': {
+                    bg: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                    border: '#b45309',
+                    icon: 'fa-exclamation-triangle',
+                    title: 'Warning'
+                },
+                'info': {
+                    bg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                    border: '#1d4ed8',
+                    icon: 'fa-info-circle',
+                    title: 'Information'
+                }
+            };
+            
+            const config = typeConfig[type] || typeConfig['info'];
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" 
+                     style="background: ${config.bg}; border-left: 4px solid ${config.border}; border-radius: 12px; 
+                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); margin-bottom: 1rem; color: white; 
+                            animation: slideInRight 0.3s ease-out;" data-bs-delay="${duration}">
+                    <div style="padding: 1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); 
+                                    display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas ${config.icon}" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem; font-size: 0.95rem;">${config.title}</div>
+                            <div style="font-size: 0.875rem; opacity: 0.95;">${message}</div>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" 
+                                aria-label="Close" style="opacity: 0.8; flex-shrink: 0;"></button>
+                    </div>
+                </div>
+            `;
+            
+            // Add animation if not already added
+            if (!document.getElementById('toastAnimations')) {
+                const style = document.createElement('style');
+                style.id = 'toastAnimations';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { autohide: true, delay: duration });
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                toastElement.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => toastElement.remove(), 300);
+            });
+        }
+
+        // Professional Confirmation Dialog
+        function showConfirmation(title, message, confirmText = 'Confirm', cancelText = 'Cancel', confirmCallback, cancelCallback) {
+            const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            const titleEl = document.getElementById('confirmationTitle');
+            const messageEl = document.getElementById('confirmationMessage');
+            const confirmBtn = document.getElementById('confirmationConfirmBtn');
+            
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            confirmBtn.innerHTML = `<i class="fas fa-check me-2"></i>${confirmText}`;
+            
+            // Remove previous event listeners
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            
+            // Add new event listener
+            newConfirmBtn.addEventListener('click', function() {
+                modal.hide();
+                if (confirmCallback) confirmCallback();
+            });
+            
+            // Handle cancel
+            const modalElement = document.getElementById('confirmationModal');
+            const handleCancel = function() {
+                if (cancelCallback) cancelCallback();
+                modalElement.removeEventListener('hidden.bs.modal', handleCancel);
+            };
+            modalElement.addEventListener('hidden.bs.modal', handleCancel);
+            
+            modal.show();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize all dropdowns manually to ensure they work
             var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
@@ -721,35 +785,49 @@
                     const logoutUrl = this.getAttribute('href');
 
                     // Show professional confirmation dialog
-                    if (typeof showConfirmation === 'function') {
-                        showConfirmation(
-                            'Logout Confirmation',
-                            'Are you sure you want to log out? You will need to sign in again to access your account.',
-                            'Yes, Logout',
-                            'Cancel',
-                            function() {
-                                window.location.href = logoutUrl;
-                            }
-                        );
-                    } else {
-                        // Wait for script to load
+                    showConfirmation(
+                        'Logout Confirmation',
+                        'Are you sure you want to log out? You will need to sign in again to access your account.',
+                        'Yes, Logout',
+                        'Cancel',
+                        function() {
+                            window.location.href = logoutUrl;
+                        }
+                    );
+                });
+            });
+
+            // Handle dashboard link clicks - check if business exists
+            const dashboardLinks = document.querySelectorAll('.dashboard-link');
+            dashboardLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Check if user has no registered business
+                    if (this.getAttribute('data-no-business') === 'true') {
+                        e.preventDefault(); // Prevent navigation
+                        
+                        // Show toast notification
+                        showToast('You need to register a business before accessing the dashboard.', 'warning', 6000);
+                        
+                        // After showing toast, ask if they want to register
                         setTimeout(() => {
-                            if (typeof showConfirmation === 'function') {
-                                showConfirmation(
-                                    'Logout Confirmation',
-                                    'Are you sure you want to log out? You will need to sign in again to access your account.',
-                                    'Yes, Logout',
-                                    'Cancel',
-                                    function() {
-                                        window.location.href = logoutUrl;
-                                    }
-                                );
-                            }
-                        }, 100);
+                            showConfirmation(
+                                'Register Business',
+                                'You need to register a business before accessing the dashboard. Would you like to register a business now?',
+                                'Yes, Register Business',
+                                'Cancel',
+                                function() {
+                                    window.location.href = '{% url "register_business_form" %}';
+                                }
+                            );
+                        }, 1000);
                     }
+                    // If business exists, allow normal navigation (href will work)
                 });
             });
         });
     </script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>
+
