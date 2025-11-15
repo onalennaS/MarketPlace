@@ -106,6 +106,8 @@ def view_product(request, bSlug, pSlug):
 
 
 def home(request):
+    if request.user.is_authenticated and request.user.groups.filter(name="business").exists():
+        return redirect('seller_landing_page')
     items = 0
     wishlist_items_count = 0
     if request.user.is_authenticated:

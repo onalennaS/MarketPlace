@@ -72,13 +72,14 @@
             position: sticky;
             top: 0;
             z-index: 1030;
-            padding: 0.25rem 0.75rem;
+            padding: 0.2rem 0.5rem;
+            height: 50px;
             transition: var(--transition-normal);
             overflow: visible;
         }
 
         .nav-logo {
-            height: 55px;
+            height: 40px;
             width: auto;
             transition: var(--transition-normal);
         }
@@ -302,24 +303,25 @@
             .desktop-elements {
                 display: none !important;
             }
-            
+
             .nav-logo {
-                height: 40px;
+                height: 35px;
             }
-            
+
             #navbar {
-                padding: 0.5rem;
+                padding: 0.3rem 0.4rem;
+                height: 45px;
             }
-            
+
             .container-fluid {
                 padding-left: 0.75rem;
                 padding-right: 0.75rem;
             }
-            
+
             .mobile-search-form {
                 margin: 0.75rem 1rem;
             }
-            
+
             .content {
                 margin-bottom: 60px; /* Space for mobile bottom nav */
             }
@@ -372,7 +374,7 @@
 
             <!-- Logo -->
             <a href="{% url 'seller_landing_page' %}" class="navbar-brand">
-                <img class="nav-logo" src="{% static 'images/Finds.png' %}" alt="OneCart Discovery Logo">
+                
             </a>
 
             <!-- Desktop Elements (hidden on mobile) -->
