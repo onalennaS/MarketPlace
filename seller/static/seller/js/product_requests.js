@@ -271,6 +271,76 @@ function deleteProduct(product_id) {
     });
 }
 
+function activateProduct(product_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        product_id:product_id,
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/seller/api/activate_product/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
+function deactivateProduct(product_id) {
+    event.preventDefault();
+
+    // Get data from form
+    const formData = {
+        product_id:product_id,
+    };
+
+    console.log(formData);
+    // Fetch API POST request
+    fetch('/seller/api/deactivate_product/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token if using Django
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "error"){
+        displayMessagesapi(data);
+      }else{
+        displayMessagesapi(data);
+        setTimeout(() => {
+            location.reload(); // Replace with actual redirect URL
+        }, 2000);
+      }
+    })
+
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
 function MoveOrderToNextStageAPI(order_id) {
     event.preventDefault();
 

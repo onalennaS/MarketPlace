@@ -147,8 +147,17 @@ def activate_product(request):
                 return JsonResponse({"status":"error","message":f"{errors}"})
 
     except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data"}, status=400)     
-    return JsonResponse({"message": "product added successfully",'status':'success'}, status=201)
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+    product = Product.objects.filter(id=int(data['product_id'])).first()
+    if product:
+        product.status = 'active'
+        business = product.business
+        activity = RecentActivity.objects.create(business=business, product=product, activity="Activated")
+        activity.save()
+        product.save()
+        return JsonResponse({"message": "product activated successfully",'status':'success'}, status=201)
+    return JsonResponse({"message": "product not found",'status':'error'}, status=404)
 
 @login_required_custom
 @verify_role('business')
@@ -164,8 +173,17 @@ def deactivate_product(request):
                 return JsonResponse({"status":"error","message":f"{errors}"})
 
     except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data"}, status=400)     
-    return JsonResponse({"message": "product added successfully",'status':'success'}, status=201)
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+    product = Product.objects.filter(id=int(data['product_id'])).first()
+    if product:
+        product.status = 'inactive'
+        business = product.business
+        activity = RecentActivity.objects.create(business=business, product=product, activity="Deactivated")
+        activity.save()
+        product.save()
+        return JsonResponse({"message": "product deactivated successfully",'status':'success'}, status=201)
+    return JsonResponse({"message": "product not found",'status':'error'}, status=404)
 
 @login_required_custom
 @verify_role('business')

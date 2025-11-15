@@ -109,7 +109,8 @@ def appeal_registration_view(request,business_id):
 def business_status(request, business_id):
     business = BusinessInformation.objects.filter(id=int(business_id)).first()
     moderation = Moderation.objects.filter(business=business).first()
-    return render(request, 'seller/new/businness_status.html',{'business':business, 'moderation':moderation})
+    address = Address.objects.filter(business=business).first()
+    return render(request, 'seller/new/businness_status.html',{'business':business, 'moderation':moderation, 'address':address})
 
 @login_required_custom
 @verify_role('business')

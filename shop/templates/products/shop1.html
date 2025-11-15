@@ -654,7 +654,11 @@ body {
                             <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> Closed
                         </span>
                         {% endif %}
-                        <img src="{{business.image.url}}" alt="{{business.name}}" class="business-img">
+                        {% if business.image %}
+                            <img src="{{business.image.url}}" alt="{{business.name}}" class="business-img">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x200?text=No+Image" alt="{{business.name}}" class="business-img">
+                        {% endif %}
                     </div>
                     <div class="business-body">
                         <h3 class="business-title">{{ business.name }}</h3>

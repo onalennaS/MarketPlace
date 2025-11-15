@@ -28,7 +28,7 @@ class BusinessInformation(models.Model):
     status = models.CharField(max_length=50, default="pending")
     account_code = models.CharField(max_length=200,default="",null=True)
     open_orders = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='uploads/business_images/', default='default_business.png')
+    image = models.ImageField(upload_to='uploads/business_images/', null=True, blank=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=False)
     slug = models.SlugField( blank=True)  # <--- This
     

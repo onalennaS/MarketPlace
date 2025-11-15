@@ -1,4 +1,5 @@
-{% extends 'seller/seller_base.html' %}
+{% extends 'seller/base.html' %}
+{% load static %}
 
 {% block links %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -547,6 +548,9 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const chartLabels = {
