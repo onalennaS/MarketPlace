@@ -11,514 +11,659 @@
     :root {
         --primary-color: #00A8A8;
         --primary-dark: #008888;
-        --primary-light: rgba(56, 74, 74, 0.1);
+        --primary-light: rgba(0, 168, 168, 0.1);
         --secondary-color: #1A3D7C;
         --text-color: #333333;
         --text-muted: #6c757d;
         --border-color: #dee2e6;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
         --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
         --transition-normal: all 0.3s ease;
         --radius-md: 8px;
-        --radius-pill: 50px;
+        --radius-lg: 16px;
         --accent: #4ade80;
         --accent-dark: #3cd472;
-        --bg: #fafafa;
-        --card: #FFFFFF;
-        --muted: #666666;
+        --light-bg: #fafafa;
+        --card-bg: #ffffff;
+        --stat-1: #4ade80;  /* Bright Green */
+        --stat-2: #3b82f6;  /* Bright Blue */
+        --stat-3: #f59e0b;  /* Bright Orange */
+        --stat-4: #ef4444;  /* Bright Red */
     }
 
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background-color: #fafafa;
+        background-color: var(--light-bg);
         color: var(--text-color);
+        margin: 0;
+        padding: 0;
     }
 
+    .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+    }
+
+    /* Compact Page Header */
     .page-header {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-        color: white;
-        padding: 3rem 0;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .page-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(circle at 20% 50%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%);
-    }
-
-    .page-header-content {
-        position: relative;
-        z-index: 1;
+        margin-bottom: 1.5rem;
     }
 
     .page-title {
-        font-size: 2.5rem;
-        font-weight: 800;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1a1a1a;
         margin-bottom: 0.5rem;
     }
 
     .page-subtitle {
-        font-size: 1.1rem;
-        opacity: 0.95;
+        font-size: 0.95rem;
+        color: #666666;
+        line-height: 1.5;
+        margin: 0;
     }
 
-    .home-button {
-        background: white;
-        color: var(--primary-color);
-        border: none;
-        border-radius: 50px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 700;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .home-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        color: var(--primary-dark);
-    }
-
+    /* Dashboard Notice */
     .dashboard-notice {
         background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
         border-left: 4px solid var(--primary-color);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
         border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        font-size: 0.9rem;
     }
 
-    .dashboard-notice strong {
-        color: var(--secondary-color);
-    }
-
-    .section-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
+    /* Business Cards Grid */
+    .businesses-section {
         margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 3px solid var(--primary-color);
     }
 
-    .section-header h4 {
-        font-weight: 700;
-        color: var(--secondary-color);
-        margin: 0;
+    .section-title {
         font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
     }
 
-    .section-header i {
-        color: var(--primary-color);
-        font-size: 1.75rem;
+    .business-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
     }
 
     .business-card {
-        transition: all 0.3s ease;
-        border: 2px solid rgba(0, 168, 168, 0.1);
-        border-radius: 16px;
-        overflow: hidden;
         background: white;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        padding: 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e8e8e8;
+        transition: all 0.2s ease;
+        overflow: hidden;
         height: 100%;
     }
 
     .business-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(0, 168, 168, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         border-color: var(--primary-color);
     }
 
-    .business-card-clickable {
-        cursor: pointer;
-    }
-
-    .business-card-disabled {
-        cursor: not-allowed;
-        opacity: 0.85;
-    }
-
-    .business-card-disabled:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    .business-card-header {
+        padding: 1.25rem;
+        border-bottom: 1px solid #e8e8e8;
+        position: relative;
     }
 
     .status-badge {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        z-index: 2;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.7rem;
         font-weight: 600;
-        letter-spacing: 0.5px;
+        padding: 0.2rem 0.6rem;
         border-radius: 20px;
-        padding: 6px 14px;
-        font-size: 0.85rem;
     }
 
-    .badge.bg-success {
-        background: var(--accent) !important;
+    .badge-approved {
+        background: var(--accent);
+        color: white;
     }
 
-    .badge.bg-warning {
-        background: #FFA500 !important;
+    .badge-pending {
+        background: #FFA500;
+        color: white;
     }
 
-    .badge.bg-danger {
-        background: #E74C3C !important;
+    .badge-rejected {
+        background: #E74C3C;
+        color: white;
     }
 
-    .card-title {
-        color: var(--secondary-color);
-        font-weight: 700;
-        font-size: 1.25rem;
+    .business-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+        padding-right: 70px;
     }
 
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .category-tag {
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
+    .business-category {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-    }
-
-    .category-tag i {
+        background: rgba(0, 168, 168, 0.1);
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
         color: var(--primary-color);
+        font-weight: 500;
     }
 
-    .category-tag span {
-        color: var(--text-color);
-        font-weight: 500;
+    .business-card-body {
+        padding: 1.25rem;
+    }
+
+    .business-id {
+        color: #666666;
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .business-description {
+        color: #666666;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 1.25rem;
+    }
+
+    .business-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
     }
 
     .btn-details {
         background: var(--primary-color);
         color: white;
         border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
         font-weight: 600;
-        transition: all 0.3s;
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
+        font-size: 0.85rem;
     }
 
     .btn-details:hover {
         background: var(--primary-dark);
         color: white;
-        transform: translateX(3px);
+        transform: translateX(2px);
     }
 
-    .business-id {
-        color: var(--muted);
-        font-size: 0.9rem;
-        font-weight: 500;
+    .btn-dashboard {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
     }
 
+    .btn-dashboard:hover {
+        background: var(--accent-dark);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* Add New Business Card */
     .add-business-card {
-        border: 3px dashed var(--primary-color);
-        border-radius: 16px;
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.05), rgba(74, 222, 128, 0.05));
-        transition: all 0.3s ease;
+        background: white;
+        border: 2px dashed var(--primary-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.2s ease;
         height: 100%;
-        min-height: 280px;
-    }
-
-    .add-business-card:hover {
-        transform: scale(1.03);
-        border-color: var(--accent);
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
-        box-shadow: 0 8px 25px rgba(74, 222, 128, 0.2);
-    }
-
-    .icon-wrapper {
-        height: 80px;
-        width: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
+        text-decoration: none;
+        color: inherit;
+        min-height: 180px;
+    }
+
+    .add-business-card:hover {
+        background: rgba(0, 168, 168, 0.05);
+        transform: scale(1.01);
+        border-color: var(--accent);
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .add-icon {
+        width: 50px;
+        height: 50px;
         background: linear-gradient(135deg, var(--primary-color), var(--accent));
-        border-radius: 50%;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.75rem;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .add-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 0.4rem;
+    }
+
+    .add-description {
+        color: #666666;
+        font-size: 0.9rem;
+    }
+
+    /* No Businesses State */
+    .no-businesses {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e8e8e8;
         margin-bottom: 1.5rem;
     }
 
-    .icon-wrapper i {
-        font-size: 2rem;
-        color: white;
+    .no-businesses-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
     }
 
-    .add-business-title {
-        color: var(--secondary-color);
-        font-weight: 700;
-        font-size: 1.3rem;
+    .no-businesses-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 0.75rem;
     }
 
-    .add-business-text {
-        color: var(--muted);
+    .no-businesses-description {
+        color: #666666;
+        margin-bottom: 1.5rem;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
         font-size: 0.95rem;
     }
 
-    .no-businesses-card {
-        border-radius: 16px;
-        background: white;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        border: 2px dashed var(--primary-color);
-        padding: 3rem;
-    }
-
-    .no-businesses-card i {
-        color: var(--primary-color);
-        font-size: 4rem;
-    }
-
-    .no-businesses-card h3 {
-        color: var(--secondary-color);
-        font-weight: 700;
-        margin-top: 1.5rem;
-    }
-
-    .no-businesses-card p {
-        color: var(--muted);
-    }
-
     .btn-register {
-        background: linear-gradient(135deg, var(--primary-color), var(--accent));
+        background-color: #4ade80;
         color: white;
         border: none;
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        transition: all 0.3s;
-        box-shadow: 0 8px 20px rgba(0, 168, 168, 0.3);
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
     }
 
     .btn-register:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 12px 30px rgba(0, 168, 168, 0.4);
+        background-color: #3cd472;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Compact Stats */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border: none;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+    }
+
+    .stat-card:nth-child(1)::before { background: var(--stat-1); }
+    .stat-card:nth-child(2)::before { background: var(--stat-2); }
+    .stat-card:nth-child(3)::before { background: var(--stat-3); }
+    .stat-card:nth-child(4)::before { background: var(--stat-4); }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        font-size: 1rem;
         color: white;
     }
 
+    .stat-card:nth-child(1) .stat-icon { background: var(--stat-1); }
+    .stat-card:nth-child(2) .stat-icon { background: var(--stat-2); }
+    .stat-card:nth-child(3) .stat-icon { background: var(--stat-3); }
+    .stat-card:nth-child(4) .stat-icon { background: var(--stat-4); }
+
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        line-height: 1;
+    }
+
+    .stat-card:nth-child(1) .stat-number { color: var(--stat-1); }
+    .stat-card:nth-child(2) .stat-number { color: var(--stat-2); }
+    .stat-card:nth-child(3) .stat-number { color: var(--stat-3); }
+    .stat-card:nth-child(4) .stat-number { color: var(--stat-4); }
+
+    .stat-label {
+        color: #666666;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
         .page-title {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
         }
 
-        .page-header {
-            padding: 2rem 0;
+        .page-subtitle {
+            font-size: 0.9rem;
         }
 
-        .business-card {
-            margin-bottom: 1rem;
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .business-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .main-container {
+            padding: 1rem;
+        }
+
+        .business-name {
+            padding-right: 60px;
+        }
+
+        .stat-number {
+            font-size: 1.25rem;
+        }
+
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 1.3rem;
+        }
+
+        .no-businesses {
+            padding: 2rem 1rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .business-actions {
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+
+        .business-actions a {
+            text-align: center;
+            justify-content: center;
         }
     }
 </style>
 
-<div class="container py-4">
-    <!-- Page Header -->
+<div class="main-container">
+    <!-- Compact Page Header -->
     <div class="page-header">
-        <div class="container page-header-content">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="page-title">Managed Businesses</h1>
-                    <p class="page-subtitle">View and manage all your registered business entities</p>
-                </div>
-                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                    <a href="{% url 'home' %}" class="home-button">
-                        <i class="bi bi-shop"></i>
-                        <span>Shop on OneCart Discovery</span>
-                    </a>
-                </div>
+        <h1 class="page-title">My Registered Businesses</h1>
+        <p class="page-subtitle">Manage all your business entities and access their respective dashboards from one central location</p>
+    </div>
+
+    <!-- Quick Stats - Always Visible -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-building"></i>
             </div>
+            <div class="stat-number">{{ businesses|length|default:0 }}</div>
+            <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-number">{{ approved_count|default:0 }}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-number">{{ pending_count|default:0 }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <div class="stat-number">{{ rejected_count|default:0 }}</div>
+            <div class="stat-label">Rejected</div>
         </div>
     </div>
 
-    <!-- Enhanced notice about accessing dashboard -->
-    <div class="dashboard-notice">
-        <div class="d-flex align-items-start gap-3">
-            <i class="bi bi-info-circle-fill fs-4 text-primary"></i>
-            <div>
-                <strong>Business Dashboard Access:</strong> Only businesses with an <span class="badge bg-success">Approved</span> status can access the full dashboard features. Businesses with <span class="badge bg-warning text-dark">Pending</span> status are being reviewed by our team and will gain access once approved. You can still view business details for any business by clicking the "Details" button.
-            </div>
-        </div>
-    </div>
     
-    <!-- Businesses Section -->
-    <div class="section-header">
-        <i class="bi bi-buildings"></i>
-        <h4>Your Businesses</h4>
-    </div>
 
-    <div class="row g-4">
-        {% if businesses %}
-            {% for business in businesses %}
-                <div class="col-sm-6 col-lg-4 col-xl-3">
-                    <div class="business-card {% if business.status == 'approved' %}business-card-clickable{% else %}business-card-disabled{% endif %}">
-                        <div class="position-relative">
-                            <span class="status-badge position-absolute top-0 end-0 m-3 badge {% if business.status == 'approved' %}bg-success{% elif business.status == 'pending' %}bg-warning text-dark{% elif business.status == 'rejected' %}bg-danger{% endif %}">
+    <!-- Businesses Section -->
+    <section class="businesses-section">
+        <h2 class="section-title">Your Business Portfolio</h2>
+        
+        <div class="business-grid">
+            {% if businesses %}
+                {% for business in businesses %}
+                    <div class="business-card">
+                        <div class="business-card-header">
+                            <span class="status-badge {% if business.status == 'approved' %}badge-approved{% elif business.status == 'pending' %}badge-pending{% elif business.status == 'rejected' %}badge-rejected{% endif %}">
                                 {{ business.status|title }}
                             </span>
-                            {% if business.status == 'approved' %}
-                                <a href="{% url 'seller_dashboard' business.id %}" class="text-decoration-none">
-                                    <div class="card-body">
-                                        <h5 class="card-title mb-3">{{ business.name }}</h5>
-                                        <div class="category-tag mb-3">
-                                            <i class="bi bi-building"></i>
-                                            <span>{{ business.category }}</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <span class="business-id">#{{ business.id }}</span>
-                                            <a href="{% url 'business_status' business.id %}" 
-                                               class="btn-details"
-                                               onclick="event.stopPropagation()">
-                                                Details <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </a>
+                            <h3 class="business-name">{{ business.name }}</h3>
+                            <div class="business-category">
+                                <i class="fas fa-tag"></i>
+                                {{ business.category }}
+                            </div>
+                        </div>
+                        <div class="business-card-body">
+                            <div class="business-id">ID: #{{ business.id }}</div>
+                            {% if business.description %}
+                                <p class="business-description">{{ business.description|truncatewords:15 }}</p>
                             {% else %}
-                                <div class="card-body" onclick="showStatusAlert('{{ business.status }}', event)">
-                                    <h5 class="card-title mb-3">{{ business.name }}</h5>
-                                    <div class="category-tag mb-3">
-                                        <i class="bi bi-building"></i>
-                                        <span>{{ business.category }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <span class="business-id">#{{ business.id }}</span>
-                                        <a href="{% url 'business_status' business.id %}" 
-                                           class="btn-details"
-                                           onclick="event.stopPropagation()">
-                                            Details <i class="bi bi-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
+                                <p class="business-description text-muted">No description provided</p>
                             {% endif %}
+                            
+                            <div class="business-actions">
+                                {% if business.status == 'approved' %}
+                                    <a href="{% url 'seller_dashboard' business.id %}" class="btn-dashboard">
+                                        <i class="fas fa-chart-line"></i>
+                                        Dashboard
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">
+                                        <i class="fas fa-clock"></i>
+                                        {{ business.status|title }}
+                                    </span>
+                                {% endif %}
+                                <a href="{% url 'business_status' business.id %}" class="btn-details">
+                                    Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-            
-            <!-- Add New Business Card -->
-            <div class="col-sm-6 col-lg-4 col-xl-3">
-                <a href="{% url 'register_business_form' %}" class="text-decoration-none">
-                    <div class="add-business-card d-flex align-items-center justify-content-center">
-                        <div class="text-center">
-                            <div class="icon-wrapper mx-auto">
-                                <i class="bi bi-plus-lg"></i>
-                            </div>
-                            <h5 class="add-business-title mb-2">Add New Business</h5>
-                            <p class="add-business-text mb-0">Register a new business entity</p>
+                {% endfor %}
+                
+                <!-- Add New Business Card -->
+                <a href="{% url 'register_business_form' %}" class="add-business-card">
+                    <div class="text-center">
+                        <div class="add-icon">
+                            <i class="fas fa-plus"></i>
                         </div>
+                        <h4 class="add-title">Add Business</h4>
+                        <p class="add-description">Register new business</p>
                     </div>
                 </a>
-            </div>
-        {% else %}
-            <div class="col-12">
-                <div class="no-businesses-card text-center">
-                    <i class="bi bi-building-add d-block"></i>
-                    <h3>No Businesses Found</h3>
-                    <p class="mb-4">Get started by registering your first business entity</p>
+            {% else %}
+                <!-- No Businesses State -->
+                <div class="no-businesses">
+                    <div class="no-businesses-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="no-businesses-title">No Businesses Registered</h3>
+                    <p class="no-businesses-description">
+                        Start by registering your first business to access seller dashboard features.
+                    </p>
                     <a href="{% url 'register_business_form' %}" class="btn-register">
-                        <i class="bi bi-plus-circle me-2"></i>Register First Business
+                        <i class="fas fa-plus-circle"></i>
+                        Register Business
                     </a>
                 </div>
-            </div>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
+    </section>
 </div>
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-<!-- SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<!-- Bootstrap and SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <script>
-    function showStatusAlert(status, event) {
-        // Prevent the alert if clicking on a child link (e.g., the Details button)
-        if (event.target.closest('a[href]')) {
-            return;
-        }
-        
-        if (status === 'pending') {
-            Swal.fire({
-                title: 'Dashboard Access Restricted',
-                html: '<p>You cannot access the dashboard while your business is still under review.</p><p>Please wait for approval before accessing seller dashboard features.</p>',
-                icon: 'info',
-                confirmButtonText: 'Understood',
-                confirmButtonColor: '#00A8A8'
-            });
-        } else if (status === 'rejected') {
-            Swal.fire({
-                title: 'Business Application Rejected',
-                html: '<p>Your business application has been rejected and cannot access the dashboard.</p><p>Please check the details section for reasons and reapplication instructions.</p>',
-                icon: 'error',
-                confirmButtonText: 'View Details',
-                confirmButtonColor: '#00A8A8'
-            });
-        }
-    }
-
-    // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
-        // Fix the navbar toggler functionality
-        const navbarToggler = document.querySelector('.navbar-toggler');
+        // Add click handlers for non-approved business cards
+        const businessCards = document.querySelectorAll('.business-card');
         
-        if (navbarToggler) {
-            // Remove any existing event listeners first to avoid duplicates
-            const newToggler = navbarToggler.cloneNode(true);
-            navbarToggler.parentNode.replaceChild(newToggler, navbarToggler);
-            
-            // Add the click event listener to the new toggler
-            newToggler.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+        businessCards.forEach(card => {
+            const statusBadge = card.querySelector('.status-badge');
+            if (statusBadge) {
+                const status = statusBadge.textContent.trim().toLowerCase();
                 
-                // Get the target offcanvas element
-                const targetId = this.getAttribute('data-bs-target');
-                const offcanvasElement = document.querySelector(targetId);
-                
-                if (offcanvasElement) {
-                    // Remove existing backdrop attribute if it exists
-                    if (offcanvasElement.hasAttribute('data-bs-backdrop')) {
-                        offcanvasElement.removeAttribute('data-bs-backdrop');
-                    }
-                    
-                    try {
-                        // Initialize the offcanvas with proper options
-                        const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement, {
-                            backdrop: true  // Ensure this is a boolean, not a string
-                        });
+                if (status !== 'approved') {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', function(e) {
+                        // Don't trigger if clicking on a link or button
+                        if (e.target.closest('a') || e.target.closest('button')) return;
                         
-                        // Show the offcanvas
-                        bsOffcanvas.show();
-                    } catch (error) {
-                        console.error('Error initializing offcanvas:', error);
-                    }
-                } else {
-                    console.error('Offcanvas element not found with selector:', targetId);
+                        if (status === 'pending') {
+                            showToast('This business is under review. Dashboard access will be available once approved.', 'info', 4000);
+                        } else if (status === 'rejected') {
+                            showToast('Business application was rejected. Please check details for more information.', 'warning', 4000);
+                        }
+                    });
                 }
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info', duration = 4000) {
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+                toastContainer.style.zIndex = '9999';
+                toastContainer.id = 'toastContainer';
+                document.body.appendChild(toastContainer);
+            }
+            
+            const toastId = 'toast-' + Date.now();
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.style.cssText = 'border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.9rem;';
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="d-flex" style="padding: 0.75rem;">
+                    <div class="toast-body d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast, { delay: duration });
+            bsToast.show();
+            
+            toast.addEventListener('hidden.bs.toast', function() {
+                toast.remove();
             });
-        } else {
-            console.error('Navbar toggler button not found');
         }
     });
 </script>

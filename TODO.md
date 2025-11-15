@@ -1,13 +1,13 @@
-# Seller Dashboard Landing Page Advertisement Task
+# TODO: Update Register Business Page Design
 
 ## Tasks to Complete
-- [x] Update `seller/templates/seller/new/seller_landing_page.html` with:
-  - Hero section with compelling headline and description.
-  - Key features section highlighting product listing, order tracking, analytics, and business growth.
-  - Call-to-action buttons: "Get Started" linking to register_business_form, and "Login" for existing users.
-  - Incorporate design elements from authentication base: centered layout, color scheme, button styles, responsive design.
-  - Add custom styles in `{% block styles %}` using CSS variables from auth base.
+- [x] Update font family in body style to match nav bar exactly
+- [x] Refine stats cards with better shadows, transitions, and visual hierarchy
+- [x] Ensure consistent use of CSS variables from nav bar throughout the design
+- [x] Improve overall responsiveness and modern UI elements (hover effects, spacing)
 
 ## Progress Tracking
-- Started: [Date/Time]
-- Completed: [Date/Time]
+- Font family updated to match nav bar
+- Stats cards refined with professional design, better shadows, transitions, and visual hierarchy
+- CSS variables now consistent with nav bar (using --light-bg instead of --light-color)
+- Business cards hover effects enhanced with better transform and shadow using CSS variables
