@@ -84,14 +84,12 @@ def register_business(request):
     address.save()
     moderation.save()
 
-    # Redirect to business status page (pending status) or dashboard if approved
-    if business.status == "pending":
-        return redirect('business_status', business_id=business.id)
-    elif business.status == "approved":
-        return redirect('seller_dashboard', business_id=business.id)
-    else:
-        # Handle rejected or other cases
-        return redirect('business_status', business_id=business.id)
+    # Return JSON response for API call
+    return JsonResponse({
+        "status": "success",
+        "message": "Your business registration request has been submitted successfully. We will notify you soon with an update.",
+        "id": business.id
+    }, status=201)
 
 @verify_role('business')
 @login_required_custom

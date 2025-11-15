@@ -173,7 +173,15 @@ def signin(request):
         else:
             messages.error(request,f"Username '{data['username']}' does not exists..")
             return render(request, 'authentication/signin.html', {'data':data})
-    return render(request, 'authentication/signin.html')
+    
+    # Check if redirected from seller page access attempt
+    seller_access = request.GET.get('seller_access', '0')
+    context = {}
+    if seller_access == '1':
+        messages.error(request, 'You need to sign in as a seller to access the seller page.')
+        context['show_seller_message'] = True
+    
+    return render(request, 'authentication/signin.html', context)
 
 
 def create_password(request):

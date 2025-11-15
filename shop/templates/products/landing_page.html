@@ -606,7 +606,7 @@
                         <li><i class="fas fa-clock"></i> List in minutes</li>
                         <li><i class="fas fa-truck-fast"></i> Flexible delivery</li>
                     </ul>
-                    <a href="{% url 'seller_landing_page' %}" class="btn-hero btn-secondary-custom">
+                    <a href="{% url 'seller_landing_page' %}" class="btn-hero btn-secondary-custom start-selling-btn">
                         <span>Start Selling</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -723,7 +723,7 @@
                     Browse Marketplace
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                <a href="{% url 'seller_landing_page' %}" class="btn-cta btn-cta-secondary">
+                <a href="{% url 'seller_landing_page' %}" class="btn-cta btn-cta-secondary start-selling-btn">
                     Start Selling
                     <i class="fas fa-plus-circle"></i>
                 </a>
@@ -795,4 +795,62 @@
             </div>
         </div>
     </footer>
+
+    <!-- Modal for seller access restriction -->
+    <div class="modal fade" id="sellerAccessModal" tabindex="-1" aria-labelledby="sellerAccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sellerAccessModalLabel">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                        Seller Access Required
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You need to sign in as a seller to access the seller page.</p>
+                    <p class="mb-0">Please sign in with your seller account or create a new seller account to start selling.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="goToSignInBtn">Go to Sign In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store signin URL
+            const signinUrl = "{% url 'signin' %}";
+            
+            // Check if user is a buyer/customer
+            const userRole = '{{ user_role|default:"" }}';
+            const isBuyer = userRole === 'buyer';
+            const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+            // Get all "Start Selling" buttons
+            const startSellingButtons = document.querySelectorAll('.start-selling-btn');
+
+            startSellingButtons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    // If user is authenticated and is a buyer, show modal and prevent navigation
+                    if (isAuthenticated && isBuyer) {
+                        e.preventDefault();
+                        const modal = new bootstrap.Modal(document.getElementById('sellerAccessModal'));
+                        modal.show();
+                    }
+                    // If user is not authenticated, let them proceed (they'll be redirected to signin by the view)
+                });
+            });
+
+            // Handle "Go to Sign In" button click
+            const goToSignInBtn = document.getElementById('goToSignInBtn');
+            if (goToSignInBtn) {
+                goToSignInBtn.addEventListener('click', function() {
+                    window.location.href = signinUrl + '?seller_access=1';
+                });
+            }
+        });
+    </script>
 {% endblock %}

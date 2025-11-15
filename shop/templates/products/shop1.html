@@ -13,22 +13,19 @@
 {% endblock %}
 
 {% block styles %}
+<style>
 :root {
-    --primary: #00A8A8;
-    --primary-dark: #008888;
-    --primary-light: #E0F5F5;
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --blue-light: #dbeafe;
+    --text: #1a1a1a;
+    --text-light: #6b7280;
+    --background: #ffffff;
+    --border: #e5e7eb;
     --accent: #2ECC71;
-    --accent-dark: #27AE60;
-    --base: #1A3D7C;
-    --base-dark: #152F5F;
-    --background: #F9F9F9;
-    --text: #333333;
-    --light: #FFFFFF;
-    --gray: #666666;
-    --gray-light: #E5E5E5;
-    --success: #10b981;
     --danger: #ef4444;
-    --warning: #f97316;
 }
 
 * {
@@ -39,387 +36,249 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    font-size: 14px; /* Reduced from default 16px */
-    line-height: 1.4; /* Tighter line spacing */
     color: var(--text);
-    background-color: var(--background);
-    overflow-x: hidden;
+    background-color: #f9fafb;
+    line-height: 1.6;
 }
 
-/* Compact Hero Section */
+/* Hero Section - Minimal */
 .hero-section {
-    position: relative;
-    height: 150px; /* Reduced from 200px */
-    border-radius: 10px; /* Smaller radius */
-    overflow: hidden;
-    margin: 0.75rem 0; /* Reduced margin */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
+    background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 50%, #ffffff 100%);
+    padding: 4rem 0;
+    margin: 0;
+    border-bottom: 1px solid var(--border);
 }
 
-/* Compact Search Form */
 .search-form {
-    width: 100%;
-    max-width: 500px; /* Slightly smaller max width */
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .search-input-group {
-    position: relative;
     display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 30px; /* Smaller radius */
-    padding: 0.4rem; /* Reduced padding */
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
-    backdrop-filter: blur(10px);
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.search-input-group:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .search-input {
     flex: 1;
     border: none;
     outline: none;
-    padding: 0.6rem 0.9rem; /* Reduced padding */
-    font-size: 0.9rem; /* Smaller font */
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
     background: transparent;
-    color: var(--base);
-    font-weight: 500;
+    color: var(--text);
 }
 
 .search-input::placeholder {
-    color: var(--gray);
-    font-size: 0.85rem; /* Smaller placeholder */
+    color: var(--text-light);
 }
 
 .search-btn {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--light);
+    background: var(--blue);
+    color: white;
     border: none;
-    width: 45px; /* Smaller button */
-    height: 45px;
-    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0, 168, 168, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.search-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.search-btn:hover::before {
-    width: 90px;
-    height: 90px;
+    transition: all 0.2s ease;
 }
 
 .search-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 168, 168, 0.4);
+    background: var(--blue-dark);
 }
 
-.search-btn i {
-    font-size: 1rem; /* Smaller icon */
-    z-index: 1;
+/* Section Headers - Unique & Subtle */
+.section-header {
+    margin: 4rem 0 2.5rem;
     position: relative;
 }
 
-.hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 8s ease;
+.section-title-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
-.hero-section:hover .hero-image {
-    transform: scale(1.1);
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(26, 61, 124, 0.9) 0%, rgba(0, 168, 168, 0.8) 100%);
+.section-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--blue);
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    padding: 1.5rem; /* Reduced padding */
-}
-
-.hero-content {
-    max-width: 600px;
-}
-
-/* Compact Section Headers */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem 0 1.5rem; /* Reduced margins */
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .section-title {
-    font-size: 1.5rem; /* Smaller title */
-    font-weight: 700;
-    color: var(--base);
-    position: relative;
-    padding-left: 15px; /* Reduced padding */
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin: 0;
 }
 
-.section-title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px; /* Thinner accent line */
-    height: 70%; /* Slightly shorter */
-    background: linear-gradient(to bottom, var(--primary), var(--accent));
-    border-radius: 8px;
+.section-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin: 0;
+    font-weight: 400;
 }
 
 .view-all-btn {
-    background: var(--light);
-    color: var(--primary);
-    padding: 0.5rem 1.2rem; /* Smaller button */
-    border-radius: 30px; /* Smaller radius */
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--text-light);
     text-decoration: none;
-    font-size: 0.85rem; /* Smaller font */
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.875rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    border: 2px solid var(--primary);
-    transition: all 0.3s ease;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+    padding: 0.5rem 0;
 }
 
 .view-all-btn:hover {
-    background: var(--primary);
-    color: var(--light);
-    transform: translateX(3px);
-    box-shadow: 0 3px 10px rgba(0, 168, 168, 0.3);
+    color: var(--blue);
+    gap: 0.5rem;
 }
 
-/* Compact Business Cards */
+/* Business Cards - Minimal */
 .business-card {
-    background: var(--light);
-    border-radius: 15px; /* Smaller radius */
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    height: 100%;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06); /* Softer shadow */
+    transition: all 0.2s ease;
     text-decoration: none;
     display: block;
+    height: 100%;
 }
 
 .business-card:hover {
-    transform: translateY(-5px) scale(1.01); /* More subtle hover */
-    box-shadow: 0 8px 25px rgba(0, 168, 168, 0.15);
+    border-color: var(--blue);
+    transform: translateY(-2px);
 }
 
 .business-img-container {
     position: relative;
-    height: 130px; /* Reduced height */
+    height: 200px;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--background) 100%);
+    background: #f3f4f6;
 }
 
 .business-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
 }
 
 .business-card:hover .business-img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .status-badge {
     position: absolute;
-    top: 0.8rem; /* Adjusted position */
-    right: 0.8rem;
-    padding: 0.4rem 0.8rem; /* Smaller badge */
-    border-radius: 30px;
-    font-size: 0.7rem; /* Smaller font */
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
     font-weight: 600;
+    background: white;
     backdrop-filter: blur(10px);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
 }
 
 .status-badge.open {
-    background: rgba(46, 204, 113, 0.9);
-    color: var(--light);
+    color: var(--accent);
 }
 
 .status-badge.closed {
-    background: rgba(239, 68, 68, 0.9);
-    color: var(--light);
+    color: var(--danger);
 }
 
 .business-body {
-    padding: 0.9rem; /* Reduced padding */
+    padding: 1.5rem;
 }
 
 .business-title {
-    font-size: 1.1rem; /* Smaller title */
-    font-weight: 700;
-    color: var(--base);
-    margin-bottom: 0.6rem;
-    transition: color 0.3s ease;
-}
-
-.business-card:hover .business-title {
-    color: var(--primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
 }
 
 .business-category {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: var(--primary-light);
-    color: var(--primary);
-    padding: 0.3rem 0.8rem; /* Smaller padding */
-    border-radius: 30px;
-    font-size: 0.75rem; /* Smaller font */
-    font-weight: 600;
-    margin-bottom: 0.8rem;
+    display: inline-block;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
 }
 
 .business-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--gray-light); /* Thinner border */
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
 }
 
 .business-rating {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    color: var(--warning);
-    font-weight: 600;
-    font-size: 0.85rem; /* Smaller font */
+    gap: 0.25rem;
+    color: #f59e0b;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .business-items {
-    color: var(--gray);
-    font-size: 0.8rem; /* Smaller font */
+    color: var(--text-light);
+    font-size: 0.875rem;
 }
 
-/* Compact Flash Deals Section */
-.flash-deals-header {
-    background: linear-gradient(135deg, var(--warning) 0%, #ff6b35 100%);
-    padding: 1.5rem; /* Reduced padding */
-    border-radius: 15px; /* Smaller radius */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
-    position: relative;
-    overflow: hidden;
-}
-
-.flash-title {
-    color: var(--light);
-    font-size: 1.5rem; /* Smaller title */
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    z-index: 1;
-}
-
-.countdown {
-    display: flex;
-    gap: 0.8rem; /* Reduced gap */
-    z-index: 1;
-}
-
-.countdown-item {
-    background: var(--light);
-    padding: 0.8rem; /* Smaller padding */
-    border-radius: 12px; /* Smaller radius */
-    text-align: center;
-    min-width: 60px; /* Smaller width */
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-}
-
-.countdown-number {
-    font-size: 1.5rem; /* Smaller number */
-    font-weight: 800;
-    color: var(--warning);
-    display: block;
-}
-
-.countdown-label {
-    font-size: 0.7rem; /* Smaller label */
-    color: var(--gray);
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-/* Compact Horizontal Scroll for Flash Deals */
-.horizontal-scroll-container {
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: 0.8rem;
-    margin-bottom: 0.8rem;
-    scroll-behavior: smooth;
-}
-
-.horizontal-scroll-row {
-    display: flex;
-    gap: 1.2rem; /* Reduced gap */
-    min-width: max-content;
-    padding: 0 0.4rem;
-}
-
-.product-card-wrapper {
-    flex: 0 0 240px; /* Smaller width */
-    max-width: 240px;
-}
-
-/* Compact Product Cards */
+/* Product Cards - Minimal */
 .product-card {
-    background: var(--light);
-    border-radius: 15px; /* Smaller radius */
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 168, 168, 0.15);
+    border-color: var(--blue);
+    transform: translateY(-2px);
 }
 
 .product-img-container,
 .product-image-container {
     position: relative;
-    height: 180px; /* Reduced height */
+    height: 240px;
     overflow: hidden;
-    background: var(--background);
+    background: #f9fafb;
 }
 
 .product-img,
@@ -427,257 +286,181 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
 }
 
 .product-card:hover .product-img,
 .product-card:hover .product-image {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 .wishlist-btn {
     position: absolute;
-    top: 0.8rem;
-    right: 0.8rem;
-    background: rgba(255, 255, 255, 0.95);
-    border: none;
-    width: 38px; /* Smaller button */
-    height: 38px;
-    border-radius: 50%;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: white;
+    border: 1px solid var(--border);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .wishlist-btn:hover {
     background: var(--danger);
-    transform: scale(1.1);
+    border-color: var(--danger);
+}
+
+.wishlist-btn:hover i {
+    color: white;
 }
 
 .wishlist-btn i {
     color: var(--danger);
-    font-size: 1rem; /* Smaller icon */
-    transition: all 0.3s ease;
+    font-size: 1rem;
+    transition: all 0.2s ease;
 }
 
-.product-badge,
-.discount-badge {
+.wishlist-btn.active i {
+    color: var(--danger);
+}
+
+.product-badge {
     position: absolute;
-    top: 0.8rem;
-    left: 0.8rem;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-    color: var(--light);
-    padding: 0.4rem 0.8rem; /* Smaller badge */
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 0.8rem; /* Smaller font */
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
     z-index: 2;
-    box-shadow: 0 3px 10px rgba(46, 204, 113, 0.25);
 }
 
 .product-body {
-    padding: 1rem; /* Reduced padding */
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
 
 .product-title {
-    font-size: 0.95rem; /* Smaller title */
+    font-size: 1rem;
     font-weight: 600;
-    color: var(--base);
-    margin-bottom: 0.4rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    transition: color 0.3s ease;
+    line-height: 1.4;
 }
 
-.product-card:hover .product-title {
-    color: var(--primary);
+.product-description {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    max-height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .product-price {
-    font-size: 1.2rem; /* Smaller price */
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 0.4rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
 }
 
-.product-category {
-    margin-bottom: 0.8rem;
-}
-
-.product-category .text-muted,
-.product-category small {
-    color: var(--gray);
-    font-size: 0.8rem; /* Smaller font */
-}
-
-.btn-add-cart,
-.add-to-cart-btn {
+.btn-add-cart {
     width: 100%;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--light);
+    background: var(--primary);
+    color: white;
     border: none;
-    padding: 0.6rem; /* Reduced padding */
-    border-radius: 30px; /* Smaller radius */
-    font-size: 0.85rem; /* Smaller font */
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     margin-top: auto;
 }
 
-.btn-add-cart:hover,
-.add-to-cart-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 168, 168, 0.25);
-    color: var(--light);
+.btn-add-cart:hover {
+    background: var(--primary-dark);
+    color: white;
 }
 
-/* Compact Alert Styling */
-.alert-info {
-    background: linear-gradient(135deg, var(--primary-light) 0%, rgba(0, 168, 168, 0.1) 100%);
-    color: var(--primary);
-    border: 2px solid var(--primary);
-    border-radius: 12px; /* Smaller radius */
-    padding: 1.2rem; /* Reduced padding */
-    font-weight: 500;
-    font-size: 0.9rem; /* Smaller font */
+/* Sell Banner - Minimal */
+.sell-banner {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 3rem 0;
 }
 
-.no-products-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    min-height: 150px; /* Reduced height */
-}
-
-/* Compact Footer */
-.footer {
-    background: linear-gradient(135deg, var(--base) 0%, var(--base-dark) 100%);
-    color: var(--light);
-    padding: 3rem 0 1.5rem; /* Reduced padding */
-    margin-top: 4rem; /* Reduced margin */
-}
-
-.footer-title {
-    font-size: 1.3rem; /* Smaller title */
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    color: var(--light);
-}
-
-.footer-text {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5; /* Tighter line spacing */
-    font-size: 0.9rem; /* Smaller font */
-}
-
-.footer-links-title {
-    font-weight: 600;
-    margin-bottom: 0.8rem;
-    color: var(--light);
-    font-size: 0.95rem; /* Smaller font */
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.6rem;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.85rem; /* Smaller font */
-    position: relative;
-}
-
-.footer-links a::before {
-    content: '→';
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: all 0.3s ease;
-    position: absolute;
-    left: -12px;
-}
-
-.footer-links a:hover {
-    color: var(--primary);
-    transform: translateX(8px);
-}
-
-.footer-links a:hover::before {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.social-links {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 0.8rem;
-}
-
-.social-links a,
-.social-link {
-    width: 38px; /* Smaller icons */
-    height: 38px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--light);
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-.social-links a:hover,
-.social-link:hover {
+.btn-sell {
     background: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 168, 168, 0.3);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-/* Compact Back to Top Button */
+.btn-sell:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+/* Alert */
+.alert-info {
+    background: #f0fdf4;
+    color: var(--primary-dark);
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* Back to Top */
 .back-to-top {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 45px; /* Smaller button */
-    height: 45px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--light);
-    border-radius: 50%;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     z-index: 1000;
-    box-shadow: 0 3px 12px rgba(0, 168, 168, 0.3);
-    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .back-to-top.visible {
@@ -686,185 +469,173 @@ body {
 }
 
 .back-to-top:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 18px rgba(0, 168, 168, 0.4);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
-/* Compact Toast Notifications */
-.toast-container {
-    z-index: 2000;
+/* Footer - Minimal */
+.footer {
+    background: var(--text);
+    color: white;
+    padding: 4rem 0 2rem;
+    margin-top: 5rem;
 }
 
-.toast {
-    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-    border-radius: 12px; /* Smaller radius */
-    overflow: hidden;
-    border-left: 3px solid var(--primary); /* Thinner border */
+.footer-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
 
-/* Responsive Design */
+.footer-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-links-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--blue);
+}
+
+.social-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: var(--blue);
+    color: white;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .hero-section {
-        height: 120px; /* Even smaller on mobile */
+        padding: 2.5rem 0;
     }
 
-    .hero-overlay {
-        padding: 1rem;
+    .section-header {
+        margin: 3rem 0 2rem;
     }
 
     .section-title {
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 
-    .flash-deals-header {
-        flex-direction: column;
-        gap: 1.2rem;
-        text-align: center;
+    .section-subtitle {
+        font-size: 0.8rem;
     }
 
-    .countdown {
-        justify-content: center;
+    .section-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
     }
 
-    .countdown-item {
-        min-width: 50px;
-        padding: 0.6rem;
-    }
-
-    .countdown-number {
-        font-size: 1.3rem;
+    .view-all-btn {
+        position: static;
+        margin-top: 0.75rem;
+        display: inline-block;
     }
 
     .business-img-container,
     .product-img-container,
     .product-image-container {
-        height: 140px;
+        height: 180px;
     }
 
-    .section-header {
+    .sell-banner {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .sell-banner > div {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
+        gap: 1rem;
     }
 }
 
 @media (max-width: 576px) {
-    .hero-section {
-        height: 100px;
-    }
-
-    .hero-overlay {
-        padding: 0.8rem;
-    }
-
     .back-to-top {
-        width: 40px;
-        height: 40px;
-        bottom: 1rem;
-        right: 1rem;
-    }
-    
-    .footer {
-        padding: 2rem 0 1rem;
+        width: 44px;
+        height: 44px;
+        bottom: 1.5rem;
+        right: 1.5rem;
     }
 }
-
-/* Custom scrollbar for compact design */
-.horizontal-scroll-container::-webkit-scrollbar {
-    height: 6px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-track {
-    background: var(--gray-light);
-    border-radius: 8px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 8px;
-    transition: background 0.3s ease;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
-}
-
-/* Grid spacing adjustments for compact layout */
-.row.g-4 {
-    --bs-gutter-y: 1rem; /* Reduced from default 1.5rem */
-    --bs-gutter-x: 1rem;
-}
-
-/* Animation adjustments for faster feel */
-.business-card,
-.product-card {
-    animation-duration: 0.4s; /* Faster animations */
-}
-
-/* Sell on OneCart Discovery promotional banner */
-.sell-banner {
-    background: linear-gradient(90deg, rgba(0,168,168,0.06), rgba(26,61,124,0.02));
-    border: 1px solid rgba(0,168,168,0.08);
-}
-.btn-sell {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--light);
-    border: none;
-}
-@media (max-width: 576px) {
-    .sell-banner { flex-direction: column; gap: 0.75rem; text-align: center; }
-}
+</style>
 {% endblock %}
 
 {% block secend_nav %}
 {% endblock %}
 
 {% block content %}
-<!-- Hero Banner -->
-<section class="container mt-2 mb-3">
-    <div class="hero-section">
-        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Student Marketplace" class="hero-image">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <form class="search-form" method="GET" action="{% url 'search_products' %}">
-                    <div class="search-input-group">
-                        <input type="text" name="q" class="search-input" placeholder="Search for products, businesses, or categories..." required>
-                        <button type="submit" class="search-btn">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="search-form">
+            <form method="GET" action="{% url 'search_products' %}">
+                <div class="search-input-group">
+                    <input type="text" name="q" class="search-input" placeholder="Search products, businesses, or categories..." required>
+                    <button type="submit" class="search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </section>
 
-<!-- Sell on OneCart Discovery Promo -->
-<section class="container mb-3">
-    <div class="sell-banner p-3 rounded-3 d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center gap-3">
-            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg,#00A8A8,#2ECC71); color: white; width:56px; height:56px;">
-                <i class="bi bi-cash-coin" style="font-size:1.35rem;"></i>
+
+
+<!-- Popular Businesses -->
+<section class="container">
+    <div class="section-header">
+        <div class="section-title-wrapper">
+            <div class="section-icon">
+                <i class="bi bi-shop"></i>
             </div>
             <div>
-                <h4 class="mb-1" style="margin:0;">Sell on OneCart Discovery — Earn from day one</h4>
-                <p class="mb-0 text-muted small">List in under 2 minutes, pay 0% commission, and reach thousands of students on your campus. Get featured for a limited time when you sign up today.</p>
+                <h2 class="section-title">Popular Businesses</h2>
+                <p class="section-subtitle">Discover trusted sellers in your area</p>
             </div>
         </div>
-        <div class="d-flex align-items-center gap-2">
-            <a href="{% url 'seller_landing_page' %}" class="btn btn-lg btn-sell">Start Earning <i class="bi bi-arrow-right ms-1"></i></a>
-            <a href="{% url 'seller_landing_page' %}#how-it-works" class="btn btn-outline-primary">How it works</a>
-        </div>
-    </div>
-</section>
-
-<!-- Popular Businesses Section -->
-<section class="container mb-4">
-    <div class="section-header">
-        <h2 class="section-title">Popular Businesses</h2>
-        <a href="#" class="view-all-btn">
-            View All <i class="bi bi-arrow-right"></i>
-        </a>
+        <a href="#" class="view-all-btn">View all <i class="bi bi-arrow-right"></i></a>
     </div>
 
     <div class="row g-3">
@@ -876,26 +647,18 @@ body {
                     <div class="business-img-container">
                         {% if business.open_orders %}
                         <span class="status-badge open">
-                            <i class="bi bi-clock"></i> Open until {{business.close_time}}
+                            <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> Open
                         </span>
                         {% else %}
                         <span class="status-badge closed">
-                            <i class="bi bi-x-circle"></i> We are closed
+                            <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> Closed
                         </span>
                         {% endif %}
-                        
-                        <img src="{{business.image.url}}" 
-                             alt="{{business.name}} | OneCart Discovery" 
-                             class="business-img">
+                        <img src="{{business.image.url}}" alt="{{business.name}}" class="business-img">
                     </div>
-
                     <div class="business-body">
                         <h3 class="business-title">{{ business.name }}</h3>
-                        
-                        <span class="business-category">
-                            <i class="bi bi-tag-fill"></i>{{ business.category }}
-                        </span>
-
+                        <span class="business-category">{{ business.category }}</span>
                         <div class="business-footer">
                             <div class="business-rating">
                                 <i class="bi bi-star-fill"></i>
@@ -912,84 +675,74 @@ body {
     </div>
 </section>
 
-<!-- Flash Deals Section -->
-<section class="container mb-4">
-    <div class="flash-deals-header">
-        <h2 class="flash-title">
-            <i class="bi bi-lightning-charge-fill"></i> Flash Deals
-        </h2>
-        <div class="countdown">
-            <div class="countdown-item">
-                <span class="countdown-number" id="hours">08</span>
-                <span class="countdown-label">Hours</span>
+<!-- Featured Products -->
+<section class="container">
+    <div class="section-header">
+            <div class="section-title-wrapper">
+            <div class="section-icon" style="background: var(--primary);">
+                <i class="bi bi-star-fill"></i>
             </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutes">43</span>
-                <span class="countdown-label">Minutes</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="seconds">27</span>
-                <span class="countdown-label">Seconds</span>
+            <div>
+                <h2 class="section-title">Featured Products</h2>
+                <p class="section-subtitle">Handpicked items just for you</p>
             </div>
         </div>
+        <a href="#" class="view-all-btn">View all <i class="bi bi-arrow-right"></i></a>
     </div>
-    
-    <div class="horizontal-scroll-container">
-        <div class="horizontal-scroll-row">
-            <!-- TODO :make the wishlist button work and add produnct to wish list -->
-            {% for product in flash_deal_products %}
-            <div class="product-card-wrapper">
-                <div class="product-card">
-                    <div class="product-img-container">
-                        {% if product.image %}
-                            {% if product.slug and product.business.slug %}
-                                <a href="{% url 'view_product' product.business.slug product.slug %}" class="text-decoration-none text-dark">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
-                                </a>
-                            {% else %}
-                                <a href="{% url 'view_business_products' product.business.slug %}" class="text-decoration-none text-dark">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
-                                </a>
-                            {% endif %}
+    <div class="row g-3">
+        {% for product in flash_deal_products %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="product-card">
+                <div class="product-image-container">
+                    {% if product.image %}
+                        {% if product.slug and product.business.slug %}
+                            <a href="{% url 'view_product' product.business.slug product.slug %}">
                         {% else %}
-                            <img src="https://via.placeholder.com/500" alt="{{ product.name }}" class="product-img">
+                            <a href="{% url 'view_business_products' product.business.slug %}">
                         {% endif %}
-                        
-                        {% if product.discount %}
-                            <span class="product-badge">{{product.discount}}% OFF</span>
-                        {% endif %}
-                        
-                        <button class="wishlist-btn" data-product-id="{{ product.id }}" onclick="event.preventDefault();">
-                            <i class="bi bi-heart"></i>
-                        </button>
-                    </div>
-                    <div class="product-body">
-                        <h5 class="product-title">{{ product.name }}</h5>
-                        <div class="product-price">
-                            R{{ product.price }}
-                        </div>
-                        <div class="product-category">
-                            <small class="text-muted">{{ product.get_category_display }}</small>
-                        </div>
-                    </div>
+                            <img src="{{product.image.url}}" class="product-image" alt="{{product.name}}">
+                        </a>
+                    {% else %}
+                        <img src="https://via.placeholder.com/300" class="product-image" alt="{{product.name}}">
+                    {% endif %}
+                    {% if product.discount %}
+                        <span class="product-badge">{{product.discount}}% OFF</span>
+                    {% endif %}
+                    <button class="wishlist-btn" data-product-id="{{product.id}}" onclick="event.preventDefault();">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </div>
+                <div class="product-body">
+                    <h5 class="product-title">{{product.name}}</h5>
+                    <p class="product-description">{{ product.small_description|default:"No Description" }}</p>
+                    <p class="product-price">R {{product.price}}</p>
+                    <button class="btn-add-cart" onclick="addToCart({{product.id}})">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </button>
                 </div>
             </div>
-            {% empty %}
-            <div class="no-products-message">
-                <div class="alert alert-info">No flash deals available at the moment. Check back soon!</div>
-            </div>
-            {% endfor %}
         </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No featured products available at the moment.</div>
+        </div>
+        {% endfor %}
     </div>
 </section>
 
-<!-- Top Rated Products Section -->
-<section class="container mb-4">
+<!-- Top Rated Products -->
+<section class="container">
     <div class="section-header">
-        <h2 class="section-title">Top Rated Products</h2>
-        <a href="#" class="view-all-btn">
-            View All <i class="bi bi-arrow-right"></i>
-        </a>
+            <div class="section-title-wrapper">
+            <div class="section-icon" style="background: var(--blue);">
+                <i class="bi bi-trophy-fill"></i>
+            </div>
+            <div>
+                <h2 class="section-title">Top Rated Products</h2>
+                <p class="section-subtitle">Best sellers loved by customers</p>
+            </div>
+        </div>
+        <a href="#" class="view-all-btn">View all <i class="bi bi-arrow-right"></i></a>
     </div>
     <div class="row g-3">
         {% for product in most_bought %}
@@ -1002,25 +755,22 @@ body {
                         {% else %}
                             <a href="{% url 'view_business_products' product.business.slug %}">
                         {% endif %}
-                            <img src="{{product.image.url}}" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | OneCart Discovery">
+                            <img src="{{product.image.url}}" class="product-image" alt="{{product.name}}">
                         </a>
                     {% else %}
-                        <img src="https://via.placeholder.com/300" class="product-image" alt="Product - {{product.name}} from {{product.business.name}} | OneCart Discovery">
+                        <img src="https://via.placeholder.com/300" class="product-image" alt="{{product.name}}">
                     {% endif %}
-                    
                     {% if product.discount %}
                         <span class="product-badge">{{product.discount}}% OFF</span>
                     {% endif %}
-                    
                     <button class="wishlist-btn" data-product-id="{{product.id}}" onclick="event.preventDefault();">
                         <i class="bi bi-heart"></i>
                     </button>
                 </div>
                 <div class="product-body">
                     <h5 class="product-title">{{product.name}}</h5>
-                    <p class="small text-muted" style="max-height:22px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ product.small_description|default:"No Description" }}</p>
-                    <p class="product-price mb-2">R {{product.price}}</p>
-                    
+                    <p class="product-description">{{ product.small_description|default:"No Description" }}</p>
+                    <p class="product-price">R {{product.price}}</p>
                     <button class="btn-add-cart" onclick="addToCart({{product.id}})">
                         <i class="bi bi-cart-plus"></i> Add to Cart
                     </button>
@@ -1029,13 +779,13 @@ body {
         </div>
         {% empty %}
         <div class="col-12">
-            <div class="alert alert-info">No top rated products available at the moment. Check back soon!</div>
+            <div class="alert alert-info">No top rated products available at the moment.</div>
         </div>
         {% endfor %}
     </div>
 </section>
 
-<!-- Back to top button -->
+<!-- Back to Top -->
 <button class="back-to-top" id="backToTop">
     <i class="bi bi-arrow-up"></i>
 </button>
@@ -1043,12 +793,10 @@ body {
 <!-- Footer -->
 <footer class="footer">
     <div class="container">
-        <div class="row g-3">
+        <div class="row g-4">
             <div class="col-lg-4">
-                <h3 class="footer-title"><i class="bi bi-mortarboard-fill"></i> OneCart Discovery</h3>
-                <p class="footer-text">
-                    Your trusted campus marketplace and delivery platform. Built by students, for students.
-                </p>
+                <h3 class="footer-title">OneCart Discovery</h3>
+                <p class="footer-text">Your trusted campus marketplace and delivery platform.</p>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
@@ -1060,9 +808,8 @@ body {
                 <h4 class="footer-links-title">Marketplace</h4>
                 <ul class="footer-links">
                     <li><a href="#">Browse Items</a></li>
-                    <li><a href="#">Sell an Item</a></li>
+                    <li><a href="{% url 'seller_landing_page' %}">Sell an Item</a></li>
                     <li><a href="#">Categories</a></li>
-                    <li><a href="#">How It Works</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 col-md-4">
@@ -1070,31 +817,26 @@ body {
                 <ul class="footer-links">
                     <li><a href="#">Request Delivery</a></li>
                     <li><a href="#">Become a Courier</a></li>
-                    <li><a href="#">Delivery Rates</a></li>
-                    <li><a href="#">Track Order</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 col-md-4">
                 <h4 class="footer-links-title">Support</h4>
                 <ul class="footer-links">
                     <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Safety Tips</a></li>
                     <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 col-md-4">
                 <h4 class="footer-links-title">Legal</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
                 </ul>
             </div>
         </div>
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 2rem 0 1.5rem;">
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0 1.5rem;">
         <div class="text-center">
-            <p class="footer-text mb-0">© 2024 OneCart Discovery. All rights reserved. Made with ❤️ by students, for students.</p>
+            <p class="footer-text mb-0">© 2024 OneCart Discovery. All rights reserved.</p>
         </div>
     </div>
 </footer>
@@ -1102,7 +844,6 @@ body {
 <script>
     var user_authenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
 
-    // Toast notification function
     function showToast(message, type = 'info') {
         const toastContainer = document.querySelector('.toast-container') || createToastContainer();
         const toast = document.createElement('div');
@@ -1128,7 +869,6 @@ body {
         return container;
     }
 
-    // Back to top functionality with smooth animation
     const backToTopBtn = document.getElementById('backToTop');
     if (backToTopBtn) {
         window.addEventListener('scroll', () => {
@@ -1144,103 +884,23 @@ body {
         });
     }
 
-    // Countdown timer for flash deals
-    function updateCountdown() {
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
-        
-        if (!hoursEl || !minutesEl || !secondsEl) return;
-        
-        let hours = parseInt(hoursEl.textContent);
-        let minutes = parseInt(minutesEl.textContent);
-        let seconds = parseInt(secondsEl.textContent);
-        
-        seconds--;
-        
-        if (seconds < 0) {
-            seconds = 59;
-            minutes--;
-            
-            if (minutes < 0) {
-                minutes = 59;
-                hours--;
-                
-                if (hours < 0) {
-                    hours = 0;
-                    minutes = 0;
-                    seconds = 0;
-                }
-            }
-        }
-        
-        hoursEl.textContent = String(hours).padStart(2, '0');
-        minutesEl.textContent = String(minutes).padStart(2, '0');
-        secondsEl.textContent = String(seconds).padStart(2, '0');
-    }
-    
-    // Update countdown every second
-    setInterval(updateCountdown, 1000);
-
-    // Add to cart function (preserve existing functionality)
     function addToCart(productId) {
-        // Your existing add to cart logic here
-        showToast('Product added to cart!', 'success');
-        
-        // Add pulse animation to cart icon if exists
-        const cartIcon = document.querySelector('.cart-icon');
-        if (cartIcon) {
-            cartIcon.style.animation = 'pulse 0.5s ease';
-            setTimeout(() => {
-                cartIcon.style.animation = '';
-            }, 500);
+        if (!user_authenticated) {
+            showToast('Please login to add items to cart', 'warning');
+            return;
         }
+        showToast('Product added to cart!', 'success');
     }
 
-    // Smooth scroll for horizontal product containers
-    const scrollContainers = document.querySelectorAll('.horizontal-scroll-container');
-    scrollContainers.forEach(container => {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        container.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = container.scrollLeft;
-        });
-
-        container.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-
-        container.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-
-        container.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
-            const walk = (x - startX) * 2;
-            container.scrollLeft = scrollLeft - walk;
-        });
-    });
-
-    // Wishlist toggle functionality
     document.querySelectorAll('.wishlist-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             const productId = this.getAttribute('data-product-id');
-            if (!productId) {
-                showToast('Product ID not found', 'error');
-                return;
-            }
+            if (!productId) return;
 
-            // Check if user is authenticated (assuming a global variable or check)
-            if (typeof user_authenticated === 'undefined' || !user_authenticated) {
+            if (!user_authenticated) {
                 showToast('Please login to add to wishlist', 'warning');
                 return;
             }
@@ -1249,19 +909,16 @@ body {
             const isCurrentlyWishlisted = icon.classList.contains('bi-heart-fill');
 
             if (isCurrentlyWishlisted) {
-                // For now, just toggle UI since delete API needs wishlist_id
                 icon.classList.remove('bi-heart-fill');
                 icon.classList.add('bi-heart');
                 this.classList.remove('active');
                 showToast('Removed from wishlist', 'info');
-                // TODO: Implement delete wishlist API call when available
             } else {
-                // Add to wishlist
                 fetch('/account/api/user/add_wishlist/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken') // Assuming CSRF token is set
+                        'X-CSRFToken': getCookie('csrftoken')
                     },
                     body: JSON.stringify({ product_id: productId })
                 })
@@ -1284,7 +941,6 @@ body {
         });
     });
 
-    // Helper function to get CSRF token
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

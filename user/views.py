@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .utils import login_required_custom
 from seller.utils.authentication_utils import has_password
 from allauth.socialaccount.models import SocialAccount
@@ -8,7 +9,7 @@ from seller.wrap_models.business_model import BusinessRating, BusinessInformatio
 from decimal import Decimal
 from django.http import HttpResponse
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from .models import LoginActivity, ReferralProfile,Referral
@@ -537,7 +538,11 @@ def subscription_plan(request):
 
 @login_required_custom
 def seller_landing_page(request):
-   return render(request, 'seller/new/seller_landing_page.html')
+    # Check if user is a customer (buyer)
+    if request.user.groups.filter(name="customer").exists():
+        messages.error(request, 'You need to sign in as a seller to access the seller page.')
+        return redirect(reverse('signin') + '?seller_access=1')  # Redirect to signin page for buyers
+    return render(request, 'seller/new/seller_landing_page.html')
 
 
 def referral_page(request,code):

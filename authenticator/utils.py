@@ -158,7 +158,7 @@ def verify_role(user):
     
 
     if user.groups.filter(name="admin").exists():
-        return 'admin_dashboard'
+        return 'moderator'  # Admin users go to moderator dashboard
 
     if user.groups.filter(name="moderator").exists():
         return 'moderator'
