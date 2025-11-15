@@ -9,26 +9,32 @@
 
 <style>
     :root {
-        --primary: #00A8A8;
+        --primary-color: #00A8A8;
         --primary-dark: #008888;
-        --accent: #2ECC71;
-        --accent-dark: #27AE60;
-        --base: #1A3D7C;
-        --base-dark: #152F5F;
-        --bg: #F9F9F9;
+        --primary-light: rgba(56, 74, 74, 0.1);
+        --secondary-color: #1A3D7C;
+        --text-color: #333333;
+        --text-muted: #6c757d;
+        --border-color: #dee2e6;
+        --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+        --transition-normal: all 0.3s ease;
+        --radius-md: 8px;
+        --radius-pill: 50px;
+        --accent: #4ade80;
+        --accent-dark: #3cd472;
+        --bg: #fafafa;
         --card: #FFFFFF;
-        --text: #333333;
         --muted: #666666;
     }
 
     body {
-        font-family: 'Inter', sans-serif;
-        background: var(--bg);
-        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: #fafafa;
+        color: var(--text-color);
     }
 
     .page-header {
-        background: linear-gradient(135deg, var(--base) 0%, var(--primary) 100%);
+        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
         color: white;
         padding: 3rem 0;
         border-radius: 12px;
@@ -44,7 +50,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(circle at 20% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%),
+        background: radial-gradient(circle at 20% 50%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
                     radial-gradient(circle at 80% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%);
     }
 
@@ -66,7 +72,7 @@
 
     .home-button {
         background: white;
-        color: var(--primary);
+        color: var(--primary-color);
         border: none;
         border-radius: 50px;
         padding: 0.75rem 1.5rem;
@@ -86,8 +92,8 @@
     }
 
     .dashboard-notice {
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
-        border-left: 4px solid var(--primary);
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
+        border-left: 4px solid var(--primary-color);
         padding: 1.5rem;
         margin-bottom: 2rem;
         border-radius: 8px;
@@ -95,7 +101,7 @@
     }
 
     .dashboard-notice strong {
-        color: var(--base);
+        color: var(--secondary-color);
     }
 
     .section-header {
@@ -104,18 +110,18 @@
         gap: 0.75rem;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
-        border-bottom: 3px solid var(--primary);
+        border-bottom: 3px solid var(--primary-color);
     }
 
     .section-header h4 {
         font-weight: 700;
-        color: var(--base);
+        color: var(--secondary-color);
         margin: 0;
         font-size: 1.5rem;
     }
 
     .section-header i {
-        color: var(--primary);
+        color: var(--primary-color);
         font-size: 1.75rem;
     }
 
@@ -128,11 +134,11 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         height: 100%;
     }
-    
+
     .business-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 15px 35px rgba(0, 168, 168, 0.2);
-        border-color: var(--primary);
+        border-color: var(--primary-color);
     }
 
     .business-card-clickable {
@@ -148,7 +154,7 @@
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
-    
+
     .status-badge {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         z-index: 2;
@@ -170,9 +176,9 @@
     .badge.bg-danger {
         background: #E74C3C !important;
     }
-    
+
     .card-title {
-        color: var(--base);
+        color: var(--secondary-color);
         font-weight: 700;
         font-size: 1.25rem;
     }
@@ -182,7 +188,7 @@
     }
 
     .category-tag {
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
         padding: 0.5rem 1rem;
         border-radius: 8px;
         display: inline-flex;
@@ -191,16 +197,16 @@
     }
 
     .category-tag i {
-        color: var(--primary);
+        color: var(--primary-color);
     }
 
     .category-tag span {
-        color: var(--text);
+        color: var(--text-color);
         font-weight: 500;
     }
 
     .btn-details {
-        background: var(--primary);
+        background: var(--primary-color);
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -224,11 +230,11 @@
         font-size: 0.9rem;
         font-weight: 500;
     }
-    
+
     .add-business-card {
-        border: 3px dashed var(--primary);
+        border: 3px dashed var(--primary-color);
         border-radius: 16px;
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.05), rgba(46, 204, 113, 0.05));
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.05), rgba(74, 222, 128, 0.05));
         transition: all 0.3s ease;
         height: 100%;
         min-height: 280px;
@@ -237,8 +243,8 @@
     .add-business-card:hover {
         transform: scale(1.03);
         border-color: var(--accent);
-        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(46, 204, 113, 0.1));
-        box-shadow: 0 8px 25px rgba(46, 204, 113, 0.2);
+        background: linear-gradient(135deg, rgba(0, 168, 168, 0.1), rgba(74, 222, 128, 0.1));
+        box-shadow: 0 8px 25px rgba(74, 222, 128, 0.2);
     }
 
     .icon-wrapper {
@@ -247,7 +253,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
+        background: linear-gradient(135deg, var(--primary-color), var(--accent));
         border-radius: 50%;
         margin-bottom: 1.5rem;
     }
@@ -258,7 +264,7 @@
     }
 
     .add-business-title {
-        color: var(--base);
+        color: var(--secondary-color);
         font-weight: 700;
         font-size: 1.3rem;
     }
@@ -267,22 +273,22 @@
         color: var(--muted);
         font-size: 0.95rem;
     }
-    
+
     .no-businesses-card {
         border-radius: 16px;
         background: white;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        border: 2px dashed var(--primary);
+        border: 2px dashed var(--primary-color);
         padding: 3rem;
     }
 
     .no-businesses-card i {
-        color: var(--primary);
+        color: var(--primary-color);
         font-size: 4rem;
     }
 
     .no-businesses-card h3 {
-        color: var(--base);
+        color: var(--secondary-color);
         font-weight: 700;
         margin-top: 1.5rem;
     }
@@ -292,7 +298,7 @@
     }
 
     .btn-register {
-        background: linear-gradient(135deg, var(--primary), var(--accent));
+        background: linear-gradient(135deg, var(--primary-color), var(--accent));
         color: white;
         border: none;
         padding: 1rem 2.5rem;

@@ -35,14 +35,11 @@
     <style>
         /* Base styles */
         :root {
-            --primary-color: #00A8A8; /* Teal - Buttons, icons, highlights */
-            --primary-dark: #008888; /* Darker Teal */
+            --primary-color: #00A8A8;
+            --primary-dark: #008888;
             --primary-light: rgba(0, 168, 168, 0.1);
-            --secondary-color: #1A3D7C; /* Dark Blue - Headers, navigation bar, footer */
-            --accent-color: #2ECC71; /* Green - Call-to-action areas, badges */
-            --light-color: #F9F9F9; /* Light background */
-            --dark-color: #333333; /* Dark Gray - Body text */
-            --text-color: #333333; /* Dark Gray - Body text */
+            --secondary-color: #1A3D7C;
+            --text-color: #333333;
             --text-muted: #6c757d;
             --border-color: #dee2e6;
             --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -50,11 +47,12 @@
             --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
             --transition-fast: all 0.2s ease;
             --transition-normal: all 0.3s ease;
-            --radius-sm: 4px;
             --radius-md: 8px;
             --radius-lg: 16px;
-            --radius-xl: 24px;
             --radius-pill: 50px;
+            --accent: #4ade80;
+            --accent-dark: #3cd472;
+            --light-color: #f8f9fa;
         }
         
         body {
@@ -182,8 +180,8 @@
         }
 
         .dropdown-item:hover {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
+            background-color: rgba(74, 222, 128, 0.1);
+            color: var(--accent);
         }
 
         .dropdown-item i {
@@ -239,8 +237,8 @@
         }
         
         .list-group-item:hover {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
+            background-color: rgba(74, 222, 128, 0.1);
+            color: var(--accent);
         }
         
         .list-group-item i {
@@ -356,9 +354,7 @@
             }
         }
         
-        /* Keep existing styles from the original template */
-        {% block styles %}
-        {% endblock %}
+
     </style>
 </head>
 <body>

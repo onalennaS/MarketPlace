@@ -1,330 +1,866 @@
-{% extends 'seller/seller_nav_base.html' %}
 {% load static %}
-
-{% block title %}Sell on OneCart Discovery{% endblock %}
-
-{% block links %}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-{% endblock %}
-
-{% block styles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Start selling on OneCart Discovery - Join thousands of entrepreneurs growing their online sales">
+    <meta name="keywords" content="OneCart Discovery, seller marketplace, sell products, business dashboard">
+    
+    <link rel="icon" type="image/png" href="{% static 'images/favi.png' %}">
+    <title>Sell on OneCart Discovery</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root{
-            --primary:#00A8A8;
-            --primary-dark:#008888;
-            --accent:#2ECC71;
-            --base:#1A3D7C;
-            --bg:#F9F9F9;
-            --card:#FFFFFF;
-            --muted:#666;
+        /* Navigation Styles */
+        :root {
+            --primary-color: #00A8A8;
+            --primary-dark: #008888;
+            --primary-light: rgba(0, 168, 168, 0.1);
+            --secondary-color: #1A3D7C;
+            --text-color: #333333;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition-normal: all 0.3s ease;
+            --radius-md: 8px;
+            --radius-pill: 50px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-color);
+            background-color: #F9F9F9;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Navbar */
+        #navbar {
+            background-color: #ffffff;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            padding: 0.2rem 0.5rem;
+            height: 50px;
+            transition: var(--transition-normal);
         }
 
-        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: #222; }
-
-        .hero-section {
-            background: linear-gradient(135deg,var(--base),var(--primary));
-            color: white;
-            padding: 4rem 0;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 2rem;
+        .nav-logo {
+            height: 40px;
+            width: auto;
+            transition: var(--transition-normal);
         }
 
-        .hero-title { font-size: 2rem; font-weight:800; margin-bottom:0.5rem; color: #000 !important; }
-        .hero-sub { font-size:1.05rem; color: #000 !important; margin-bottom:1rem; }
-
-        .feature-card { background: var(--card); border-radius: 12px; padding:1.5rem; box-shadow: 0 8px 30px rgba(10,20,40,0.06); transition: all .25s ease; }
-        .feature-card:hover{ transform: translateY(-6px); }
-        .feature-icon{ width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; }
-
-        .cta-section{ background: linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#000 !important; padding:3rem; border-radius:12px; margin-top:2rem; text-align:center; }
-        .btn-hero{ background: white; color:var(--primary); font-weight:700; border-radius:50px; padding:0.75rem 1.5rem; }
-
-        /* Flashing / attention animation for Get Started button */
-        .btn-flash {
-            /* snappier, brighter pulse */
-            animation: flashGradient 2s ease-in-out infinite;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transition: transform 0.14s ease, box-shadow 0.14s ease;
-            color: #000 !important;
-            border: 1px solid rgba(0,0,0,0.06);
+        .navbar-nav .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: var(--transition-normal);
         }
 
-        .btn-flash:hover {
-            animation-play-state: paused;
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color);
         }
 
-        @keyframes flashGradient {
-            0% {
-                box-shadow: 0 0 0 0 rgba(0,168,168,0);
-                background-color: #ffffff;
-                transform: scale(1);
-            }
-            20% {
-                box-shadow: 0 0 18px 6px rgba(0,200,180,0.28);
-                background-color: #e8fff8; /* bright mint */
-                transform: scale(1.01);
-            }
-            50% {
-                box-shadow: 0 0 28px 10px rgba(46,204,113,0.30);
-                background-color: #f2fff4; /* bright lime tint */
-                transform: scale(1.02);
-            }
-            80% {
-                box-shadow: 0 0 18px 6px rgba(20,120,220,0.22);
-                background-color: #eef7ff; /* bright sky tint */
-                transform: scale(1.01);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(0,168,168,0);
-                background-color: #ffffff;
-                transform: scale(1);
-            }
+        .navbar-nav .nav-link.text-primary {
+            color: var(--primary-color) !important;
         }
 
-        /* Respect users who prefer reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .btn-flash { animation: none !important; }
+        /* Mobile Menu Toggle */
+        .off-nav {
+            border: none;
+            background: transparent;
+            padding: 0.25rem 0.5rem;
         }
 
-        .steps .step-card{ border-radius:12px; padding:1rem; background:white; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
-
-        /* Footer */
-        .footer {
-            background: #1e3a5f;
-            color: white;
-            padding: 4rem 0 2rem;
+        /* Offcanvas Styles */
+        .offcanvas {
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            max-width: 320px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
-
-        .footer-title {
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+        
+        .offcanvas-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
         }
-
-        .footer-text {
-            color: #cbd5e1;
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
+        
+        .section-header {
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-left: 3px solid var(--primary-color);
+            background-color: var(--primary-light);
         }
-
-        .footer-links-title {
+        
+        .section-header h5 {
+            margin: 0;
+            font-size: 0.85rem;
             font-weight: 600;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .list-group-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .list-group-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 1020;
+        }
+        
+        .nav-item-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            padding: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item-mobile i {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-item-mobile:hover, .nav-item-mobile.active {
+            color: var(--primary-color);
+        }
+
+        /* Landing Page Styles */
+        .landing-page {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #fafafa;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8e8e8;
+        }
+
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
             font-size: 1.1rem;
-            margin-bottom: 1.25rem;
+            color: #666666;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
-        .footer-links {
-            list-style: none;
-            padding-left: 0;
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
         }
 
-        .footer-links li {
+        .btn-primary-custom {
+            background-color: #4ade80;
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(74, 222, 128, 0.2);
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #3cd472;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(74, 222, 128, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary-custom {
+            background-color: white;
+            color: #666666;
+            border: 1px solid #e8e8e8;
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary-custom:hover {
+            background-color: #f8f9fa;
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 3rem 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
             margin-bottom: 0.75rem;
         }
 
-        .footer-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: color 0.2s;
+        .features-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #666666;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .footer-links a:hover {
-            color: var(--primary);
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8e8e8;
+            transition: all 0.2s ease;
+            text-align: center;
         }
 
-        .social-link {
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #4ade80;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: rgba(0, 168, 168, 0.2);
+            margin: 0 auto 1.25rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-description {
+            color: #666666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works-section {
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 12px;
+            margin: 3rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8e8e8;
+        }
+
+        .how-it-works-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+        }
+
+        .how-it-works-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #666666;
+            margin-bottom: 2.5rem;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: #4ade80;
             color: white;
             border-radius: 50%;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.25rem;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-description {
+            color: #666666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #4ade80;
+            border-radius: 12px;
+            margin: 3rem 0;
+            color: white;
+        }
+
+        .cta-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            color: white;
+        }
+
+        .cta-button {
+            background-color: white;
+            color: #4ade80;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            color: #4ade80;
             text-decoration: none;
         }
 
-        .social-link:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
+        /* Footer */
+        .footer {
+            background-color: white;
+            border-top: 1px solid #e8e8e8;
+            padding: 2rem 0;
+            margin-top: 4rem;
         }
 
-        @media(max-width:768px){ .hero-title{ font-size:1.5rem; } .hero-section{ padding:2rem 0; } }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .footer-text {
+            color: #666666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 992px) {
+            .off-nav, .mobile-bottom-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 991.98px) {
+            .desktop-elements {
+                display: none !important;
+            }
+
+            .nav-logo {
+                height: 35px;
+            }
+
+            #navbar {
+                padding: 0.3rem 0.4rem;
+                height: 45px;
+            }
+
+            .landing-container {
+                margin-bottom: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .features-title,
+            .how-it-works-title,
+            .cta-title {
+                font-size: 1.875rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-primary-custom,
+            .btn-secondary-custom {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 1.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .how-it-works-section {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .step-card {
+                padding: 1rem;
+            }
+        }
     </style>
-{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <!-- Mobile Menu Toggle -->
+            <button class="btn border-0 off-nav d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-{% block content %}
+            <!-- Logo -->
+            <a href="{% url 'seller_landing_page' %}" class="navbar-brand">
+                
+            </a>
 
-<!-- Hero -->
-<section class="container">
-    <div class="hero-section p-4">
-        <div class="row align-items-center">
-            <div class="col-md-7">
-                <h1 class="hero-title">Grow your sales — Sell on OneCart Discovery</h1>
-                <p class="hero-sub">Reach thousands of students on campus. Easy setup, 0% commission options, and promotional tools to scale fast.</p>
-                <div class="d-flex gap-2">
-                    <!-- Keep original visible 'Get Started' style for familiarity -->
-                    <a href="{% url 'business' %}" class="btn btn-light btn-lg btn-flash">
-                        Get Started <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <a href="#features" class="btn btn-outline-light btn-lg text-white">See Features</a>
+            <!-- Desktop Elements (hidden on mobile) -->
+            <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4 justify-content-end">
+                <div class="navbar-nav d-flex align-items-center">
+                    <a href="{% url 'seller_landing_page' %}" class="nav-link">Home</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" class="nav-link">Dashboard</a>
+                        {% if business %}
+                        <a href="{% url 'manage_product' business.id %}" class="nav-link">Products</a>
+                        <a href="{% url 'orders' business.id %}" class="nav-link">Orders</a>
+                        {% else %}
+                        <a href="{% url 'register_business_form' %}" class="nav-link">Register Business</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="nav-link text-primary">Logout</a>
+                    {% else %}
+                        <a href="{% url 'signin' %}" class="nav-link text-primary">Login</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-5 d-none d-md-block text-end">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60" alt="Sell on OneCart Discovery" style="width:85%; border-radius:12px; box-shadow: 0 15px 40px rgba(0,0,0,0.12);">
+
+            <!-- Mobile Elements (only visible on mobile) -->
+            <div class="mobile-elements d-flex d-lg-none align-items-center ms-auto">
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-link text-dark p-0" type="button" id="mobileUserMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserMenu">
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Offcanvas -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <img class="nav-logo" src="{% static 'images/Finds.png' %}" alt="OneCart Discovery">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body p-0">
+            {% if user.is_authenticated %}
+            <div class="d-flex align-items-center p-3 border-bottom">
+                <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" width="40" height="40">
+                <div class="ms-3">
+                    <div class="fw-bold">{{ user.username }}</div>
+                    <small class="text-muted">Seller Account</small>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="list-group list-group-flush">
+                <div class="section-header">
+                    <h5>Main</h5>
+                </div>
+                <a href="{% url 'seller_landing_page' %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+
+                {% if business %}
+                <div class="section-header">
+                    <h5>Products</h5>
+                </div>
+                <a href="{% url 'manage_product' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-box"></i> All Products
+                </a>
+                <a href="{% url 'add_products' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus-circle"></i> Add New Product
+                </a>
+
+                <div class="section-header">
+                    <h5>Orders</h5>
+                </div>
+                <a href="{% url 'orders' business.id %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-shopping-bag"></i> Orders
+                </a>
+                {% else %}
+                <a href="{% url 'register_business_form' %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-registered"></i> Register Business
+                </a>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="offcanvas-footer border-top p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                {% if user.is_authenticated %}
+                <span class="text-primary fw-bold">
+                    <i class="fa fa-user-circle text-primary me-2"></i> {{ user.username }}
+                </span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </a>
+                {% else %}
+                <a href="{% url 'signin' %}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
-</section>
 
-<!-- Features -->
-<section id="features" class="container mt-3">
-    <div class="text-center mb-4">
-    <h2 class="fw-bold">Why sellers love OneCart Discovery</h2>
-        <p class="text-muted">Tools and terms built for student sellers — fast, fair, and focused on growth.</p>
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav d-lg-none">
+        <a href="{% url 'seller_landing_page' %}" class="nav-item-mobile">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item-mobile" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+            <i class="fas fa-bars"></i>
+            <span>Menu</span>
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% if business %}{% url 'seller_dashboard' business.id %}{% else %}#{% endif %}" class="nav-item-mobile">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </a>
+        {% if business %}
+        <a href="{% url 'orders' business.id %}" class="nav-item-mobile">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Orders</span>
+        </a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="nav-item-mobile">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+        {% else %}
+        <a href="{% url 'signin' %}" class="nav-item-mobile">
+            <i class="fas fa-user"></i>
+            <span>Login</span>
+        </a>
+        {% endif %}
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="d-flex align-items-start gap-3">
-                    <div class="feature-icon bg-primary text-white"><i class="bi bi-percent"></i></div>
-                    <div>
-                        <h5 class="mb-1">Low / No Commission</h5>
-                        <p class="text-muted small mb-0">Keep more of what you earn. Competitive fees and occasional 0% promotions for new sellers.</p>
+    <!-- Landing Page Content -->
+    <div class="landing-page">
+        <div class="landing-container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">Start Selling on OneCart Discovery</h1>
+                    <p class="hero-subtitle">
+                        Join thousands of entrepreneurs, small businesses, and individuals who are growing their online sales.
+                        Manage your products, track orders, analyze performance, and scale your business with our comprehensive Seller Dashboard.
+                    </p>
+
+                    <div class="cta-buttons">
+                        <a href="{% url 'business' %}" class="btn-primary-custom">
+                            Get Started
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#features" class="btn-secondary-custom">
+                            Learn More
+                            <i class="fas fa-info-circle"></i>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="d-flex align-items-start gap-3">
-                    <div class="feature-icon bg-success text-white"><i class="bi bi-graph-up"></i></div>
-                    <div>
-                        <h5 class="mb-1">Boosted Visibility</h5>
-                        <p class="text-muted small mb-0">Featured listings and campus targeting help your products get noticed faster.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="d-flex align-items-start gap-3">
-                    <div class="feature-icon bg-info text-white"><i class="bi bi-clock-history"></i></div>
-                    <div>
-                        <h5 class="mb-1">Fast Onboarding</h5>
-                        <p class="text-muted small mb-0">Set up your store and list items in minutes — no complicated paperwork.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 
-<!-- Steps -->
-<section class="container mt-4 steps">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="step-card text-center p-3">
-                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">1</div>
-                <h5 class="mt-2">Register</h5>
-                <p class="text-muted small">Create your seller account and verify your details.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="step-card text-center p-3">
-                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">2</div>
-                <h5 class="mt-2">List Items</h5>
-                <p class="text-muted small">Add product photos, descriptions, and prices in a few quick steps.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="step-card text-center p-3">
-                <div class="mb-2 fs-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;color:var(--primary);">3</div>
-                <h5 class="mt-2">Sell & Grow</h5>
-                <p class="text-muted small">Start receiving orders and use analytics to grow your business.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA -->
-<section class="container">
-    <div class="cta-section mt-4">
-        <h3 class="mb-2" style="color:#000;">Ready to reach thousands of students?</h3>
-    <p class="mb-3" style="color:#000;">Join OneCart Discovery today and unlock campus customers, seller tools, and promotional support.</p>
-        <a href="{% url 'business' %}" class="btn btn-light btn-lg me-2 btn-flash">Get Started <i class="bi bi-arrow-right"></i></a>
-        <a href="#features" class="btn btn-outline-light btn-lg text-white">Contact Sales</a>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <h3 class="footer-title"><i class="bi bi-mortarboard-fill"></i> OneCart Discovery</h3>
-                <p class="footer-text">
-                    Your trusted campus marketplace and delivery platform. Built by students, for students.
+            <!-- Features Section -->
+            <section id="features" class="features-section">
+                <h2 class="features-title">Why Choose Our Seller Dashboard?</h2>
+                <p class="features-subtitle">
+                    Everything you need to manage and grow your online business effectively
                 </p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3 class="feature-title">Easy Product Listing</h3>
+                        <p class="feature-description">
+                            List your products quickly with our intuitive interface. Add descriptions, images, and pricing in minutes.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="feature-title">Order Management</h3>
+                        <p class="feature-description">
+                            Track and manage all your orders in one place. Process payments, handle shipping, and keep customers updated.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Performance Analytics</h3>
+                        <p class="feature-description">
+                            Gain insights into your sales performance with detailed analytics and reports to optimize your business.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Customer Management</h3>
+                        <p class="feature-description">
+                            Build and maintain relationships with your customers through our integrated customer management tools.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile Friendly</h3>
+                        <p class="feature-description">
+                            Manage your business on the go with our responsive dashboard that works perfectly on all devices.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Secure & Reliable</h3>
+                        <p class="feature-description">
+                            Your data is protected with enterprise-grade security. Focus on growing your business with peace of mind.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="how-it-works-section">
+                <h2 class="how-it-works-title">How It Works</h2>
+                <p class="how-it-works-subtitle">
+                    Get started in just 3 simple steps
+                </p>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Register Your Business</h3>
+                        <p class="step-description">
+                            Create your seller account and provide basic business information. Our team will review and approve your application within 24 hours.
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Add Your Products</h3>
+                        <p class="step-description">
+                            Upload your product catalog with high-quality images, detailed descriptions, and competitive pricing to attract customers.
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Start Selling</h3>
+                        <p class="step-description">
+                            
+                        Receive orders, manage deliveries, and grow your business with our comprehensive seller dashboard and analytics tools.
+                    </p>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Marketplace</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Browse Items</a></li>
-                    <li><a href="#">Sell an Item</a></li>
-                    <li><a href="#">Categories</a></li>
-                    <li><a href="#">How It Works</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Delivery</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Request Delivery</a></li>
-                    <li><a href="#">Become a Courier</a></li>
-                    <li><a href="#">Delivery Rates</a></li>
-                    <li><a href="#">Track Order</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Support</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Safety Tips</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Legal</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
-                </ul>
-            </div>
-        </div>
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0 2rem;">
-        <div class="text-center">
-            <p class="footer-text mb-0">© 2024 OneCart Discovery. All rights reserved. Made with ❤️ by students, for students.</p>
-        </div>
-    </div>
-</footer>
+        </section>
 
-{% endblock %}
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2 class="cta-title">Ready to Start Selling?</h2>
+            <p class="cta-subtitle">
+                Join thousands of successful sellers on OneCart Discovery today
+            </p>
+            <a href="{% url 'register_business_form' %}" class="cta-button">
+                Get Started Now
+                <i class="fas fa-rocket"></i>
+            </a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-text">&copy; 2024 OneCart Discovery. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
