@@ -106,14 +106,17 @@ def view_product(request, bSlug, pSlug):
 
 
 def home(request):
-    if request.user.is_authenticated and request.user.groups.filter(name="business").exists():
-        return redirect('seller_landing_page')
     items = 0
     wishlist_items_count = 0
+    user_role = None
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
-    return render(request,'products/landing_page.html', {'cart_items_count': items, 'wishlist_items_count': wishlist_items_count})
+        if request.user.groups.filter(name="business").exists():
+            user_role = 'seller'
+        elif request.user.groups.filter(name="customer").exists():
+            user_role = 'buyer'
+    return render(request,'products/landing_page.html', {'cart_items_count': items, 'wishlist_items_count': wishlist_items_count, 'user_role': user_role})
 
 
 

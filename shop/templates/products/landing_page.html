@@ -1,604 +1,475 @@
 {% extends 'products/shop_base2.html' %}
 {% load static %}
-{% block links %}
-    <title>OneCart Discovery - Your Campus Marketplace & Delivery Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-{% endblock %}
-    {% block styles %}
-        :root {
-            --primary: #00A8A8;
-            --primary-dark: #008888;
-            --primary-light: #E0F5F5;
-            --accent: #2ECC71;
-            --accent-dark: #27AE60;
-            --base: #1A3D7C;
-            --base-dark: #152F5F;
-            --background: #F9F9F9;
-            --text: #333333;
-            --light: #FFFFFF;
-            --gray: #666666;
-            --gray-light: #E5E5E5;
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+{% block title %}OneCart Discovery - Your Marketplace & Delivery Hub{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="OneCart Discovery - Your complete marketplace and delivery solution. Buy, sell, and deliver with ease. Zero commission fees and seamless transactions.">
+    <meta property="og:title" content="OneCart Discovery | Marketplace & Delivery Hub">
+    <meta property="og:description" content="Buy, sell, and deliver with ease. Zero commission fees and seamless transactions for everyone.">
+    <meta property="og:image" content="{% static 'images/Finds.png' %}">
+    <meta property="og:url" content="https://onecartdiscovery.co.za">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OneCart Discovery | Marketplace & Delivery Hub">
+    <meta name="twitter:description" content="Your complete marketplace and delivery solution for everyone.">
+    <meta name="twitter:image" content="{% static 'images/Finds.png' %}">
+{% endblock %}
+
+{% block styles %}
+    <style>
+        :root {
+            --primary: #4ade80;
+            --primary-dark: #3cd472;
+            --primary-light: #e8fdf3;
+            --secondary: #1a1a1a;
+            --text: #333333;
+            --text-light: #666666;
+            --background: #fafafa;
+            --white: #ffffff;
+            --border: #e8e8e8;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
             background-color: var(--background);
-            overflow-x: hidden;
-        }
-
-        /* Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
         }
 
         /* Hero Section */
         .hero-section {
-            position: relative;
-            padding: 2rem 0 1rem;
-            background: linear-gradient(135deg, var(--base) 0%, var(--primary) 100%);
-            overflow: hidden;
-            min-height: 300px;
+            background: var(--white);
+            padding: 3rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        .hero-title {
-            font-weight: 900;
-            font-size: 3rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            color: white;
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        .hero-title .highlight {
-            color: var(--accent);
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-title .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent);
-            animation: shimmer 2s infinite;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-            color: white;
-            animation: slideInLeft 0.8s ease-out 0.2s both;
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(46, 204, 113, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 0.5rem 1.25rem;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.4rem 0.875rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            border: 2px solid var(--accent);
-            animation: fadeInUp 0.8s ease-out 0.4s both;
+            font-size: 0.8rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--primary);
         }
 
-        .hero-badge i {
-            font-size: 1.2rem;
-            animation: pulse 2s ease-in-out infinite;
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title .highlight {
+            color: var(--primary-dark);
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            line-height: 1.7;
         }
 
         .hero-split {
-            position: relative;
-            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
         }
 
-        .hero-card-wrapper {
-            animation: slideInRight 0.8s ease-out 0.3s both;
-        }
-
-        .hero-buyers, .hero-sellers {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
+        .hero-card {
+            background: var(--white);
+            border: 2px solid var(--border);
             border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            height: 100%;
-            transition: all 0.4s ease;
-            border: 3px solid transparent;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .hero-buyers::before, .hero-sellers::before {
+        .hero-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .hero-buyers:hover::before, .hero-sellers:hover::before {
-            left: 100%;
-        }
-
-        .hero-buyers:hover {
-            transform: translateY(-8px) scale(1.02);
+        .hero-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
             border-color: var(--primary);
-            box-shadow: 0 25px 50px rgba(0, 168, 168, 0.3);
         }
 
-        .hero-sellers:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 25px 50px rgba(46, 204, 113, 0.3);
+        .hero-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .hero-buyers h3, .hero-sellers h3 {
-            font-weight: 800;
+        .hero-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .hero-card h3 i {
+            color: var(--primary);
             font-size: 1.5rem;
-            margin-bottom: 1.25rem;
-            color: var(--base);
         }
 
         .hero-benefits {
             list-style: none;
             padding: 0;
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 1.25rem 0;
         }
 
         .hero-benefits li {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
             color: var(--text);
-            font-weight: 500;
         }
 
         .hero-benefits li i {
             color: var(--primary);
-            font-size: 1.25rem;
-            margin-right: 0.75rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .hero-sellers .hero-benefits li i {
-            color: var(--accent);
+            font-size: 1rem;
+            margin-right: 0.65rem;
+            width: 18px;
         }
 
         .btn-hero {
-            padding: 0.85rem 2rem;
-            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            font-weight: 600;
             border-radius: 8px;
-            transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
             border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
         }
 
-        .btn-hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-hero:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-hero span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-hero-primary {
+        .btn-primary-custom {
             background: var(--primary);
-            color: white;
+            color: var(--white);
         }
 
-        .btn-hero-primary:hover {
+        .btn-primary-custom:hover {
             background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 168, 168, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+            color: var(--white);
         }
 
-        .btn-hero-secondary {
-            background: var(--accent);
-            color: white;
+        .btn-secondary-custom {
+            background: var(--secondary);
+            color: var(--white);
         }
 
-        .btn-hero-secondary:hover {
-            background: var(--accent-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+        .btn-secondary-custom:hover {
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            color: var(--white);
         }
 
-        /* Two Services Section */
+        /* Services Section */
         .services-section {
-            padding: 5rem 0;
-            background: linear-gradient(180deg, var(--background) 0%, white 100%);
+            padding: 4rem 0;
+            background: var(--background);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .section-title {
+            font-size: 2.25rem;
             font-weight: 800;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: var(--base);
+            color: var(--secondary);
+            margin-bottom: 0.875rem;
+            letter-spacing: -0.02em;
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 4rem;
-            text-align: center;
+            font-size: 1.05rem;
+            color: var(--text-light);
             max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         .service-card {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            height: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s ease;
-            border: 3px solid transparent;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2.25rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .service-card:hover::before {
-            opacity: 1;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .service-card.marketplace:hover {
-            border-color: var(--primary);
-        }
-
-        .service-card.delivery:hover {
-            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
         .service-icon {
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            animation: float 3s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-card.delivery .service-icon {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            margin-bottom: 1.25rem;
+            font-size: 1.75rem;
+            color: var(--primary-dark);
         }
 
         .service-title {
-            font-weight: 800;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--base);
-            position: relative;
-            z-index: 1;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.875rem;
         }
 
         .service-description {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--text);
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
             line-height: 1.7;
-            position: relative;
-            z-index: 1;
         }
 
         .service-features {
             list-style: none;
             padding: 0;
-            margin: 0 0 2rem 0;
-            position: relative;
-            z-index: 1;
+            margin: 0 0 1.5rem 0;
         }
 
         .service-features li {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
             color: var(--text);
-            font-weight: 500;
         }
 
         .service-features li i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
             color: var(--primary);
+            font-size: 1rem;
+            margin-right: 0.65rem;
+            width: 18px;
         }
 
-        .service-card.delivery .service-features li i {
-            color: var(--accent);
+        /* Features Section */
+        .features-section {
+            padding: 4rem 0;
+            background: var(--white);
         }
 
-        /* Why Choose Section */
-        .why-choose-section {
-            padding: 5rem 0;
-            background: var(--base);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .why-choose-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(0, 168, 168, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 50%);
-        }
-
-        .why-choose-section .section-title,
-        .why-choose-section .section-subtitle {
-            color: white;
-            position: relative;
-            z-index: 1;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.75rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 2rem;
-            height: 100%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 168, 168, 0.3);
+            text-align: center;
+            padding: 1.75rem;
         }
 
         .feature-icon {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
+            background: var(--primary-light);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            border-radius: 15px;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            margin: 0 auto 1.25rem;
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--primary);
+            color: var(--white);
+            transform: scale(1.1);
         }
 
         .feature-title {
+            font-size: 1.15rem;
             font-weight: 700;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: white;
+            color: var(--secondary);
+            margin-bottom: 0.65rem;
         }
 
         .feature-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
             line-height: 1.6;
         }
 
         /* CTA Section */
         .cta-section {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
+            color: var(--white);
         }
 
         .cta-content {
-            position: relative;
-            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         .cta-title {
-            font-weight: 900;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: white;
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.875rem;
+            letter-spacing: -0.02em;
         }
 
         .cta-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.125rem;
             margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.95);
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn-cta {
-            padding: 1rem 3rem;
-            font-weight: 700;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            background: white;
-            color: var(--primary);
+            padding: 0.875rem 2.25rem;
+            font-weight: 600;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--white);
+            color: var(--primary-dark);
             border: none;
-            transition: all 0.3s;
-            display: inline-block;
             text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-cta:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            color: var(--primary-dark);
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-cta-secondary:hover {
+            background: var(--white);
+            color: var(--primary-dark);
         }
 
         /* Footer */
         .footer {
-            background: var(--base);
-            color: white;
-            padding: 4rem 0 2rem;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 3.5rem 0 1.75rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
         }
 
         .footer-title {
             font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
         }
 
         .footer-text {
-            color: #cbd5e1;
-            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.25rem;
             line-height: 1.7;
+            font-size: 0.9rem;
         }
 
         .footer-links-title {
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.875rem;
+            color: var(--white);
         }
 
         .footer-links {
             list-style: none;
-            padding-left: 0;
+            padding: 0;
         }
 
         .footer-links li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.65rem;
         }
 
         .footer-links a {
-            color: #cbd5e1;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: color 0.2s;
+            font-size: 0.875rem;
         }
 
         .footer-links a:hover {
@@ -607,335 +478,321 @@
 
         .social-links {
             display: flex;
-            gap: 1rem;
+            gap: 0.875rem;
         }
 
         .social-link {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: rgba(0, 168, 168, 0.2);
-            color: white;
-            border-radius: 50%;
-            transition: all 0.3s;
             text-decoration: none;
+            transition: all 0.2s;
+            font-size: 1rem;
         }
 
         .social-link:hover {
             background: var(--primary);
-            color: white;
+            color: var(--white);
             transform: translateY(-3px);
         }
 
-        /* Scroll Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.75rem;
+            text-align: center;
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+            font-size: 0.875rem;
         }
 
         /* Responsive */
-        @media (max-width: 991.98px) {
-            .hero-title { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
-            .service-title { font-size: 1.75rem; }
-            .cta-title { font-size: 2rem; }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.05rem;
+            }
+
+            .section-title {
+                font-size: 1.875rem;
+            }
+
+            .cta-title {
+                font-size: 1.875rem;
+            }
+
+            .hero-split {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn-cta {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
-        @media (max-width: 767.98px) {
-            .hero-title { font-size: 2rem; }
-            .hero-subtitle { font-size: 1.1rem; }
-            .section-title { font-size: 1.75rem; }
-            .service-card { padding: 2rem; margin-bottom: 2rem; }
-            .service-icon { width: 80px; height: 80px; font-size: 2.5rem; }
-            .stat-number { font-size: 2rem; }
-            .cta-title { font-size: 1.75rem; }
-        }
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 2.5rem 0 2rem;
+            }
 
-        @media (max-width: 575.98px) {
-            .hero-section { padding: 4rem 0 3rem; }
-            .hero-title { font-size: 1.75rem; }
-            .btn-hero { width: 100%; margin-bottom: 1rem; }
-            .section-title { font-size: 1.5rem; }
-            .service-icon { width: 70px; height: 70px; font-size: 2rem; }
-        }
-    {% endblock %}
+            .hero-title {
+                font-size: 1.875rem;
+            }
 
-  {% block secend_nav %}
+            .services-section,
+            .features-section {
+                padding: 3rem 0;
+            }
+
+            .hero-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block home %}
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i>
+                <span>Trusted Marketplace & Delivery Platform</span>
+            </div>
+            
+            <h1 class="hero-title">
+                Welcome to <span class="highlight">OneCart Discovery</span>
+            </h1>
+            <p class="hero-subtitle">
+                Your complete marketplace and delivery solution. Buy, sell, and deliver with ease. 
+                Zero commission fees, seamless transactions, and a community-driven platform built for everyone.
+            </p>
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-6">
-                
-                <h1 class="hero-title">
-                    Welcome to <span class="highlight">OneCart Discovery</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Your campus marketplace & delivery hub. Buy, sell, and deliver within your student community. Zero commission. Zero hassle. 100% student-powered.
+            <div class="hero-split">
+                <div class="hero-card">
+                    <h3><i class="fas fa-shopping-bag"></i> Shop Smart</h3>
+                    <ul class="hero-benefits">
+                        <li><i class="fas fa-bolt"></i> Fast & reliable delivery</li>
+                        <li><i class="fas fa-shield-check"></i> Verified sellers</li>
+                        <li><i class="fas fa-tags"></i> Best prices guaranteed</li>
+                        <li><i class="fas fa-users"></i> Trusted community</li>
+                    </ul>
+                    <a href="{% url 'shop_base' %}" class="btn-hero btn-primary-custom">
+                        <span>Start Shopping</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="hero-card">
+                    <h3><i class="fas fa-store"></i> Sell Easy</h3>
+                    <ul class="hero-benefits">
+                        <li><i class="fas fa-percentage"></i> 0% commission fees</li>
+                        <li><i class="fas fa-chart-line"></i> Reach thousands</li>
+                        <li><i class="fas fa-clock"></i> List in minutes</li>
+                        <li><i class="fas fa-truck-fast"></i> Flexible delivery</li>
+                    </ul>
+                    <a href="{% url 'seller_landing_page' %}" class="btn-hero btn-secondary-custom">
+                        <span>Start Selling</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="section-header">
+            <h2 class="section-title">Two Powerful Services, One Platform</h2>
+            <p class="section-subtitle">
+                Everything you need to buy, sell, and deliver in one comprehensive solution
+            </p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3 class="service-title">Marketplace</h3>
+                <p class="service-description">
+                    Buy and sell anything with ease. From electronics to fashion, furniture to collectibles – connect with buyers and sellers in your area.
                 </p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check-circle"></i> List items FREE</li>
+                    <li><i class="fas fa-check-circle"></i> Browse thousands of listings</li>
+                    <li><i class="fas fa-check-circle"></i> Direct chat messaging</li>
+                    <li><i class="fas fa-check-circle"></i> Secure payment options</li>
+                    <li><i class="fas fa-check-circle"></i> Verified user accounts</li>
+                </ul>
+                <a href="{% url 'shop_base' %}" class="btn-hero btn-primary-custom">
+                    <span>Explore Marketplace</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-            <div class="col-lg-6">
-                <div class="hero-split">
-                    <div class="row g-4">
-                        <div class="col-md-6 hero-card-wrapper">
-                            <div class="hero-buyers">
-                                <h3><i class="bi bi-bag-check"></i> Shop Smart</h3>
-                                <ul class="hero-benefits">
-                                    <li><i class="bi bi-lightning-charge-fill"></i> Instant campus delivery</li>
-                                    <li><i class="bi bi-shield-fill-check"></i> Verified student sellers</li>
-                                    <li><i class="bi bi-tag-fill"></i> Unbeatable prices</li>
-                                    <li><i class="bi bi-people-fill"></i> Student community</li>
-                                </ul>
-                                <a href="{% url 'shop_base' %}" class="btn-hero btn-hero-primary">
-                                    <span>Start Shopping <i class="bi bi-arrow-right"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6 hero-card-wrapper">
-                            <div class="hero-sellers">
-                                <h3><i class="bi bi-cash-coin"></i> Sell Easy</h3>
-                                <ul class="hero-benefits">
-                                    <li><i class="bi bi-percent"></i> 0% commission fees</li>
-                                    <li><i class="bi bi-graph-up-arrow"></i> Reach 1000s of students</li>
-                                    <li><i class="bi bi-clock-fill"></i> List in 2 minutes</li>
-                                    <li><i class="bi bi-truck"></i> Flexible delivery</li>
-                                </ul>
-                                <a href="{% url 'seller_landing_page' %}" class="btn-hero btn-hero-secondary">
-                                    <span>Start Earning <i class="bi bi-arrow-right"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-truck-fast"></i>
                 </div>
+                <h3 class="service-title">Delivery Service</h3>
+                <p class="service-description">
+                    Need something delivered? Our reliable delivery network gets items to you fast and safely – convenient, affordable, and tracked.
+                </p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check-circle"></i> Fast local delivery</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time tracking</li>
+                    <li><i class="fas fa-check-circle"></i> Affordable rates</li>
+                    <li><i class="fas fa-check-circle"></i> Trusted couriers</li>
+                    <li><i class="fas fa-check-circle"></i> Flexible scheduling</li>
+                </ul>
+                <a href="#" class="btn-hero btn-secondary-custom">
+                    <span>Request Delivery</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Two Services Section -->
-<section class="services-section">
-    <div class="container">
-        <h2 class="section-title fade-in">Two Powerful Services, One Platform</h2>
-        <p class="section-subtitle fade-in">
-            OneCart Discovery is your all-in-one campus solution for buying, selling, and delivering
-        </p>
-        <div class="row g-5">
-            <div class="col-lg-6 fade-in">
-                <div class="service-card marketplace">
-                    <div class="service-icon">
-                        <i class="bi bi-shop"></i>
-                    </div>
-                    <h3 class="service-title">Student Marketplace</h3>
-                    <p class="service-description">
-                        Buy and sell anything within your campus community. From textbooks to electronics, fashion to furniture – all student-to-student.
-                    </p>
-                    <ul class="service-features">
-                        <li><i class="bi bi-check-circle-fill"></i> List items for FREE in minutes</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Browse thousands of student listings</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Direct chat with buyers/sellers</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Safe payment options</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Student-verified accounts</li>
-                    </ul>
-                    <a href="{% url 'shop_base' %}" class="btn-hero btn-hero-primary">
-                        <span>Explore Marketplace <i class="bi bi-arrow-right"></i></span>
-                    </a>
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose OneCart Discovery</h2>
+            <p class="section-subtitle">
+                Built for everyone. Simple, secure, and reliable.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-wallet"></i>
                 </div>
+                <h4 class="feature-title">Save Money</h4>
+                <p class="feature-text">Get better deals with zero commission fees. More value for buyers, more profit for sellers.</p>
             </div>
-            <div class="col-lg-6 fade-in">
-                <div class="service-card delivery">
-                    <div class="service-icon">
-                        <i class="bi bi-bicycle"></i>
-                    </div>
-                    <h3 class="service-title">Campus Delivery Service</h3>
-                    <p class="service-description">
-                        Need something delivered on campus? Our student delivery network gets items to you fast – like Uber, but for campus deliveries.
-                    </p>
-                    <ul class="service-features">
-                        <li><i class="bi bi-check-circle-fill"></i> Fast on-campus delivery</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Real-time delivery tracking</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Affordable student rates</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Trusted student couriers</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Flexible pickup & drop-off</li>
-                    </ul>
-                    <a href="#" class="btn-hero btn-hero-secondary">
-                        <span>Request Delivery <i class="bi bi-arrow-right"></i></span>
-                    </a>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-check"></i>
                 </div>
+                <h4 class="feature-title">Safe & Secure</h4>
+                <p class="feature-text">All users are verified. Trade with confidence in our trusted community platform.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h4 class="feature-title">Lightning Fast</h4>
+                <p class="feature-text">List items in minutes. Get deliveries within hours. Everything moves at modern speed.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h4 class="feature-title">Earn Extra Income</h4>
+                <p class="feature-text">Turn unused items into cash or become a courier and earn by making deliveries.</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Why Choose Section -->
-<section class="why-choose-section">
-    <div class="container">
-        <h2 class="section-title fade-in">Why Students Choose OneCart Discovery</h2>
-        <p class="section-subtitle fade-in">
-            Built by students, for students. We understand what you need.
-        </p>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3 fade-in">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="bi bi-cash-stack"></i>
-                    </div>
-                    <h4 class="feature-title">Save Money</h4>
-                    <p class="feature-text">Get better deals from fellow students. No middleman markups or commission fees.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 fade-in">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                    <h4 class="feature-title">Safe & Secure</h4>
-                    <p class="feature-text">All users are verified students. Trade within your trusted campus community.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 fade-in">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="bi bi-lightning-charge"></i>
-                    </div>
-                    <h4 class="feature-title">Lightning Fast</h4>
-                    <p class="feature-text">List items in 2 minutes. Get deliveries within hours. Everything moves at student speed.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 fade-in">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="bi bi-piggy-bank"></i>
-                    </div>
-                    <h4 class="feature-title">Earn Extra Cash</h4>
-                    <p class="feature-text">Turn unused items into money. Or become a courier and earn by delivering on campus.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="cta-section">
-    <div class="container">
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="cta-content">
-            <h2 class="cta-title fade-in">Ready to Join OneCart Discovery?</h2>
-            <p class="cta-subtitle fade-in">Start buying, selling, and delivering on campus today. It's completely free!</p>
-            <div class="fade-in">
-                <a href="{% url 'shop_base' %}" class="btn-cta me-3 mb-3">
-                    Browse Marketplace <i class="bi bi-arrow-right"></i>
+            <h2 class="cta-title">Ready to Get Started?</h2>
+            <p class="cta-subtitle">Join thousands of users buying, selling, and delivering on OneCart Discovery</p>
+            <div class="cta-buttons">
+                <a href="{% url 'shop_base' %}" class="btn-cta">
+                    Browse Marketplace
+                    <i class="fas fa-arrow-right"></i>
                 </a>
-                <a href="{% url 'seller_landing_page' %}" class="btn-cta mb-3">
-                    List Your First Item <i class="bi bi-plus-circle"></i>
+                <a href="{% url 'seller_landing_page' %}" class="btn-cta btn-cta-secondary">
+                    Start Selling
+                    <i class="fas fa-plus-circle"></i>
                 </a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <h3 class="footer-title"><i class="bi bi-mortarboard-fill"></i> OneCart Discovery</h3>
-                <p class="footer-text">
-                    Your trusted campus marketplace and delivery platform. Built by students, for students.
-                </p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-title">
+                        <i class="fas fa-shopping-cart"></i> OneCart Discovery
+                    </h3>
+                    <p class="footer-text">
+                        Your trusted marketplace and delivery platform. Connecting buyers, sellers, and couriers everywhere.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-links-title">Marketplace</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'shop_base' %}">Browse Items</a></li>
+                        <li><a href="{% url 'seller_landing_page' %}">Sell an Item</a></li>
+                        <li><a href="{% url 'shop_base' %}">Categories</a></li>
+                        <li><a href="#">How It Works</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-links-title">Delivery</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Request Delivery</a></li>
+                        <li><a href="#">Become a Courier</a></li>
+                        <li><a href="#">Delivery Rates</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-links-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-links-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Marketplace</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Browse Items</a></li>
-                    <li><a href="#">Sell an Item</a></li>
-                    <li><a href="#">Categories</a></li>
-                    <li><a href="#">How It Works</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Delivery</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Request Delivery</a></li>
-                    <li><a href="#">Become a Courier</a></li>
-                    <li><a href="#">Delivery Rates</a></li>
-                    <li><a href="#">Track Order</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Support</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Safety Tips</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4">
-                <h4 class="footer-links-title">Legal</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
-                </ul>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 OneCart Discovery. All rights reserved.</p>
             </div>
         </div>
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0 2rem;">
-        <div class="text-center">
-            <p class="footer-text mb-0">© 2024 OneCart Discovery. All rights reserved. Made with ❤️ by students, for students.</p>
-        </div>
-    </div>
-</footer>
-
-<script>
-    // Scroll animation observer
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, index * 100);
-            }
-        });
-    }, observerOptions);
-
-    // Observe all fade-in elements
-    document.addEventListener('DOMContentLoaded', () => {
-        const fadeElements = document.querySelectorAll('.fade-in');
-        fadeElements.forEach(el => observer.observe(el));
-    });
-
-    // Navbar scroll effect
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            if (window.scrollY > 50) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-        }
-    });
-</script>
+    </footer>
 {% endblock %}

@@ -159,7 +159,7 @@ def signin(request):
         if not user:
             user = User.objects.filter(username=data['username']).first()
         if user:
-            if user.is_active == False :
+            if user.is_active == False and not user.groups.filter(name="customer").exists():
                 return redirect('activate_account',email=user.email)
             if check_password(data['password'],user.password):
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
