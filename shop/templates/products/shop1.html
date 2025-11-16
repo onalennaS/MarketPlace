@@ -641,7 +641,6 @@ body {
     <div class="row g-3">
         {% for businesses in business_list %}
             {% for business in businesses %}
-            {% if business.status == "approved" %}
             <div class="col-md-6 col-lg-4">
                 <a href="{% url 'view_business_products' business.slug %}" class="business-card">
                     <div class="business-img-container">
@@ -673,7 +672,6 @@ body {
                     </div>
                 </a>
             </div>
-            {% endif %}
             {% endfor %}
         {% endfor %}
     </div>

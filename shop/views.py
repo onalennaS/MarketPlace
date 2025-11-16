@@ -28,7 +28,7 @@ def shop_base(request):
     products = list(Product.objects.filter(status="active").all())
     random.shuffle(products)
     products = products[:6]
-    businesses = list(BusinessInformation.objects.all())  # Convert QuerySet to a list for efficient slicing
+    businesses = list(BusinessInformation.objects.filter(status="approved").exclude(products__isnull=True).distinct())  # Only approved businesses with at least one product
     businesse_list = [businesses[i:i+2] for i in range(0, len(businesses), 2)]
 
     items= 0
@@ -153,7 +153,7 @@ def search_products(request):
             Q(name__icontains=query) |
             Q(category__icontains=query),
             status="approved"
-        )[:10]  # Limit results
+        ).exclude(products__isnull=True).distinct()[:10]  # Only approved businesses with at least one product
 
     items = 0
     wishlist_items_count = 0
