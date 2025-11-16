@@ -17,13 +17,23 @@ def register_business(request):
     if not request.method == "POST":
         return JsonResponse({'status':'error', 'message':'Request method not allowed'}, status=403)
 
-    try:
-        data = json.loads(request.body)  # Parse JSON request body
-        errors = validate_business_data(data)
-        if errors:
-            return JsonResponse({"status":"error","message":f"{errors}"})
-    except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data"}, status=400)     
+    # Handle both FormData and JSON requests
+    if request.content_type.startswith('multipart/form-data'):
+        # FormData request (with file upload)
+        data = request.POST
+        image = request.FILES.get('image')
+    else:
+        # JSON request (fallback)
+        try:
+            data = json.loads(request.body)
+            image = request.FILES.get('image')
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid data format"}, status=400)
+
+    # Validate data
+    errors = validate_business_data(data)
+    if errors:
+        return JsonResponse({"status":"error","message":f"{errors}"})
 
     name = data.get("name")
     business_type = data.get("business_type")
@@ -42,9 +52,8 @@ def register_business(request):
     address_type = data.get("address_type")
     open_time = data.get("open_time")
     close_time = data.get("close_time")
-    image = request.FILES.get('image')  # Image from the request
 
-        # Validate image file
+    # Validate image file
     if image and not image.content_type.startswith('image/'):
         return JsonResponse({'status': 'error', 'message': 'Invalid file type. Only images allowed'}, status=400)
 

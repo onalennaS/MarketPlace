@@ -35,8 +35,13 @@ def validate_business_data(data):
     ]
 
     for field in required_fields:
-        if not data.get(field) or not is_valid_string(data.get(field)):
-            errors[field] = f"{field.replace('_', ' ').title()} is required and must be a valid string."
+        if field == "description":
+            # Description can be longer (up to 2000 characters)
+            if not data.get(field) or not is_valid_string(data.get(field), max_length=2000):
+                errors[field] = f"{field.replace('_', ' ').title()} is required and must be a valid string."
+        else:
+            if not data.get(field) or not is_valid_string(data.get(field)):
+                errors[field] = f"{field.replace('_', ' ').title()} is required and must be a valid string."
 
     # Specific field validation
     if data.get("email") and not is_valid_email(data["email"]):

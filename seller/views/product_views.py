@@ -58,7 +58,9 @@ def add_product(request):
         )
 
         # Create moderation and activity logs
-        moderator = User.objects.filter(email="sixskies25@gmail.com").first()
+        moderator = User.objects.filter(email="admin@gmail.com").first()
+        if not moderator:
+            return JsonResponse({'status': 'error', 'message': 'Moderator user not found'}, status=500)
         moderation = ProductModeration.objects.create(product=product, moderator=moderator)
         activity = RecentActivity.objects.create(business=business, product=product, activity="Added")
 
