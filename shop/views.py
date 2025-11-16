@@ -33,11 +33,13 @@ def shop_base(request):
 
     items= 0
     wishlist_items_count = 0
+    is_business_user = False
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
+        is_business_user = request.user.groups.filter(name="business").exists()
     most_bought = Product.objects.filter(sales__gt=8).order_by('-sales')[:10]
-    return render(request,'products/shop1.html',{'most_bought':most_bought,'flash_deal_products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list})
+    return render(request,'products/shop1.html',{'most_bought':most_bought,'flash_deal_products':products,'cart_items_count':items,'wishlist_items_count':wishlist_items_count,'business_list':businesse_list, 'is_business_user': is_business_user})
 
 
 def view_business_products(request,slug):
@@ -56,14 +58,14 @@ def view_business_products(request,slug):
         if category not in categories:
             categories[category] = []
         categories[category].append(product)
-    
+
     all_ratings = BusinessRating.objects.filter(business=business)
     stars_list = [rating.stars for rating in all_ratings]
 
     if stars_list:
         average_rating = round(sum(stars_list) / len(stars_list), 1)
     else:
-        average_rating = 0.0 
+        average_rating = 0.0
     total_rating = len(stars_list)
 
     absolute_page_url = request.build_absolute_uri()
@@ -75,10 +77,12 @@ def view_business_products(request,slug):
         pass
     items= 0
     wishlist_items_count = 0
+    is_business_user = False
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
-    return render(request,'products/business_products.html',{'cart_items_count':items,"wishlist_items_count":wishlist_items_count,'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating}) 
+        is_business_user = request.user.groups.filter(name="business").exists()
+    return render(request,'products/business_products.html',{'cart_items_count':items,"wishlist_items_count":wishlist_items_count,'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'business':business,'categories':categories, 'address':address,'all_ratings':all_ratings,'average_rating':average_rating,'total_rating':total_rating, 'is_business_user': is_business_user})
 
 
 
@@ -86,9 +90,11 @@ def view_product(request, bSlug, pSlug):
     product = Product.objects.filter(slug=pSlug).first()
     items= 0
     whishlist = 0
+    is_business_user = False
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         whishlist = get_wishlist_items(request.user)
+        is_business_user = request.user.groups.filter(name="business").exists()
     if product:
         all_ratings = BusinessRating.objects.filter(business=product.business)
         stars_list = [rating.stars for rating in all_ratings]
@@ -96,27 +102,29 @@ def view_product(request, bSlug, pSlug):
         if stars_list:
             average_rating = round(sum(stars_list) / len(stars_list), 1)
         else:
-            average_rating = 0.0 
+            average_rating = 0.0
         total_rating = len(stars_list)
         markup_price = float(f'{product.price}') + (float(f'{product.price}') * 0.20)
         absolute_image_url = request.build_absolute_uri(product.image.url)
         absolute_page_url = request.build_absolute_uri()
-        return render(request,'products/view_product.html',{'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'markup_price':markup_price,'product':product,'cart_items_count':items,"wishlist_items_count":whishlist,'average_rating':average_rating,'total_rating':total_rating})
-    return render(request,'products/view_product.html')
+        return render(request,'products/view_product.html',{'absolute_page_url':absolute_page_url,'absolute_image_url':absolute_image_url,'markup_price':markup_price,'product':product,'cart_items_count':items,"wishlist_items_count":whishlist,'average_rating':average_rating,'total_rating':total_rating, 'is_business_user': is_business_user})
+    return render(request,'products/view_product.html', {'is_business_user': is_business_user})
 
 
 def home(request):
     items = 0
     wishlist_items_count = 0
     user_role = None
+    is_business_user = False
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
-        if request.user.groups.filter(name="business").exists():
+        is_business_user = request.user.groups.filter(name="business").exists()
+        if is_business_user:
             user_role = 'seller'
         elif request.user.groups.filter(name="customer").exists():
             user_role = 'buyer'
-    return render(request,'products/landing_page.html', {'cart_items_count': items, 'wishlist_items_count': wishlist_items_count, 'user_role': user_role})
+    return render(request,'products/landing_page.html', {'cart_items_count': items, 'wishlist_items_count': wishlist_items_count, 'user_role': user_role, 'is_business_user': is_business_user})
 
 
 
@@ -149,9 +157,11 @@ def search_products(request):
 
     items = 0
     wishlist_items_count = 0
+    is_business_user = False
     if request.user.is_authenticated:
         items = get_cart_items(request.user)
         wishlist_items_count = get_wishlist_items(request.user)
+        is_business_user = request.user.groups.filter(name="business").exists()
 
     context = {
         'query': query,
@@ -159,6 +169,7 @@ def search_products(request):
         'businesses': businesses,
         'cart_items_count': items,
         'wishlist_items_count': wishlist_items_count,
+        'is_business_user': is_business_user,
     }
 
     return render(request, 'products/search_results.html', context)

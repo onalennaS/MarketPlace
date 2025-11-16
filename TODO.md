@@ -1,7 +1,11 @@
-# TODO: Fix ValueError for Business Image in shop_base View
+# TODO: Update shop_base2.html to hide "My Account" link for sellers
 
-## Steps to Complete:
-- [ ] Modify BusinessInformation model in seller/wrap_models/business_model.py: Change image field to allow null and blank, remove invalid default.
-- [ ] Create and run Django migration for the model change.
-- [ ] Update shop/templates/products/shop1.html template to check if business.image exists before rendering the img tag.
-- [ ] Test the fix by running the server and accessing /home/.
+## Tasks
+- [x] Add condition to hide "My Account" link in desktop navigation for sellers (group "business")
+- [x] Add condition to hide "My Account" link in mobile bottom navigation for sellers (group "business")
+- [x] Verify changes in the file
+
+## Notes
+- Sellers are identified by being in the "business" group.
+- Use {% if not user.groups.filter(name="business").exists %} to check if user is not a seller.
+- Changes verified: "My Account" link is properly hidden for sellers in both desktop and mobile navigation using the is_business_user context variable.
