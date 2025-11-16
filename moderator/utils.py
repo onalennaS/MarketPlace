@@ -24,6 +24,8 @@ from itsdangerous import URLSafeTimedSerializer
 from django.conf import settings
 User = get_user_model()
 
+logger = logging.getLogger(__name__)
+
 def email_pending(subject,recipient_email,link,template,reason=None ):
     try:
         user = User.objects.values('username').get(email=recipient_email[1])

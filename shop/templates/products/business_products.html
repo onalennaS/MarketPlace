@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block styles %}
+<style>
 :root {
     --teal: #00A8A8;
     --green: #2ECC71;
@@ -169,6 +170,17 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-card-link:hover .product-card {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
 .product-img {
     position: relative;
     width: 100%;
@@ -277,6 +289,7 @@ body {
         flex-direction: column;
     }
 }
+</style>
 {% endblock %}
 
 {% block secend_nav %}{% endblock %}
@@ -285,7 +298,11 @@ body {
 <div class="container py-3" style="max-width: 1000px;">
     <!-- Hero -->
     <div class="hero">
+        {% if business.image %}
         <img src="{{business.image.url}}" alt="{{business.name}}">
+        {% else %}
+        <img src="/static/images/default-business.jpg" alt="{{business.name}}">
+        {% endif %}
         <div class="hero-overlay">
             <h1>{{business.name}}</h1>
             <div class="hero-meta">
@@ -366,27 +383,31 @@ body {
         <div class="products-grid">
             {% for product in value %}
             {% if product.status == "active" %}
-            <div class="product-card">
-                <div class="product-img">
-                    {% if product.slug and product.business.slug %}
-                        <a href="{% url 'view_product' product.business.slug product.slug %}">
-                    {% else %}
-                        <a href="{% url 'view_business_products' product.business.slug %}">
-                    {% endif %}
+            {% if product.slug and product.business.slug %}
+                <a href="{% url 'view_product' product.business.slug product.slug %}" class="product-card-link">
+            {% else %}
+                <a href="{% url 'view_business_products' product.business.slug %}" class="product-card-link">
+            {% endif %}
+                <div class="product-card">
+                    <div class="product-img">
+                        {% if product.image %}
                         <img src="{{product.image.url}}" alt="{{product.name}}">
-                    </a>
-                    {% if product.discount %}
-                    <span class="product-badge">{{product.discount}}% OFF</span>
-                    {% endif %}
-                    <button class="wishlist-btn" onclick="toggleWishlist(this, {{product.id}})">
-                        <i class="bi bi-heart"></i>
-                    </button>
+                        {% else %}
+                        <img src="/static/images/default-product.jpg" alt="{{product.name}}">
+                        {% endif %}
+                        {% if product.discount %}
+                        <span class="product-badge">{{product.discount}}% OFF</span>
+                        {% endif %}
+                        <button class="wishlist-btn" onclick="toggleWishlist(event, this, {{product.id}})">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-body">
+                        <h6>{{product.name}}</h6>
+                        <p class="price mb-0">R{{product.price}}</p>
+                    </div>
                 </div>
-                <div class="product-body">
-                    <h6>{{product.name}}</h6>
-                    <p class="price mb-0">R{{product.price}}</p>
-                </div>
-            </div>
+            </a>
             {% endif %}
             {% endfor %}
         </div>
@@ -428,7 +449,9 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function toggleWishlist(btn, id) {
+function toggleWishlist(event, btn, id) {
+    event.preventDefault();
+    event.stopPropagation();
     btn.classList.toggle('active');
     const icon = btn.querySelector('i');
     if (btn.classList.contains('active')) {

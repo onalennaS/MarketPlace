@@ -43,9 +43,8 @@ def shop_base(request):
 
 
 def view_business_products(request,slug):
-    products = Product.objects.filter(status="active").all()
     business = BusinessInformation.objects.filter(slug=slug).first()  # Get the first business object
-    products = Product.objects.filter(business=business).all()  # Get all products for the business
+    products = Product.objects.filter(business=business, status="active").all()  # Get all active products for the business
     address = Address.objects.filter(business=business).first()  # Get the first address for the business
 
     # Initialize an empty dictionary to hold categories and their corresponding products
