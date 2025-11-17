@@ -1,101 +1,30 @@
-
 {% extends 'products/shop_base2.html' %}
 
 {% block title %}User Profile{% endblock %}
-
-{% block nav %}
-<div class="list-group list-group-flush">
-    <div class="section-header">
-        <h5>Profile</h5>
-    </div>
-    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active">
-        <i class="fas fa-user"></i>
-        <span>Personal Details</span>
-    </a>
-    <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-cogs"></i>
-        <span>Security Settings</span>
-    </a>
-    <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Address Book</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Orders</h5>
-    </div>
-    <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-shopping-bag"></i>
-        <span>My Orders</span>
-    </a>
-    <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-heart"></i>
-        <span>Wish List</span>
-    </a>
-    <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-star"></i>
-        <span>Product Reviews</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Payment</h5>
-    </div>
-    <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-credit-card"></i>
-        <span>Credit & Refunds</span>
-    </a>
-    <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-gift"></i>
-        <span>Gift Card</span>
-    </a>
-    <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-users"></i>
-        <span>Referrals & Earnings</span>
-    </a>
-
-    <div class="section-header">
-        <h5>More</h5>
-    </div>
-    <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-crown"></i>
-        <span>Subscription Plan</span>
-    </a>
-    <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-history"></i>
-        <span>Payment History</span>
-    </a>
-    <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-headset"></i>
-        <span>Customer Support</span>
-    </a>
-</div>
-{% endblock %}
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-white: #FFFFFF;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
-    font-family: 'Poppins', sans-serif;
-}
-
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Breadcrumb styling */
@@ -103,54 +32,65 @@ body {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
 
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
+    color: #1f2937;
+    font-weight: 600;
 }
 
 /* Card styling */
 .profile-card {
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-    background-color: var(--base-white);
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: none;
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
+    gap: 12px;
 }
 
 .card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .card-body {
-    padding: 20px;
+    padding: 24px;
 }
 
 /* Text and content styling */
@@ -160,96 +100,110 @@ body {
     margin-bottom: 0;
     display: flex;
     align-items: center;
+    gap: 8px;
+    color: #374151;
 }
 
 .status-icon {
-    margin-left: 8px;
     font-size: 16px;
 }
 
 .verified {
-    color: var(--accent-green);
+    color: #10b981;
 }
 
 .unverified {
-    color: #E74C3C;
+    color: #ef4444;
 }
 
 /* Button styling */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 8px 16px;
-    transition: var(--transition);
+    padding: 10px 20px;
+    transition: all 0.2s;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .btn-edit {
-    background-color: transparent;
-    color: var(--text-dark-gray);
-    border: 1px solid var(--border-color);
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
 }
 
 .btn-edit:hover {
-    background-color: var(--primary-teal);
-    color: white;
-    border-color: var(--primary-teal);
+    background-color: #e5e7eb;
+    color: #1f2937;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
 }
 
 .btn-save {
-    background-color: var(--primary-teal);
+    background-color: #3b82f6;
     color: white;
 }
 
 .btn-save:hover {
-    background-color: #008B8B;
+    background-color: #2563eb;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-cancel {
     background-color: transparent;
-    color: #E74C3C;
-    border: 1px solid #E74C3C;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
     margin-left: 8px;
 }
 
 .btn-cancel:hover {
-    background-color: #E74C3C;
-    color: white;
+    background-color: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
 }
 
 /* Form styling */
 .form-floating .form-control {
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 16px;
     font-size: 15px;
-    transition: var(--transition);
+    transition: all 0.2s;
+    height: calc(3.5rem + 2px);
 }
 
 .form-floating .form-control:focus {
-    border-color: var(--primary-teal);
-    box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.25);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-floating label {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     font-size: 14px;
+    padding: 1rem 1rem;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: #6b7280;
+    transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
 }
 
 /* Floating Sell Icon */
 .floating-sell-icon {
     position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: var(--primary-teal);
+    right: 30px;
+    bottom: 30px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
     font-size: 14px;
     font-weight: 600;
     display: flex;
@@ -257,13 +211,13 @@ body {
     gap: 8px;
     z-index: 1000;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s;
     text-decoration: none;
 }
 
 .floating-sell-icon:hover {
-    background-color: #008B8B;
-    transform: translateY(-50%) scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
 }
 
 .floating-sell-icon i {
@@ -272,68 +226,127 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-@media (max-width: 480px) {
-    .card-text {
-        font-size: 13px;
-    }
-    .form-floating .form-control {
-        font-size: 13px;
-    }
-    .card-header h5 {
-        font-size: 15px;
-    }
-}
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
     
     .card-header {
-        padding: 12px 15px;
+        padding: 16px 20px;
     }
     
     .card-body {
-        padding: 15px;
+        padding: 20px;
     }
     
     .btn-cancel {
         margin-left: 0;
-        margin-top: 10px;
+        margin-top: 12px;
     }
     
     .d-flex.justify-content-between.align-items-center {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
     }
     
     .d-flex.justify-content-between.align-items-center .btn-edit {
-        margin-top: 10px;
-        align-self: flex-end;
+        align-self: stretch;
     }
     
     .floating-sell-icon {
-        right: 10px;
-        padding: 10px 12px;
-        font-size: 12px;
+        right: 16px;
+        bottom: 16px;
+        padding: 14px 18px;
+        font-size: 13px;
     }
     
-    .floating-sell-icon i {
+    .breadcrumb {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-text {
         font-size: 14px;
     }
+    
+    .form-floating .form-control {
+        font-size: 14px;
+        padding: 14px;
+    }
+    
+    .card-header h5 {
+        font-size: 15px;
+    }
+    
+    .profile-container {
+        padding: 16px 12px;
+    }
+}
+
+/* Grid layout improvements */
+.row {
+    margin: 0 -12px;
+}
+
+.col-md-6, .col-md-8, .col-md-4, .col-12 {
+    padding: 0 12px;
+}
+
+/* Animation for form transitions */
+.profile-card .card-body {
+    transition: all 0.3s ease;
+}
+
+/* Status badges */
+.user-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-verified {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-unverified {
+    background-color: #fee2e2;
+    color: #991b1b;
 }
 </style>
 
-<div class="container">
-  
-
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">My Account</li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'shop_base' %}">Shop</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
         </ol>
     </nav>
+
+    <!-- Page Header -->
+    <div class="text-center mb-3">
+        <h3 class="h3 mb-1" style="color: var(--secondary); font-weight: 500; letter-spacing: -0.02em; font-size: 1.5rem;">User Profile</h3>
+        <p class="mb-0" style="color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">Manage your account information and preferences with ease</p>
+        <div class="mt-2">
+            <span class="badge" style="background: var(--primary-light); color: var(--primary-dark); padding: 4px 10px; border-radius: 20px; font-weight: 500; font-size: 0.8rem;">
+                <i class="fas fa-shield-check me-1"></i>Secure & Private
+            </span>
+        </div>
+    </div>
 
     <!-- Username Card -->
     <div class="profile-card">
@@ -345,7 +358,8 @@ body {
             <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text">{{user.username}}</p>
                 <button type="button" class="btn btn-edit" onclick="edit_button('username')">
-                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                    <i class="fas fa-pencil-alt"></i> 
+                    <span>Edit</span>
                 </button>
             </div>
         </div> 
@@ -356,16 +370,18 @@ body {
                 <div class="row align-items-end">
                     <div class="col-md-8">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="username-input" placeholder="" name='username' value="{{user.username}}">
+                            <input type="text" class="form-control" id="username-input" placeholder="Username" name='username' value="{{user.username}}">
                             <label for="username-input">Username</label>
                         </div>
                     </div>
                     <div class="col-md-4 text-md-end mb-3">
                         <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                            <i class="fas fa-check"></i> 
+                            <span>Save</span>
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('username')">
-                            <i class="fas fa-times me-1"></i> Cancel
+                            <i class="fas fa-times"></i> 
+                            <span>Cancel</span>
                         </button>    
                     </div>
                 </div>
@@ -383,7 +399,8 @@ body {
             <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text">{{user.first_name}} {{user.last_name}}</p>
                 <button type="button" class="btn btn-edit" onclick="edit_button('fullname')">
-                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                    <i class="fas fa-pencil-alt"></i> 
+                    <span>Edit</span>
                 </button>
             </div>
         </div>
@@ -393,22 +410,24 @@ body {
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="firstname-input" placeholder="" name='first_name' value="{{ user.first_name }}">
+                            <input type="text" class="form-control" id="firstname-input" placeholder="First Name" name='first_name' value="{{ user.first_name }}">
                             <label for="firstname-input">First Name</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="lastname-input" placeholder="" name='last_name' value="{{ user.last_name }}">
+                            <input type="text" class="form-control" id="lastname-input" placeholder="Last Name" name='last_name' value="{{ user.last_name }}">
                             <label for="lastname-input">Last Name</label>
                         </div>
                     </div>
                     <div class="col-12 text-end">
                         <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                            <i class="fas fa-check"></i> 
+                            <span>Save</span>
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('fullname')">
-                            <i class="fas fa-times me-1"></i> Cancel
+                            <i class="fas fa-times"></i> 
+                            <span>Cancel</span>
                         </button>    
                     </div>
                 </div>
@@ -424,16 +443,23 @@ body {
         </div>
         <div class="card-body" id="email-disp" style="display:block;">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="card-text">
-                    {{user.email}}
+                <div class="d-flex align-items-center gap-3">
+                    <p class="card-text mb-0">{{user.email}}</p>
                     {% if is_google_linked %}
-                    <i class="fas fa-times-circle unverified status-icon" title="Not Verified"></i>
+                    <span class="user-status status-unverified">
+                        <i class="fas fa-times-circle"></i>
+                        Not Verified
+                    </span>
                     {% else %}
-                    <i class="fas fa-check-circle verified status-icon" title="Verified"></i>
+                    <span class="user-status status-verified">
+                        <i class="fas fa-check-circle"></i>
+                        Verified
+                    </span>
                     {% endif %}
-                </p>
+                </div>
                 <button type="button" class="btn btn-edit" onclick="edit_button('email')">
-                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                    <i class="fas fa-pencil-alt"></i> 
+                    <span>Edit</span>
                 </button>
             </div>
         </div>
@@ -443,16 +469,18 @@ body {
                 <div class="row align-items-end">
                     <div class="col-md-8">
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email-input" placeholder="" name='email' value="{{user.email}}">
-                            <label for="email-input">Email</label>
+                            <input type="email" class="form-control" id="email-input" placeholder="Email Address" name='email' value="{{user.email}}">
+                            <label for="email-input">Email Address</label>
                         </div>
                     </div>
                     <div class="col-md-4 text-md-end mb-3">
                         <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                            <i class="fas fa-check"></i> 
+                            <span>Save</span>
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('email')">
-                            <i class="fas fa-times me-1"></i> Cancel
+                            <i class="fas fa-times"></i> 
+                            <span>Cancel</span>
                         </button>    
                     </div>
                 </div>
@@ -468,12 +496,16 @@ body {
         </div>
         <div class="card-body" id="phone-disp" style="display:block;">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="card-text">
-                    Not Available
-                    <i class="fas fa-check-circle verified status-icon" title="Verified"></i>
-                </p>
+                <div class="d-flex align-items-center gap-3">
+                    <p class="card-text mb-0">Not Available</p>
+                    <span class="user-status status-verified">
+                        <i class="fas fa-check-circle"></i>
+                        Verified
+                    </span>
+                </div>
                 <button type="button" class="btn btn-edit" onclick="edit_button('phone')" disabled>
-                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                    <i class="fas fa-pencil-alt"></i> 
+                    <span>Edit</span>
                 </button>
             </div>
         </div>
@@ -483,16 +515,18 @@ body {
                 <div class="row align-items-end">
                     <div class="col-md-8">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="phone-input" placeholder="" name='phone' value="(+27) 64 548 9327">
-                            <label for="phone-input">Phone</label>
+                            <input type="text" class="form-control" id="phone-input" placeholder="Phone Number" name='phone' value="(+27) 64 548 9327">
+                            <label for="phone-input">Phone Number</label>
                         </div>
                     </div>
                     <div class="col-md-4 text-md-end mb-3">
                         <button type="submit" class="btn btn-save">
-                            <i class="fas fa-check me-1"></i> Save
+                            <i class="fas fa-check"></i> 
+                            <span>Save</span>
                         </button>
                         <button type="button" class="btn btn-cancel" onclick="cancel_button('phone')">
-                            <i class="fas fa-times me-1"></i> Cancel
+                            <i class="fas fa-times"></i> 
+                            <span>Cancel</span>
                         </button>    
                     </div>
                 </div>
@@ -509,6 +543,7 @@ body {
         displays.style.display = 'none';
         forms.style.display = 'block';
     }
+    
     function cancel_button(name){
         var displays = document.getElementById(name+'-disp');
         var forms = document.getElementById(name+'-form');
@@ -569,7 +604,7 @@ body {
                         icon: 'error',
                         title: 'Validation Error',
                         text: error,
-                        confirmButtonColor: '#3498db'
+                        confirmButtonColor: '#3b82f6'
                     });
                     return false;
                 }
@@ -592,7 +627,7 @@ body {
                         icon: 'error',
                         title: 'Validation Error',
                         text: firstNameError || lastNameError,
-                        confirmButtonColor: '#3498db'
+                        confirmButtonColor: '#3b82f6'
                     });
                     return false;
                 }
@@ -611,7 +646,7 @@ body {
                         icon: 'error',
                         title: 'Validation Error',
                         text: error,
-                        confirmButtonColor: '#3498db'
+                        confirmButtonColor: '#3b82f6'
                     });
                     return false;
                 }
