@@ -1,10 +1,74 @@
 
-{% extends 'home/base.html' %}
+{% extends 'products/shop_base2.html' %}
 
 {% block title %}User Profile{% endblock %}
 
 {% block nav %}
+<div class="list-group list-group-flush">
+    <div class="section-header">
+        <h5>Profile</h5>
+    </div>
+    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active">
+        <i class="fas fa-user"></i>
+        <span>Personal Details</span>
+    </a>
+    <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-cogs"></i>
+        <span>Security Settings</span>
+    </a>
+    <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Address Book</span>
+    </a>
 
+    <div class="section-header">
+        <h5>Orders</h5>
+    </div>
+    <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-shopping-bag"></i>
+        <span>My Orders</span>
+    </a>
+    <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-heart"></i>
+        <span>Wish List</span>
+    </a>
+    <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-star"></i>
+        <span>Product Reviews</span>
+    </a>
+
+    <div class="section-header">
+        <h5>Payment</h5>
+    </div>
+    <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-credit-card"></i>
+        <span>Credit & Refunds</span>
+    </a>
+    <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-gift"></i>
+        <span>Gift Card</span>
+    </a>
+    <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-users"></i>
+        <span>Referrals & Earnings</span>
+    </a>
+
+    <div class="section-header">
+        <h5>More</h5>
+    </div>
+    <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-crown"></i>
+        <span>Subscription Plan</span>
+    </a>
+    <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-history"></i>
+        <span>Payment History</span>
+    </a>
+    <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-headset"></i>
+        <span>Customer Support</span>
+    </a>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -265,9 +329,9 @@ body {
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
+                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Personal Details</li>
+            <li class="breadcrumb-item active" aria-current="page">My Account</li>
         </ol>
     </nav>
 

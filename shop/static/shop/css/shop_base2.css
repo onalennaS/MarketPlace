@@ -371,6 +371,15 @@ body {
 /* Content Area */
 .content {
     margin-bottom: 0;
+    background-color: var(--white);
+    min-height: calc(100vh - 80px);
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--white);
+    border-right: 1px solid var(--border);
+    min-height: calc(100vh - 80px);
 }
 
 /* Buttons */

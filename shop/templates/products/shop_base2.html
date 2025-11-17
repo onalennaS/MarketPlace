@@ -423,10 +423,20 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 content">
-                <div class="inner">
-                    {% block content %}
-                    {% endblock content %}
+            <!-- Sidebar for large devices -->
+            <div class="col-lg-3 d-none d-lg-block sidebar">
+                <div class="bg-white h-100">
+                    {% block nav %}
+                    {% endblock %}
+                </div>
+            </div>
+            <!-- Main content -->
+            <div class="col-lg-9 col-md-12 content">
+                <div class="bg-white h-100">
+                    <div class="inner">
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -99,7 +99,29 @@ def get_discount(cart_items):
 @login_required_custom
 @has_password
 def dash(request):
-    return render(request, 'home/dash.html',{'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
+    if request.method == 'POST':
+        if 'username' in request.POST:
+            new_username = request.POST['username'].strip()
+            if new_username != request.user.username:
+                if User.objects.filter(username=new_username).exists():
+                    messages.error(request, 'Username is already taken.')
+                    return redirect('dash')
+            request.user.username = new_username
+        if 'first_name' in request.POST:
+            request.user.first_name = request.POST['first_name'].strip()
+        if 'last_name' in request.POST:
+            request.user.last_name = request.POST['last_name'].strip()
+        if 'email' in request.POST:
+            new_email = request.POST['email'].strip()
+            if new_email != request.user.email:
+                if User.objects.filter(email=new_email).exists():
+                    messages.error(request, 'Email is already taken.')
+                    return redirect('dash')
+            request.user.email = new_email
+        request.user.save()
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('dash')
+    return render(request, 'home/profile.html', {'is_google_linked': is_google_linked(request.user),'cart_items_count':get_cart_items(request.user),'wishlist_items_count':get_wishlist_items(request.user)})
 
 @login_required_custom
 @has_password
