@@ -2,101 +2,27 @@
 
 {% block title %}Buyer Reviews{% endblock %}
 
-{% block nav %}
-<div class="list-group list-group-flush">
-    <div class="section-header">
-        <h5>Profile</h5>
-    </div>
-    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-user"></i>
-        <span>Personal Details</span>
-    </a>
-    <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-cogs"></i>
-        <span>Security Settings</span>
-    </a>
-    <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Address Book</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Orders</h5>
-    </div>
-    <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-shopping-bag"></i>
-        <span>My Orders</span>
-    </a>
-    <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-heart"></i>
-        <span>Wish List</span>
-    </a>
-    <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action active">
-        <i class="fas fa-star"></i>
-        <span>Product Reviews</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Payment</h5>
-    </div>
-    <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-credit-card"></i>
-        <span>Credit & Refunds</span>
-    </a>
-    <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-gift"></i>
-        <span>Gift Card</span>
-    </a>
-    <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-users"></i>
-        <span>Referrals & Earnings</span>
-    </a>
-
-    <div class="section-header">
-        <h5>More</h5>
-    </div>
-    <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-crown"></i>
-        <span>Subscription Plan</span>
-    </a>
-    <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-history"></i>
-        <span>Payment History</span>
-    </a>
-    <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-headset"></i>
-        <span>Customer Support</span>
-    </a>
-</div>
-{% endblock %}
-
 {% block content %}
-
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-white: #FFFFFF;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.6;
-}
-
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Breadcrumb styling */
@@ -104,61 +30,71 @@ body {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
 
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
+    color: #1f2937;
+    font-weight: 600;
 }
 
 /* Card styling */
 .profile-card {
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-    background-color: var(--base-white);
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: none;
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 12px;
 }
 
 .card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .card-body {
-    padding: 20px;
+    padding: 24px;
 }
 
 /* Review Cards */
 .review-card {
     background-color: white;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 8px;
     margin-bottom: 16px;
     transition: var(--transition);
@@ -168,13 +104,13 @@ body {
 .review-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-color: var(--primary-teal);
+    border-color: var(--primary);
 }
 
 .review-header {
     padding: 12px 16px;
-    background-color: rgba(0, 168, 168, 0.05);
-    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(74, 222, 128, 0.05);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -184,7 +120,7 @@ body {
     margin: 0;
     font-size: 15px;
     font-weight: 500;
-    color: var(--text-dark-gray);
+    color: var(--text);
 }
 
 .review-content {
@@ -202,66 +138,65 @@ body {
     margin-bottom: 0;
     font-size: 15px;
     font-weight: 500;
-    color: var(--text-dark-gray);
+    color: var(--text);
     line-height: 1.5;
 }
 
 .review-footer {
     padding: 12px 16px;
-    background-color: var(--background-light);
-    border-top: 1px solid var(--border-color);
+    background-color: var(--background);
+    border-top: 1px solid var(--border);
     text-align: right;
 }
 
 /* Button styling */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 8px 16px;
-    transition: var(--transition);
+    padding: 10px 20px;
+    transition: all 0.2s;
     border: none;
     cursor: pointer;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .btn-view {
-    background-color: var(--primary-teal);
+    background-color: var(--primary);
     color: white;
-    font-size: 14px;
 }
 
 .btn-view:hover {
-    background-color: #008B8B;
+    background-color: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
 }
 
 .btn-filter {
     background-color: transparent;
-    color: var(--text-dark-gray);
-    border: 1px solid var(--border-color);
-    font-size: 14px;
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 
 .btn-filter:hover {
-    background-color: rgba(0, 168, 168, 0.1);
-    color: var(--primary-teal);
-    border-color: var(--primary-teal);
+    background-color: rgba(74, 222, 128, 0.1);
+    color: var(--primary);
+    border-color: var(--primary);
 }
 
 .btn-browse {
-    background-color: var(--primary-teal);
+    background-color: var(--primary);
     color: white;
     border-radius: 25px;
     padding: 10px 24px;
 }
 
 .btn-browse:hover {
-    background-color: #008B8B;
+    background-color: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0, 168, 168, 0.3);
+    box-shadow: 0 3px 8px rgba(74, 222, 128, 0.3);
 }
 
 /* Star rating styling */
@@ -314,7 +249,7 @@ body {
     height: 60px;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
 }
 
 /* Filter section */
@@ -325,14 +260,14 @@ body {
 }
 
 .filter-label {
-    color: var(--text-dark-gray);
+    color: var(--text);
     font-weight: 500;
     font-size: 14px;
 }
 
 /* Dropdown menu */
 .dropdown-menu {
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 6px;
     box-shadow: var(--shadow);
 }
@@ -344,8 +279,8 @@ body {
 }
 
 .dropdown-item:hover {
-    background-color: rgba(0, 168, 168, 0.1);
-    color: var(--primary-teal);
+    background-color: rgba(74, 222, 128, 0.1);
+    color: var(--primary);
 }
 
 /* Text muted */
@@ -355,21 +290,48 @@ body {
     font-weight: 400;
 }
 
+/* Floating Sell Icon */
+.floating-sell-icon {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.floating-sell-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+}
+
+.floating-sell-icon i {
+    font-size: 16px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
     
     .card-header {
-        padding: 12px 15px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        padding: 16px 20px;
     }
     
     .card-body {
-        padding: 15px;
+        padding: 20px;
     }
     
     .review-content {
@@ -398,9 +360,15 @@ body {
         font-size: 1.1rem;
     }
     
-    .d-flex.justify-content-between.align-items-center {
-        flex-direction: column;
-        align-items: flex-start;
+    .floating-sell-icon {
+        right: 16px;
+        bottom: 16px;
+        padding: 14px 18px;
+        font-size: 13px;
+    }
+    
+    .breadcrumb {
+        font-size: 13px;
     }
 }
 
@@ -434,28 +402,39 @@ body {
 }
 </style>
 
-<div class="container">
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
+                <a href="{% url 'shop_base' %}">Shop</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Buyer Reviews</li>
         </ol>
     </nav>
 
-    <!-- Reviews Header Card -->
+    <!-- Page Header -->
+    <div class="text-center mb-3">
+        <h3 class="h3 mb-1" style="color: var(--secondary); font-weight: 500; letter-spacing: -0.02em; font-size: 1.5rem;">Buyer Reviews</h3>
+        <p class="mb-0" style="color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">View and manage your product reviews and feedback</p>
+        <div class="mt-2">
+            <span class="badge" style="background: var(--primary-light); color: var(--primary-dark); padding: 4px 10px; border-radius: 20px; font-weight: 500; font-size: 0.8rem;">
+                <i class="fas fa-star me-1"></i>Share Your Experience
+            </span>
+        </div>
+    </div>
+
+    <!-- Reviews Card -->
     <div class="profile-card">
         <div class="card-header">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-star"></i>
-                <h5>My Reviews</h5>
-            </div>
-            
+            <i class="fas fa-star"></i>
+            <h5>My Reviews</h5>
             <!-- Filter Options -->
             <div class="filter-section">
                 <span class="filter-label d-none d-md-block">Sort by</span>
@@ -502,7 +481,7 @@ body {
                             </div>
                             <div class="review-footer">
                                 <a href="#" class="btn btn-view">
-                                    <i class="fas fa-eye me-1"></i> View Business
+                                    <i class="fas fa-eye"></i> View Business
                                 </a>
                             </div>
                         </div>
@@ -515,11 +494,17 @@ body {
                     <h4>No Reviews Found</h4>
                     <p>You haven't written any reviews yet. After purchasing products, you can share your experience to help other shoppers.</p>
                     <a href="{% url 'home' %}" class="btn btn-browse">
-                        <i class="fas fa-shopping-cart me-1"></i> Browse Products
+                        <i class="fas fa-shopping-cart"></i> Browse Products
                     </a>
                 </div>
             {% endif %}
         </div>
     </div>
+
+    <!-- Floating Sell Icon -->
+    <a href="#" class="floating-sell-icon">
+        <i class="fas fa-plus"></i>
+        <span>Sell</span>
+    </a>
 </div>
 {% endblock content %}

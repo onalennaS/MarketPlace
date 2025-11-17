@@ -165,15 +165,15 @@
             margin: 4px 12px;
             border-radius: 10px;
             text-decoration: none;
-            color: #4b5563;
+            color: #000000;
             transition: all 0.2s;
             cursor: pointer;
             gap: 12px;
         }
 
         .menu-item:hover {
-            background: #f3f4f6;
-            color: #1f2937;
+            background: rgba(0, 0, 0, 0.1);
+            color: #000000;
             transform: translateX(2px);
         }
 
@@ -783,7 +783,7 @@
             {% if user.is_authenticated %}
             <!-- Profile Section -->
             <div class="sidebar-section">
-                
+
                 <a href="{% url 'profile' %}" class="menu-item active" data-tooltip="Personal Details">
                     <div class="menu-icon">
                         <i class="fas fa-user"></i>
@@ -795,6 +795,12 @@
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <span class="menu-label">Security Settings</span>
+                </a>
+                <a href="{% url 'address' %}" class="menu-item" data-tooltip="Address Book">
+                    <div class="menu-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <span class="menu-label">Address Book</span>
                 </a>
             </div>
 

@@ -11,20 +11,29 @@
 
 <style>
     /* Base styles */
-    :root {
-        --primary-teal: #00A8A8;
-        --accent-green: #2ECC71;
-        --accent-red: #e74c3c;
-        --base-white: #FFFFFF;
-        --background-light: #F9F9F9;
-        --text-dark-gray: #333333;
-        --text-gray: #7f8c8d;
-        --border-color: #E0E0E0;
-        --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s ease;
-    }
+:root {
+    --primary-teal: #00A8A8;
+    --accent-green: #2ECC71;
+    --accent-red: #e74c3c;
+    --base-white: #FFFFFF;
+    --background-light: #F9F9F9;
+    --text-dark-gray: #333333;
+    --text-gray: #7f8c8d;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
 
-    body {
+/* Hide sidebar in cart.html */
+#sidebar {
+    display: none !important;
+}
+
+.main-content {
+    margin-left: 0 !important;
+}
+
+body {
         background-color: var(--background-light);
         color: var(--text-dark-gray);
         font-family: 'Poppins', sans-serif;

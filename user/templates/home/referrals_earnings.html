@@ -3,101 +3,29 @@
 {% block title %}Referrals & Earnings{% endblock %}
 {% load static %}
 
-{% block nav %}
-<div class="list-group list-group-flush">
-    <div class="section-header">
-        <h5>Profile</h5>
-    </div>
-    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-user"></i>
-        <span>Personal Details</span>
-    </a>
-    <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-cogs"></i>
-        <span>Security Settings</span>
-    </a>
-    <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Address Book</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Orders</h5>
-    </div>
-    <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-shopping-bag"></i>
-        <span>My Orders</span>
-    </a>
-    <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-heart"></i>
-        <span>Wish List</span>
-    </a>
-    <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-star"></i>
-        <span>Product Reviews</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Payment</h5>
-    </div>
-    <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-credit-card"></i>
-        <span>Credit & Refunds</span>
-    </a>
-    <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-gift"></i>
-        <span>Gift Card</span>
-    </a>
-    <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action active">
-        <i class="fas fa-users"></i>
-        <span>Referrals & Earnings</span>
-    </a>
-
-    <div class="section-header">
-        <h5>More</h5>
-    </div>
-    <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-crown"></i>
-        <span>Subscription Plan</span>
-    </a>
-    <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-history"></i>
-        <span>Payment History</span>
-    </a>
-    <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-headset"></i>
-        <span>Customer Support</span>
-    </a>
-</div>
-{% endblock %}
-
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-white: #FFFFFF;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.6;
-}
-
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Breadcrumb styling */
@@ -105,59 +33,75 @@ body {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
-    font-weight: 400;
+    font-weight: 500;
+    transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
 
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
+    color: #1f2937;
+    font-weight: 600;
 }
 
 /* Card styling */
 .profile-card {
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-    background-color: var(--base-white);
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: none;
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-left {
     display: flex;
     align-items: center;
 }
 
 .card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .card-body {
-    padding: 20px;
+    padding: 24px;
 }
 
 /* Content styling */
 .card-text {
-    color: var(--text-dark-gray);
+    color: var(--text);
     font-size: 15px;
     font-weight: 400;
     margin-bottom: 0;
@@ -167,46 +111,32 @@ body {
 .stats-value {
     font-weight: 600;
     font-size: 1.5rem;
-    color: var(--text-dark-gray);
+    color: var(--text);
     margin-bottom: 0;
 }
 
 /* Button styling */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 8px 16px;
-    transition: var(--transition);
+    padding: 10px 20px;
+    transition: all 0.2s;
     border: none;
     cursor: pointer;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .btn-primary {
-    background-color: var(--primary-teal);
+    background-color: var(--primary);
     color: white;
-    border: none;
 }
 
 .btn-primary:hover {
-    background-color: #008B8B;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
-}
-
-.btn-outline-primary {
-    background-color: transparent;
-    color: var(--primary-teal);
-    border: 1px solid var(--primary-teal);
-}
-
-.btn-outline-primary:hover {
-    background-color: rgba(0, 168, 168, 0.1);
-    color: #008B8B;
-    border-color: #008B8B;
-    transform: translateY(-2px);
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
 }
 
 /* Table styling */
@@ -216,7 +146,7 @@ body {
 }
 
 .table thead th {
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border);
     color: #6c757d;
     font-weight: 600;
     font-size: 14px;
@@ -224,9 +154,9 @@ body {
 }
 
 .table tbody td, .table tbody th {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border);
     padding: 12px;
-    color: var(--text-dark-gray);
+    color: var(--text);
     font-weight: 400;
     font-size: 15px;
 }
@@ -235,7 +165,7 @@ body {
 .activity-list .list-group-item {
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border);
     padding: 14px 20px;
     background-color: white;
 }
@@ -249,13 +179,13 @@ body {
 }
 
 .activity-icon {
-    color: var(--primary-teal);
+    color: var(--primary);
     font-size: 2rem;
 }
 
 .activity-name {
     font-weight: 600;
-    color: var(--text-dark-gray);
+    color: var(--text);
     font-size: 15px;
     margin-bottom: 0.25rem;
 }
@@ -267,14 +197,14 @@ body {
 }
 
 .notification-icon {
-    color: var(--primary-teal);
+    color: var(--primary);
     margin-left: auto;
 }
 
 /* Input group styling */
 .input-group .form-control {
-    border: 1px solid var(--border-color);
-    border-radius: 6px 0 0 6px;
+    border: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
     padding: 0.5rem 1rem;
     transition: var(--transition);
     font-size: 15px;
@@ -282,13 +212,13 @@ body {
 }
 
 .input-group .form-control:focus {
-    border-color: var(--primary-teal);
-    box-shadow: 0 0 0 0.25rem rgba(0, 168, 168, 0.25);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(74, 222, 128, 0.25);
 }
 
 .input-group-text {
-    background-color: var(--background-light);
-    border: 1px solid var(--border-color);
+    background-color: var(--background);
+    border: 1px solid var(--border);
     color: #6c757d;
 }
 
@@ -318,26 +248,29 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
-    
+
     .card-header {
-        padding: 12px 15px;
+        padding: 16px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
-    
+
     .card-body {
-        padding: 15px;
+        padding: 20px;
     }
-    
+
     .activity-list .list-group-item {
         padding: 12px 15px;
     }
-    
+
     .stats-value {
         font-size: 1.3rem;
     }
-    
+
     .table thead th,
     .table tbody td,
     .table tbody th {
@@ -347,57 +280,92 @@ body {
 }
 
 @media (max-width: 480px) {
+    .breadcrumb {
+        font-size: 13px;
+    }
+
     .card-header h5 {
         font-size: 15px;
     }
-    
-    .card-text {
-        font-size: 13px;
+
+    .card-body {
+        padding: 16px;
     }
-    
+
     .stats-value {
         font-size: 1.2rem;
     }
-    
+
     .activity-name {
         font-size: 13px;
     }
-    
+
     .activity-text {
         font-size: 13px;
     }
-    
+
     .table thead th,
     .table tbody td,
     .table tbody th {
         font-size: 13px;
         padding: 8px;
     }
-    
+
     .input-group .form-control {
         font-size: 13px;
     }
-    
+
     .btn {
-        font-size: 14px;
-        padding: 6px 12px;
+        font-size: 13px;
+        padding: 8px 16px;
     }
+}
+
+/* Grid layout improvements */
+.row {
+    margin: 0 -12px;
+}
+
+.col-md-6, .col-md-8, .col-md-4, .col-12 {
+    padding: 0 12px;
+}
+
+/* Animation for form transitions */
+.profile-card .card-body {
+    transition: all 0.3s ease;
 }
 </style>
 
-<div class="container">
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
+                <a href="{% url 'dash' %}">Dashboard</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Referrals & Earnings</li>
         </ol>
     </nav>
+
+    <!-- Page Header -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <i class="fas fa-users"></i>
+                <h5>Referrals & Earnings</h5>
+            </div>
+            <span class="badge">Referral Program</span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-0">Track your referral earnings and share your unique referral link to earn rewards.</p>
+        </div>
+    </div>
 
     <div class="mb-3 d-flex justify-content-end">
         <p class="card-text">Credit will automatically apply on your next purchase</p>
@@ -409,8 +377,10 @@ body {
             <!-- Total Earnings Card -->
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-dollar-sign"></i>
-                    <h5>Total Earnings</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h5>Total Earnings</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -422,8 +392,10 @@ body {
             <!-- Monthly Earnings Card -->
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-coins"></i>
-                    <h5>This Month Earnings</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-coins"></i>
+                        <h5>This Month Earnings</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -437,8 +409,10 @@ body {
         <div class="col-12 col-md-7">
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-chart-pie"></i>
-                    <h5>Earnings Breakdown</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-chart-pie"></i>
+                        <h5>Earnings Breakdown</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -456,7 +430,7 @@ body {
                                 {% if refs %}
                                     {% for ref in refs %}
                                 <tr>
-                                    <th scope="row">1</th>
+                                    <th scope="row">{{ forloop.counter }}</th>
                                     <td>{{ref.referred.username}}</td>
                                     <td>{{ref.referral_type}}</td>
                                     <td>R {{ref.reward}}</td>
@@ -464,7 +438,7 @@ body {
                                 </tr>
                                 {% endfor %}
                                 {% endif %}
-                               
+
                             </tbody>
                         </table>
                     </div>
@@ -476,8 +450,10 @@ body {
     <!-- Referral Link Card -->
     <div class="profile-card">
         <div class="card-header">
-            <i class="fas fa-link"></i>
-            <h5>Your Referral Link</h5>
+            <div class="card-header-left">
+                <i class="fas fa-link"></i>
+                <h5>Your Referral Link</h5>
+            </div>
         </div>
         <div class="card-body text-center">
             <p class="card-text mb-3 text-center">Share this link or code with others to earn</p>
@@ -485,12 +461,12 @@ body {
                 <div class="col-md-8">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa fa-link"></i></span>
-                        <input type="text" class="form-control" placeholder="link" aria-label="link" 
+                        <input type="text" class="form-control" placeholder="link" aria-label="link"
                             aria-describedby="basic-addon1" value="https://onecartdiscovery.com/account/referral/{{profile.referral_code}}">
                         <button class="btn btn-primary">
                             <i class="fas fa-copy me-1"></i> Copy
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -503,8 +479,10 @@ body {
             <!-- Total Clicks Card -->
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-hand-pointer"></i>
-                    <h5>Total Clicks</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-hand-pointer"></i>
+                        <h5>Total Clicks</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -516,8 +494,10 @@ body {
             <!-- Total Sign-ups Card -->
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-user-plus"></i>
-                    <h5>Total Sign-ups</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-user-plus"></i>
+                        <h5>Total Sign-ups</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -529,8 +509,10 @@ body {
             <!-- Total Purchases Card -->
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h5>Total Purchases</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h5>Total Purchases</h5>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -544,12 +526,14 @@ body {
         <div class="col-12 col-md-7">
             <div class="profile-card">
                 <div class="card-header">
-                    <i class="fas fa-history"></i>
-                    <h5>Activity</h5>
+                    <div class="card-header-left">
+                        <i class="fas fa-history"></i>
+                        <h5>Activity</h5>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush activity-list">
-                        
+
                         {% if refs %}
                         {% for ref in refs %}
                         {% if ref.referral_type == "purchase" %}
@@ -560,7 +544,7 @@ body {
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{re.referred.username}}{% endif %}</h6>
+                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{ref.referred.username}}{% endif %}</h6>
                                         <i class="far fa-bell notification-icon"></i>
                                     </div>
                                     <p class="activity-text mb-0">completed a purchase using your link.</p>
@@ -575,7 +559,7 @@ body {
                                 </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center">
-                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{re.referred.username}} {% endif %}</h6>
+                                        <h6 class="activity-name">{% if ref.referred.first_name %} {{ref.referred.first_name}} {{ref.referred.last_name}} {% else %} {{ref.referred.username}} {% endif %}</h6>
                                         <i class="far fa-bell notification-icon"></i>
                                     </div>
                                     <p class="activity-text mb-0">signed up using your referral code.</p>
@@ -585,7 +569,7 @@ body {
                         {% endif %}
                         {% endfor %}
                         {% endif %}
-                    
+
                     </ul>
                 </div>
             </div>

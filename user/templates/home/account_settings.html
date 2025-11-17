@@ -73,192 +73,375 @@
 {% block content %}
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-dark-blue: #1A3D7C;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
+
 body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
+    background-color: var(--background);
+    color: var(--text);
     font-family: 'Poppins', sans-serif;
 }
+
 * {
     font-family: 'Poppins', sans-serif;
 }
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
+
+/* Breadcrumb styling */
 .breadcrumb {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
+
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s;
 }
+
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
+
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
-}
-.profile-card {
-    background-color: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    font-family: 'Poppins', sans-serif;
-}
-.card-header {
-    background-color: white;
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-}
-.card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
-}
-.card-header h5 {
-    margin: 0;
-    font-size: 18px;
+    color: #1f2937;
     font-weight: 600;
 }
-.card-body {
-    padding: 20px;
-    background-color: #fff;
+
+/* Card styling */
+.profile-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
 }
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-header i {
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* Text and content styling */
 .card-text {
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 0;
     display: flex;
     align-items: center;
+    gap: 8px;
+    color: #374151;
 }
+
 .status-icon {
-    margin-left: 8px;
     font-size: 16px;
 }
+
 .verified {
-    color: var(--accent-green);
+    color: #10b981;
 }
+
 .unverified {
-    color: #E74C3C;
+    color: #ef4444;
 }
+
+/* Button styling */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 8px 16px;
-    transition: var(--transition);
+    padding: 10px 20px;
+    transition: all 0.2s;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
+
 .btn-edit {
-    background-color: transparent;
-    color: var(--text-dark-gray);
-    border: 1px solid var(--border-color);
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
 }
+
 .btn-edit:hover {
-    background-color: var(--primary-teal);
-    color: white;
-    border-color: var(--primary-teal);
-}
-.btn-save {
-    background-color: var(--primary-teal);
-    color: white;
-}
-.btn-save:hover {
-    background-color: #008B8B;
+    background-color: #e5e7eb;
+    color: #1f2937;
+    border-color: #9ca3af;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
 }
+
+.btn-save {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
 .btn-cancel {
     background-color: transparent;
-    color: #E74C3C;
-    border: 1px solid #E74C3C;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
     margin-left: 8px;
 }
+
 .btn-cancel:hover {
-    background-color: #E74C3C;
-    color: white;
+    background-color: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
 }
+
+/* Form styling */
 .form-floating .form-control {
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 16px;
     font-size: 15px;
-    transition: var(--transition);
+    transition: all 0.2s;
+    height: calc(3.5rem + 2px);
 }
+
 .form-floating .form-control:focus {
-    border-color: var(--primary-teal);
-    box-shadow: 0 0 0 0.2rem rgba(0, 168, 168, 0.25);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+
 .form-floating label {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     font-size: 14px;
+    padding: 1rem 1rem;
 }
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: #6b7280;
+    transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
+
     .card-header {
-        padding: 12px 15px;
+        padding: 16px 20px;
     }
+
     .card-body {
-        padding: 15px;
+        padding: 20px;
     }
+
     .btn-cancel {
         margin-left: 0;
-        margin-top: 10px;
+        margin-top: 12px;
     }
+
     .d-flex.justify-content-between.align-items-center {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
     }
+
     .d-flex.justify-content-between.align-items-center .btn-edit {
-        margin-top: 10px;
-        align-self: flex-end;
+        align-self: stretch;
+    }
+
+    .breadcrumb {
+        font-size: 13px;
     }
 }
 
 @media (max-width: 480px) {
     .card-text {
-        font-size: 13px;
+        font-size: 14px;
     }
+
     .form-floating .form-control {
-        font-size: 13px;
+        font-size: 14px;
+        padding: 14px;
     }
+
     .card-header h5 {
         font-size: 15px;
     }
+
+    .profile-container {
+        padding: 16px 12px;
+    }
+}
+
+/* Grid layout improvements */
+.row {
+    margin: 0 -12px;
+}
+
+.col-md-6, .col-md-8, .col-md-4, .col-12 {
+    padding: 0 12px;
+}
+
+/* Animation for form transitions */
+.profile-card .card-body {
+    transition: all 0.3s ease;
+}
+
+/* Status badges */
+.user-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-verified {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-unverified {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Additional styles for account_settings specific elements */
+.password-strength {
+    margin-top: 8px;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+}
+
+.requirements-list li {
+    font-size: 12px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.requirement-met {
+    color: #10b981;
+}
+
+.requirement-unmet {
+    color: #ef4444;
+}
+
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.activity-table th,
+.activity-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.badge-secondary {
+    background-color: #6b7280;
+    color: white;
+}
+
+.badge-danger {
+    background-color: #ef4444;
+    color: white;
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container">
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> My Account</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'shop_base' %}">Shop</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Security Settings</li>
         </ol>
     </nav>
+
+    <!-- Page Header -->
+    <div class="text-center mb-3">
+        <h3 class="h3 mb-1" style="color: var(--secondary); font-weight: 500; letter-spacing: -0.02em; font-size: 1.5rem;">Security Settings</h3>
+        <p class="mb-0" style="color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">Manage your account security and login preferences</p>
+        <div class="mt-2">
+            <span class="badge" style="background: var(--primary-light); color: var(--primary-dark); padding: 4px 10px; border-radius: 20px; font-weight: 500; font-size: 0.8rem;">
+                <i class="fas fa-shield-alt me-1"></i>Secure & Protected
+            </span>
+        </div>
+    </div>
 
     <!-- Password Card -->
     <div class="profile-card">

@@ -76,26 +76,24 @@
 <script src="{% static 'user/js/order_filter.js' %}"></script>
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-white: #FFFFFF;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Breadcrumb styling */
@@ -103,58 +101,65 @@ body {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
 
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
+    color: #1f2937;
+    font-weight: 600;
 }
 
 /* Card styling */
 .profile-card {
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-    background-color: var(--base-white);
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border-color);
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .card-body {
-    padding: 0;
+    padding: 24px;
 }
 
 /* Filter dropdown styling */
@@ -165,33 +170,33 @@ body {
 }
 
 .filter-label {
-    color: var(--text-dark-gray);
+    color: #374151;
     font-weight: 500;
     font-size: 14px;
 }
 
 .btn-filter {
-    background-color: transparent;
-    color: var(--text-dark-gray);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
     font-weight: 500;
-    transition: var(--transition);
-    padding: 6px 12px;
+    transition: all 0.2s;
+    padding: 8px 12px;
     font-size: 14px;
 }
 
 .btn-filter:hover {
-    background-color: var(--primary-teal);
-    color: white;
-    border-color: var(--primary-teal);
+    background-color: #e5e7eb;
+    color: #1f2937;
+    border-color: #9ca3af;
 }
 
 /* Order item styling */
 .order-item {
-    border-bottom: 1px solid var(--border-color);
-    padding: 20px;
-    transition: var(--transition);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 20px 0;
+    transition: all 0.3s ease;
 }
 
 .order-item:last-child {
@@ -199,24 +204,25 @@ body {
 }
 
 .order-item:hover {
-    background-color: var(--background-light);
+    background-color: #f9fafb;
 }
 
 .order-header-info h6 {
     margin: 0 0 8px 0;
-    color: var(--text-dark-gray);
+    color: #1f2937;
     font-weight: 600;
     font-size: 16px;
 }
 
 .order-header-info p {
     margin: 0;
-    color: var(--text-dark-gray);
+    color: #6b7280;
     font-size: 14px;
 }
 
 .order-header-info strong {
     font-weight: 600;
+    color: #374151;
 }
 
 /* Product container */
@@ -232,20 +238,20 @@ body {
 .product-thumbnail {
     width: 80px;
     height: 80px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     flex-shrink: 0;
     overflow: hidden;
 }
 
 .product-thumbnail:hover {
     transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    border-color: var(--primary-teal);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
 }
 
 .product-thumbnail img {
@@ -256,24 +262,24 @@ body {
 
 /* Button styling */
 .btn-view {
-    background-color: var(--primary-teal);
+    background-color: var(--primary);
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
+    border-radius: 8px;
+    padding: 10px 20px;
     font-weight: 500;
-    transition: var(--transition);
+    transition: all 0.2s;
     font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     text-decoration: none;
 }
 
 .btn-view:hover {
-    background-color: #008B8B;
+    background-color: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
     color: white;
 }
 
@@ -289,32 +295,32 @@ body {
 
 .empty-state i {
     font-size: 48px;
-    color: var(--border-color);
+    color: #d1d5db;
     margin-bottom: 20px;
 }
 
 .empty-state h4 {
-    color: var(--text-dark-gray);
+    color: #1f2937;
     margin-bottom: 12px;
     font-size: 20px;
     font-weight: 600;
 }
 
 .empty-state p {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     margin-bottom: 24px;
     max-width: 500px;
     font-size: 14px;
 }
 
 .btn-browse {
-    background-color: var(--primary-teal);
+    background-color: var(--primary);
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 10px 24px;
+    border-radius: 8px;
+    padding: 12px 24px;
     font-weight: 500;
-    transition: var(--transition);
+    transition: all 0.2s;
     font-size: 14px;
     display: inline-flex;
     align-items: center;
@@ -323,99 +329,100 @@ body {
 }
 
 .btn-browse:hover {
-    background-color: #008B8B;
+    background-color: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 168, 168, 0.3);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
     color: white;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
-    
+
     .card-header {
+        padding: 16px 20px;
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .filter-section {
         width: 100%;
         justify-content: space-between;
     }
-    
+
     .filter-label {
         font-size: 13px;
     }
-    
+
     .order-item {
-        padding: 15px;
+        padding: 15px 0;
     }
-    
+
     .order-header-info h6 {
         font-size: 15px;
     }
-    
+
     .order-header-info p {
         font-size: 13px;
     }
-    
+
     .btn-view {
-        padding: 6px 12px;
+        padding: 8px 16px;
         font-size: 13px;
     }
-    
+
     .product-thumbnail {
         width: 70px;
         height: 70px;
     }
-    
+
     .empty-state {
         padding: 40px 15px;
     }
-    
+
     .empty-state i {
         font-size: 40px;
     }
-    
+
     .empty-state h4 {
         font-size: 18px;
     }
-    
+
     .empty-state p {
         font-size: 13px;
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 480px) {
     .card-header {
         padding: 12px 15px;
     }
-    
+
     .card-header h5 {
-        font-size: 16px;
+        font-size: 15px;
     }
-    
+
     .order-item {
-        padding: 12px;
+        padding: 12px 0;
     }
-    
+
     .btn-filter {
-        padding: 5px 10px;
+        padding: 6px 10px;
         font-size: 13px;
     }
-    
+
     .d-flex.justify-content-between.align-items-start {
         flex-direction: column;
         gap: 12px;
     }
-    
+
     .btn-view {
         align-self: flex-end;
     }
-    
+
     .product-thumbnail {
         width: 60px;
         height: 60px;
@@ -424,43 +431,97 @@ body {
 
 /* Dropdown menu styling */
 .dropdown-menu {
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    box-shadow: var(--shadow);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     padding: 8px 0;
 }
 
 .dropdown-item {
     padding: 8px 16px;
-    color: var(--text-dark-gray);
+    color: #374151;
     font-size: 14px;
-    transition: var(--transition);
+    transition: all 0.2s;
 }
 
 .dropdown-item:hover {
-    background-color: var(--background-light);
-    color: var(--primary-teal);
+    background-color: #f9fafb;
+    color: #3b82f6;
 }
 
 .dropdown-item:active {
-    background-color: var(--primary-teal);
+    background-color: #3b82f6;
     color: white;
+}
+
+/* Floating Sell Icon */
+.floating-sell-icon {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.floating-sell-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+}
+
+.floating-sell-icon i {
+    font-size: 16px;
+}
+
+/* Mobile adjustments for floating icon */
+@media (max-width: 768px) {
+    .floating-sell-icon {
+        right: 16px;
+        bottom: 16px;
+        padding: 14px 18px;
+        font-size: 13px;
+    }
 }
 </style>
 
-<div class="container">
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'shop_base' %}">Shop</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Order History</li>
         </ol>
     </nav>
+
+    <!-- Page Header -->
+    <div class="text-center mb-3">
+        <h3 class="h3 mb-1" style="color: var(--secondary); font-weight: 500; letter-spacing: -0.02em; font-size: 1.5rem;">Order History</h3>
+        <p class="mb-0" style="color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">Track and manage all your previous orders and purchases</p>
+        <div class="mt-2">
+            <span class="badge" style="background: var(--primary-light); color: var(--primary-dark); padding: 4px 10px; border-radius: 20px; font-weight: 500; font-size: 0.8rem;">
+                <i class="fas fa-shopping-bag me-1"></i>Order Management
+            </span>
+        </div>
+    </div>
 
     <!-- Order History Header Card -->
     <div class="profile-card">
@@ -520,12 +581,14 @@ body {
                 <i class="fas fa-shopping-bag"></i>
                 <h4>No Orders Found</h4>
                 <p>You haven't placed any orders yet. Browse products and start shopping today!</p>
-                <a href="{% url 'home' %}" class="btn btn-browse">
+                <a href="{% url 'shop_base' %}" class="btn btn-browse">
                     <i class="fas fa-shopping-cart"></i> Browse Products
                 </a>
             </div>
         </div>
         {% endif %}
     </div>
+
+
 </div>
 {% endblock content %}

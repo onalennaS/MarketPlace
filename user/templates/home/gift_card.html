@@ -3,101 +3,29 @@
 {% block title %}Gift Card{% endblock %}
 {% load static %}
 
-{% block nav %}
-<div class="list-group list-group-flush">
-    <div class="section-header">
-        <h5>Profile</h5>
-    </div>
-    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-user"></i>
-        <span>Personal Details</span>
-    </a>
-    <a href="{% url 'account_settings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-cogs"></i>
-        <span>Security Settings</span>
-    </a>
-    <a href="{% url 'address' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Address Book</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Orders</h5>
-    </div>
-    <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-shopping-bag"></i>
-        <span>My Orders</span>
-    </a>
-    <a href="{% url 'wish_lists' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-heart"></i>
-        <span>Wish List</span>
-    </a>
-    <a href="{% url 'buyer_reviews' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-star"></i>
-        <span>Product Reviews</span>
-    </a>
-
-    <div class="section-header">
-        <h5>Payment</h5>
-    </div>
-    <a href="{% url 'credit' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-credit-card"></i>
-        <span>Credit & Refunds</span>
-    </a>
-    <a href="{% url 'gift_card' %}" class="list-group-item list-group-item-action active">
-        <i class="fas fa-gift"></i>
-        <span>Gift Card</span>
-    </a>
-    <a href="{% url 'referrals_earnings' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-users"></i>
-        <span>Referrals & Earnings</span>
-    </a>
-
-    <div class="section-header">
-        <h5>More</h5>
-    </div>
-    <a href="{% url 'subscription_plan' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-crown"></i>
-        <span>Subscription Plan</span>
-    </a>
-    <a href="{% url 'payment_history' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-history"></i>
-        <span>Payment History</span>
-    </a>
-    <a href="{% url 'buyer_support' %}" class="list-group-item list-group-item-action">
-        <i class="fas fa-headset"></i>
-        <span>Customer Support</span>
-    </a>
-</div>
-{% endblock %}
-
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 :root {
-    --primary-teal: #00A8A8;
-    --accent-green: #2ECC71;
-    --base-white: #FFFFFF;
-    --background-light: #F9F9F9;
-    --text-dark-gray: #333333;
-    --border-color: #E0E0E0;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --primary: #4ade80;
+    --primary-dark: #3cd472;
+    --primary-light: #e8fdf3;
+    --secondary: #1a1a1a;
+    --text: #333333;
+    --text-light: #666666;
+    --background: #fafafa;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
 }
 
-body {
-    background-color: var(--background-light);
-    color: var(--text-dark-gray);
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.6;
-}
-
-.container {
-    width: 90%;
-    margin: 0;
-    padding: 20px;
+.profile-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Breadcrumb styling */
@@ -105,67 +33,95 @@ body {
     background-color: transparent;
     padding: 0;
     margin-bottom: 30px;
+    font-size: 14px;
 }
 
 .breadcrumb-item a {
-    color: var(--text-dark-gray);
+    color: #6b7280;
     text-decoration: none;
-    font-weight: 400;
+    font-weight: 500;
+    transition: color 0.2s;
 }
 
 .breadcrumb-item a:hover {
-    color: var(--primary-teal);
+    color: #3b82f6;
 }
 
 .breadcrumb-item.active {
-    color: var(--text-dark-gray);
+    color: #1f2937;
+    font-weight: 600;
 }
 
 /* Card styling */
 .profile-card {
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-    background-color: var(--base-white);
-    color: var(--text-dark-gray);
-    padding: 16px 20px;
-    border-bottom: none;
+    background-color: #f8fafc;
+    color: #1f2937;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-left {
     display: flex;
     align-items: center;
 }
 
 .card-header i {
-    color: var(--primary-teal);
-    font-size: 20px;
-    margin-right: 12px;
+    color: var(--primary);
+    font-size: 18px;
+    width: 20px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .card-body {
-    padding: 20px;
+    padding: 24px;
 }
 
-.card-body h6 {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-dark-gray);
-    margin-bottom: 16px;
+/* Badge styling */
+.badge {
+    background-color: var(--primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.badge.bg-light {
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
 }
 
 /* Voucher card styling */
 .voucher-card {
-    background: linear-gradient(135deg, var(--primary-teal), #008B8B);
-    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
@@ -173,34 +129,34 @@ body {
 
 .voucher-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15);
 }
 
 .voucher-input-section {
     background-color: white;
-    padding: 20px;
+    padding: 24px;
     position: relative;
 }
 
 .voucher-input {
     border: none;
-    border-bottom: 2px solid var(--primary-teal);
+    border-bottom: 2px solid var(--primary);
     border-radius: 0;
-    padding: 10px 5px;
-    font-size: 15px;
+    padding: 12px 8px;
+    font-size: 16px;
     font-weight: 400;
     transition: var(--transition);
     box-shadow: none;
 }
 
 .voucher-input:focus {
-    border-color: #008B8B;
+    border-color: var(--primary-dark);
     box-shadow: none;
 }
 
 .form-floating label {
-    padding: 10px 5px;
-    color: var(--text-dark-gray);
+    padding: 12px 8px;
+    color: var(--text);
     font-size: 14px;
     font-weight: 400;
 }
@@ -218,7 +174,7 @@ body {
 }
 
 .voucher-action-section {
-    padding: 20px;
+    padding: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -226,42 +182,43 @@ body {
 
 /* Button styling */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
-    padding: 8px 16px;
-    transition: var(--transition);
+    padding: 10px 20px;
+    transition: all 0.2s;
     border: none;
     cursor: pointer;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .btn-apply {
     background-color: transparent;
     color: white;
     border: 2px solid white;
-    border-radius: 6px;
-    padding: 10px 20px;
+    border-radius: 8px;
+    padding: 12px 24px;
     font-weight: 500;
 }
 
 .btn-apply:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 /* Gift card history section */
 .gift-card-history {
-    margin-top: 30px;
+    margin-top: 32px;
 }
 
 .history-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
 }
 
 .history-item:last-child {
@@ -274,130 +231,190 @@ body {
 }
 
 .history-item-icon {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background-color: rgba(0, 168, 168, 0.1);
+    background-color: var(--primary-light);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
+    margin-right: 16px;
 }
 
 .history-item-icon i {
-    color: var(--primary-teal);
-    font-size: 16px;
+    color: var(--primary);
+    font-size: 18px;
 }
 
 .history-item-text h6 {
     margin: 0;
-    color: var(--text-dark-gray);
+    color: var(--text);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .history-item-text p {
     margin: 0;
-    color: #7f8c8d;
+    color: var(--text-light);
     font-size: 14px;
     font-weight: 400;
 }
 
 .history-item-amount {
     font-weight: 600;
-    font-size: 15px;
-    color: var(--accent-green);
+    font-size: 16px;
+    color: #10b981;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .profile-container {
+        padding: 20px 16px;
     }
-    
+
     .card-header {
-        padding: 12px 15px;
+        padding: 16px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
-    
+
     .card-body {
-        padding: 15px;
+        padding: 20px;
     }
-    
+
     .voucher-input-section {
-        padding: 15px;
+        padding: 20px;
     }
-    
+
     .voucher-action-section {
-        padding: 15px;
+        padding: 20px;
     }
-    
+
     .triangle-separator {
         display: none;
+    }
+
+    .history-item {
+        padding: 12px 0;
+    }
+
+    .history-item-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+
+    .history-item-icon i {
+        font-size: 16px;
     }
 }
 
 @media (max-width: 480px) {
+    .breadcrumb {
+        font-size: 13px;
+    }
+
     .card-header h5 {
         font-size: 15px;
     }
-    
-    .card-body h6 {
-        font-size: 13px;
+
+    .card-body {
+        padding: 16px;
     }
-    
+
+    .voucher-input-section {
+        padding: 16px;
+    }
+
+    .voucher-action-section {
+        padding: 16px;
+    }
+
     .voucher-input {
-        font-size: 13px;
+        font-size: 14px;
     }
-    
+
     .form-floating label {
         font-size: 13px;
     }
-    
+
     .history-item-text h6 {
-        font-size: 13px;
+        font-size: 14px;
     }
-    
+
     .history-item-text p {
         font-size: 13px;
     }
-    
+
     .history-item-amount {
-        font-size: 13px;
-    }
-    
-    .btn-apply {
         font-size: 14px;
-        padding: 8px 16px;
     }
+
+    .btn-apply {
+        font-size: 13px;
+        padding: 10px 20px;
+    }
+}
+
+/* Grid layout improvements */
+.row {
+    margin: 0 -12px;
+}
+
+.col-md-6, .col-md-8, .col-md-4, .col-12 {
+    padding: 0 12px;
+}
+
+/* Animation for form transitions */
+.profile-card .card-body {
+    transition: all 0.3s ease;
 }
 </style>
 
-<div class="container">
+<div class="profile-container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}"><i class="fas fa-home mr-1"></i> Home</a>
+                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt mr-1"></i> Dashboard</a>
+                <a href="{% url 'dash' %}">Dashboard</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Gift Card</li>
         </ol>
     </nav>
 
+    <!-- Page Header -->
+    <div class="profile-card">
+        <div class="card-header">
+            <div class="card-header-left">
+                <i class="fas fa-gift"></i>
+                <h5>Gift Cards</h5>
+            </div>
+            <span class="badge">Redeem & Manage</span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-0">Redeem gift card vouchers and view your gift card transaction history.</p>
+        </div>
+    </div>
+
     <!-- Gift Card Header Card -->
     <div class="profile-card">
         <div class="card-header">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-gift"></i>
-                <h5>Gift Card</h5>
+            <div class="card-header-left">
+                <i class="fas fa-ticket-alt"></i>
+                <h5>Redeem Gift Card</h5>
             </div>
         </div>
-        
+
         <div class="card-body">
             <h6 class="mb-4">Apply Gift Card Voucher to Redeem</h6>
-            
+
             <!-- Voucher Redemption Card -->
             <div class="voucher-card mb-4">
                 <div class="row g-0">
@@ -413,17 +430,17 @@ body {
                     <div class="col-md-4">
                         <div class="voucher-action-section h-100">
                             <button type="button" class="btn btn-apply">
-                                <i class="fas fa-check-circle me-2"></i> Apply
+                                <i class="fas fa-check-circle"></i> Apply
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Gift Card History -->
             <div class="gift-card-history">
                 <h6 class="mb-3">Gift Card History</h6>
-                
+
                 <div class="history-item">
                     <div class="history-item-details">
                         <div class="history-item-icon">
@@ -438,7 +455,7 @@ body {
                         +R 50
                     </div>
                 </div>
-                
+
                 <div class="history-item">
                     <div class="history-item-details">
                         <div class="history-item-icon">
@@ -453,7 +470,7 @@ body {
                         +R 100
                     </div>
                 </div>
-                
+
                 <div class="history-item">
                     <div class="history-item-details">
                         <div class="history-item-icon">
@@ -477,11 +494,11 @@ body {
     document.addEventListener('DOMContentLoaded', function() {
         // Focus handling for floating labels
         const inputElement = document.getElementById('giftCardVoucher');
-        
+
         inputElement.addEventListener('focus', function() {
             this.parentElement.classList.add('focused');
         });
-        
+
         inputElement.addEventListener('blur', function() {
             if (!this.value) {
                 this.parentElement.classList.remove('focused');
