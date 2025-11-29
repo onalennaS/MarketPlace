@@ -1,247 +1,407 @@
 {% extends 'courier/base.html' %}
 {% load static %}
-  {% block links %}
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   <link rel="stylesheet" href="{% static 'css/message.css' %}">
-  {% endblock %}
+
+{% block page_title %}Courier Dashboard{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock %}
 
 {% block styles %}
-    body {
-      background-color: #121212;
-      font-family: 'Segoe UI', sans-serif;
-      color: #f8f9fa;
-    }
-    .order-card {
-      border-radius: 1rem;
-      transition: transform 0.2s ease;
-      border: none;
-      background-color: #1e1e1e;
-      color: #f8f9fa;
-    }
-    .order-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    .badge-status {
-      font-size: 0.9rem;
-    }
-    .nav-tabs .nav-link.active {
-      background-color: #0d6efd;
-      color: #fff;
-      border-color: transparent;
-    }
-    .nav-tabs .nav-link {
-      color: #ccc;
-    }
-    .btn-outline-danger {
-      border-color: #dc3545;
-      color: #dc3545;
-    }
-    .btn-outline-danger:hover {
-      background-color: #dc3545;
-      color: white;
-    }
+.stats-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #ffffff;
+}
 
-    @media (max-width: 768px) {
-      .container {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-      .order-card {
-        padding: 15px;
-      }
-      .d-flex.justify-content-between {
-        flex-direction: column;
-        align-items: flex-start !important;
-        gap: 10px;
-      }
-      .d-flex.justify-content-end {
-        justify-content: center !important;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .nav-tabs {
-        flex-wrap: wrap;
-      }
-      .nav-tabs .nav-link {
-        flex: 1 1 auto;
-        text-align: center;
-      }
-    }
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
 
-    @media (max-width: 480px) {
-      .order-card {
-        padding: 10px;
-      }
-      h3 {
-        font-size: 1.5rem;
-      }
-      h5 {
-        font-size: 1.1rem;
-      }
-      p {
-        font-size: 0.9rem;
-      }
-      .btn {
-        font-size: 0.8rem;
-        padding: 5px 10px;
-      }
-    }
-  {% endblock %}
+.stats-card .card-body {
+  padding: 1.5rem;
+}
 
-   {% block nav %}
-    <div class="nav-items">
-        <a href="{% url 'courier_orders' %}" class="nav-link active" data-bs-toggle="tooltip" title="Dashboard">
-            <i class="bi bi-house"></i>
-        </a>
-        <a href="{% url 'courier_earnings' %}" class="nav-link " data-bs-toggle="tooltip" title="Earnings & withdrawals ">
-            <i class="bi bi-receipt"></i>
-        </a>
-         <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-toggle="tooltip" title="Deliveries ">
-            <i class="bi bi-truck"></i>
-        </a>
+.stats-card i {
+  font-size: 2.5rem;
+}
 
-        
-    </div>
-    {% endblock %}
+.stats-card h5 {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stats-card h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.order-card {
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e9ecef;
+  background-color: #ffffff;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.badge-status {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.nav-tabs {
+  border-bottom: 2px solid #e9ecef;
+  margin-bottom: 2rem;
+}
+
+.nav-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 500;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-card i {
+    font-size: 2rem;
+  }
+
+  .order-card {
+    padding: 15px !important;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-card h5 {
+    font-size: 0.8rem;
+  }
+
+  .stats-card h3 {
+    font-size: 1.3rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+}
+{% endblock %}
+
+{% block nav %}
+<a href="{% url 'courier_orders' %}" class="nav-link active">
+    <i class="bi bi-house"></i>
+    <span>Dashboard</span>
+</a>
+<a href="{% url 'courier_orders' %}#available" class="nav-link">
+    <i class="bi bi-box-seam"></i>
+    <span>Available Orders</span>
+</a>
+<a href="{% url 'courier_delivery' %}" class="nav-link">
+    <i class="bi bi-truck"></i>
+    <span>My Deliveries</span>
+</a>
+<a href="#" class="nav-link">
+    <i class="bi bi-chat-dots"></i>
+    <span>Messages</span>
+    <span class="badge bg-danger">3</span>
+</a>
+<a href="{% url 'courier_earnings' %}" class="nav-link">
+    <i class="bi bi-bar-chart"></i>
+    <span>Earnings/Stats</span>
+</a>
+<a href="#" class="nav-link">
+    <i class="bi bi-person"></i>
+    <span>Profile</span>
+</a>
+{% endblock %}
+
+{% block mobile_nav %}
+<a href="{% url 'courier_orders' %}" class="nav-link active" data-bs-dismiss="offcanvas">
+    <i class="bi bi-house"></i>
+    <span>Dashboard</span>
+</a>
+<a href="{% url 'courier_orders' %}#available" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-box-seam"></i>
+    <span>Available Orders</span>
+</a>
+<a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-truck"></i>
+    <span>My Deliveries</span>
+</a>
+<a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-chat-dots"></i>
+    <span>Messages</span>
+    <span class="badge bg-danger">3</span>
+</a>
+<a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-bar-chart"></i>
+    <span>Earnings/Stats</span>
+</a>
+<a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-person"></i>
+    <span>Profile</span>
+</a>
+{% endblock %}
 
 {% block content %}
- <div class="message-container" id="message-container"></div>
-<div class="container py-4">
+<div class="message-container" id="message-container"></div>
 
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold">🚚 Courier Dashboard</h3>
-    <button class="btn btn-outline-danger">Logout</button>
+<!-- Stats Dashboard -->
+<div class="row mb-4">
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-truck text-primary mb-2 d-block"></i>
+        <h5>Today's Deliveries</h5>
+        <h3 class="text-primary">12</h3>
+      </div>
+    </div>
   </div>
-
-  <!-- Nav Tabs -->
-  <ul class="nav nav-tabs mb-4" id="deliveryTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="available-tab" data-bs-toggle="tab" data-bs-target="#available" type="button" role="tab">🆕 Available Orders</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="waiting-tab" data-bs-toggle="tab" data-bs-target="#waiting" type="button" role="tab">🕒 Waiting to Start</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="inprogress-tab" data-bs-toggle="tab" data-bs-target="#inprogress" type="button" role="tab">🚴 In Progress</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">✅ Completed</button>
-    </li>
-  </ul>
-
-  <div class="tab-content" id="deliveryTabsContent">
-
-    <!-- Tab 1: Available Orders -->
-    <div class="tab-pane fade show active" id="available" role="tabpanel">
-      {% for order in available_orders %}
-      <div class="card order-card p-4 mb-3">
-        <div class="d-flex justify-content-between">
-          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
-          <span class="badge bg-secondary badge-status">New</span>
-        </div>
-        <p><strong>Name :</strong> {{order.reciever.username}}</p>
-        <p><strong>Pickup:</strong> Sunny Café, 21 Oak St</p>
-        <p><strong>Drop-off:</strong> {{order.address}}</p>
-        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-success" onclick="moveOrder(this, 'available',{{order.id}})">✅ Accept Order</button>
-        </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-cash-coin text-success mb-2 d-block"></i>
+        <h5>Total Earnings</h5>
+        <h3 class="text-success">R450</h3>
       </div>
-    {% endfor %}
-
-      
     </div>
-
-    <!-- Tab 2: Waiting to Start -->
-    <div class="tab-pane fade" id="waiting" role="tabpanel">
-       {% for order in waiting_orders %}
-      <div class="card order-card p-4 mb-3">
-        <div class="d-flex justify-content-between">
-          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class="btn btn-warning p-0"> {{order.order.status}}</span></h5>
-          <span class="badge bg-info badge-status">Waiting</span>
-        </div>
-        <p><strong>Name :</strong> {{order.reciever.username}}</p>
-        <p><strong>Pickup:</strong> {{order.order.business.name}}</p>
-        <p><strong>Drop-off:</strong> {{order.address}}</p>
-        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
-        <div class="d-flex justify-content-end">
-          {% if order.order.status == "Processing" %}
-              <span class="btn btn-info" disabled>Order not Ready...</span>
-          {% else %}
-          <button class="btn btn-success" onclick="moveOrder(this, 'waiting',{{order.id}})">🚀 Start Delivery</button>
-          {% endif %}
-        </div>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-clock-history text-warning mb-2 d-block"></i>
+        <h5>Pending Orders</h5>
+        <h3 class="text-warning">3</h3>
       </div>
-    {% endfor %}
-
     </div>
-
-    <!-- Tab 3: In Progress -->
-    <div class="tab-pane fade" id="inprogress" role="tabpanel">
-      {% for order in inprogress_orders %}
-      <div class="card order-card p-4 mb-3">
-        <div class="d-flex justify-content-between">
-          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
-          <span class="badge bg-warning badge-status">In progress</span>
-        </div>
-        <p><strong>Name :</strong> {{order.reciever.username}}</p>
-        <p><strong>Pickup:</strong> Sunny Café, 21 Oak St</p>
-        <p><strong>Drop-off:</strong> {{order.address}}</p>
-        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
-        <div class="d-flex justify-content-end">
-          <a href="{% url 'deliver_order' order.id %}" class="btn btn-primary me-2">🚚 Deliver</a>
-          
-        </div>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-check-circle text-info mb-2 d-block"></i>
+        <h5>Completed</h5>
+        <h3 class="text-info">8</h3>
       </div>
-    {% endfor %}
     </div>
-
-    <!-- Tab 4: Completed -->
-    <div class="tab-pane fade" id="completed" role="tabpanel">
-       {% for order in delivered_orders %}
-      <div class="card order-card p-4 mb-3">
-        <div class="d-flex justify-content-between">
-          <h5 class="fw-semibold">Order #{{order.order.order_id}} - <span class=""> {{order.order.status}}</span></h5>
-          <span class="badge bg-secondary badge-status">New</span>
-        </div>
-        <p><strong>Name :</strong> {{order.reciever.username}}</p>
-        <p><strong>Pickup:</strong> Sunny Café, 21 Oak St</p>
-        <p><strong>Drop-off:</strong> {{order.address}}</p>
-        <p><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
-        <div class="d-flex justify-content-end">
-          
-        </div>
-      </div>
-    {% endfor %}
-    </div>
-
   </div>
 </div>
+
+<!-- Nav Tabs -->
+<ul class="nav nav-tabs" id="deliveryTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="available-tab" data-bs-toggle="tab" data-bs-target="#available" type="button" role="tab">Available Orders</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="waiting-tab" data-bs-toggle="tab" data-bs-target="#waiting" type="button" role="tab">Waiting to Start</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="inprogress-tab" data-bs-toggle="tab" data-bs-target="#inprogress" type="button" role="tab">In Progress</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="deliveryTabsContent">
+
+  <!-- Tab 1: Available Orders -->
+  <div class="tab-pane fade show active" id="available" role="tabpanel">
+    <div class="row">
+      {% for order in available_orders %}
+      <div class="col-lg-6 col-xl-4 mb-3">
+        <div class="card order-card p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-semibold mb-0">Order #{{order.order.order_id}}</h5>
+            <span class="badge bg-success badge-status">Available</span>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-person me-2 text-primary"></i>
+            <strong>Customer:</strong> {{order.reciever.username}}
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-geo-alt me-2 text-primary"></i>
+            <strong>Pickup:</strong> {{order.order.business.name}}
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+            <strong>Drop-off:</strong> {{order.address}}
+          </div>
+          <div class="mb-3">
+            <i class="bi bi-cash me-2 text-success"></i>
+            <strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span>
+          </div>
+          {% if order.note %}
+          <div class="mb-3">
+            <i class="bi bi-sticky me-2 text-info"></i>
+            <strong>Note:</strong> {{order.note}}
+          </div>
+          {% endif %}
+          <div class="d-flex justify-content-end mt-auto">
+            <button class="btn btn-success" onclick="moveOrder(this, 'available',{{order.id}})">
+              <i class="bi bi-check-circle me-1"></i>Accept Order
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Tab 2: Waiting to Start -->
+  <div class="tab-pane fade" id="waiting" role="tabpanel">
+    {% for order in waiting_orders %}
+    <div class="card order-card p-4 mb-3">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <h5 class="fw-semibold mb-1">Order #{{order.order.order_id}}</h5>
+          <span class="badge bg-warning text-dark">{{order.order.status}}</span>
+        </div>
+        <span class="badge bg-info badge-status">Waiting</span>
+      </div>
+      <p class="mb-2"><strong>Name:</strong> {{order.reciever.username}}</p>
+      <p class="mb-2"><strong>Pickup:</strong> {{order.order.business.name}}</p>
+      <p class="mb-2"><strong>Drop-off:</strong> {{order.address}}</p>
+      <p class="mb-3"><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
+      <div class="d-flex justify-content-end">
+        {% if order.order.status == "Processing" %}
+        <span class="btn btn-secondary" disabled>
+          <i class="bi bi-hourglass me-1"></i>Order not Ready...
+        </span>
+        {% else %}
+        <button class="btn btn-primary" onclick="moveOrder(this, 'waiting',{{order.id}})">
+          <i class="bi bi-rocket-takeoff me-1"></i>Start Delivery
+        </button>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Tab 3: In Progress -->
+  <div class="tab-pane fade" id="inprogress" role="tabpanel">
+    <div class="row">
+      {% for order in inprogress_orders %}
+      <div class="col-lg-6 col-xl-4 mb-3">
+        <div class="card order-card p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-semibold mb-0">Order #{{order.order.order_id}}</h5>
+            <span class="badge bg-primary badge-status">In Progress</span>
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-person me-2 text-primary"></i>
+            <strong>Customer:</strong> {{order.reciever.username}}
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-geo-alt me-2 text-primary"></i>
+            <strong>Pickup:</strong> {{order.order.business.name}}
+          </div>
+          <div class="mb-2">
+            <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+            <strong>Drop-off:</strong> {{order.address}}
+          </div>
+          <div class="mb-3">
+            <i class="bi bi-cash me-2 text-success"></i>
+            <strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span>
+          </div>
+          {% if order.note %}
+          <div class="mb-3">
+            <i class="bi bi-sticky me-2 text-info"></i>
+            <strong>Note:</strong> {{order.note}}
+          </div>
+          {% endif %}
+          <div class="d-flex justify-content-end mt-auto">
+            <a href="{% url 'deliver_order' order.id %}" class="btn btn-success">
+              <i class="bi bi-check-circle me-1"></i>Complete Delivery
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Tab 4: Completed -->
+  <div class="tab-pane fade" id="completed" role="tabpanel">
+    {% for order in delivered_orders %}
+    <div class="card order-card p-4 mb-3">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <h5 class="fw-semibold mb-1">Order #{{order.order.order_id}}</h5>
+          <span class="badge bg-success">{{order.order.status}}</span>
+        </div>
+        <span class="badge bg-secondary badge-status">Delivered</span>
+      </div>
+      <p class="mb-2"><strong>Name:</strong> {{order.reciever.username}}</p>
+      <p class="mb-2"><strong>Pickup:</strong> {{order.order.business.name}}</p>
+      <p class="mb-2"><strong>Drop-off:</strong> {{order.address}}</p>
+      <p class="mb-3"><strong>Fee:</strong> <span class="text-success fw-bold">R{{order.amount}}</span> | <strong>Note:</strong> {{order.note}}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
 <script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  function moveOrder(button, currentStage,orderId) {
+  function moveOrder(button, currentStage, orderId) {
     const card = button.closest('.order-card');
-    
 
     let nextStage, badgeText, badgeClass, buttonText, buttonClass;
 
     switch (currentStage) {
       case 'available':
         nextStage = 'waiting';
-        badgeText = 'Accepted';
-        badgeClass = 'badge bg-warning text-dark badge-status';
-        buttonText = '🚀 Start Delivery';
+        badgeText = 'Waiting';
+        badgeClass = 'badge bg-info badge-status';
+        buttonText = '<i class="bi bi-rocket-takeoff me-1"></i>Start Delivery';
         buttonClass = 'btn btn-primary';
         break;
       case 'waiting':
         nextStage = 'inprogress';
-        badgeText = 'On Route';
-        badgeClass = 'badge bg-info text-dark badge-status';
-        buttonText = '✅ Complete Delivery';
+        badgeText = 'In Progress';
+        badgeClass = 'badge bg-primary badge-status';
+        buttonText = '<i class="bi bi-check-circle me-1"></i>Complete Delivery';
         buttonClass = 'btn btn-success';
         break;
       case 'inprogress':
@@ -253,75 +413,66 @@
         return;
     }
 
-   
-
-    // Send API request (SEND order_id too!)
+    // Send API request
     fetch(`/courier/courier/move_delivery_next_stage/`, {
       method: 'POST',
-      headers: { 
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken') // if CSRF is required
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       },
-      body: JSON.stringify({ 
-          order_id: orderId,  // <--- send order_id
-          new_status: nextStage,
-          codes: 11111, 
+      body: JSON.stringify({
+        order_id: orderId,
+        new_status: nextStage,
+        codes: 11111,
       })
     })
     .then(response => response.json())
     .then(data => {
-      if(data.status == "error"){
+      if (data.status == "error") {
+        displayMessagesapi(data);
+      } else {
         displayMessagesapi(data);
         
-      }else{
-        displayMessagesapi(data);
         const newCard = card.cloneNode(true);
-    const badge = newCard.querySelector('.badge');
-    if (badge) {
-      badge.className = badgeClass;
-      badge.textContent = badgeText;
-    }
+        const badge = newCard.querySelector('.badge-status');
+        if (badge) {
+          badge.className = badgeClass;
+          badge.textContent = badgeText;
+        }
 
-    const btn = newCard.querySelector('button');
-    if (btn && nextStage !== 'completed') {
-      btn.textContent = buttonText;
-      btn.className = buttonClass;
-      btn.setAttribute('onclick', `moveOrder(this, '${nextStage}')`);
-    } else if (btn) {
-      btn.remove();
-    }
+        const btn = newCard.querySelector('button');
+        if (btn && nextStage !== 'completed') {
+          btn.innerHTML = buttonText;
+          btn.className = buttonClass;
+          btn.onclick = function() { moveOrder(this, nextStage, orderId); };
+        } else if (btn) {
+          btn.remove();
+        }
 
-    document.getElementById(nextStage).appendChild(newCard);
-    card.remove();
-       
+        document.getElementById(nextStage).appendChild(newCard);
+        card.remove();
       }
     })
-
     .catch(error => {
-      
-        console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error);
+      displayMessagesapi({status: 'error', message: 'Failed to move order'});
     });
+  }
 
-    
-
-    
-}
-
-// Function to get CSRF token 
-function getCookie(name) {
+  // Function to get CSRF token 
+  function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-}
-
+  }
 </script>
 {% endblock %}

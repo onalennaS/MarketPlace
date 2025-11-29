@@ -4,6 +4,7 @@ from .views import courier_views,render_views as views
 
 urlpatterns = [
     path('', views.courier_home, name='courier_home'),
+    path('dashboard/', views.courier_dashboard, name='courier_dashboard'),
     path('courier_orders/', views.courier_orders, name='courier_orders'),
     path('courier_earnings/', views.courier_earnings, name='courier_earnings'),
     path('courier_delivery/', views.courier_delivery, name='courier_delivery'),

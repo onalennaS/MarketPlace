@@ -1,0 +1,336 @@
+{% extends 'courier/base.html' %}
+{% load static %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock %}
+
+{% block styles %}
+.stats-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #ffffff;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.stats-card .card-body {
+  padding: 1.5rem;
+}
+
+.stats-card i {
+  font-size: 2.5rem;
+}
+
+.stats-card h5 {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stats-card h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.quick-action-card {
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e9ecef;
+  background-color: #ffffff;
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-action-card .card-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.quick-action-card i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.recent-activity {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #0d6efd;
+}
+
+@media (max-width: 768px) {
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .stats-card i {
+    font-size: 2rem;
+  }
+
+  .quick-action-card .card-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-card h5 {
+    font-size: 0.8rem;
+  }
+
+  .stats-card h3 {
+    font-size: 1.3rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+}
+{% endblock %}
+
+{% block nav %}
+<a href="{% url 'courier_dashboard' %}" class="nav-link active">
+    <i class="bi bi-house"></i>
+    <span>Dashboard</span>
+</a>
+<a href="{% url 'courier_orders' %}" class="nav-link">
+    <i class="bi bi-box-seam"></i>
+    <span>Available Orders</span>
+</a>
+<a href="{% url 'courier_delivery' %}" class="nav-link">
+    <i class="bi bi-truck"></i>
+    <span>My Deliveries</span>
+</a>
+<a href="#" class="nav-link">
+    <i class="bi bi-chat-dots"></i>
+    <span>Messages</span>
+    <span class="badge bg-danger">3</span>
+</a>
+<a href="{% url 'courier_earnings' %}" class="nav-link">
+    <i class="bi bi-bar-chart"></i>
+    <span>Earnings/Stats</span>
+</a>
+<a href="#" class="nav-link">
+    <i class="bi bi-person"></i>
+    <span>Profile</span>
+</a>
+{% endblock %}
+
+{% block mobile_nav %}
+<a href="{% url 'courier_dashboard' %}" class="nav-link active" data-bs-dismiss="offcanvas">
+    <i class="bi bi-house"></i>
+    <span>Dashboard</span>
+</a>
+<a href="{% url 'courier_orders' %}" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-box-seam"></i>
+    <span>Available Orders</span>
+</a>
+<a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-truck"></i>
+    <span>My Deliveries</span>
+</a>
+<a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-chat-dots"></i>
+    <span>Messages</span>
+    <span class="badge bg-danger">3</span>
+</a>
+<a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-bar-chart"></i>
+    <span>Earnings/Stats</span>
+</a>
+<a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+    <i class="bi bi-person"></i>
+    <span>Profile</span>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="message-container" id="message-container"></div>
+
+<!-- Welcome Section -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+      <div class="card-body p-4">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h4 class="mb-2">Welcome back, {{ request.user.first_name|default:request.user.username }}!</h4>
+            <p class="mb-0 opacity-75">Ready to make some deliveries? Here's your overview for today.</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <i class="bi bi-truck display-4 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Dashboard -->
+<div class="row mb-4">
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-truck text-primary mb-2 d-block"></i>
+        <h5>Today's Deliveries</h5>
+        <h3 class="text-primary">{{ todays_deliveries|default:0 }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-cash-coin text-success mb-2 d-block"></i>
+        <h5>Total Earnings</h5>
+        <h3 class="text-success">R{{ total_earnings|default:0 }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-clock-history text-warning mb-2 d-block"></i>
+        <h5>Pending Orders</h5>
+        <h3 class="text-warning">{{ pending_orders|default:0 }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <div class="card stats-card text-center">
+      <div class="card-body">
+        <i class="bi bi-check-circle text-info mb-2 d-block"></i>
+        <h5>Completed</h5>
+        <h3 class="text-info">{{ completed_deliveries|default:0 }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+  <div class="col-12">
+    <h5 class="mb-3">Quick Actions</h5>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <a href="{% url 'courier_orders' %}" class="quick-action-card card h-100">
+      <div class="card-body">
+        <i class="bi bi-box-seam text-primary d-block"></i>
+        <h6 class="mt-2">View Available Orders</h6>
+        <small class="text-muted">Browse and accept new deliveries</small>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <a href="{% url 'courier_delivery' %}" class="quick-action-card card h-100">
+      <div class="card-body">
+        <i class="bi bi-truck text-success d-block"></i>
+        <h6 class="mt-2">My Deliveries</h6>
+        <small class="text-muted">Track your active deliveries</small>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <a href="{% url 'courier_earnings' %}" class="quick-action-card card h-100">
+      <div class="card-body">
+        <i class="bi bi-bar-chart text-info d-block"></i>
+        <h6 class="mt-2">Earnings & Stats</h6>
+        <small class="text-muted">View your performance</small>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-6 mb-3">
+    <a href="#" class="quick-action-card card h-100">
+      <div class="card-body">
+        <i class="bi bi-gear text-secondary d-block"></i>
+        <h6 class="mt-2">Settings</h6>
+        <small class="text-muted">Update your preferences</small>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Recent Activity & Active Orders -->
+<div class="row">
+  <div class="col-lg-8 mb-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Recent Activity</h5>
+      </div>
+      <div class="card-body recent-activity">
+        {% for activity in recent_activities %}
+        <div class="activity-item">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <strong>{{ activity.title }}</strong>
+              <p class="mb-1">{{ activity.description }}</p>
+              <small class="text-muted">{{ activity.timestamp }}</small>
+            </div>
+            {% if activity.status %}
+            <span class="badge bg-{{ activity.status_color }}">{{ activity.status }}</span>
+            {% endif %}
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-4">
+          <i class="bi bi-activity text-muted" style="font-size: 3rem;"></i>
+          <p class="text-muted mt-2">No recent activity</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Active Orders</h5>
+      </div>
+      <div class="card-body">
+        {% for order in active_orders %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <strong>Order #{{ order.order.order_id }}</strong>
+            <p class="mb-0 small text-muted">{{ order.reciever.username }}</p>
+          </div>
+          <a href="{% url 'deliver_order' order.id %}" class="btn btn-sm btn-success">
+            <i class="bi bi-check-circle"></i>
+          </a>
+        </div>
+        {% empty %}
+        <div class="text-center py-3">
+          <i class="bi bi-truck text-muted" style="font-size: 2rem;"></i>
+          <p class="text-muted mt-2 small">No active deliveries</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/javascript" src="{% static 'seller/js/display_message.js' %}"></script>
+{% endblock %}

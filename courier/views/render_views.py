@@ -84,10 +84,69 @@ def courier_register(request):
         return render(request,'courier/register_courier.html',{'message':'success'})
     return render(request, 'courier/register_courier.html')
 
-@login_required_custom 
+@login_required_custom
 @verify_role('courier')
-def courier_dash(request):
-    return render(request, 'courier/base.html')
+def courier_dashboard(request):
+    from django.utils import timezone
+    from datetime import timedelta
+
+    # Get today's date
+    today = timezone.now().date()
+
+    # Calculate stats
+    all_deliveries = OrderDelivery.objects.filter(user=request.user)
+    todays_deliveries = all_deliveries.filter(created_at__date=today).count()
+    pending_orders = all_deliveries.filter(status="inprogress").count()
+    completed_deliveries = all_deliveries.filter(status="delivered").count()
+
+    # Get wallet info for earnings
+    wallet = DeliveryWallet.objects.filter(user=request.user).first()
+    total_earnings = wallet.total if wallet else 0
+
+    # Get active orders (in progress)
+    active_orders = all_deliveries.filter(status="inprogress")[:5]  # Limit to 5 for display
+
+    # Get recent activities (last 10 deliveries)
+    recent_activities = []
+    recent_deliveries = all_deliveries.order_by('-created_at')[:10]
+
+    for delivery in recent_deliveries:
+        if delivery.status == 'delivered':
+            activity = {
+                'title': f'Order #{delivery.order.order_id} Delivered',
+                'description': f'Delivered to {delivery.reciever.username}',
+                'timestamp': delivery.updated_at.strftime('%b %d, %H:%M') if delivery.updated_at else delivery.created_at.strftime('%b %d, %H:%M'),
+                'status': 'success',
+                'status_color': 'success'
+            }
+        elif delivery.status == 'inprogress':
+            activity = {
+                'title': f'Order #{delivery.order.order_id} Started',
+                'description': f'En route to deliver to {delivery.reciever.username}',
+                'timestamp': delivery.created_at.strftime('%b %d, %H:%M'),
+                'status': 'in progress',
+                'status_color': 'primary'
+            }
+        else:
+            activity = {
+                'title': f'Order #{delivery.order.order_id} Accepted',
+                'description': f'Accepted delivery for {delivery.reciever.username}',
+                'timestamp': delivery.created_at.strftime('%b %d, %H:%M'),
+                'status': 'accepted',
+                'status_color': 'info'
+            }
+        recent_activities.append(activity)
+
+    context = {
+        'todays_deliveries': todays_deliveries,
+        'total_earnings': total_earnings,
+        'pending_orders': pending_orders,
+        'completed_deliveries': completed_deliveries,
+        'active_orders': active_orders,
+        'recent_activities': recent_activities,
+    }
+
+    return render(request, 'courier/dashboard.html', context)
 
 @login_required_custom
 @verify_role('courier')

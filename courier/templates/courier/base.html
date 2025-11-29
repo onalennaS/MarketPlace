@@ -20,188 +20,291 @@
     <link rel="icon" type="image/png" href="{% static '/images/Finds.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {% block links %}{% endblock %}
 
     <style>
         :root {
             --sidebar-width: 280px;
-            --sidebar-collapsed-width: 80px;
             --primary-color: #0d6efd;
-            --background-color: #121212;
-            --sidebar-bg: #1e1e1e;
-            --text-color: #ffffff;
-            --hover-bg: #2a2a2a;
-            --active-bg: #2d2d2d;
-            --shadow: 2px 0 10px rgba(255, 255, 255, 0.1);
-            --card-bg: #1e1e1e;
-            --table-bg: #2d2d2d;
-            --table-border: #444444;
-            --btn-bg: #28a745;
-            --btn-text: #ffffff;
-            --input-bg: #2d2d2d;
-            --input-text: #ffffff;
-            --input-border: #444444;
+            --background-color: #f8f9fa;
+            --sidebar-bg: #ffffff;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --hover-bg: #f0f2f5;
+            --active-bg: #e7f1ff;
+            --active-color: #0d6efd;
+            --shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+            --border-color: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
 
-        .card, .table {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid var(--table-border);
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .floating-btn, .badge {
-            background-color: var(--btn-bg);
-            color: var(--btn-text);
-        }
-
-        .color-preview, .product-img {
-            border: 1px solid var(--table-border);
-        }
-
+        /* Desktop Sidebar */
         .sidebar {
-            width: var(--sidebar-collapsed-width);
+            width: var(--sidebar-width);
             height: 100vh;
             position: fixed;
+            left: 0;
+            top: 0;
             background: var(--sidebar-bg);
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            z-index: 9000;
-            overflow: hidden;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #333;
-            text-align: center;
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 12px;
         }
 
-        .sidebar-header h4,
-        .nav-link span {
-            display: none;
+        .sidebar-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .sidebar-header h4 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
         }
 
         .nav-items {
-            padding: 15px;
+            padding: 16px 12px;
+            flex: 1;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 10px;
             color: var(--text-color);
             text-decoration: none;
             transition: all 0.2s ease;
+            gap: 12px;
+            position: relative;
+            font-size: 0.95rem;
         }
 
         .nav-link:hover {
             background-color: var(--hover-bg);
+            color: var(--text-color);
         }
 
         .nav-link.active {
             background-color: var(--active-bg);
-            color: var(--primary-color);
+            color: var(--active-color);
             font-weight: 500;
         }
 
         .nav-link i {
-            font-size: 1.5rem;
-        }
-
-        .sidebar-footer {
-            padding: 15px;
-            border-top: 1px solid #333;
+            font-size: 1.25rem;
+            min-width: 24px;
             text-align: center;
         }
 
-        .sidebar-footer img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+        .nav-link span:not(.badge) {
+            flex: 1;
         }
 
+        .nav-link .badge {
+            font-size: 0.7rem;
+            padding: 3px 7px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        /* Main Content */
         .content {
-            margin-left: var(--sidebar-collapsed-width);
-            transition: margin-left 0.3s ease;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            background-color: var(--background-color);
         }
 
+        /* Top Bar */
         .top-bar {
-            background: var(--sidebar-bg);
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            padding: 16px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar h5 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
         }
 
         .top-bar .icons {
             display: flex;
-            gap: 15px;
+            gap: 16px;
             align-items: center;
         }
 
-        .top-bar .icons .badge {
-            font-size: 0.7rem;
+        .top-bar .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--hover-bg);
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
         }
 
+        .top-bar .icon-btn:hover {
+            background: var(--active-bg);
+            color: var(--active-color);
+        }
+
+        .top-bar .icon-btn .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 0.65rem;
+            padding: 3px 6px;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--hover-bg);
+            border: none;
+            color: var(--text-color);
+            font-size: 1.25rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Offcanvas Customization */
+        .offcanvas {
+            width: var(--sidebar-width) !important;
+        }
+
+        .offcanvas-body {
+            padding: 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 991px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .top-bar {
+                padding: 12px 16px;
+            }
+
+            .top-bar h5 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Notification Dropdown */
         .dropdown-notifications {
-            width: 300px;
+            width: 320px;
             max-height: 400px;
             overflow-y: auto;
-            padding: 10px;
+            padding: 8px;
         }
 
         .notification-item {
-            padding: 10px;
-            border-bottom: 1px solid #333;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 4px;
             transition: background-color 0.2s;
+            cursor: pointer;
         }
 
         .notification-item:hover {
             background-color: var(--hover-bg);
         }
 
-        .notification-item:last-child {
-            border-bottom: none;
+        .notification-item .notification-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .notification-item .notification-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
         }
 
         .notification-item .timestamp {
-            font-size: 0.8rem;
-            color: #aaa;
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 0 !important;
-                padding: 10px;
-            }
+        /* Cards and Tables */
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+        .table {
+            background: #ffffff;
         }
 
         {% block styles %}{% endblock %}
@@ -209,44 +312,213 @@
 </head>
 <body>
 
-<!-- Toggle Button -->
-<button class="btn btn-primary position-fixed" style="top: 10px; left: 10px; z-index: 1050;" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
-    <i class="bi bi-list"></i>
-</button>
-
-<!-- Offcanvas Sidebar -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
-    <div class="offcanvas-header" style="background-color: var(--sidebar-bg); color: var(--text-color);">
-        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">
-            <img src="{% static '/images/Finds.png' %}" alt="Logo" width="30px" height="30px" class="me-2">
-            Courier Menu
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<!-- Desktop Sidebar -->
+<div class="sidebar d-none d-lg-flex" id="sidebar">
+    <div class="sidebar-header">
+        <img src="{% static '/images/Finds.png' %}" alt="Logo">
+        <h4>OneCart</h4>
     </div>
-    <div class="offcanvas-body" style="background-color: var(--sidebar-bg); color: var(--text-color);">
+    <div class="nav-items">
         {% block nav %}
-        <div class="nav-items">
-            <a href="{% url 'courier_orders' %}" class="nav-link active" data-bs-toggle="tooltip" title="Dashboard">
-                <i class="bi bi-house"></i> Dashboard
-            </a>
-            <a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-toggle="tooltip" title="Earnings & withdrawals">
-                <i class="bi bi-receipt"></i> Earnings
-            </a>
-            <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-toggle="tooltip" title="Deliveries">
-                <i class="bi bi-truck"></i> Deliveries
-            </a>
-        </div>
+        <a href="{% url 'courier_orders' %}" class="nav-link active">
+            <i class="bi bi-house"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'courier_orders' %}#available" class="nav-link">
+            <i class="bi bi-box-seam"></i>
+            <span>Available Orders</span>
+        </a>
+        <a href="{% url 'courier_delivery' %}" class="nav-link">
+            <i class="bi bi-truck"></i>
+            <span>My Deliveries</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-chat-dots"></i>
+            <span>Messages</span>
+            <span class="badge bg-danger">3</span>
+        </a>
+        <a href="{% url 'courier_earnings' %}" class="nav-link">
+            <i class="bi bi-bar-chart"></i>
+            <span>Earnings/Stats</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+        </a>
         {% endblock %}
-        <div class="sidebar-footer mt-auto">
-            <img src="{% static '/images/Finds.png' %}" alt="User Avatar" width="40px" height="40px">
+    </div>
+    <div class="sidebar-footer">
+        <a href="#" class="nav-link">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        <a href="{% url 'logout' %}" class="nav-link">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<!-- Mobile Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+    <div class="offcanvas-header border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <img src="{% static '/images/Finds.png' %}" alt="Logo" width="36" height="36" style="border-radius: 8px;">
+            <h5 class="offcanvas-title mb-0" id="mobileSidebarLabel">OneCart</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="nav-items">
+            {% block mobile_nav %}
+            <a href="{% url 'courier_dashboard' %}" class="nav-link active" data-bs-dismiss="offcanvas">
+                <i class="bi bi-house"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{% url 'courier_orders' %}" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-box-seam"></i>
+                <span>Available Orders</span>
+            </a>
+            <a href="{% url 'courier_delivery' %}" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-truck"></i>
+                <span>My Deliveries</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-chat-dots"></i>
+                <span>Messages</span>
+                <span class="badge bg-danger">3</span>
+            </a>
+            <a href="{% url 'courier_earnings' %}" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-bar-chart"></i>
+                <span>Earnings/Stats</span>
+            </a>
+            <a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+            </a>
+            {% endblock %}
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <a href="{% url 'logout' %}" class="nav-link" data-bs-dismiss="offcanvas">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
         </div>
     </div>
 </div>
 
+<!-- Main Content -->
 <main class="content" id="mainContent">
-    {% block content %}
-    <!-- Your content goes here -->
-    {% endblock %}
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="d-flex align-items-center gap-3">
+            <button class="mobile-menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <h5>{% block page_title %}Dashboard{% endblock %}</h5>
+        </div>
+        
+        <div class="icons">
+            <!-- Search Icon -->
+            <button class="icon-btn d-none d-md-flex">
+                <i class="bi bi-search"></i>
+            </button>
+            
+            <!-- Notifications -->
+            <div class="dropdown">
+                <button class="icon-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger">5</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end dropdown-notifications">
+                    <div class="notification-item">
+                        <div class="notification-title">New Order Available</div>
+                        <div class="notification-text">Order #12345 is ready for pickup</div>
+                        <div class="timestamp">2 minutes ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-title">Payment Received</div>
+                        <div class="notification-text">R150.00 added to your wallet</div>
+                        <div class="timestamp">1 hour ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-title">Delivery Completed</div>
+                        <div class="notification-text">Order #12344 was delivered successfully</div>
+                        <div class="timestamp">3 hours ago</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile -->
+            <div class="dropdown">
+                <div class="profile-avatar" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ request.user.first_name.0|default:"U" }}
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="p-4">
+        {% block content %}
+        <!-- Your content goes here -->
+        {% endblock %}
+    </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set active navigation link based on current URL
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            // Remove active class from all links
+            navLinks.forEach(l => l.classList.remove('active'));
+            // Add active class to current link
+            link.classList.add('active');
+        }
+    });
+
+    // Close offcanvas and navigate when clicking on a link (for mobile)
+    const mobileNavLinks = document.querySelectorAll('#mobileSidebar .nav-link');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = link.getAttribute('href');
+            if (href && href !== '#') {
+                e.preventDefault();
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mobileSidebar'));
+                if (offcanvas) {
+                    offcanvas.hide();
+                    // Navigate after offcanvas is hidden
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                }
+            } else {
+                // For non-navigating links like #, just close the offcanvas
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mobileSidebar'));
+                if (offcanvas) {
+                    offcanvas.hide();
+                }
+            }
+        });
+    });
+});
+</script>
+
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>
