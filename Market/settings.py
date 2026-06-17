@@ -25,13 +25,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+# For local development, fall back to a deterministic key if env var is missing.
+# (Do not use this fallback in production.)
+SECRET_KEY = config('SECRET_KEY', default='local-dev-secret-key-change-me')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-PAYSTACK_MAIN_ACCOUNT = config('PAYSTACK_MAIN_ACCOUNT')
-PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
+PAYSTACK_MAIN_ACCOUNT = config('PAYSTACK_MAIN_ACCOUNT', default='')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')
+
+# Gmail API (local email sending via authenticator/utils.py)
+# Used as the "from" address when building the raw message.
+# Gmail API "from" address used by authenticator/utils.py
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='onalennahamese07@gmail.com')
+
 
 
 ALLOWED_HOSTS = ["onecartdiscovery.com","market-nfem.onrender.com", "127.0.0.1"]

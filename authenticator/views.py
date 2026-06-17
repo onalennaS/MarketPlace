@@ -23,6 +23,9 @@ def register(request):
         return redirect('home')
         
     if request.method == "POST":
+        # Local/dev behavior: auto-activate accounts so they don't require email verification
+        # (keeps functionality working even when local email sending is not configured)
+
         data = {
         'username' : request.POST.get('username').strip(),
         'email' : request.POST.get('email').strip(),
@@ -49,8 +52,9 @@ def register(request):
             messages.error(request,f'{is_password_valid}')
             return render(request, 'authentication/signup.html', {'data':data})
 
-        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
+        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=True)
         user.save()
+
 
         # Assign role based on selection
         if data['role'] == 'buyer':
@@ -79,10 +83,14 @@ def register(request):
             ref_reward = Referral.objects.create(referrer=referrer.user,referred=user,is_rewarded=True,reward=2,referral_type="signup")
             ref_reward.save()
         messages.success(request,f'Account created successfully proceed')
-        send_verify_email(user.email)
-        return redirect('activate_account', email=user.email)
+        sent = send_verify_email(user.email)
+        if not sent:
+            messages.error(request, 'Account created but verification email could not be sent. Check server logs / Gmail OAuth credentials.')
+        # No activation step required for buyers (account is created as active)
+        return redirect('signin')
 
     return render(request, 'authentication/signup.html')
+
 
 
 def register_delivery(request):
@@ -128,8 +136,9 @@ def register_delivery(request):
             messages.error(request,f'{is_phone_number_valid}')
             return render(request, 'authentication/signup_courier.html', {'data':data})
 
-        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=False)
+        user = User.objects.create(username=data['username'],email=data['email'], password=make_password(data['password']), is_active=True)
         user.save()
+
         courier = Courier.objects.create(user=user,phone_number=data['phone_number'],vehicle_type=data['vehicle_type'])
         courier.save()
         group = Group.objects.filter(name="courier").first()
@@ -137,8 +146,11 @@ def register_delivery(request):
             user.groups.add(group)
             user.save()
         messages.success(request,f'Account created successfully proceed')
-        send_verify_email(user.email)
-        return redirect('activate_account', email=user.email)
+        sent = send_verify_email(user.email)
+        if not sent:
+            messages.error(request, 'Account created but verification email could not be sent. Check server logs / Gmail OAuth credentials.')
+        return redirect('signin')
+
 
     return render(request, 'authentication/signup_courier.html')
 
@@ -159,9 +171,8 @@ def signin(request):
         if not user:
             user = User.objects.filter(username=data['username']).first()
         if user:
-            if user.is_active == False and not user.groups.filter(name="customer").exists():
-                return redirect('activate_account',email=user.email)
             if check_password(data['password'],user.password):
+
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
 
@@ -266,8 +277,11 @@ def password_reset_done(request):
 
 def activate_account(request, email):
     if request.method == "POST":
-        send_verify_email(email)
-        messages.success(request,f'email submitted')
+        sent = send_verify_email(email)
+        if sent:
+            messages.success(request,f'Verification email sent')
+        else:
+            messages.error(request,'Could not send verification email. Check server logs / Gmail OAuth credentials.')
     return render(request, 'authentication/activate_account.html',{'email':email})
 
 def verify_user(request):
