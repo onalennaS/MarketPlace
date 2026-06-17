@@ -79,6 +79,5 @@ python manage.py test
 - If you see issues related to `DATABASE_URL`, ensure `DEBUG=True` in `Market/settings.py` (local) or provide a valid `DATABASE_URL`.
 - Social login requires valid Google OAuth credentials configured via environment variables as expected by `django-allauth` (see relevant settings/adapters).
 
-## License
-MIT (or add your preferred license here).
+
 
