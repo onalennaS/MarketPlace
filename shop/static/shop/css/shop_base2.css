@@ -43,13 +43,27 @@ body {
     position: sticky;
     top: 0;
     z-index: 1030;
-    padding: 0.75rem 0;
+    padding: 0.5rem 0.75rem !important;
     transition: var(--transition-normal);
     border-bottom: 1px solid var(--border);
+    min-height: 56px;
+}
+
+.navbar .container-fluid {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.75rem;
+}
+
+.navbar-brand {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav-logo {
-    height: 50px;
+    height: 60px;
     width: auto;
     transition: var(--transition-normal);
 }
@@ -147,7 +161,23 @@ body {
 .off-nav {
     border: none;
     background: transparent;
-    padding: 0.5rem;
+    padding: 0.35rem;
+    margin-right: 0;
+    margin-left: 0;
+    order: -1 !important;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar .off-nav {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    order: -1 !important;
+    position: relative !important;
+    left: 0 !important;
 }
 
 .off-nav .navbar-toggler-icon {
@@ -223,23 +253,35 @@ body {
     background-color: var(--white);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-around;
-    padding: 0.5rem 0;
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
     z-index: 1020;
     border-top: 1px solid var(--border);
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .nav-item-mobile {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: var(--text-muted);
     font-size: 0.7rem;
     font-weight: 500;
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     transition: var(--transition-fast);
     position: relative;
+    flex: 0 0 auto !important;
+    min-width: auto !important;
+}
+
+.mobile-bottom-nav .nav-item-mobile:first-child {
+    margin-left: 0 !important;
+    margin-right: 0.75rem !important;
 }
 
 .nav-item-mobile i {
@@ -439,9 +481,15 @@ body {
     }
     
     #navbar {
-        padding: 0.5rem 0;
+        padding: 0.4rem 0.75rem !important;
+        min-height: 54px;
     }
-    
+
+    .navbar .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
     .content {
         margin-bottom: 70px;
     }
@@ -450,6 +498,10 @@ body {
         right: 0;
         left: auto;
         transform: none !important;
+    }
+    .mobile-bottom-nav {
+        padding-left: 0.75rem !important;
+        justify-content: flex-start !important;
     }
 }
 

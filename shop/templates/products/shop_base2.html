@@ -49,8 +49,8 @@
         .modern-sidebar {
             position: fixed;
             left: 0;
-            top: 60px;
-            height: calc(100vh - 80px);
+            top: 75px;
+            height: calc(100vh - 95px);
             background: #ffffff;
             box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -62,6 +62,20 @@
 
         .modern-sidebar.collapsed {
             width: 80px;
+        }
+
+        .mobile-bottom-nav {
+            justify-content: flex-start !important;
+            gap: 0.5rem !important;
+        }
+
+        .mobile-bottom-nav .nav-item-mobile {
+            flex: 0 1 auto !important;
+            min-width: 0 !important;
+        }
+
+        .mobile-bottom-nav .nav-item-mobile:first-child {
+            margin-right: 0.75rem !important;
         }
 
         /* Sidebar Header */
@@ -384,144 +398,151 @@
     {% endblock %}
 </head>
 <body>
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid px-3 px-lg-4">
-            <!-- Mobile Menu Toggle -->
-            <button class="btn border-0 off-nav d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
-                <span class="navbar-toggler-icon"></span>
+  
+<!-- Navbar -->
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid px-3 px-lg-4">
+        
+       
+        <div class="d-flex align-items-center d-lg-none">
+            <button class="btn border-0 off-nav p-0 me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <span class="navbar-toggler-icon" style="width: 24px; height: 24px;"></span>
             </button>
-
-            <!-- Logo -->
-            <a href="{% url 'home' %}" class="navbar-brand">
-                
+            
+            <a href="{% url 'home' %}" class="navbar-brand m-0 p-0">
+                <img class="nav-logo" src="{% static 'images/nav_logo.png' %}" alt="OneCart Discovery" style="height: 32px;">
             </a>
+        </div>
 
-            <!-- Desktop Elements -->
-            <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4">
-                <div class="desktop-nav-wrapper">
-                    {% if user.is_authenticated %}
-                    <!-- Navigation Icons -->
-                    <div class="d-flex align-items-center gap-2">
-                        <a href="{% url 'wish_lists' %}" class="nav-icon position-relative" aria-label="Wishlist">
-                            <i class="fas fa-heart" style="color: #ef4444;"></i>
-                            {% if wishlist_items_count > 0 %}
-                            <span class="badge-wishlist">{{ wishlist_items_count }}</span>
-                            {% endif %}
-                        </a>
+        <!-- DESKTOP: Logo only -->
+        <a href="{% url 'home' %}" class="navbar-brand d-none d-lg-flex m-0 p-0">
+            <img class="nav-logo" src="{% static 'images/nav_logo.png' %}" alt="OneCart Discovery">
+        </a>
 
-                        <a href="{% url 'cart' %}" class="nav-icon position-relative" aria-label="Cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            {% if cart_items_count > 0 %}
-                            <span class="badge-cart">{{ cart_items_count }}</span>
-                            {% endif %}
-                        </a>
-                    </div>
-                    {% endif %}
-
-                    <!-- Navigation Links -->
-                    <div class="nav-links-container">
-                        <a href="{% url 'home' %}" class="nav-link">Home</a>
-                        <a href="#" class="nav-link">About</a>
-                        <a href="#" class="nav-link">Contact</a>
-                        {% if user.is_authenticated %}
-                            <!-- Welcome Message with User Type -->
-                            <div class="welcome-user-badge ms-3">
-                                <span class="welcome-text">
-                                    <i class="fas fa-user-circle me-1" style="color: #3b82f6;"></i>
-                                    Welcome, 
-                                    <span class="username-text fw-semibold">{{ user.username|truncatechars:15 }}</span>
-                                    {% for group in user.groups.all %}
-                                        {% if group.name == "business" %}
-                                            <span class="user-type-badge seller-badge">
-                                                <i class="fas fa-store me-1"></i>Seller
-                                            </span>
-                                        {% elif group.name == "customer" %}
-                                            <span class="user-type-badge buyer-badge">
-                                                <i class="fas fa-shopping-bag me-1"></i>Buyer
-                                            </span>
-                                        {% elif group.name == "courier" %}
-                                            <span class="user-type-badge courier-badge">
-                                                <i class="fas fa-truck me-1"></i>Courier
-                                            </span>
-                                        {% elif group.name == "admin" %}
-                                            <span class="user-type-badge admin-badge">
-                                                <i class="fas fa-crown me-1"></i>Admin
-                                            </span>
-                                        {% elif group.name == "moderator" %}
-                                            <span class="user-type-badge moderator-badge">
-                                                <i class="fas fa-shield-alt me-1"></i>Moderator
-                                            </span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </span>
-                            </div>
-                            {% if not is_business_user %}
-                            <a href="{% url 'dash' %}" class="nav-link">My Account</a>
-                            {% endif %}
-                            <a href="{% url 'logout' %}" class="nav-link text-primary logout-link">Logout</a>
-                        {% else %}
-                            <a href="{% url 'signin' %}" class="nav-link text-primary">Login</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Elements -->
-            <div class="mobile-elements d-flex d-lg-none align-items-center ms-auto gap-2">
+        <!-- Desktop Elements -->
+        <div class="desktop-elements d-none d-lg-flex align-items-center flex-grow-1 ms-4">
+            <div class="desktop-nav-wrapper">
                 {% if user.is_authenticated %}
-                <!-- Welcome Message for Mobile -->
-                <div class="welcome-user-badge d-lg-none">
-                    <span class="welcome-text">
-                        <i class="fas fa-user-circle me-1" style="color: #3b82f6; font-size: 0.9rem;"></i>
-                        <span class="username-text d-none d-sm-inline">{{ user.username|truncatechars:10 }}</span>
-                        {% for group in user.groups.all %}
-                            {% if group.name == "business" %}
-                                <span class="user-type-badge seller-badge">
-                                    <i class="fas fa-store"></i>
-                                </span>
-                            {% elif group.name == "customer" %}
-                                <span class="user-type-badge buyer-badge">
-                                    <i class="fas fa-shopping-bag"></i>
-                                </span>
-                            {% elif group.name == "courier" %}
-                                <span class="user-type-badge courier-badge">
-                                    <i class="fas fa-truck"></i>
-                                </span>
-                            {% elif group.name == "admin" %}
-                                <span class="user-type-badge admin-badge">
-                                    <i class="fas fa-crown"></i>
-                                </span>
-                            {% elif group.name == "moderator" %}
-                                <span class="user-type-badge moderator-badge">
-                                    <i class="fas fa-shield-alt"></i>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                </div>
-                <a href="{% url 'wish_lists' %}" class="nav-icon position-relative" aria-label="Wishlist">
-                    <i class="fas fa-heart" style="color: #ef4444;"></i>
-                    {% if wishlist_items_count > 0 %}
-                    <span class="badge-wishlist">{{ wishlist_items_count }}</span>
-                    {% endif %}
-                </a>
+                <!-- Navigation Icons -->
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{% url 'wish_lists' %}" class="nav-icon position-relative" aria-label="Wishlist">
+                        <i class="fas fa-heart" style="color: #ef4444;"></i>
+                        {% if wishlist_items_count > 0 %}
+                        <span class="badge-wishlist">{{ wishlist_items_count }}</span>
+                        {% endif %}
+                    </a>
 
-                <a href="{% url 'cart' %}" class="nav-icon position-relative" aria-label="Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    {% if cart_items_count > 0 %}
-                    <span class="badge-cart">{{ cart_items_count }}</span>
-                    {% endif %}
-                </a>
+                    <a href="{% url 'cart' %}" class="nav-icon position-relative" aria-label="Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% if cart_items_count > 0 %}
+                        <span class="badge-cart">{{ cart_items_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
                 {% endif %}
+
+                <!-- Navigation Links -->
+                <div class="nav-links-container">
+                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                    <a href="#" class="nav-link">About</a>
+                    <a href="#" class="nav-link">Contact</a>
+                    {% if user.is_authenticated %}
+                        <!-- Welcome Message with User Type -->
+                        <div class="welcome-user-badge ms-3">
+                            <span class="welcome-text">
+                                <i class="fas fa-user-circle me-1" style="color: #3b82f6;"></i>
+                                Welcome, 
+                                <span class="username-text fw-semibold">{{ user.username|truncatechars:15 }}</span>
+                                {% for group in user.groups.all %}
+                                    {% if group.name == "business" %}
+                                        <span class="user-type-badge seller-badge">
+                                            <i class="fas fa-store me-1"></i>Seller
+                                        </span>
+                                    {% elif group.name == "customer" %}
+                                        <span class="user-type-badge buyer-badge">
+                                            <i class="fas fa-shopping-bag me-1"></i>Buyer
+                                        </span>
+                                    {% elif group.name == "courier" %}
+                                        <span class="user-type-badge courier-badge">
+                                            <i class="fas fa-truck me-1"></i>Courier
+                                        </span>
+                                    {% elif group.name == "admin" %}
+                                        <span class="user-type-badge admin-badge">
+                                            <i class="fas fa-crown me-1"></i>Admin
+                                        </span>
+                                    {% elif group.name == "moderator" %}
+                                        <span class="user-type-badge moderator-badge">
+                                            <i class="fas fa-shield-alt me-1"></i>Moderator
+                                        </span>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </div>
+                        {% if not is_business_user %}
+                        <a href="{% url 'dash' %}" class="nav-link">My Account</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="nav-link text-primary logout-link">Logout</a>
+                    {% else %}
+                        <a href="{% url 'signin' %}" class="nav-link text-primary">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </nav>
 
+        <!-- Mobile Elements (Right side) -->
+        <div class="mobile-elements d-flex d-lg-none align-items-center ms-auto gap-2">
+            {% if user.is_authenticated %}
+            <!-- Welcome Message for Mobile -->
+            <div class="welcome-user-badge d-lg-none">
+                <span class="welcome-text">
+                    <i class="fas fa-user-circle me-1" style="color: #3b82f6; font-size: 0.9rem;"></i>
+                    <span class="username-text d-none d-sm-inline">{{ user.username|truncatechars:10 }}</span>
+                    {% for group in user.groups.all %}
+                        {% if group.name == "business" %}
+                            <span class="user-type-badge seller-badge">
+                                <i class="fas fa-store"></i>
+                            </span>
+                        {% elif group.name == "customer" %}
+                            <span class="user-type-badge buyer-badge">
+                                <i class="fas fa-shopping-bag"></i>
+                            </span>
+                        {% elif group.name == "courier" %}
+                            <span class="user-type-badge courier-badge">
+                                <i class="fas fa-truck"></i>
+                            </span>
+                        {% elif group.name == "admin" %}
+                            <span class="user-type-badge admin-badge">
+                                <i class="fas fa-crown"></i>
+                            </span>
+                        {% elif group.name == "moderator" %}
+                            <span class="user-type-badge moderator-badge">
+                                <i class="fas fa-shield-alt"></i>
+                            </span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <a href="{% url 'wish_lists' %}" class="nav-icon position-relative" aria-label="Wishlist">
+                <i class="fas fa-heart" style="color: #ef4444;"></i>
+                {% if wishlist_items_count > 0 %}
+                <span class="badge-wishlist">{{ wishlist_items_count }}</span>
+                {% endif %}
+            </a>
+
+            <a href="{% url 'cart' %}" class="nav-icon position-relative" aria-label="Cart">
+                <i class="fas fa-shopping-cart"></i>
+                {% if cart_items_count > 0 %}
+                <span class="badge-cart">{{ cart_items_count }}</span>
+                {% endif %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
     <!-- Mobile Menu Offcanvas -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
         <div class="offcanvas-header">
-            <img class="nav-logo" src="{% static 'images/Finds.png' %}" alt="OneCart Discovery">
+            <img class="nav-logo" src="{% static 'images/nav_logo.png' %}" alt="OneCart Discovery">
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         
@@ -529,32 +550,6 @@
             <!-- User Info -->
             {% if user.is_authenticated %}
             <div class="d-flex align-items-center p-3 border-bottom" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));">
-                <div class="position-relative">
-                    <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="rounded-circle" width="45" height="45" style="border: 2px solid var(--primary);">
-                    {% for group in user.groups.all %}
-                        {% if group.name == "business" %}
-                            <span class="position-absolute bottom-0 end-0 badge rounded-circle p-1" style="background: #00A8A8; border: 2px solid white;">
-                                <i class="fas fa-store" style="font-size: 0.6rem;"></i>
-                            </span>
-                        {% elif group.name == "customer" %}
-                            <span class="position-absolute bottom-0 end-0 badge rounded-circle p-1" style="background: #4ade80; border: 2px solid white;">
-                                <i class="fas fa-shopping-bag" style="font-size: 0.6rem;"></i>
-                            </span>
-                        {% elif group.name == "courier" %}
-                            <span class="position-absolute bottom-0 end-0 badge rounded-circle p-1" style="background: #f59e0b; border: 2px solid white;">
-                                <i class="fas fa-truck" style="font-size: 0.6rem;"></i>
-                            </span>
-                        {% elif group.name == "admin" %}
-                            <span class="position-absolute bottom-0 end-0 badge rounded-circle p-1" style="background: #8b5cf6; border: 2px solid white;">
-                                <i class="fas fa-crown" style="font-size: 0.6rem;"></i>
-                            </span>
-                        {% elif group.name == "moderator" %}
-                            <span class="position-absolute bottom-0 end-0 badge rounded-circle p-1" style="background: #3b82f6; border: 2px solid white;">
-                                <i class="fas fa-shield-alt" style="font-size: 0.6rem;"></i>
-                            </span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
                 <div class="ms-3">
                     <div class="fw-semibold d-flex align-items-center gap-2">
                         <i class="fas fa-user-circle" style="color: #3b82f6;"></i>
@@ -693,7 +688,7 @@
             <i class="fas fa-home"></i>
             <span>Home</span>
         </a>
-        <a href="#" class="nav-item-mobile" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+        <a href="#" class="nav-item-mobile" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Open menu">
             <i class="fas fa-bars"></i>
             <span>Menu</span>
         </a>
@@ -765,14 +760,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Mobile Toggle Button -->
-    <button class="mobile-toggle d-lg-none" onclick="toggleMobileSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Mobile Overlay -->
-    <div class="mobile-overlay d-lg-none" onclick="toggleMobileSidebar()"></div>
 
     <!-- Modern Sidebar -->
     <nav class="modern-sidebar d-none d-lg-flex" id="sidebar">
@@ -983,28 +970,31 @@
                 overlay.classList.toggle('active');
             }
 
-            // Close mobile sidebar when clicking on a menu item
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 991) {
+            const toggleBtn = document.querySelector('.mobile-toggle');
+            const overlay = document.querySelector('.mobile-overlay');
+
+            if (toggleBtn && overlay) {
+                // Close mobile sidebar when clicking on a menu item
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        if (window.innerWidth <= 991) {
+                            toggleMobileSidebar();
+                        }
+                    });
+                });
+
+                // Close mobile sidebar when clicking outside
+                document.addEventListener('click', function(e) {
+                    const sidebar = document.getElementById('sidebar');
+
+                    if (window.innerWidth <= 991 &&
+                        !sidebar.contains(e.target) &&
+                        !toggleBtn.contains(e.target) &&
+                        sidebar.classList.contains('mobile-open')) {
                         toggleMobileSidebar();
                     }
                 });
-            });
-
-            // Close mobile sidebar when clicking outside
-            document.addEventListener('click', function(e) {
-                const sidebar = document.getElementById('sidebar');
-                const toggleBtn = document.querySelector('.mobile-toggle');
-                const overlay = document.querySelector('.mobile-overlay');
-
-                if (window.innerWidth <= 991 &&
-                    !sidebar.contains(e.target) &&
-                    !toggleBtn.contains(e.target) &&
-                    sidebar.classList.contains('mobile-open')) {
-                    toggleMobileSidebar();
-                }
-            });
+            }
         });
     </script>
 </body>

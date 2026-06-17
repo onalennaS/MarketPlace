@@ -3,6 +3,9 @@
 {% block title %}Wish List{% endblock %}
 {% load static %}
 
+{% block sidebar %}
+{% endblock %}
+
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -22,13 +25,25 @@
     --transition: all 0.3s ease;
 }
 
-.profile-container {
-    padding: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+/* Hide sidebar in wishlist */
+#sidebar {
+    display: none !important;
 }
 
-/* Breadcrumb styling */
+.main-content {
+    margin-left: 0 !important;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Breadcrumb styling - matches cart */
 .breadcrumb {
     background-color: transparent;
     padding: 0;
@@ -39,7 +54,7 @@
 .breadcrumb-item a {
     color: #6b7280;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 400;
     transition: color 0.2s;
 }
 
@@ -49,7 +64,7 @@
 
 .breadcrumb-item.active {
     color: #1f2937;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 /* Card styling */
@@ -84,13 +99,13 @@
 
 .card-header i {
     color: var(--primary);
-    font-size: 18px;
-    width: 20px;
+    font-size: 20px;
+    margin-right: 12px;
 }
 
 .card-header h5 {
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: #1f2937;
 }
@@ -148,24 +163,24 @@
 }
 
 .product-details h5 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     color: var(--text);
 }
 
 .product-business {
     color: var(--primary);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .product-rating {
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .product-rating i {
@@ -197,8 +212,8 @@
 }
 
 .price-current {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
     color: var(--text);
     margin: 0;
 }
@@ -279,23 +294,32 @@
 }
 
 .empty-wishlist i {
-    font-size: 60px;
-    color: var(--primary);
-    opacity: 0.3;
-    margin-bottom: 20px;
+    font-size: 48px;
+    color: var(--border);
+    margin-bottom: 16px;
 }
 
 .empty-wishlist h4 {
-    color: var(--text);
-    margin-bottom: 12px;
-    font-size: 24px;
+    color: var(--text-gray);
     font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 8px;
 }
 
 .empty-wishlist p {
-    color: var(--text-light);
+    color: var(--text-gray);
+    font-weight: 400;
     margin-bottom: 24px;
-    font-size: 16px;
+}
+
+/* Page header styling - matches cart */
+h4 {
+    color: var(--text);
+    font-weight: 600;
+}
+
+h4 i {
+    color: var(--primary);
 }
 
 /* Responsive adjustments */
@@ -396,15 +420,15 @@
     }
 
     .empty-wishlist i {
-        font-size: 50px;
+        font-size: 36px;
     }
 
     .empty-wishlist h4 {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .empty-wishlist p {
-        font-size: 14px;
+        font-size: 13px;
     }
 }
 
@@ -421,34 +445,32 @@
 .profile-card .card-body {
     transition: all 0.3s ease;
 }
+
+.swal2-container {
+    z-index: 9999 !important;
+}
 </style>
 
-<div class="profile-container">
-    <!-- Breadcrumb navigation -->
+<div class="container">
+    <!-- Breadcrumb navigation - matches cart style -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'home' %}" class="d-flex align-items-center gap-1">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'shop_base' %}">Shop</a>
+                <a href="{% url 'dash' %}"><i class="fas fa-tachometer-alt me-1"></i> My Account</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Wish List</li>
         </ol>
     </nav>
 
-    <!-- Wish List Header Card -->
-    <div class="profile-card">
-        <div class="card-header">
-            <div class="card-header-left">
-                <i class="fas fa-heart"></i>
-                <h5>My Wish List</h5>
-            </div>
-            <span class="badge">{{wishlist_items_count}} items</span>
-        </div>
+    <!-- Wishlist header - matches cart header style -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <h4 class="mb-2 mb-sm-0">
+            <i class="fas fa-heart me-2" style="color: #ef4444;"></i>
+            My Wish List
+        </h4>
+        <p class="mb-0" style="color: #7f8c8d; font-weight: 400;">
+            You have {{wishlist_items_count}} items in your wishlist
+        </p>
     </div>
 
     {% if wishlist_items %}
