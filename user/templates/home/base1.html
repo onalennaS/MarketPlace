@@ -303,10 +303,6 @@
     </div>
 </nav>
 
-<!-- Sidebar Toggle Button (Beneath Navbar) -->
-<button id="sidebarToggle" class="btn">
-    <i class="fas fa-bars"></i>
-</button>
 {% if messages %}
         <div class="message-container  ">
             {% for message in messages %}
@@ -354,14 +350,5 @@
 </div>
 
 <script src="{% static 'css/bootstrap.bundle.min.js' %}"></script>
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const closeBtn = document.querySelector('.close-btn');
-
-    toggleBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
-    closeBtn.addEventListener('click', () => sidebar.classList.remove('active'));
-</script>
-
 </body>
 </html>
