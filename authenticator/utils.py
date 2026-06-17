@@ -46,6 +46,10 @@ def send_email_via_gmail(to, subject, html_content, text_content):
         service = get_gmail_service()
         message = MIMEMultipart('alternative')
         message['to'] = to
+        if not getattr(settings, 'EMAIL_HOST_USER', ''):
+            raise RuntimeError(
+                "EMAIL_HOST_USER is not set. Set it in your environment or in Market/settings.py (local dev)."
+            )
         message['from'] = settings.EMAIL_HOST_USER
         message['subject'] = subject
         message.attach(MIMEText(text_content, 'plain'))
@@ -103,9 +107,10 @@ def send_email_verification_link(recipient_email, verify_link):
 def send_verify_email(email):
     reset_token = generate_reset_token(email)
     reset_link = f"{settings.SITE_URL}/auth/verify_email/{reset_token}/"
-    print("================")
-    print(reset_link)
-    send_email_verification_link(email, reset_link)
+
+    success = send_email_verification_link(email, reset_link)
+    return success
+
 
 
 
